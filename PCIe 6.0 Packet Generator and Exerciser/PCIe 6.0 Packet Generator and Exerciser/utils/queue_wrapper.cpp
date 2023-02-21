@@ -13,28 +13,28 @@ QueueWrapper<T>::~QueueWrapper()
 template <class T>
 void QueueWrapper<T>::push(T t)
 {
-	std::unique_lock<std::mutex> mlock(mutex);
-	queue.push(t);
+	std::unique_lock<std::mutex> mlock(mutex_);
+	queue_.push(t);
 	mlock.unlock();
-	condition.notify_one();
+	condition_.notify_one();
 }
 
 template <class T>
 T QueueWrapper<T>::pop()
 {
-	std::unique_lock<std::mutex> mlock(mutex);
-	while (queue.empty())
+	std::unique_lock<std::mutex> mlock(mutex_);
+	while (queue_.empty())
 	{
-		condition.wait(mlock);
+		condition_.wait(mlock);
 	}
-	auto item = queue.front();
-	queue.pop();
+	auto item = queue_.front();
+	queue_.pop();
 	return item;
 }
 
 template <class T>
 int QueueWrapper<T>::size()
 {
-	std::unique_lock<std::mutex> mlock(mutex);
-	return queue.size();
+	std::unique_lock<std::mutex> mlock(mutex_);
+	return queue_.size();
 }

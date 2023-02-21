@@ -9,11 +9,11 @@
 template <class T>
 class QueueWrapper
 {
-	std::queue<T> queue;
+	std::queue<T> queue_;
 
-	std::mutex mutex;
+	std::mutex mutex_;
 
-	std::condition_variable condition;
+	std::condition_variable condition_;
 
 	public:
 		QueueWrapper();
