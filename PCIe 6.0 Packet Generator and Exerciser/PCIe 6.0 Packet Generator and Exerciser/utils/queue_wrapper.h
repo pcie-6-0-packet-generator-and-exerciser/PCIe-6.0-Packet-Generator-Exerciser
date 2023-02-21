@@ -3,10 +3,11 @@
 #include <mutex>
 
 // class QueueWrapper that wraps a queue and implements producer consumer model
+template <class T>
 class QueueWrapper
 {
 	//queue
-	std::queue<TLP> queue;
+	std::queue<T> queue;
 
 	//mutex
 	std::mutex mutex;
@@ -22,10 +23,10 @@ class QueueWrapper
 		~QueueWrapper();
 
 		//pushes a TLP to the queue
-		void push(TLP tlp);
+		void push(T t);
 
 		//pops a TLP from the queue
-		TLP pop();
+		T pop();
 
 		//returns the size of the queue
 		int size();
