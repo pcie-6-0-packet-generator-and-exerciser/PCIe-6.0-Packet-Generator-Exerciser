@@ -1,19 +1,16 @@
 #include "queue_wrapper.h"
 
 template <class T>
-//constructor
 QueueWrapper<T>::QueueWrapper()
 {
 }
 
 template <class T>
-//destructor
 QueueWrapper<T>::~QueueWrapper()
 {
 }
 
 template <class T>
-//pushes a TLP to the queue
 void QueueWrapper<T>::push(T t)
 {
 	std::unique_lock<std::mutex> mlock(mutex);
@@ -23,7 +20,6 @@ void QueueWrapper<T>::push(T t)
 }
 
 template <class T>
-//pops a TLP from the queue
 T QueueWrapper<T>::pop()
 {
 	std::unique_lock<std::mutex> mlock(mutex);
@@ -37,7 +33,6 @@ T QueueWrapper<T>::pop()
 }
 
 template <class T>
-//returns the size of the queue
 int QueueWrapper<T>::size()
 {
 	std::unique_lock<std::mutex> mlock(mutex);
