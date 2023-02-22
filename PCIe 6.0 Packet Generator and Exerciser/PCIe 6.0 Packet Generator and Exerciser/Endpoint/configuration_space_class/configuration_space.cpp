@@ -65,3 +65,23 @@ ConfigurationSpace::ConfigurationSpace() :head_(nullptr), tail_(nullptr), size_(
         }
     }
 }
+
+/**
+    * @brief ConfigurationSpace desructor for deleting all nodes in the linked list to avoid memory leaks
+*/
+~ConfigurationSpace()
+{
+    Register * current = head;
+    Register* next;
+
+    while (current)
+    {
+        size--;
+
+        next = current->getNext();
+
+        delete current;
+
+        current = next;
+    }
+}
