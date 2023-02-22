@@ -1,3 +1,6 @@
+#include "configuration_space.h"
+#include "..\register_class\register.h"
+
 /**
  * @brief ConfigurationSpace Constructor for initializing all of the configuration space registers
  *        with some predefined values
@@ -69,7 +72,7 @@ ConfigurationSpace::ConfigurationSpace() :head_(nullptr), tail_(nullptr), size_(
 /**
     * @brief ConfigurationSpace desructor for deleting all nodes in the linked list to avoid memory leaks
 */
-~ConfigurationSpace()
+ConfigurationSpace::~ConfigurationSpace()
 {
     Register * current = head;
     Register* next;
@@ -91,7 +94,7 @@ ConfigurationSpace::ConfigurationSpace() :head_(nullptr), tail_(nullptr), size_(
     * @param registerNumber -> the Register index 
     * @return unsigned int -> the Register value
 */
-unsigned int getRegisterValue(int registerNumber)
+unsigned int ConfigurationSpace::getRegisterValue(int registerNumber)
 {
     // check if the index is out of bounds
     if (registerNumber < 0 || registerNumber >= size)
@@ -116,7 +119,7 @@ unsigned int getRegisterValue(int registerNumber)
     * @param registerNumber -> Register index
     * @return Register_Name (enum) -> Register name
 */
-Register_Name getRegisterName(int registerNumber)
+Register_Name ConfigurationSpace:: getRegisterName(int registerNumber)
 {
     // check if the index is out of bounds
     if (registerNumber < 0 || registerNumber >= size)
@@ -141,7 +144,7 @@ Register_Name getRegisterName(int registerNumber)
     * @param registerNumber -> Register index
     * @return Register_Type (enum) -> Register type
 */
-Register_Type getRegisterType(int registerNumber)
+Register_Type ConfigurationSpace::getRegisterType(int registerNumber)
 {
     // check if the index is out of bounds
     if (registerNumber < 0 || registerNumber >= size)
@@ -159,4 +162,31 @@ Register_Type getRegisterType(int registerNumber)
     }
 
     return current->getRegisterType();
+}
+
+/**
+    * @brief Pushing a new node into our linked list which represents our Configuration Space
+    *        (Each Node represents a Register)
+    * @param v -> the Register value
+    * @param n -> the Register name (Vendor_ID, Command, ...)
+    * @param t -> the Register type (RO, RW, HwI)
+*/
+void ConfigurationSpace::push(unsigned int v, Register_Name n, Register_Type t)
+{
+    Register* newRegister = new Register(v, n, t);
+
+    // add the new node to the end of the linked list
+    if (tail != nullptr)
+    {
+        tail->setNext(newRegister);
+    }
+
+    tail = newRegister;
+
+    if (head == nullptr)
+    {
+        head = newRegister;
+    }
+
+    size++;
 }
