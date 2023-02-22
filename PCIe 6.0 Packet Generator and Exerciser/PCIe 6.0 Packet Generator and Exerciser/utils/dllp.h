@@ -3,7 +3,7 @@
 
 class Dllp {
 public:
-    enum class Type {
+    enum class DllpType {
         initFC1 = 1,
         initFC2 = 3,
         updateFC = 2
@@ -19,10 +19,10 @@ public:
     int HdrFC;
     int VC;
     bool shared;
-    Type m_type;
+    DllpType m_type;
     CreditType m_creditType;
 
-    Dllp(int hdrScale, int dataScale, int dataFc, int hdrFC, int vc, bool share, Type type, CreditType creditType);
+    Dllp(int hdrScale, int dataScale, int dataFc, int hdrFC, int vc, bool share, DllpType type, CreditType creditType);
 
     ~Dllp();
     std::bitset<32> getBitRep() const;

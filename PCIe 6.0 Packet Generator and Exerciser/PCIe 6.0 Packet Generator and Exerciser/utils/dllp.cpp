@@ -1,7 +1,7 @@
 #include "dllp.h"
 
 
-Dllp::Dllp(int hdrScale, int dataScale, int dataFc, int hdrFC, int vc, bool share, Type type, CreditType creditType) {
+Dllp::Dllp(int hdrScale, int dataScale, int dataFc, int hdrFC, int vc, bool share, DllpType type, CreditType creditType) {
     HdrScale = hdrScale;
     DataScale = dataScale;
     DataFc = dataFc;
