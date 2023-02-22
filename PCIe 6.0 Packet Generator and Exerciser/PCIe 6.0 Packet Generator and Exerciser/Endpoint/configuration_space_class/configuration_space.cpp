@@ -74,12 +74,12 @@ ConfigurationSpace::ConfigurationSpace() :head_(nullptr), tail_(nullptr), size_(
 */
 ConfigurationSpace::~ConfigurationSpace()
 {
-    Register * current = head;
+    Register * current = head_;
     Register* next;
 
     while (current)
     {
-        size--;
+        size_--;
 
         next = current->getNext();
 
@@ -97,14 +97,14 @@ ConfigurationSpace::~ConfigurationSpace()
 unsigned int ConfigurationSpace::getRegisterValue(int registerNumber)
 {
     // check if the index is out of bounds
-    if (registerNumber < 0 || registerNumber >= size)
+    if (registerNumber < 0 || registerNumber >= size_)
     {
         /* Cpl with UR */
         return 0;
     }
 
     // traverse the linked list to find the node at the specified index
-    Register * current = head;
+    Register * current = head_;
 
     for (int i = 0; i < registerNumber; i++)
     {
@@ -119,17 +119,17 @@ unsigned int ConfigurationSpace::getRegisterValue(int registerNumber)
     * @param registerNumber -> Register index
     * @return Register_Name (enum) -> Register name
 */
-Register_Name ConfigurationSpace:: getRegisterName(int registerNumber)
+Register_Name ConfigurationSpace::getRegisterName(int registerNumber)
 {
     // check if the index is out of bounds
-    if (registerNumber < 0 || registerNumber >= size)
+    if (registerNumber < 0 || registerNumber >= size_)
     {
         /* Cpl with UR */
         return Empty;
     }
 
     // traverse the linked list to find the node at the specified index
-    Register* current = head;
+    Register* current = head_;
 
     for (int i = 0; i < registerNumber; i++)
     {
@@ -147,14 +147,14 @@ Register_Name ConfigurationSpace:: getRegisterName(int registerNumber)
 Register_Type ConfigurationSpace::getRegisterType(int registerNumber)
 {
     // check if the index is out of bounds
-    if (registerNumber < 0 || registerNumber >= size)
+    if (registerNumber < 0 || registerNumber >= size_)
     {
         /* Cpl with UR */
         return EMPTY;
     }
 
     // traverse the linked list to find the node at the specified index
-    Register* current = head;
+    Register* current = head_;
 
     for (int i = 0; i < registerNumber; i++)
     {
@@ -176,17 +176,17 @@ void ConfigurationSpace::push(unsigned int v, Register_Name n, Register_Type t)
     Register* newRegister = new Register(v, n, t);
 
     // add the new node to the end of the linked list
-    if (tail != nullptr)
+    if (tail_ != nullptr)
     {
-        tail->setNext(newRegister);
+        tail_->setNext(newRegister);
     }
 
-    tail = newRegister;
+    tail_ = newRegister;
 
-    if (head == nullptr)
+    if (head_ == nullptr)
     {
-        head = newRegister;
+        head_ = newRegister;
     }
 
-    size++;
+    size_++;
 }
