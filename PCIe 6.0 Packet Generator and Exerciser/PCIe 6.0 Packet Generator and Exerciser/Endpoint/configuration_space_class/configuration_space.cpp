@@ -85,3 +85,78 @@ ConfigurationSpace::ConfigurationSpace() :head_(nullptr), tail_(nullptr), size_(
         current = next;
     }
 }
+
+/**
+    * @brief Getting a specific Register value stored in it
+    * @param registerNumber -> the Register index 
+    * @return unsigned int -> the Register value
+*/
+unsigned int getRegisterValue(int registerNumber)
+{
+    // check if the index is out of bounds
+    if (registerNumber < 0 || registerNumber >= size)
+    {
+        /* Cpl with UR */
+        return 0;
+    }
+
+    // traverse the linked list to find the node at the specified index
+    Register * current = head;
+
+    for (int i = 0; i < registerNumber; i++)
+    {
+        current = current->getNext();
+    }
+
+    return current->getRegisterValue();
+}
+
+/**
+    * @brief Getting a specific register name
+    * @param registerNumber -> Register index
+    * @return Register_Name (enum) -> Register name
+*/
+Register_Name getRegisterName(int registerNumber)
+{
+    // check if the index is out of bounds
+    if (registerNumber < 0 || registerNumber >= size)
+    {
+        /* Cpl with UR */
+        return Empty;
+    }
+
+    // traverse the linked list to find the node at the specified index
+    Register* current = head;
+
+    for (int i = 0; i < registerNumber; i++)
+    {
+        current = current->getNext();
+    }
+
+    return current->getRegisterName();
+}
+
+/**
+    * @brief Getting a specific register type
+    * @param registerNumber -> Register index
+    * @return Register_Type (enum) -> Register type
+*/
+Register_Type getRegisterType(int registerNumber)
+{
+    // check if the index is out of bounds
+    if (registerNumber < 0 || registerNumber >= size)
+    {
+        /* Cpl with UR */
+        return EMPTY;
+    }
+
+    // traverse the linked list to find the node at the specified index
+    Register* current = head;
+
+    for (int i = 0; i < registerNumber; i++)
+    {
+        current = current->getNext();
+    }
+
+    return current->getRegisterType();
+}
