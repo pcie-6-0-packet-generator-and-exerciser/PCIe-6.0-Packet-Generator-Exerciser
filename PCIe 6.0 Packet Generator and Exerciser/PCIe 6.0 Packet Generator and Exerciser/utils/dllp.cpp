@@ -1,51 +1,49 @@
 #include "dllp.h"
 
-Dllp::Dllp(int HdrScale, bool shared, int VC, int HdrFC, int DataScale, int DataFC, CreditType credType, Type dataType) {
-    
-    this->HdrScale = HdrScale;
-    this->shared = shared;
-    this->VC = VC;
-    this->HdrFC = HdrFC;
-    this->DataScale = DataScale;
-    this->DataFC = DataFC;
-    this->creditType = credType;
-    this->type = dataType;
+
+Dllp::Dllp(int hdrScale, int dataScale, int dataFc, int hdrFC, int vc, bool share, Type type, CreditType creditType) {
+    HdrScale = hdrScale;
+    DataScale = dataScale;
+    DataFc = dataFc;
+    HdrFC = hdrFC;
+    VC = vc;
+    m_type = type;
+    m_creditType = creditType;
+    shared = share;
 }
 
 Dllp::~Dllp() {
+    // destructor
 }
 
-std::array<bool, 32> Dllp::getBitRep() const {
-    std::array<bool, 32> result;
-    int idx = 0;
-    std::bitset<12> datafc_bits(DataFC);
-    for (int i = 0; i <12 ; i++) {
-        result[idx++] = datafc_bits[i];
-    }
-    std::bitset<2> datascale_bits(DataScale);
-    for (int i = 0; i < 2 ; i++) {
-        result[idx++] = datascale_bits[i];
-    }
-    std::bitset<8> hdrfc_bits(HdrFC);
-    for (int i = 0; i < 8 ; i++) {
-        result[idx++] = hdrfc_bits[i];
-    }
-    std::bitset<2> hdrscale_bits(HdrScale);
-    for (int i = 0; i < 2 ; i++) {
-        result[idx++] = hdrscale_bits[i];
-    }
-    std::bitset<3> vc_bits(VC);
-    for (int i = 0; i < 3 ; i++) {
-        result[idx++] = vc_bits[i];
-    }
-    result[idx++] = shared;
-    std::bitset<2> fctype_bits(static_cast<int>(creditType));
-    for (int i = 0; i < 2 ; i++) {
-        result[idx++] = fctype_bits[i];
-    }
-    std::bitset<2> datatype_bits(static_cast<int>(type));
-    for (int i = 0; i < 2 ; i++) {
-        result[idx++] = datatype_bits[i];
-    }
-    return result;
+std::bitset<32> Dllp::getBitRep() const {
+    // Create an unsigned int with all bits set to 0
+    unsigned int bitRep = 0;
+
+    // Add the value of DataFC in the first 12 bits (0-11)
+    bitRep |= DataFc;
+
+    // Add the value of DataScale in the next 2 bits (12-13)
+    bitRep |= (DataScale << 12);
+
+    // Add the value of HdrFC in the next 8 bits (14-21)
+    bitRep |= (HdrFC << 14);
+
+    // Add the value of HdrScale in the next 2 bits (22-23)
+    bitRep |= (HdrScale << 22);
+
+    // Add the value of VC in the next 3 bits (24-26)
+    bitRep |= (VC << 24);
+
+    // Add the value of Shared in the next bit (27)
+    bitRep |= (shared << 27);
+
+    // Add the value of CreditType in the next 2 bits (28-29)
+    bitRep |= (static_cast<int>(m_creditType) << 28);
+
+    // Add the value of Type in the last 2 bits (30-31)
+    bitRep |= (static_cast<int>(m_type) << 30);
+
+    // Return a std::bitset<32> object initialized with bitRep
+    return std::bitset<32>(bitRep);
 }
