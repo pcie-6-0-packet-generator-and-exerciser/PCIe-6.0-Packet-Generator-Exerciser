@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="utils\dllp.cpp" />
     <ClCompile Include="utils\queue_wrapper.cpp" />
     <QtRcc Include="PCIe6PacketGeneratorandExerciser.qrc" />
     <QtUic Include="PCIe6PacketGeneratorandExerciser.ui" />
@@ -93,6 +94,7 @@
     <ResourceCompile Include="PCIe 6.0 Packet Generator and Exerciser.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="utils\dllp.h" />
     <ClInclude Include="utils\queue_wrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

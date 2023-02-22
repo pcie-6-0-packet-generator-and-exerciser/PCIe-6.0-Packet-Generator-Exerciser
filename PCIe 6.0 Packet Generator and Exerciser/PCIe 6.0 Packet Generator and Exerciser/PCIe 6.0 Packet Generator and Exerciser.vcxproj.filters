@@ -46,11 +46,17 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="utils\dllp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="utils\queue_wrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="utils\dllp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="utils\queue_wrapper.h">
       <Filter>Source Files</Filter>
     </ClInclude>
