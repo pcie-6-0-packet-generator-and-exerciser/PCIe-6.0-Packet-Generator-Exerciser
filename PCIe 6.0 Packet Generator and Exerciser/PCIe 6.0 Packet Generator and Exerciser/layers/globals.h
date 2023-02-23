@@ -9,9 +9,9 @@ public:
     int P_SHARED_CREDIT_LIMIT[2] = { -1 };
     int NP_SHARED_CREDIT_LIMIT[2] = { -1 };
     int CPL_SHARED_CREDIT_LIMIT[2] = { -1 };
-    int P_SHARED_CREDITS_CONSUMED[2];
-    int NP_SHARED_CREDITS_CONSUMED[2];
-    int CPL_SHARED_CREDITS_CONSUMED[2];
+    int P_SHARED_CREDITS_CONSUMED[2] = { 0 };
+    int NP_SHARED_CREDITS_CONSUMED[2] = { 0 };
+    int CPL_SHARED_CREDITS_CONSUMED[2] = { 0 };
 
     Globals(int pCredit[2], int npCredit[2], int cplCredit[2]);
 };
