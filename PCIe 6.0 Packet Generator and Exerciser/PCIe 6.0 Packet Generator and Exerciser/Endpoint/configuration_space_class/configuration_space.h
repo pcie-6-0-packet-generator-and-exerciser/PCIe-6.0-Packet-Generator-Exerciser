@@ -9,7 +9,7 @@ private:
     int size_;
 
     /* Create a new node to store the value */
-    void push(unsigned int v, Register_Name n, Register_Type t);
+    void push(unsigned int v, Register_Name n, Register_Type t, unsigned int i, unsigned int m);
 
 public:
     ConfigurationSpace();
@@ -22,4 +22,10 @@ public:
     Register_Name getRegisterName(int registerNumber);
 
     Register_Type getRegisterType(int registerNumber);
+
+    int setRegister(int registerNumber, unsigned int value);
+
+    void setReceivedMasterAbortBit();
+
+    int getSize();
 };
