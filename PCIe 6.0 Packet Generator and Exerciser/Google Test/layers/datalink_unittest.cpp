@@ -13,3 +13,27 @@ TEST(UpdateCreditLimit, SetPCreditLimit) {
 	datalink.updateCreditLimit(new Flit(null, null, null, 
 		new Dllp(1, true, 0, 3, 1, 5, Dllp::DllpType::initFC1, Dllp::CreditType::P), null, null));
 }
+
+TEST(UpdateCreditLimit, SetNPCreditLimit) {
+
+	// Check NP limit is set to the correct value
+
+	// Check Fl1 and Fl2 are not set
+
+}
+
+TEST(UpdateCreditLimit, SetCplCreditLimit) {
+
+	// Check Cpl limit is set to the correct value
+
+	// Check Fl1 and Fl2 are not set
+
+}
+
+TEST(UpdateCreditLimit, SetFl1) {
+
+}
+
+TEST(UpdateCreditLimit, SetFl2) {
+
+}
