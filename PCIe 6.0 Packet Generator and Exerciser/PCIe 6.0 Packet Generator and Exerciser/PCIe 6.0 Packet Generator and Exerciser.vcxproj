@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="utils\ohc.cpp" />
     <QtRcc Include="PCIe6PacketGeneratorandExerciser.qrc" />
     <QtUic Include="PCIe6PacketGeneratorandExerciser.ui" />
     <QtMoc Include="PCIe6PacketGeneratorandExerciser.h" />
