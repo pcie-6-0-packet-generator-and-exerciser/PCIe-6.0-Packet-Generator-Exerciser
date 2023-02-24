@@ -20,7 +20,7 @@ public:
 	TLPType TLPType_;
 	int TC;
 	int length;
-	std::vector<OHC*> OHCs;
+	std::vector<OHC> OHCs;
 	NonHeaderBase nonBase;
 
 	void setLength(int newLength);
