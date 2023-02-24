@@ -60,10 +60,10 @@
     <ClInclude Include="utils\dllp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils\queue_wrapper.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="layers\globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\queue_wrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
