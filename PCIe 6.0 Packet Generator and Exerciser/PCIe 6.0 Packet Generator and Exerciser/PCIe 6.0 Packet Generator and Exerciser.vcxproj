@@ -83,6 +83,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="utils\dllp.cpp" />
+    <ClCompile Include="utils\queue_wrapper.cpp" />
     <QtRcc Include="PCIe6PacketGeneratorandExerciser.qrc" />
     <QtUic Include="PCIe6PacketGeneratorandExerciser.ui" />
     <QtMoc Include="PCIe6PacketGeneratorandExerciser.h" />
@@ -93,6 +95,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="layers\globals.h" />
+    <ClInclude Include="utils\dllp.h" />
+    <ClInclude Include="utils\queue_wrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
