@@ -1,5 +1,5 @@
 #pragma once
-//#include "OHC.h";
+//#include "ohc.h";
 //#include "NonHeaderBase.h";
 enum TLPType {
 	MemRead32,
@@ -20,7 +20,7 @@ public:
 	TLPType TLPType_;
 	int TC;
 	int length;
-	std::vector<OHC> OHCs;
+	std::vector<OHC> OHCVector;
 	NonHeaderBase nonBase;
 
 	void setLength(int newLength);
