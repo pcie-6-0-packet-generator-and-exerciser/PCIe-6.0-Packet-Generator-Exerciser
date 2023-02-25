@@ -1,6 +1,6 @@
 #pragma once
-//#include "ohc.h";
-//#include "NonHeaderBase.h";
+#include "ohc.h";
+#include "NonHeaderBase.h";
 enum TLPType {
 	MemRead32,
 	MemWrite32,
@@ -17,7 +17,7 @@ enum TLPType {
 
 class TLPHeader {
 public:
-	TLPType TLPType_;
+	TLPType TLPtype;
 	int TC;
 	int length;
 	std::vector<OHC> OHCVector;
