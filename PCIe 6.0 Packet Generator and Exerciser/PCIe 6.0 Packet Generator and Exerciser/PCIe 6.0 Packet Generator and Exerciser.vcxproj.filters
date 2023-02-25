@@ -60,5 +60,8 @@
     <ClInclude Include="utils\queue_wrapper.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="transaction_layer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
