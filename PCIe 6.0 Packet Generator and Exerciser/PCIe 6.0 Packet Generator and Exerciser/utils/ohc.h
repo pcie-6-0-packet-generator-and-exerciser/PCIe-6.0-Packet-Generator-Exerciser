@@ -1,6 +1,9 @@
 // Abstract class OHC
+#include <bitset>
+
 class OHC {
 public:
+    virtual void someFunction() = 0;  // pure virtual function
     // Public attribute size of type int, set to 4
     int size = 4;
 };
@@ -9,15 +12,15 @@ public:
 // Concrete class OHCA1 that inherits from OHC
 class OHCA1 : public OHC {
 public:
-    // Public attributes firstDWBE and lastDWBE, both arrays of integers with a length of 4
-    int firstDWBE[4];
-    int lastDWBE[4];
+    // Public attributes firstDWBE and lastDWBE, both as bitsets with a size of 4
+    std::bitset<4> firstDWBE;
+    std::bitset<4> lastDWBE;
 
     // Constructor that takes firstDWBE and lastDWBE attributes as input and sets them
-    OHCA1(int firstDWBE_[], int lastDWBE_[]) {
+    OHCA1(std::bitset<4> firstDWBEsetter, std::bitset<4> lastDWBEsetter) {
         for (int i = 0; i < 4; i++) {
-            firstDWBE[i] = firstDWBE_[i];
-            lastDWBE[i] = lastDWBE_[i];
+            firstDWBE[i] = firstDWBEsetter[i];
+            lastDWBE[i] = lastDWBEsetter[i];
         }
     }
 
@@ -26,16 +29,16 @@ public:
 // Concrete class OHCA3 that inherits from OHC
 class OHCA3 : public OHC {
 public:
-    // Public attributes firstDWBE and lastDWBE, both arrays of integers with a length of 4
-    int firstDWBE[4];
-    int lastDWBE[4];
+    // Public attributes firstDWBE and lastDWBE, both as bitsets with a size of 4
+    std::bitset<4> firstDWBE;
+    std::bitset<4> lastDWBE;
     int destinationSegment;
 
     // Constructor that takes firstDWBE and lastDWBE attributes as input and sets them
-    OHCA3(int firstDWBE_[], int lastDWBE_[], int destinationSeg) {
+    OHCA3(std::bitset<4> firstDWBEsetter, std::bitset<4> lastDWBEsetter, int destinationSeg) {
         for (int i = 0; i < 4; i++) {
-            firstDWBE[i] = firstDWBE_[i];
-            lastDWBE[i] = lastDWBE_[i];
+            firstDWBE[i] = firstDWBEsetter[i];
+            lastDWBE[i] = lastDWBEsetter[i];
         }
         destinationSegment = destinationSeg;
     }
@@ -61,18 +64,18 @@ class OHCA5 : public OHC {
 public:
     int destinationSegment;
     int completerSegment;
-    int lowerAddress[2];
+    std::bitset<2> lowerAddress;
     enum class CPLStatus {
         True = 1,
         False = 0
     };
-    CPLStatus CPLStatus_;
+    CPLStatus CPLStatusEnum;
     // Constructor that takes destinationSegment and completerSegment and lowerAddress and CPLStatus as input and set them
-    OHCA5(int destinationSeg, int completerSeg, int lowerAddress_[], CPLStatus myEnum_) :
-        CPLStatus_(myEnum_)
+    OHCA5(int destinationSeg, int completerSeg, std::bitset<2> lowerAddresssetter, CPLStatus myEnumsetter) :
+        CPLStatusEnum(myEnumsetter)
     {
         for (int i = 0; i < 2; i++) {
-            lowerAddress[i] = lowerAddress_[i];
+            lowerAddress[i] = lowerAddresssetter[i];
         }
         destinationSegment = destinationSeg;
         completerSegment = completerSeg;
