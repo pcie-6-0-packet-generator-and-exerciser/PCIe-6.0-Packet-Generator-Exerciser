@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="utils\ohc.cpp" />
     <ClCompile Include="layers\globals.cpp" />
     <ClCompile Include="utils\dllp.cpp" />
     <ClCompile Include="utils\queue_wrapper.cpp" />
@@ -95,6 +96,7 @@
     <ResourceCompile Include="PCIe 6.0 Packet Generator and Exerciser.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="utils\ohc.h" />
     <ClInclude Include="layers\globals.h" />
     <ClInclude Include="utils\dllp.h" />
     <ClInclude Include="utils\queue_wrapper.h" />
