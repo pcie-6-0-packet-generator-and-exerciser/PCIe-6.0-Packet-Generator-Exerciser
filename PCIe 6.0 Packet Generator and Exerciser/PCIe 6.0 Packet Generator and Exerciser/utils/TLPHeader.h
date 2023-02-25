@@ -19,7 +19,7 @@ class TLPHeader {
 public:
 	TLPType TLPtype;
 	int TC;
-	int length;
+	int lengthInDoubleWord;
 	std::vector<OHC> OHCVector;
 	NonHeaderBase nonBase;
 
