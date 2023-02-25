@@ -12,6 +12,18 @@ Dllp::Dllp(int hdrScale, int dataScale, int dataFc, int hdrFC, int vc, bool shar
     shared = share;
 }
 
+Dllp::Dllp() {
+	// default constructor
+	this->HdrScale = 0;
+	this->DataScale = 0;
+	this->DataFc = 0;
+	this->HdrFC = 0;
+    this->VC = 0;
+	this->m_type = DllpType::initFC1;
+    this->m_creditType = CreditType::P;
+	this->shared = false;
+}
+
 Dllp::~Dllp() {
     // destructor
 }
@@ -46,4 +58,57 @@ std::bitset<32> Dllp::getBitRep() const {
 
     // Return a std::bitset<32> object initialized with bitRep
     return std::bitset<32>(bitRep);
+}
+
+/**
+ * @brief This function constructs a Dllp object from a 32-bit bitset representation of a Dllp.
+ * @param dllpBits A 32-bit bitset representing a Dllp.
+ * @return Dllp The constructed Dllp object, If the Dllp type is invalid, the function returns an empty Dllp object.
+*/
+Dllp Dllp::DllpObjRep(std::bitset<32> dllpBits) {
+	unsigned long dllpBitsValue = dllpBits.to_ulong();
+
+	// Take a subset of the left-most byte for the credit type
+	std::bitset<4> dllpCreditType = std::bitset<4>(dllpBitsValue >> 28);
+
+	// Take a subset of bits from the 10th to 17th bit from left for the header fc
+	std::bitset<8> dllpHdrFc = std::bitset<8>((dllpBitsValue >> 14) & 0xff);
+
+	// Take a subset of bits from the right-most 12 bits for the data fc
+	std::bitset<12> dllpDataFc = std::bitset<12>(dllpBitsValue & 0xfff);
+
+	// recreating the dllp out of the bit representation
+	Dllp recievedDllp;
+	switch (dllpCreditType.to_ulong())
+	{
+	case 0b0100:
+		recievedDllp.m_creditType = Dllp::CreditType::P;
+		recievedDllp.m_type = Dllp::DllpType::initFC1;
+		break;
+	case 0b0101:
+		recievedDllp.m_creditType = Dllp::CreditType::NP;
+		recievedDllp.m_type = Dllp::DllpType::initFC1;
+		break;
+	case 0b0110:
+		recievedDllp.m_creditType = Dllp::CreditType::Cpl;
+		recievedDllp.m_type = Dllp::DllpType::initFC1;
+		break;
+	case 0b1100:
+		recievedDllp.m_creditType = Dllp::CreditType::P;
+		recievedDllp.m_type = Dllp::DllpType::initFC2;
+		break;
+	case 0b1101:
+		recievedDllp.m_creditType = Dllp::CreditType::NP;
+		recievedDllp.m_type = Dllp::DllpType::initFC2;
+		break;
+	case 0b1110:
+		recievedDllp.m_creditType = Dllp::CreditType::Cpl;
+		recievedDllp.m_type = Dllp::DllpType::initFC2;
+		break;
+	default:
+		return;
+		break;
+	}
+
+	return recievedDllp;
 }

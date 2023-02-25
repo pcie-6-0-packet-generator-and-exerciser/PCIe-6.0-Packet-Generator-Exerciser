@@ -23,7 +23,8 @@ public:
     CreditType m_creditType;
 
     Dllp(int hdrScale, int dataScale, int dataFc, int hdrFC, int vc, bool share, DllpType type, CreditType creditType);
-
+    Dllp();
     ~Dllp();
     std::bitset<32> getBitRep() const;
+    static Dllp DllpObjRep(std::bitset<32> dllpBits);
 };
