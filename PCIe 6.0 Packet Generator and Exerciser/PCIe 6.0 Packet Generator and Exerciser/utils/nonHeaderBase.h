@@ -3,17 +3,18 @@
 class NonHeaderBase {
 public:
 	int requestID;
+	int headerSizeInBytes;
 };
 // Concrete class AddressRouting32Bit from NonHeaderBase
 class AddressRouting32Bit : public	NonHeaderBase {
 public:
 	int tag;
 	int address;
-	int size = 12;
 	// Constructor that take tag and address and set them
 	AddressRouting32Bit(int tag_, int address_) {
 		tag = tag_;
 		address = address_;
+		headerSizeInBytes = 12;
 	}
 };
 // Concrete class AddressRouting64Bit from NonHeaderBase
@@ -21,11 +22,12 @@ class AddressRouting64Bit : public	NonHeaderBase {
 public:
 	int tag;
 	long long address;
-	int size = 16;
+	
 	// Constructor that take tag and address and set them
 	AddressRouting64Bit(int tag_, long long address_) {
 		tag = tag_;
 		address = address_;
+		headerSizeInBytes = 16;
 	}
 };
 // Concrete class ConfigNonHeaderBase from NonHeaderBase
@@ -36,9 +38,9 @@ public:
 	int busNumber;
 	int deviceNumber;
 	int functionNumber;
-	int size = 12;
 	// Constructor that take tag, registerNumberint, busNumberint, deviceNumber and functionNumber and set them
 	ConfigNonHeaderBase(int tag_, int registerNumber_, int busNumber_ ,int deviceNumber_,int functionNumber_ ) {
+		headerSizeInBytes = 12;
 		tag = tag_;
 		registerNumber = registerNumber_;
 		busNumber = busNumber_;
@@ -50,9 +52,9 @@ public:
 class MessageNonHeaderBase : public	NonHeaderBase {
 public:
 	int messageCode;
-	int size = 16;
 	// Constructor that tage messagecode and set it
 	MessageNonHeaderBase(int messageCode_) {
+		headerSizeInBytes = 16;
 		messageCode = messageCode_;
 	}
 };
@@ -66,9 +68,9 @@ public:
 	int deviceNumber;
 	int functionNumber;
 	int lowerAddress;
-	int size = 12;
 	// Constructor that take variables and set them
 	CompletionNonHeaderBase(int tag_, int completerID_,	long byteCount_, int busNumber_, int deviceNumber_ ,int functionNumber_,int lowerAddress_) {
+		headerSizeInBytes = 12;
 		tag = tag_;
 		completerID = completerID_;
 		byteCount = byteCount_;
