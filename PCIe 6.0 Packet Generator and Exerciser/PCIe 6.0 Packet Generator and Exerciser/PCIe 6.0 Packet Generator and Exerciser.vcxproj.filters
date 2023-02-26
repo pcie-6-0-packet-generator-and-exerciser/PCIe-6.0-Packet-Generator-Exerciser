@@ -55,7 +55,7 @@
     <ClCompile Include="layers\globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="data_link_layer.cpp">
+    <ClCompile Include="layers\datalink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -69,7 +69,7 @@
     <ClInclude Include="utils\queue_wrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="layers\data_link_layer.h">
+    <ClInclude Include="layers\datalink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

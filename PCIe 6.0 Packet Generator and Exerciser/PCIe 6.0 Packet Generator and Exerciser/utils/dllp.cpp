@@ -19,8 +19,8 @@ Dllp::Dllp() {
 	this->DataFc = 0;
 	this->HdrFC = 0;
     this->VC = 0;
-	this->m_type = DllpType::initFC1;
-    this->m_creditType = CreditType::P;
+	this->m_type = DllpType::updateFC;
+    this->m_creditType = CreditType::Cpl;
 	this->shared = false;
 }
 
@@ -62,11 +62,11 @@ std::bitset<32> Dllp::getBitRep() const {
 
 /**
  * @brief This function constructs a Dllp object from a 32-bit bitset representation of a Dllp.
- * @param dllpBits A 32-bit bitset representing a Dllp.
+ * @param dllpPayloadBits A 32-bit bitset representing a Dllp.
  * @return Dllp The constructed Dllp object, If the Dllp type is invalid, the function returns NULL.
 */
-Dllp Dllp::DllpObjRep(std::bitset<32> dllpBits) {
-	unsigned long dllpBitsValue = dllpBits.to_ulong();
+Dllp Dllp::DllpObjRep(std::bitset<32> dllpPayloadBits) {
+	unsigned long dllpBitsValue = dllpPayloadBits.to_ulong();
 
 	// Take a subset of the left-most byte for the credit type
 	std::bitset<4> dllpCreditType = std::bitset<4>(dllpBitsValue >> 28);
