@@ -5,6 +5,6 @@
  * @return void
 */
 void Transmitter::sendSequence(Sequence sequence) {
-	this->layers.sendPyaloadFlit(sequence, this->sendOnQueue, this->globals.P_SHARED_CREDIT_LIMIT, this->globals.NP_SHARED_CREDIT_LIMIT, this->globals.CPL_SHARED_CREDIT_LIMIT, this->globals.P_SHARED_CREDITS_CONSUMED, this->globals.NP_SHARED_CREDITS_CONSUMED, this->globals.CPL_SHARED_CREDITS_CONSUMED);
+	this->layers.sendPayloadFlit(sequence, this->sendOnQueue, this->globals.P_SHARED_CREDIT_LIMIT, this->globals.NP_SHARED_CREDIT_LIMIT, this->globals.CPL_SHARED_CREDIT_LIMIT, this->globals.P_SHARED_CREDITS_CONSUMED, this->globals.NP_SHARED_CREDITS_CONSUMED, this->globals.CPL_SHARED_CREDITS_CONSUMED);
 }
 
