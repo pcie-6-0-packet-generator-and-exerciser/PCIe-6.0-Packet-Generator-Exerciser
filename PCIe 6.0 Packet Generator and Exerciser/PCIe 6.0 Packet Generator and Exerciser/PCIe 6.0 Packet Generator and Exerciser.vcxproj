@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Endpoint\memory_request.cpp" />
     <ClCompile Include="utils\ohc.cpp" />
     <ClCompile Include="layers\globals.cpp" />
     <ClCompile Include="utils\dllp.cpp" />
@@ -96,6 +97,7 @@
     <ResourceCompile Include="PCIe 6.0 Packet Generator and Exerciser.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Endpoint\memory_request.h" />
     <ClInclude Include="utils\ohc.h" />
     <ClInclude Include="layers\globals.h" />
     <ClInclude Include="utils\dllp.h" />

@@ -58,6 +58,9 @@
     <ClCompile Include="layers\globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Endpoint\memory_request.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\ohc.h">
@@ -70,6 +73,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils\queue_wrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Endpoint\memory_request.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
