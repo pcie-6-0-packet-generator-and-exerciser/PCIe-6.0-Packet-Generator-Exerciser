@@ -4,7 +4,7 @@
 #include "../utils/queue_wrapper.h"
 #include "../utils/dllp.h"
 #include "../utils/sequence.h"
-#include ".flit.h/"
+#include "./flit.h/"
 
 /**
  * @brief Represents a transmitter that sends packets over a network.
