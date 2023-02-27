@@ -14,6 +14,6 @@ class ThreadsFunctions {
 public:
 	void initializationSender(Globals& globals, QueueWrapper<Sequence> listenOn, QueueWrapper<Flit> sendOn);
 	void initializationReceiver(Globals& globals, QueueWrapper<Flit> listenOn, QueueWrapper<Sequence> sendOn);
-	void normalFlowSender(Transmitter& transmitter, Globals& globals, QueueWrapper<Sequence> listenOn, QueueWrapper<Flit> sendOn);
-	void normalFlowReceiver(Reciever& reciever, Globals& globals, QueueWrapper<Flit> listenOn, QueueWrapper<Sequence> sendOn);
+	void normalFlowSender(Transmitter& transmitter, Globals& globals, QueueWrapper<Sequence> listenOn);
+	void normalFlowReceiver(Reciever& reciever, Globals& globals, QueueWrapper<Flit> listenOn);
 };
