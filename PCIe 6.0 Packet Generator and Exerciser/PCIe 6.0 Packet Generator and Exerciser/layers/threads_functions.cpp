@@ -6,10 +6,9 @@
  * This function waits on the queue until a sequence is available, and then sends it to the transmitter.
  *
  * @param transmitter A reference to the Transmitter object
- * @param globals A reference to the Globals object
  * @param listenOn A QueueWrapper<Sequence> object that holds the sequences sent from Root Complex
  */
-void ThreadsFunctions::normalFlowSender(Transmitter& transmitter, Globals& globals, QueueWrapper<Sequence> listenOn) {
+void ThreadsFunctions::normalFlowSender(Transmitter& transmitter, QueueWrapper<Sequence> listenOn) {
 	// waits on the queue until a sequence is available on the top of the Tlp
 	auto tlpSequence = listenOn.pop();
 	
