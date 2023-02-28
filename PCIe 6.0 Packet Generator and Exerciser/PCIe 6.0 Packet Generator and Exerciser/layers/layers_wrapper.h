@@ -1,16 +1,36 @@
 #pragma once
-#include "transaction_layer.h"
-#include "datalink.h"
-#include "../utils/tlp.h"
 #include "../utils/queue_wrapper.h"
+#include "globals.h"
+#include "sequence.h"
+#include "flit.h"
+#include "datalink.h"
+#include "transaction_layer.h"
+#include "../utils/tlp.h"
 #include <queue>
 
-class LayersWrapper
-{
-public:
+class LayersWrapper {
+	private:
+
+	/**
+	 * @brief This is a utility function used by sendPayloadFlit. It performs a round-robin on all 6 credit types and calls the sendFlit function in the datalink layer
+	 * @param globals The globals object containing the credits tracked by this device
+	 * @param flit The flit to be sent
+	 * @param queue The queue on which the flit should be sent
+	*/
+	void pushReadyFlit(Globals globals, Flit* flit, queue<Flit*>& queue);
+	/**
+	 * @brief This is a utility function used by sendPayloadFlit. It updates the credits tracked by this device
+	 * @param globals The globals object containing the credits tracked by this device
+	 * @param creditType The type of credit consumed by the packet being sent
+	 * @param headerConsumption The amount of header credits consumed by the packet being sent
+	 * @param dataConsumption The amount of data credits consumed by the packet being sent
+	*/
+	void updateConsumedCredits(Globals& globals, Dllp::CreditType creditType, int headerConsumption, int dataConsumption);
+
+public:	
+
 	TransactionLayer* transaction;
 	DatalinkLayer* datalink;
-	TLP* partialTlp;
 
 	/**
 	 * @brief Sends NOP Flit to the specified queue
@@ -24,5 +44,11 @@ public:
 	*/
 	void sendNOPFlit(Globals globals, Dllp::DllpType dllpType, QueueWrapper<Flit*>* sendOn);
 
+	/**
+	 * @brief This function is used to send a payload flit. It splits the received queue of TLPs on flits according to the PCIe 6.0 spec
+	 * @param globals The globals object containing the credits tracked by this device
+	 * @param packets The queue of packets to be sent to the other device
+	 * @param sendOnQueue The queue on which the packets should be sent
+	*/
+	void sendPayloadFlit(Globals& globals, queue<TLP*> packets, QueueWrapper<Flit*>& sendOnQueue);
 };
-
