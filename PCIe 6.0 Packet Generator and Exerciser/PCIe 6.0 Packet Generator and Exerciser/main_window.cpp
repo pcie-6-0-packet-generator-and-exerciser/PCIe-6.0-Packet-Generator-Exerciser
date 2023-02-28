@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     setMinimumSize(1200, 800);
     setWindowTitle("PCIe6 Packet Generator and Exerciser");
     createContentWidget();
+    createToolBar();
     manageLayout();
 }
 
