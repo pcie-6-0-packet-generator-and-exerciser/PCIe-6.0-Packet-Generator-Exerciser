@@ -5,7 +5,9 @@ class OHC {
 public:
     virtual void someFunction() = 0;  // pure virtual function
     // Public attribute size of type int, set to 4
-    int size = 4;
+    int sizeInBytes = 4;
+    virtual std::bitset<32> getBitRep() const = 0; // pure virtual function, making this an abstract class
+
 };
 
 
@@ -23,6 +25,7 @@ public:
             lastDWBE[i] = lastDWBEsetter[i];
         }
     }
+    std::bitset<32> getBitRep() const override;
 
 };
 
@@ -42,7 +45,7 @@ public:
         }
         destinationSegment = destinationSeg;
     }
-
+    std::bitset<32> getBitRep() const override;
 };
 
 
@@ -57,6 +60,8 @@ public:
         destinationSegment = destinationSeg;
 
     }
+    std::bitset<32> getBitRep() const override;
+
 };
 
 // Concrete class OHCA5 that inherits from OHC
@@ -80,5 +85,6 @@ public:
         destinationSegment = destinationSeg;
         completerSegment = completerSeg;
     }
+    std::bitset<32> getBitRep() const override;
 
 };
