@@ -2,7 +2,7 @@
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
-
+#include "sequence_browser.h"
 namespace {
 	constexpr char headerFrameProperty[] = "headerFrame";
 	constexpr char centralTitleProperty[] = "centralTitle";
@@ -38,10 +38,13 @@ void ContentWidget::createHeader()
 
 void ContentWidget::createBody() 
 {
+	
 	body_ = new QFrame(this);
 	QHBoxLayout* bodyLayout = new QHBoxLayout;
 	bodyLayout->setContentsMargins(0, 0, 0, 0);
-	bodyLayout->setSpacing(0);
+	bodyLayout->setSpacing(0);	
+	SequenceBrowser* sequenceBrowser = new SequenceBrowser(body_);
+	bodyLayout->addWidget(sequenceBrowser);
 	body_->setLayout(bodyLayout);
 }
 
