@@ -1,0 +1,13 @@
+QMainWindow {
+	background-color: white;
+}
+
+QFrame[headerFrame = true] {
+	background-color: #4fc1e9;
+}
+
+QLabel[centralTitle = true] {
+	color: white;
+	font-size: 20px;
+	font-weight: bold
+}
