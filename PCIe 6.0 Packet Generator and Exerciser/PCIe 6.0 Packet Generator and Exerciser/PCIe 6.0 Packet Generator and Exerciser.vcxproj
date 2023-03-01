@@ -85,6 +85,7 @@
   <ItemGroup>
     <ClCompile Include="layers\transaction_layer.cpp" />
     <ClCompile Include="layers\datalink.cpp" />
+    <ClCompile Include="layers\tlp.cpp" />
     <ClCompile Include="layers\flit.cpp" />
     <ClCompile Include="utils\non_header_base.cpp" />
     <ClCompile Include="content_widget.cpp" />
@@ -106,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="layers\datalink.h" />
+    <ClInclude Include="layers\tlp.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\sequence.h" />
     <ClInclude Include="utils\non_header_base.h" />
