@@ -1,6 +1,7 @@
 #pragma once
 #include <bitset>
 #include <string>
+#include "boost/dynamic_bitset.hpp"
 using namespace std;
 // Abstact class
 class NonHeaderBase {

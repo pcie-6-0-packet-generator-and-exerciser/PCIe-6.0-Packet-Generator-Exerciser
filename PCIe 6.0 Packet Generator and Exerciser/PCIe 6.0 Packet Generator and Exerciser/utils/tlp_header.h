@@ -5,18 +5,18 @@
 #include <string>
 #include <vector>
 
-enum TLPType {
-	MemRead32,
-	MemWrite32,
-	MemRead64,
-	MemWrite64,
-	Cpl,
-	CpID,
+enum class TLPType {
+	MemRead32=3,
+	MemWrite32=64,
+	MemRead64=32,
+	MemWrite64=96,
+	Cpl=10,
+	CpID=74,
 	VendorMsg,
-	ConfigRead0,
-	ConfigWrite0,
-	ConfigRead1,
-	ConfigWrite1
+	ConfigRead0=4,
+	ConfigWrite0=68,
+	ConfigRead1=5,
+	ConfigWrite1=69
 };
 
 class TLPHeader {
@@ -28,6 +28,6 @@ public:
 	NonHeaderBase* nonBase;
 	int OHC;
 
-	string getBitRep() const;
+	boost::dynamic_bitset<> getBitRep() const;
 
 };
