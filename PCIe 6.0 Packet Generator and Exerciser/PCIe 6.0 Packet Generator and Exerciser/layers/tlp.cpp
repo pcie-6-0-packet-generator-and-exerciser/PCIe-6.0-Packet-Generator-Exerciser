@@ -206,7 +206,6 @@ TLP TLP::createConfigRead1Tlp(int requesterId, int tag, int registerNumber, int 
 	auto nonBase = ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
 	configRead1Tlp.header.nonBase = &nonBase;
 
-	// clears out the data payload
 	configRead1Tlp.dataPayload.reset();
 	configRead1Tlp.creditConsumedType = Dllp::CreditType::NP;
 	configRead1Tlp.headerConsumption = 1;
@@ -272,7 +271,6 @@ TLP TLP::createCplTlp(int requesterId, int tag, int completerId, long byteCount,
 	auto nonBase = CompletionNonHeaderBase(requesterId, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddress.to_ulong());
 	cplTlp.header.nonBase = &nonBase;
 
-	// clears out the data payload
 	cplTlp.dataPayload.reset();
 	cplTlp.creditConsumedType = Dllp::CreditType::Cpl;
 	cplTlp.headerConsumption = 1;
