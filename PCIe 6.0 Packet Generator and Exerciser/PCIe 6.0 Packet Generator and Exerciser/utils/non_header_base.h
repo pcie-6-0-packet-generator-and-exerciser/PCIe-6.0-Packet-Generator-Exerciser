@@ -16,9 +16,9 @@ public:
 	int tag;
 	int address;
 	// Constructor that take tag and address and set them
-	AddressRouting32Bit(int tag_, int address_) {
-		tag = tag_;
-		address = address_;
+	AddressRouting32Bit(int tg, int adres) {
+		tag = tg;
+		address = adres;
 		headerSizeInBytes = 12;
 	}
 	string getBitRep() const override;
@@ -30,9 +30,9 @@ public:
 	long long address;
 	
 	// Constructor that take tag and address and set them
-	AddressRouting64Bit(int tag_, long long address_) {
-		tag = tag_;
-		address = address_;
+	AddressRouting64Bit(int tg, long long adres) {
+		tag = tg;
+		address = adres;
 		headerSizeInBytes = 16;
 	}
 	string getBitRep() const override;
@@ -47,13 +47,13 @@ public:
 	int deviceNumber;
 	int functionNumber;
 	// Constructor that take tag, registerNumberint, busNumberint, deviceNumber and functionNumber and set them
-	ConfigNonHeaderBase(int tag_, int registerNumber_, int busNumber_ ,int deviceNumber_,int functionNumber_ ) {
+	ConfigNonHeaderBase(int tg, int register_Number, int bus_Number ,int device_Number,int function_Number ) {
 		headerSizeInBytes = 12;
-		tag = tag_;
-		registerNumber = registerNumber_;
-		busNumber = busNumber_;
-		deviceNumber = deviceNumber_;
-		functionNumber = functionNumber_;
+		tag = tg;
+		registerNumber = register_Number;
+		busNumber = bus_Number;
+		deviceNumber = device_Number;
+		functionNumber = function_Number;
 	}
 	string getBitRep() const override;
 
@@ -63,9 +63,9 @@ class MessageNonHeaderBase : public	NonHeaderBase {
 public:
 	int messageCode;
 	// Constructor that tage messagecode and set it
-	MessageNonHeaderBase(int messageCode_) {
+	MessageNonHeaderBase(int message_Code) {
 		headerSizeInBytes = 16;
-		messageCode = messageCode_;
+		messageCode = message_Code;
 	}
 	string getBitRep() const override;
 
@@ -81,15 +81,15 @@ public:
 	int functionNumber;
 	int lowerAddress;
 	// Constructor that take variables and set them
-	CompletionNonHeaderBase(int tag_, int completerID_,	long byteCount_, int busNumber_, int deviceNumber_ ,int functionNumber_,int lowerAddress_) {
+	CompletionNonHeaderBase(int tg, int completer_ID,	long byte_Count, int bus_Number, int device_Number ,int function_Number,int lower_Address) {
 		headerSizeInBytes = 12;
-		tag = tag_;
-		completerID = completerID_;
-		byteCount = byteCount_;
-		busNumber = busNumber_;
-		deviceNumber = deviceNumber_;
-		functionNumber = functionNumber_;
-		lowerAddress = lowerAddress_;
+		tag = tg;
+		completerID = completer_ID;
+		byteCount = byte_Count;
+		busNumber = bus_Number;
+		deviceNumber = device_Number;
+		functionNumber = function_Number;
+		lowerAddress = lower_Address;
 	}
 	string getBitRep() const override;
 
