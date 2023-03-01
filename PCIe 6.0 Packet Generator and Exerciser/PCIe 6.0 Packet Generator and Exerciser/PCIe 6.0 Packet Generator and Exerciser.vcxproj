@@ -84,6 +84,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="content_widget.cpp" />
+    <ClCompile Include="Endpoint\EndpointApp.cpp" />
     <ClCompile Include="utils\ohc.cpp" />
     <ClCompile Include="layers\globals.cpp" />
     <ClCompile Include="utils\dllp.cpp" />
@@ -99,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="content_widget.h" />
+    <ClInclude Include="Endpoint\EndpointApp.h" />
     <ClInclude Include="utils\ohc.h" />
     <ClInclude Include="layers\globals.h" />
     <ClInclude Include="utils\dllp.h" />
