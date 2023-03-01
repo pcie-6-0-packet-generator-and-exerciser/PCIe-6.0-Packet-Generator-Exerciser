@@ -2,7 +2,7 @@
 
 /**
  * @brief Creates a MemRead32 TLP with the given parameters.
- *
+ * 
  * @param requesterId The requester ID of the TLP.
  * @param tag The tag field of the TLP header.
  * @param address The 32-bit address to read from.
@@ -31,7 +31,7 @@ TLP TLP::createMemRead32Tlp(int requesterId, int tag, int address, std::bitset<4
 
 /**
  * @brief Creates a MemWrite32 TLP with the given parameters.
- *
+ * 
  * @param dataPayloadLength The length of the data payload in bytes.
  * @param dataPayload The data payload as a string of bits.
  * @param requesterId The requester ID of the TLP.
@@ -60,7 +60,7 @@ TLP TLP::createMemWrite32Tlp(int dataPayloadLength, std::string dataPayload, int
 }
 /**
  * @brief Creates a MemRead64 TLP with the given parameters.
- *
+ * 
  * @param requesterId The requester ID of the TLP.
  * @param tag The tag field of the TLP header.
  * @param address The 64-bit address to read from.
@@ -119,7 +119,7 @@ TLP TLP::createMemWrite64Tlp(int dataPayloadLength, std::string dataPayload, int
 }
 /**
  * @brief Creates a ConfigRead0 TLP with the given parameters.
- *
+ * 
  * @param requesterId The requester ID of the TLP.
  * @param tag The tag field of the TLP header.
  * @param registerNumber The register number to read from.
@@ -150,7 +150,7 @@ TLP TLP::createConfigRead0Tlp(int requesterId, int tag, int registerNumber, int 
 }
 /**
  * @breif Creates a ConfigWrite0 TLP with the given parameters.
- *
+ * 
  * @param dataPayloadLength The length of the data payload in bytes.
  * @param dataPayload The data payload as a string of bits.
  * @param requesterId The requester ID of the TLP.
@@ -184,7 +184,7 @@ TLP TLP::createConfigWrite0Tlp(int dataPayloadLength, std::string dataPayload, i
 
 /**
  * @brief Creates a ConfigRead1 TLP with the given parameters.
- *
+ * 
  * @param requesterId The requester ID of the TLP.
  * @param tag The tag field of the TLP header.
  * @param registerNumber The register number to read from.
@@ -206,6 +206,7 @@ TLP TLP::createConfigRead1Tlp(int requesterId, int tag, int registerNumber, int 
 	auto nonBase = ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
 	configRead1Tlp.header.nonBase = &nonBase;
 
+	// clears out the data payload
 	configRead1Tlp.dataPayload.reset();
 	configRead1Tlp.creditConsumedType = Dllp::CreditType::NP;
 	configRead1Tlp.headerConsumption = 1;
@@ -215,7 +216,7 @@ TLP TLP::createConfigRead1Tlp(int requesterId, int tag, int registerNumber, int 
 }
 /**
 * @brief Creates a ConfigWrite1 TLP with the given parameters.
-*
+* 
 * @param dataPayloadLength The length of the data payload in bytes.
 * @param dataPayload The data payload as a string of bits.
 * @param requesterId The requester ID of the TLP.
@@ -247,7 +248,7 @@ TLP TLP::createConfigWrite1Tlp(int dataPayloadLength, std::string dataPayload, i
 }
 /**
  * @brief Creates a Cpl TLP with the given parameters
- *
+ * 
  * @param requesterId The requester ID of the original TLP
  * @param tag The tag field of the original TLP
  * @param completerId The completer ID of the Cpl TLP
@@ -271,6 +272,7 @@ TLP TLP::createCplTlp(int requesterId, int tag, int completerId, long byteCount,
 	auto nonBase = CompletionNonHeaderBase(requesterId, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddress.to_ulong());
 	cplTlp.header.nonBase = &nonBase;
 
+	// clears out the data payload
 	cplTlp.dataPayload.reset();
 	cplTlp.creditConsumedType = Dllp::CreditType::Cpl;
 	cplTlp.headerConsumption = 1;
@@ -280,7 +282,7 @@ TLP TLP::createCplTlp(int requesterId, int tag, int completerId, long byteCount,
 }
 /**
  * @brief Creates a CplD TLP with the given parameters
- *
+ * 
  * @param dataPayloadLength The length of the data payload in bytes
  * @param dataPayload The data payload as a string of bits
  * @param requesterId The requester ID of the original TLP
