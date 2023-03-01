@@ -38,6 +38,12 @@ string ConfigNonHeaderBase::getBitRep() const {
     bitset<64> result;
     //Add the registerNumber
     result |= (registerNumber << 2);
+    //Add the functionNumber
+    result |= (functionNumber << 16);
+    //Add the deviceNumber
+    result |= (deviceNumber << 19);
+    //Add the busNumber
+    result |= (busNumber << 24);
     //Add the tag
     result |= (tag << 32);
     //Add the requestID
@@ -58,6 +64,12 @@ string CompletionNonHeaderBase::getBitRep() const {
         result |= (myBitset[i] << (12 + i));
 
     }
+    //Add the functionNumber
+    result |= (functionNumber << 16);
+    //Add the deviceNumber
+    result |= (deviceNumber << 19);
+    //Add the busNumber
+    result |= (busNumber << 24);
     //Add the tag
     result |= (tag << 32);
     //Add the lowerAddress 6th bit
