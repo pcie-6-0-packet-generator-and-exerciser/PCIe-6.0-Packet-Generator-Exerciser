@@ -7,7 +7,7 @@ class NonHeaderBase {
 public:
 	int requestID;
 	int headerSizeInBytes;
-	virtual string getBitRep() const = 0; // pure virtual function, making this an abstract class
+	virtual boost::dynamic_bitset<> getBitRep() const = 0; // pure virtual function, making this an abstract class
 
 };
 // Concrete class AddressRouting32Bit from NonHeaderBase
@@ -21,7 +21,7 @@ public:
 		address = adres;
 		headerSizeInBytes = 12;
 	}
-	string getBitRep() const override;
+	boost::dynamic_bitset<> getBitRep() const override;
 };
 // Concrete class AddressRouting64Bit from NonHeaderBase
 class AddressRouting64Bit : public	NonHeaderBase {
@@ -35,7 +35,7 @@ public:
 		address = adres;
 		headerSizeInBytes = 16;
 	}
-	string getBitRep() const override;
+	boost::dynamic_bitset<> getBitRep() const override;
 
 };
 // Concrete class ConfigNonHeaderBase from NonHeaderBase
@@ -55,7 +55,7 @@ public:
 		deviceNumber = device_Number;
 		functionNumber = function_Number;
 	}
-	string getBitRep() const override;
+	boost::dynamic_bitset<> getBitRep() const override;
 
 };
 // Concrete class MessageNonHeaderBase from NonHeaderBase
@@ -67,7 +67,7 @@ public:
 		headerSizeInBytes = 16;
 		messageCode = message_Code;
 	}
-	string getBitRep() const override;
+	boost::dynamic_bitset<> getBitRep() const override;
 
 };
 // Concrete class CompletionNonHeaderBase from NonHeaderBase
@@ -91,6 +91,6 @@ public:
 		functionNumber = function_Number;
 		lowerAddress = lower_Address;
 	}
-	string getBitRep() const override;
+	boost::dynamic_bitset<> getBitRep() const override;
 
 };

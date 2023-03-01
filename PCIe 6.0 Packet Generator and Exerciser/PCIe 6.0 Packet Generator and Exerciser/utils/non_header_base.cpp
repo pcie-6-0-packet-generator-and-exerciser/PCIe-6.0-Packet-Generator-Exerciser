@@ -1,27 +1,19 @@
 #include "non_header_base.h"
 
-string AddressRouting32Bit::getBitRep() const {
-    bitset<64> result;
-    //Add the address
-    result |= address;
-    //Add the tag in 
-    result |= (tag << 32);
-    //Add the requestID
-    result |= (requestID << 48);
-
-    return result.to_string();
+boost::dynamic_bitset<> AddressRouting32Bit::getBitRep() const {
+    boost::dynamic_bitset<(nonBase->headerSizeInBytes * 8)-32> result;
+    result |= (boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8) - 32, address));
+    result |= (boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8) - 32, tag) << 32);
+    result |= (boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8) - 32, requestID) << 48);
+    return result;
 }
 
-string AddressRouting64Bit::getBitRep() const {
-    bitset<96> result;
-    //Add the address
-    result |= address;
-    //Add the tag in 
-    result |= (tag << 64);
-    //Add the requestID
-    result |= (requestID << 80);
-
-    return result.to_string();
+boost::dynamic_bitset<> AddressRouting64Bit::getBitRep() const {
+    boost::dynamic_bitset<(nonBase->headerSizeInBytes * 8) - 32> result;
+    result |= (boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8) - 32, address));
+    result |= (boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8) - 32, tag) << 64);
+    result |= (boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8) - 32, requestID) << 80);
+    return result;
 }
 
 string MessageNonHeaderBase::getBitRep() const {

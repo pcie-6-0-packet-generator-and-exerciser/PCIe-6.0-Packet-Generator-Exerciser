@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 enum TLPType {
 	MemRead32,
 	MemWrite32,
@@ -26,10 +24,10 @@ public:
 	TLPType TLPtype;
 	int TC;
 	int lengthInDoubleWord;
-	vector<OHC> OHCVector;
-	NonHeaderBase *nonBase;
+	std::vector<OHC> OHCVector;
+	NonHeaderBase* nonBase;
+	int OHC;
 
 	string getBitRep() const;
 
 };
-
