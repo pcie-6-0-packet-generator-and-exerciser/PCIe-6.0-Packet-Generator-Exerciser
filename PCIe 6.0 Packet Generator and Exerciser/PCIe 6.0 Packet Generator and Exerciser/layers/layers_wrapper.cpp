@@ -5,12 +5,12 @@ void LayersWrapper::sendPayloadFlit(Globals globals, Sequence sequence, QueueWra
 	std::vector<TLP> packets = sequence.packets;
 	if (packets.empty()) return;
 	int dllpRoundRobinIndex = 0;
-	int flitIndex = 0;
+	int flitBytesUsed = 0;
 	Dllp::CreditType dllpCreditType[] = {Dllp::CreditType::P, Dllp::CreditType::NP, Dllp::CreditType::Cpl};
 	TLP packet = packets.front();
 	packets.erase(packets.begin());
 	std::bitset<236> packetBits(packet.getBitRep().toString());
-	int packetIndex = 0;
+	int packetBytesSent = 0;
 	bool isPartialTLP = false;
 	while (!packets.empty()) {
 		Flit flit = new Flit();
@@ -18,20 +18,22 @@ void LayersWrapper::sendPayloadFlit(Globals globals, Sequence sequence, QueueWra
 			packet = packets.front();
 			packets.erase(packets.begin());
 			packetBits = std::bitset<236>(packet.getBitRep().toString());
-			packetIndex = 0;
+			packetBytesSent = 0;
 		}
 		Dllp::CreditType creditType = packet.getCreditType();
 		if (transaction.checkGateEquation(
 			(creditType == Dllp::CreditType::P ? PSharedCreditLimit : ((creditType == Dllp::CreditType::NP) ? NPSharedCreditLimit : CplSharedCreditLimit)),
 			(creditType == Dllp::CreditType::P ? PSharedCreditConsumed : ((creditType == Dllp::CreditType::NP) ? NPSharedCreditConsumed : CplSharedCreditConsumed)),
 			packet)) {
-			if (flitIndex < 118 && flit.firstHalfTLPCount < 8) {
+			if (flitBytesUsed < 118 && flit.firstHalfTLPCount < 8) {
 				flit.firstHalfTLPCount++;
-				if (flitIndex + packet.getTotalLength() > 118) {
+				// TODO: modify formulae to account for partial TLPs (packetBytesSent)
+				if (flitBytesUsed + (packet.getTotalLength() - packetBytesSent) > 118) {
 					flit.secondHalfTLPCount++;
-					if (flitIndex + packet.getTotalLength() > 236) {
+					if (flitBytesUsed + (packet.getTotalLength() - packetBytesSent) > 236) {
 						isPartialTLP = true;
-						flit.TLLPPayload |= packetBits << ((236 - flitIndex) * 8);
+						flit.TLLPPayload |= packetBits << ((236 - flitBytesUsed - packet.getTotalLength()) * 8);
+						packetBytesSent += 236 - flitBytesUsed;
 					}
 				}
 			}
