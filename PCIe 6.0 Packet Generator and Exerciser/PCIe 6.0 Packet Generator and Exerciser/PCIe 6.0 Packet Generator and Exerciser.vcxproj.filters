@@ -29,10 +29,10 @@
     <QtUic Include="PCIe6PacketGeneratorandExerciser.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtMoc Include="PCIe6PacketGeneratorandExerciser.h">
+    <QtMoc Include="main_window.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <ClCompile Include="PCIe6PacketGeneratorandExerciser.cpp">
+    <ClCompile Include="main_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <None Include="PCIe 6.0 Packet Generator and Exerciser.ico">
@@ -61,7 +61,7 @@
     <ClCompile Include="utils\non_header_base.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utils\tlpHeader.cpp">
+    <ClCompile Include="content_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -81,8 +81,15 @@
     <ClInclude Include="utils\non_header_base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils\tlpHeader.h">
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="content_widget.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="style.qss">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

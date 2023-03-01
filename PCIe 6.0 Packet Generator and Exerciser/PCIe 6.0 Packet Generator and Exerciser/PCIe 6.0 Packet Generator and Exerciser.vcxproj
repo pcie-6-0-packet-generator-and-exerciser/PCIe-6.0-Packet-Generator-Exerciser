@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{325867CC-7275-42C1-BB3E-F92DAC1317BF}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.22000.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.19041.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
@@ -84,26 +84,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="utils\non_header_base.cpp" />
+    <ClCompile Include="content_widget.cpp" />
     <ClCompile Include="utils\ohc.cpp" />
     <ClCompile Include="layers\globals.cpp" />
     <ClCompile Include="utils\dllp.cpp" />
     <ClCompile Include="utils\queue_wrapper.cpp" />
-    <ClCompile Include="utils\tlpHeader.cpp" />
+    <None Include="style.qss" />
     <QtRcc Include="PCIe6PacketGeneratorandExerciser.qrc" />
     <QtUic Include="PCIe6PacketGeneratorandExerciser.ui" />
-    <QtMoc Include="PCIe6PacketGeneratorandExerciser.h" />
-    <ClCompile Include="PCIe6PacketGeneratorandExerciser.cpp" />
+    <QtMoc Include="main_window.h" />
+    <ClCompile Include="main_window.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="PCIe 6.0 Packet Generator and Exerciser.ico" />
     <ResourceCompile Include="PCIe 6.0 Packet Generator and Exerciser.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\non_header_base.h" />
+    <QtMoc Include="content_widget.h" />
     <ClInclude Include="utils\ohc.h" />
     <ClInclude Include="layers\globals.h" />
     <ClInclude Include="utils\dllp.h" />
     <ClInclude Include="utils\queue_wrapper.h" />
-    <ClInclude Include="utils\tlpHeader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
