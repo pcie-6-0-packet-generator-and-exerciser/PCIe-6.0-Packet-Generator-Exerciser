@@ -68,7 +68,6 @@ Tlp Tlp::createMemRead64Tlp(int requesterId, int tag, long long address, int  fi
 	memRead64Tlp.header.length = 0;
 	memRead64Tlp.header.nonBase = AddressRouting64bit(requesterId, tag, address);
 
-	// clears out the data payload
 	memRead64Tlp.dataPayload.reset();
 	memRead64Tlp.creditConsumedType = Dllp::CreditType::NP;
 	memRead64Tlp.headerConsumption = 1;
@@ -126,7 +125,6 @@ Tlp Tlp::createConfigRead0Tlp(int requesterId, int tag, int registerNumber, int 
 	configRead0Tlp.header.length = 0;
 	configRead0Tlp.header.nonBase = ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
 
-	// clears out the data payload
 	configRead0Tlp.dataPayload.reset();
 	configRead0Tlp.creditConsumedType = Dllp::CreditType::NP;
 	configRead0Tlp.headerConsumption = 1;
@@ -186,7 +184,6 @@ Tlp Tlp::createConfigRead1Tlp(int requesterId, int tag, int registerNumber, int 
 	configRead1Tlp.header.length = 0;
 	configRead1Tlp.header.nonBase = ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
 
-	// clears out the data payload
 	configRead1Tlp.dataPayload.reset();
 	configRead1Tlp.creditConsumedType = Dllp::CreditType::NP;
 	configRead1Tlp.headerConsumption = 1;
@@ -247,7 +244,6 @@ Tlp Tlp::createCplTlp(int requesterId, int tag, int completerId, long byteCount,
 	cplTlp.header.length = 0;
 	cplTlp.header.nonBase = CompletionNonHeaderBase(requesterId, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddress);
 
-	// clears out the data payload
 	cplTlp.dataPayload.reset();
 	cplTlp.creditConsumedType = Dllp::CreditType::Cpl;
 	cplTlp.headerConsumption = 1;
@@ -282,7 +278,6 @@ Tlp Tlp::createCplDTlp(int dataPayloadLength, std::string dataPayload, int reque
 	cplDTlp.header.length = dataPayloadLength;
 	cplDTlp.header.nonBase = CompletionNonHeaderBase(requesterId, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddress);
 
-	// clears out the data payload
 	cplDTlp.dataPayload = std::bitset<MAX_DATA_PAYLOAD_LENGTH>(dataPayload);
 	cplDTlp.creditConsumedType = Dllp::CreditType::Cpl;
 	cplDTlp.headerConsumption = 1;
@@ -306,7 +301,6 @@ Tlp Tlp::createVendorMsgTlp(int dataPayloadLength, std::string dataPayload, int 
 	vendorMsg.header.length = dataPayloadLength;
 	vendorMsg.header.nonBase = MessageNonHeaderBase(requesterId, messageCode);
 
-	// clears out the data payload
 	vendorMsg.dataPayload = std::bitset<MAX_DATA_PAYLOAD_LENGTH>(dataPayload);
 	vendorMsg.creditConsumedType = Dllp::CreditType::P;
 	vendorMsg.headerConsumption = 1;
