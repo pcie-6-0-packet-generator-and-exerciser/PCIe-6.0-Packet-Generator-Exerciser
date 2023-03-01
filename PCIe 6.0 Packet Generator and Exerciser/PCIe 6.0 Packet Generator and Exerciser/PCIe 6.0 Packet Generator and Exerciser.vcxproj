@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="utils\non_header_base.cpp" />
     <ClCompile Include="content_widget.cpp" />
     <ClCompile Include="utils\ohc.cpp" />
     <ClCompile Include="layers\globals.cpp" />
@@ -98,6 +99,7 @@
     <ResourceCompile Include="PCIe 6.0 Packet Generator and Exerciser.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="utils\non_header_base.h" />
     <QtMoc Include="content_widget.h" />
     <ClInclude Include="utils\ohc.h" />
     <ClInclude Include="layers\globals.h" />

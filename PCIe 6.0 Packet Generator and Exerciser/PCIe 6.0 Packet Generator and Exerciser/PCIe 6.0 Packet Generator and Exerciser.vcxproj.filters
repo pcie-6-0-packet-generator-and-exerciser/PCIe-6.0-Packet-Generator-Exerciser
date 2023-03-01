@@ -58,6 +58,9 @@
     <ClCompile Include="layers\globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="utils\non_header_base.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="content_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -73,6 +76,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils\queue_wrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\non_header_base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
