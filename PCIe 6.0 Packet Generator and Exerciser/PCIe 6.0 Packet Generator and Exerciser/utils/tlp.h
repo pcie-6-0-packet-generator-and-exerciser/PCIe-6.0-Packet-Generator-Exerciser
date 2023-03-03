@@ -5,10 +5,10 @@ class TLP {
 public:
 	int headerConsumption;
 	int dataConsumption;
-	TLPHeader header;
+	TLPHeader *header;
 	Dllp::CreditType creditConsumedType;
-	boost::dynamic_bitset<> dataPayload( TLPHeader::lengthInDoubleWord * 32 );
+	boost::dynamic_bitset<> dataPayload= boost::dynamic_bitset<>(header->lengthInDoubleWord * 32);
 	int getTotalLength();
-	boost::dynamic_bitset<> getBitRep() const;
+	boost::dynamic_bitset<> getBitRep();
 
 };

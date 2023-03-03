@@ -6,8 +6,8 @@ boost::dynamic_bitset<> TLPHeader::getBitRep() const {
     boost::dynamic_bitset<> result (nonBase->headerSizeInBytes * 8 + OHCLength) ;
     
     result |= ((boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8, (static_cast<int>(TLPtype)  << ((nonBase->headerSizeInBytes * 8) - 8))))));
-    result |= ((boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8, TC) << (nonBase->headerSizeInBytes * 8) -11)));
-    result |= ((boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8, OHC) << ((nonBase->headerSizeInBytes * 8) - 16))));
+    result |= ((boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8, TC)) << (nonBase->headerSizeInBytes * 8) - 11));
+    result |= ((boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8, OHC) ) << ((nonBase->headerSizeInBytes * 8) - 16)));
     if (lengthInDoubleWord != 1024)
     {
         result |= ((boost::dynamic_bitset<>(nonBase->headerSizeInBytes * 8, lengthInDoubleWord) << ((nonBase->headerSizeInBytes * 8) - 32)));

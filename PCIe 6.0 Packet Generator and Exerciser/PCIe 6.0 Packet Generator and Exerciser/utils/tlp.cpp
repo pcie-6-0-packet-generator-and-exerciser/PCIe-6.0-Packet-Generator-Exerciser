@@ -1,17 +1,15 @@
 #include "tlp.h"
-int getTotalLength() {
-	int OHCLength = TLPHeader::OHCVector.size() * 32;
-	int header_length = TLPHeader::nonBase->headerSizeInBytes * 8;
-	int payload_length = TLPHeader::lengthInDoubleWord * 32;
-	return OHCLength + header_length + payload_length;
+int TLP::getTotalLength() {
+	int OHCLength = header->OHCVector.size()*4;
+	int header_length = header->nonBase->headerSizeInBytes;
+	int payload_length = header->lengthInDoubleWord * 4;
+	return (OHCLength + header_length + payload_length);
 }
 
-boost::dynamic_bitset<> TLPHeader::getBitRep() const {
-    boost::dynamic_bitset<> result(getTotalLength());
-
-    result |= ((boost::dynamic_bitset<>(getTotalLength() , dataPayload)));
-    result |= ((boost::dynamic_bitset<>((TLPHeader::getBitRep() << getTotalLength()))));
+boost::dynamic_bitset<> TLP::getBitRep() {
+    boost::dynamic_bitset<> result(getTotalLength()*8);
+    result |=  (dataPayload) ;
+    result |= ((boost::dynamic_bitset<>((header->getBitRep())) << getTotalLength() ));
     
     return result;
-
 }
