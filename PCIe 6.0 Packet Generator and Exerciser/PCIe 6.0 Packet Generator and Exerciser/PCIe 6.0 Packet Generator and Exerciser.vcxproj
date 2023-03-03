@@ -89,6 +89,8 @@
     <ClCompile Include="layers\globals.cpp" />
     <ClCompile Include="utils\dllp.cpp" />
     <ClCompile Include="utils\queue_wrapper.cpp" />
+    <ClCompile Include="utils\tlp.cpp" />
+    <ClCompile Include="utils\tlp_header.cpp" />
     <None Include="packages.config" />
     <None Include="style.qss" />
     <QtRcc Include="PCIe6PacketGeneratorandExerciser.qrc" />
@@ -101,6 +103,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\non_header_base.h" />
+    <ClInclude Include="utils\tlp.h" />
+    <ClInclude Include="utils\tlp_header.h" />
     <QtMoc Include="content_widget.h" />
     <ClInclude Include="utils\ohc.h" />
     <ClInclude Include="layers\globals.h" />

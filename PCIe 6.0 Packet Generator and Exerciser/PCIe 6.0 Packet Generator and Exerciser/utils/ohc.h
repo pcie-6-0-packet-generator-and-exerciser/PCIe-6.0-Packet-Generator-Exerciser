@@ -1,12 +1,12 @@
 // Abstract class OHC
 #include <bitset>
+#include "boost/dynamic_bitset.hpp"
 
 class OHC {
 public:
-    virtual void someFunction() = 0;  // pure virtual function
-    // Public attribute size of type int, set to 4
+
     int sizeInBytes = 4;
-    virtual std::bitset<32> getBitRep() const = 0; // pure virtual function, making this an abstract class
+    virtual boost::dynamic_bitset<> getBitRep() const = 0; // pure virtual function, making this an abstract class
 
 };
 
@@ -25,7 +25,7 @@ public:
             lastDWBE[i] = lastDWBEsetter[i];
         }
     }
-    std::bitset<32> getBitRep() const override;
+    boost::dynamic_bitset<> getBitRep() const override;
 
 };
 
@@ -45,7 +45,7 @@ public:
         }
         destinationSegment = destinationSeg;
     }
-    std::bitset<32> getBitRep() const override;
+    boost::dynamic_bitset<> getBitRep() const override;
 };
 
 
@@ -60,7 +60,7 @@ public:
         destinationSegment = destinationSeg;
 
     }
-    std::bitset<32> getBitRep() const override;
+    boost::dynamic_bitset<> getBitRep() const override;
 
 };
 
@@ -85,6 +85,6 @@ public:
         destinationSegment = destinationSeg;
         completerSegment = completerSeg;
     }
-    std::bitset<32> getBitRep() const override;
+    boost::dynamic_bitset<> getBitRep() const override;
 
 };
