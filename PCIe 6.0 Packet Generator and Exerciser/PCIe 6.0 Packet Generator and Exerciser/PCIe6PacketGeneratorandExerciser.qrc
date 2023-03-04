@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="PCIe6PacketGeneratorandExerciser">
+    <qresource prefix="/PCIe6PacketGeneratorandExerciser">
+        <file>style.qss</file>
     </qresource>
 </RCC>
