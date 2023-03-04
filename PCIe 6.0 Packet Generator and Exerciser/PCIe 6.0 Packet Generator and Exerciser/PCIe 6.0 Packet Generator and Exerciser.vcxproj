@@ -83,12 +83,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="layers\flit.cpp" />
+    <ClCompile Include="utils\non_header_base.cpp" />
     <ClCompile Include="content_widget.cpp" />
     <ClCompile Include="Endpoint\EndpointApp.cpp" />
     <ClCompile Include="utils\ohc.cpp" />
     <ClCompile Include="layers\globals.cpp" />
     <ClCompile Include="utils\dllp.cpp" />
     <ClCompile Include="utils\queue_wrapper.cpp" />
+    <ClCompile Include="utils\tlp.cpp" />
+    <ClCompile Include="utils\tlp_header.cpp" />
+    <None Include="packages.config" />
     <None Include="style.qss" />
     <QtRcc Include="PCIe6PacketGeneratorandExerciser.qrc" />
     <QtUic Include="PCIe6PacketGeneratorandExerciser.ui" />
@@ -99,6 +104,11 @@
     <ResourceCompile Include="PCIe 6.0 Packet Generator and Exerciser.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="layers\flit.h" />
+    <ClInclude Include="layers\sequence.h" />
+    <ClInclude Include="utils\non_header_base.h" />
+    <ClInclude Include="utils\tlp.h" />
+    <ClInclude Include="utils\tlp_header.h" />
     <QtMoc Include="content_widget.h" />
     <ClInclude Include="Endpoint\EndpointApp.h" />
     <ClInclude Include="utils\ohc.h" />
@@ -111,5 +121,12 @@
     <Import Project="$(QtMsBuild)\qt.targets" />
   </ImportGroup>
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\boost.1.81.0\build\boost.targets" Condition="Exists('..\packages\boost.1.81.0\build\boost.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\boost.1.81.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.81.0\build\boost.targets'))" />
+  </Target>
 </Project>

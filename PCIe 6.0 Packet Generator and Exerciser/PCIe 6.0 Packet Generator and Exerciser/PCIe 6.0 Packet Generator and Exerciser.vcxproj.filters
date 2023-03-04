@@ -58,10 +58,10 @@
     <ClCompile Include="layers\globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="content_widget.cpp">
+    <ClCompile Include="utils\non_header_base.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Endpoint\EndpointApp.cpp">
+    <ClCompile Include="content_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -78,9 +78,6 @@
     <ClInclude Include="utils\queue_wrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Endpoint\EndpointApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="content_widget.h">
@@ -91,5 +88,6 @@
     <None Include="style.qss">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
