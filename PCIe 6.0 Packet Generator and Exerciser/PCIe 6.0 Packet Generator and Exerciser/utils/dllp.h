@@ -1,5 +1,6 @@
 #pragma once
 #include <bitset>
+#include "boost/dynamic_bitset.hpp"
 
 class Dllp {
 public:
@@ -25,5 +26,5 @@ public:
     Dllp(int hdrScale, int dataScale, int dataFc, int hdrFC, int vc, bool share, DllpType type, CreditType creditType);
 
     ~Dllp();
-    std::bitset<32> getBitRep() const;
+    boost::dynamic_bitset<> getBitRep() const;
 };
