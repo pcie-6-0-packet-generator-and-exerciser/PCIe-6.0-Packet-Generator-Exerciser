@@ -1,29 +1,32 @@
 #include "pcie_controller.h"
 
-PCIeController::PCIeController(ConfigurationSpace* configSpace, MemoryMap* memoryMap, EndpointApp* endpointApp) :
-    configSpace_(configSpace), memoryMap_(memoryMap), endpointApp_(endpointApp) {}
-
-void PCIeController::sendPacket(Packet* packet) {
-    // TODO: implement packet sending logic
+PCIeController::PCIeController(ConfigurationSpace* configSpace, MemoryMap* memoryMap, EndpointApp* endpointApp)
+    : configSpace_(configSpace), memoryMap_(memoryMap), endpointApp_(endpointApp)
+{
+    // Create handlers for each TLP type
+    handlers_[TLP_MEM_READ_REQ] = new MemoryReadHandler();
+    handlers_[TLP_MEM_WRITE_REQ] = new MemoryWriteHandler();
+    handlers_[TLP_CFG_READ_REQ] = new ConfigReadHandler();
+    handlers_[TLP_CFG_WRITE_REQ] = new ConfigWriteHandler();
 }
 
-Packet* PCIeController::receivePacket() {
-    // TODO: implement packet receiving logic
+void PCIeController::sendPacket(Packet* packet)
+{
+    // TODO: send the packet over PCIe link
+}
+
+Packet* PCIeController::receivePacket()
+{
+    // TODO: receive the packet from the PCIe link
+    // and parse the packet header to determine the TLP type
+
+    // Get the appropriate handler for the TLP type
+    uint8_t tlpType = 0; // TODO: get TLP type from packet header
+    TlpPacketHandler* handler = handlers_[tlpType];
+
+    // Call the handler's handleTlp method
+    handler->handleTlp(packet);
+
+    // TODO: return response packet if needed
     return nullptr;
-}
-
-void PCIeController::handleMemoryRead(MemoryRequest* request) {
-    // TODO: implement memory read handling logic
-}
-
-void PCIeController::handleMemoryWrite(MemoryRequest* request) {
-    // TODO: implement memory write handling logic
-}
-
-void PCIeController::handleConfigRead(ConfigRequest* request) {
-    // TODO: implement config read handling logic
-}
-
-void PCIeController::handleConfigWrite(ConfigRequest* request) {
-    // TODO: implement config write handling logic
 }
