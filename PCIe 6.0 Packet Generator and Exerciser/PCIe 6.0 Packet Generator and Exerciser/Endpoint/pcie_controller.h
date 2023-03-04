@@ -1,10 +1,10 @@
 #pragma once
+#include <unordered_map>
 #include "configuration_space.h"
 #include "memory_map.h"
 #include "endpoint_app.h"
 #include "packet.h"
-#include "memory_request.h"
-#include "config_request.h"
+#include "tlp_packet_handler.h"
 
 class PCIeController {
 public:
@@ -13,15 +13,11 @@ public:
     void sendPacket(Packet* packet);
     Packet* receivePacket();
 
-    void handleMemoryRead(MemoryRequest* request);
-    void handleMemoryWrite(MemoryRequest* request);
-
-    void handleConfigRead(ConfigRequest* request);
-    void handleConfigWrite(ConfigRequest* request);
-
 private:
+    std::unordered_map<uint8_t, TlpPacketHandler*> handlers_;
     ConfigurationSpace* configSpace_;
     MemoryMap* memoryMap_;
     EndpointApp* endpointApp_;
 };
+
 
