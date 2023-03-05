@@ -8,11 +8,9 @@
 
 using namespace Ui;
 SequenceBrowser::SequenceBrowser(QWidget* parent)
-	: QFrame(parent),
-	sideBar_(nullptr)
-{
-	setMinimumSize(400, 400);
-	//createSideBar();
+	: QFrame(parent)
+{	
+	setMaximumWidth(300);
 	//createCardsSequence();
 	manageLayout();
 }
@@ -21,41 +19,41 @@ SequenceBrowser::~SequenceBrowser()
 {
 
 }
-void SequenceBrowser::createCardsSequence() {
-	
+//void SequenceBrowser::createCardsSequence() {
+//	
+//
+//	for (int i = 0; i < 40; ++i) {
+//		TLPCard* card = new TLPCard(this, "Card " + QString::number(i));
+//		card->setFixedSize(50, 100);
+//		cards_.push_back(card);
+//
+//		
+//	}
+//	
+//}
 
-	for (int i = 0; i < 10; ++i) {
-		cards_.push_back(new TLPCard(this, "Card " + QString::number(i)));
-
-		
-	}
-	
-}
-void SequenceBrowser::createSideBar() 
-{
-	sideBar_ = new QScrollBar(Qt::Vertical, this);
-}
 
 void SequenceBrowser::manageLayout() 
 {
 	QHBoxLayout* contentLayout = new QHBoxLayout;
 	contentLayout->setContentsMargins(0, 0, 0, 0);
 	contentLayout->setSpacing(0);
-	sideBar_ = new QScrollBar(Qt::Vertical, this);
-	contentLayout->addWidget(sideBar_);
+	QScrollBar* sideBar = new QScrollBar(Qt::Vertical, this);
+	contentLayout->addWidget(sideBar);
 	//contentLayout->addWidget(new TLPCard(this, "Card "));
 	QVBoxLayout* cardLayout = new QVBoxLayout;
 	cardLayout->setContentsMargins(0, 0, 0, 0);
 	cardLayout->setSpacing(0);
 	//contentLayout->addWidget(textLabel_, Qt::AlignCenter);
-	for (int i = 0; i < 15; ++i) {
-		cardLayout->addWidget(new TLPCard(this, "Card " + QString::number(i)));
-
+	std::list<TLPCard>::iterator it;
+	for (auto card : cards_) {
+		cardLayout->addWidget(card);
 	}
 	QScrollArea* scrollArea = new QScrollArea;
+	scrollArea->setFixedSize(200, 400);
 	scrollArea->setBackgroundRole(QPalette::Dark);
 	scrollArea->setWidget(this);
-	scrollArea->setVerticalScrollBar(sideBar_);
+	scrollArea->setVerticalScrollBar(sideBar);
 	//setLayout(cardLayout);
 	contentLayout->addLayout(cardLayout);
 	setLayout(contentLayout);

@@ -38,7 +38,6 @@ void ContentWidget::createHeader()
 
 void ContentWidget::createBody() 
 {
-	
 	body_ = new QFrame(this);
 	QHBoxLayout* bodyLayout = new QHBoxLayout;
 	bodyLayout->setContentsMargins(0, 0, 0, 0);
@@ -59,4 +58,6 @@ void ContentWidget::manageLayout()
 	contentLayout->setStretchFactor(body_, 8);
 
 	setLayout(contentLayout);
+
+	//setStyleSheet("border: red 2px solid;");
 }
