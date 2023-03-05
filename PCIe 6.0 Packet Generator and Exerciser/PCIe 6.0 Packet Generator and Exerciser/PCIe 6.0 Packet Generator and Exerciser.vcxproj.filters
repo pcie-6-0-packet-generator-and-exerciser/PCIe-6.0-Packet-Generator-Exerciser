@@ -73,6 +73,12 @@
     <ClCompile Include="layers\flit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sequence_browser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tlp_card.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\ohc.h">
@@ -105,6 +111,12 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="content_widget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="sequence_browser.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="tlp_card.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -6,8 +6,19 @@ QFrame[headerFrame = true] {
 	background-color: #4fc1e9;
 }
 
+QFrame[tlpCard = true]{
+	background-color: #e4e8f0;
+	border: 2px solid black;
+	border-radius: 2px;
+	padding: 2px;
+}
 QLabel[centralTitle = true] {
 	color: white;
 	font-size: 20px;
 	font-weight: bold
+}
+
+QLabel{
+	color: black;
+	font-size: 12px;
 }

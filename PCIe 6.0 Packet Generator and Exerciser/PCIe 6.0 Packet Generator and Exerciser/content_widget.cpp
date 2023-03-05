@@ -2,7 +2,10 @@
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QScrollBar>
+#include <QtWidgets/QScrollArea>
 
+#include "sequence_browser.h"
 namespace {
 	constexpr char headerFrameProperty[] = "headerFrame";
 	constexpr char centralTitleProperty[] = "centralTitle";
@@ -40,8 +43,26 @@ void ContentWidget::createBody()
 {
 	body_ = new QFrame(this);
 	QHBoxLayout* bodyLayout = new QHBoxLayout;
-	bodyLayout->setContentsMargins(0, 0, 0, 0);
-	bodyLayout->setSpacing(0);
+	bodyLayout->setContentsMargins(5, 15, 5, 15);
+	bodyLayout->setSpacing(3);	
+	SequenceBrowser* sequenceBrowser = new SequenceBrowser(body_);
+	
+
+	QScrollBar* sideBar = new QScrollBar(Qt::Vertical, nullptr);
+
+	QScrollArea* scrollArea = new QScrollArea;
+	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	scrollArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+	scrollArea->setBackgroundRole(QPalette::Dark);
+
+	scrollArea->setVerticalScrollBar(sideBar);
+	scrollArea->setWidget(sequenceBrowser);
+	bodyLayout->addWidget(scrollArea);
+
+
+	QWidget* spacer = new QWidget(body_);
+	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	bodyLayout->addWidget(spacer);
 	body_->setLayout(bodyLayout);
 }
 
@@ -56,4 +77,6 @@ void ContentWidget::manageLayout()
 	contentLayout->setStretchFactor(body_, 8);
 
 	setLayout(contentLayout);
+
+	//setStyleSheet("border: red 2px solid;");
 }
