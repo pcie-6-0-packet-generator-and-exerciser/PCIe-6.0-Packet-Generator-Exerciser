@@ -30,9 +30,14 @@ void TypeBrowser::createCardsSequence() {
 
 	}*/
 	TLPCard* card = new TLPCard(this, "mem read 32b");
-	card->tlp->header->TLPtype = TLPType::MemRead32;
+	//card->tlp = new TLP();
+	/*card->tlp->header = new TLPHeader();
+	card->tlp->header->nonBase = new AddressRouting32Bit(5,10);
+	card->tlp->header->TLPtype = TLPType::MemRead32;*/
 	card->setFixedSize(50, 100);
 	cards_.push_back(card);
+
+	
 }
 
 
