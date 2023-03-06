@@ -73,6 +73,9 @@
     <ClCompile Include="layers\flit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Endpoint\memory_write_handler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\ohc.h">
@@ -100,6 +103,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\sequence.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Endpoint\memory_write_handler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Endpoint\tlp_packet_handler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
