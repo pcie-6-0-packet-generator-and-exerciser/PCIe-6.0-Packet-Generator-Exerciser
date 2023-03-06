@@ -31,7 +31,7 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.4.2_msvc2019_64</QtInstall>
+    <QtInstall>C:\Qt\6.4.2\msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
@@ -83,6 +83,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Endpoint\configuration_space_class\configuration_space.cpp" />
+    <ClCompile Include="Endpoint\endpoint_app.cpp" />
+    <ClCompile Include="Endpoint\memory_map.cpp" />
+    <ClCompile Include="Endpoint\pcie_controller.cpp" />
+    <ClCompile Include="Endpoint\register_class\register.cpp" />
     <ClCompile Include="layers\flit.cpp" />
     <ClCompile Include="utils\non_header_base.cpp" />
     <ClCompile Include="content_widget.cpp" />
@@ -103,6 +108,11 @@
     <ResourceCompile Include="PCIe 6.0 Packet Generator and Exerciser.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Endpoint\endpoint_app.h" />
+    <ClInclude Include="Endpoint\memory_map.h" />
+    <ClInclude Include="Endpoint\pcie_controller.h" />
+    <ClInclude Include="Endpoint\register_class\register.h" />
+    <ClInclude Include="Endpoint\tlp_packet_handler.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\sequence.h" />
     <ClInclude Include="utils\non_header_base.h" />

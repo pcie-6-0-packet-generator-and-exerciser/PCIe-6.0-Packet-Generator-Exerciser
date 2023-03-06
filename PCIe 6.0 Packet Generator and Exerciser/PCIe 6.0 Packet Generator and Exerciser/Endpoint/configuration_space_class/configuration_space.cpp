@@ -75,7 +75,7 @@ ConfigurationSpace::ConfigurationSpace() :head_(nullptr), tail_(nullptr), size_(
 /**
     * @brief ConfigurationSpace desructor for deleting all nodes in the linked list to avoid memory leaks
 */
-ConfigurationSpace::~ConfigurationSpace()
+/*ConfigurationSpace::~ConfigurationSpace()
 {
     Register * current = head_;
     Register* next;
@@ -91,6 +91,7 @@ ConfigurationSpace::~ConfigurationSpace()
         current = next;
     }
 }
+*/
 
 /**
     * @brief Getting a specific Register value stored in it

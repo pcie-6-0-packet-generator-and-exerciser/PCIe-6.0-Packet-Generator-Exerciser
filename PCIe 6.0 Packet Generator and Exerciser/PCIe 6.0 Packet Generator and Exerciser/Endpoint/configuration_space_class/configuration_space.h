@@ -15,7 +15,7 @@ public:
     ConfigurationSpace();
 
     /* Delete all nodes in the linked list by the destructor to avoid memory leaks */
-    ~ConfigurationSpace();
+    //~ConfigurationSpace();
 
     unsigned int getRegisterValue(int registerNumber);
 
