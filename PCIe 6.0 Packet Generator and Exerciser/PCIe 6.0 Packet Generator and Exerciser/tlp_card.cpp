@@ -13,6 +13,7 @@ TLPCard::TLPCard(QWidget* parent, QString text)
 	textLabel_(new QLabel(text, this))
 {
 	textLabel_->setAlignment(Qt::AlignHCenter);
+	tlp = new TLP();
 	setProperty(tlpCardProperty, true);
 	setMinimumSize(200, 50);
 	manageLayout();
@@ -20,6 +21,7 @@ TLPCard::TLPCard(QWidget* parent, QString text)
 
 TLPCard::~TLPCard()
 {
+	delete tlp;
 	delete textLabel_;
 }
 

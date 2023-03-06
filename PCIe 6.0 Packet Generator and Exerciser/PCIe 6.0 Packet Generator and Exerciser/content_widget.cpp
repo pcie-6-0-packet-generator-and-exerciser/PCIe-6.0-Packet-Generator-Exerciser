@@ -6,6 +6,8 @@
 #include <QtWidgets/QScrollArea>
 
 #include "sequence_browser.h"
+#include "type_browser.h"
+
 namespace {
 	constexpr char headerFrameProperty[] = "headerFrame";
 	constexpr char centralTitleProperty[] = "centralTitle";
@@ -59,6 +61,20 @@ void ContentWidget::createBody()
 	scrollArea->setWidget(sequenceBrowser);
 	bodyLayout->addWidget(scrollArea);
 
+	//for type browser
+	TypeBrowser* typeBrowser = new TypeBrowser(body_);
+
+
+	QScrollBar* sideBar2 = new QScrollBar(Qt::Vertical, nullptr);
+
+	QScrollArea* scrollAreaType = new QScrollArea;
+	scrollAreaType->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	scrollAreaType->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+	scrollAreaType->setBackgroundRole(QPalette::Dark);
+
+	scrollAreaType->setVerticalScrollBar(sideBar2);
+	scrollAreaType->setWidget(typeBrowser);
+	bodyLayout->addWidget(scrollAreaType);
 
 	QWidget* spacer = new QWidget(body_);
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

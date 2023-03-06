@@ -79,6 +79,9 @@
     <ClCompile Include="tlp_card.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="type_browser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\ohc.h">
@@ -117,6 +120,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="tlp_card.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="type_browser.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
