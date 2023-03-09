@@ -30,7 +30,7 @@ public:
 	static Tlp createConfigWrite0Tlp(int dataPayloadLength, std::string dataPayload, int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, int  firstDWBE[4], int  lastDWBE[4], int destinationSegment);
 	static Tlp createConfigRead1Tlp(int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, int  firstDWBE[4], int  lastDWBE[4], int destinationSegment);
 	static Tlp createConfigWrite1Tlp(int dataPayloadLength, std::string dataPayload, int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, int  firstDWBE[4], int  lastDWBE[4], int destinationSegment);
-	static Tlp createCplTlp(int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int lowerAddress, int destinationSegment, int completerSegment, int lowerAddress[2], Tlp::CplStatus cplStatus);
+	static Tlp createCplTlp(int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int lowerAddress, int destinationSegment, int completerSegment, int lowerAddressArr[2], Tlp::CplStatus cplStatus);
 	static Tlp createCplDTlp(int dataPayloadLength, std::string dataPayload, int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int lowerAddress, int destinationSegment, int completerSegment, int lowerAddressArr[2], Tlp::CplStatus cplStatus);
-	static Tlp createVendorMsgTlp();
+	static Tlp createVendorMsgTlp(int dataPayloadLength, std::string dataPayload, int requesterId, int messageCode, int destinationSegment);
 };
