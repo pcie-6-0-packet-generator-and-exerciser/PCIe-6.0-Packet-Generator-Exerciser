@@ -11,7 +11,7 @@ private:
 	 * @param creditType The enum type of the credit to inform the receiver of
 	 * @param shared Whether the credit is shared or dedicated
 	 * @param credit The credit to inform the receiver of
-	 * @return 
+	 * @return The flit after adding the DLLP
 	*/
 	Flit *addDLLP(Flit *flit, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]);
 };
