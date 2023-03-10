@@ -1,4 +1,5 @@
 #include "transaction_layer.h"
+#include "Tlp.h"
 /**
  * @brief Checks the gate equation to determine if a TLP can be transmitted.
  * @param sharedCreditLimit An array of shared credit limits.
@@ -16,15 +17,12 @@ bool  TransactionLayer::checkGateEquation(int sharedCreditLimit[2], int shardCre
 	int dataSharedCreditConsumed = shardCreditConsumed[1];
 	int twoPowCreditDataFieldSize = pow(2, CREDIT_DATA_FIELD_SIZE);
 
-	if ((dataSharedCreditLimit - (dataSharedCreditConsumed + tlpDataConsumption) % twoPowCreditDataFieldSize) % twoPowCreditDataFieldSize > twoPowCreditDataFieldSize / 2)
 		return false;
 
 	// checking for the Header gate equation
 	int headerSharedCreditLimit = sharedCreditLimit[0];
 	int headerSharedCreditConsumed = shardCreditConsumed[0];
-	int twoPowCreditHeaderFieldSize = pow(2, CREDIT_HEADER_FIELD_SIZE);
 
-	if ((headerSharedCreditLimit - (headerSharedCreditConsumed + tlpHeaderConsumption) % twoPowCreditHeaderFieldSize) % twoPowCreditHeaderFieldSize > twoPowCreditHeaderFieldSize / 2)
 		return false;
 
 	return true;
