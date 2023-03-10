@@ -11,7 +11,7 @@ enum class TLPType {
 	MemRead64=32,
 	MemWrite64=96,
 	Cpl=10,
-	CpID=74,
+	CplD=74,
 	VendorMsg,
 	ConfigRead0=4,
 	ConfigWrite0=68,
@@ -24,7 +24,7 @@ public:
 	TLPType TLPtype;
 	int TC;
 	int lengthInDoubleWord;
-	std::vector<OHC> OHCVector;
+	std::vector<OHC*> OHCVector;
 	NonHeaderBase* nonBase;
 	int OHC;
 
