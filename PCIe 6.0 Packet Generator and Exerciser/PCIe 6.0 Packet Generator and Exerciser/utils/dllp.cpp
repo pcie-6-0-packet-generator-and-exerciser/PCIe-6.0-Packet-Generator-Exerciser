@@ -16,7 +16,7 @@ Dllp::~Dllp() {
     // destructor
 }
 
-std::bitset<32> Dllp::getBitRep() const {
+boost::dynamic_bitset<> Dllp::getBitRep() const {
     // Create an unsigned int with all bits set to 0
     unsigned int bitRep = 0;
 
@@ -45,5 +45,5 @@ std::bitset<32> Dllp::getBitRep() const {
     bitRep |= (static_cast<int>(m_type) << 30);
 
     // Return a std::bitset<32> object initialized with bitRep
-    return std::bitset<32>(bitRep);
+    return boost::dynamic_bitset<>(32, bitRep);
 }
