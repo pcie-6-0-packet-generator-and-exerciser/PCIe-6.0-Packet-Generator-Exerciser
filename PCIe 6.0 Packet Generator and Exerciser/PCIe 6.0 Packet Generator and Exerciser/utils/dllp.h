@@ -1,5 +1,4 @@
 #pragma once
-#include <bitset>
 #include "boost/dynamic_bitset.hpp"
 
 class Dllp {
