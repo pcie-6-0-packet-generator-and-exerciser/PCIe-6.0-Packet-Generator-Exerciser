@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "layers/flit.h"
+#include "../layers/flit.h"
 #include "../utils/dllp.h"
 #include "boost/dynamic_bitset.hpp"
 

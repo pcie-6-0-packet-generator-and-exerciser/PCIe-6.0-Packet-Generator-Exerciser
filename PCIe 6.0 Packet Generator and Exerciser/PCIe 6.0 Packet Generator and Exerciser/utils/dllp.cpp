@@ -113,9 +113,6 @@ Dllp Dllp::DllpObjRep(boost::dynamic_bitset<> dllpPayloadBits) {
 		recievedDllp.m_creditType = Dllp::CreditType::Cpl;
 		recievedDllp.m_type = Dllp::DllpType::initFC2;
 		break;
-	default:
-		return;
-		break;
 	}
 
 	return recievedDllp;

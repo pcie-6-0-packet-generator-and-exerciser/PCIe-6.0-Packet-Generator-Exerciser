@@ -9,12 +9,12 @@
  * @param FI1 First indication (FI1) flag for credit update
  * @param FI2 Second indication (FI2) flag for credit update
 */
-void DataLinkLayer::updateCreditLimit(Flit flit, int(&P_SHARED_CREDIT_LIMIT)[2], int(&NP_SHARED_CREDIT_LIMIT)[2], int(&CPL_SHARED_CREDIT_LIMIT)[2], bool& FI1, bool& FI2) {
+void DatalinkLayer::updateCreditLimit(Flit flit, int(&P_SHARED_CREDIT_LIMIT)[2], int(&NP_SHARED_CREDIT_LIMIT)[2], int(&CPL_SHARED_CREDIT_LIMIT)[2], bool& FI1, bool& FI2) {
 	// Static variables to store the flags and state across function calls all initialized to false
 	static bool discard, sharedPFC2Flag, sharedNPFC2Flag, sharedCPLFC2Flag, dedicatedPFC2Flag, dedicatedNPFC2Flag, dedicatedCPLFC2Flag;
 
 	// The flit contains a DLLP, with size of 32 bit from 14th byte
-	auto dllpPayload = boost::dynamic_bitset(32, (flit.dllpPayload.to_ulong() >> (14 * 8)) & 0xffffffff);
+	auto dllpPayload = boost::dynamic_bitset(32, (flit.DLLPPayload.to_ulong() >> (14 * 8)) & 0xffffffff);
 	auto dllpObj = Dllp::DllpObjRep(dllpPayload);
 
 	// Discard received DLLPs if the discard flag is set
