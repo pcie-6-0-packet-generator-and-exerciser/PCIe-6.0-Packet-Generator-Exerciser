@@ -11,33 +11,50 @@
 */
 void DataLinkLayer::updateCreditLimit(Flit flit, int(&P_SHARED_CREDIT_LIMIT)[2], int(&NP_SHARED_CREDIT_LIMIT)[2], int(&CPL_SHARED_CREDIT_LIMIT)[2], bool& FI1, bool& FI2) {
 	// Static variables to store the flags and state across function calls all initialized to false
-	static bool discard, pFc2Flag, npFc2Flag, cplFc2Flag;
+	static bool discard, sharedPFC2Flag, sharedNPFC2Flag, sharedCPLFC2Flag, dedicatedPFC2Flag, dedicatedNPFC2Flag, dedicatedCPLFC2Flag;
 
 	// The flit contains a DLLP, with size of 32 bit from 14th byte
-	auto dllpPayload = std::bitset<32>((flit.dllpPayload.to_ulong() >> (14 * 8)) & 0xffffffff);
+	auto dllpPayload = boost::dynamic_bitset(32, (flit.dllpPayload.to_ulong() >> (14 * 8)) & 0xffffffff);
 	auto dllpObj = Dllp::DllpObjRep(dllpPayload);
 
 	// Discard received DLLPs if the discard flag is set
 	if (discard) {
-		switch (dllpObj.m_type)
+		switch (dllpObj.shared)
 		{
-		case Dllp::DllpType::initFC2:
+		case false:
 			switch (dllpObj.m_creditType)
 			{
 			case Dllp::CreditType::Cpl:
-				cplFc2Flag = true;
+				sharedCPLFC2Flag = true;
 				break;
 			case Dllp::CreditType::P:
-				pFc2Flag = true;
+				sharedPFC2Flag = true;
 				break;
 			case Dllp::CreditType::NP:
-				npFc2Flag = true;
+				sharedNPFC2Flag = true;
+				break;
+			default:
+				break;
+			}
+			break;
+		case true:
+			switch (dllpObj.m_creditType)
+			{
+			case Dllp::CreditType::Cpl:
+				dedicatedCPLFC2Flag = true;
+				break;
+			case Dllp::CreditType::P:
+				dedicatedPFC2Flag = true;
+				break;
+			case Dllp::CreditType::NP:
+				dedicatedNPFC2Flag = true;
 				break;
 			default:
 				break;
 			}
 			break;
 		}
+
 	}
 
 	// Update credit limits if the discard flag is not set and the FI1 flag is not set
@@ -46,7 +63,8 @@ void DataLinkLayer::updateCreditLimit(Flit flit, int(&P_SHARED_CREDIT_LIMIT)[2],
 		switch (dllpObj.m_creditType)
 		{
 		case Dllp::CreditType::Cpl:
-
+			CPL_SHARED_CREDIT_LIMIT[0] = dllpObj.HdrFC;
+			CPL_SHARED_CREDIT_LIMIT[1] = dllpObj.DataFc;
 			break;
 		case Dllp::CreditType::P:
 			P_SHARED_CREDIT_LIMIT[0] = dllpObj.HdrFC;
@@ -64,7 +82,7 @@ void DataLinkLayer::updateCreditLimit(Flit flit, int(&P_SHARED_CREDIT_LIMIT)[2],
 	if (P_SHARED_CREDIT_LIMIT[0] != -1 && NP_SHARED_CREDIT_LIMIT[0] != -1 && CPL_SHARED_CREDIT_LIMIT[0] != -1) {
 		FI1 = true;
 		// Set the FI2 flag if all expected DLLPs are received
-		if (!FI2 && pFc2Flag && npFc2Flag && cplFc2Flag)
+		if (!FI2 && sharedPFC2Flag && sharedNPFC2Flag && sharedCPLFC2Flag && dedicatedPFC2Flag && dedicatedNPFC2Flag && dedicatedCPLFC2Flag)
 			FI2 = true;
 	}
 }

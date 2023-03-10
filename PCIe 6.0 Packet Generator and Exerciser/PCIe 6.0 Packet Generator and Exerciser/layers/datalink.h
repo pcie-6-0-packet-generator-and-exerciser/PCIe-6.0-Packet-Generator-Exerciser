@@ -2,7 +2,7 @@
 #include <iostream>
 #include "layers/flit.h"
 #include "../utils/dllp.h"
-#include <bitset>
+#include "boost/dynamic_bitset.hpp"
 
 class DataLinkLayer {
 public:
