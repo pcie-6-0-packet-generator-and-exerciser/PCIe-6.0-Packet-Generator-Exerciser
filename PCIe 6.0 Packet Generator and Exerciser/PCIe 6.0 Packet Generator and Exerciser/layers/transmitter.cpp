@@ -18,4 +18,4 @@ void Transmitter::sendInitFC2(void);
  * @param sequence The sequence of packets to send.
  * @return void
 */
-void Transmitter::sendSequence(Sequence sequence);
+void Transmitter::sendSequence(vector<TLP> sequence);

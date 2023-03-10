@@ -3,9 +3,8 @@
 #include "./globals.h"
 #include "../utils/queue_wrapper.h"
 #include "../utils/dllp.h"
-#include "../utils/sequence.h"
 #include "./flit.h/"
-
+#include <vector>
 /**
  * @brief Represents a transmitter that sends packets over a network.
  *
@@ -24,5 +23,5 @@ public:
 
 	void sendInitFC1(void);
 	void sendInitFC2(void);
-	void sendSequence(Sequence sequence);
+	void sendSequence(vector<TLP> sequence);
 };
