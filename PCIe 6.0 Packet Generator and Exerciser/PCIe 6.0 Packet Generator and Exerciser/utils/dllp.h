@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/dynamic_bitset.hpp>
+#include "boost/dynamic_bitset.hpp"
 
 class Dllp {
 public:
@@ -22,9 +22,11 @@ public:
 	DllpType m_type;
 	CreditType m_creditType;
 
+
 	Dllp(int hdrScale, int dataScale, int dataFc, int hdrFC, int vc, bool share, DllpType type, CreditType creditType);
 	Dllp();
 	~Dllp();
-	boost::dynamic_bitset<> getBitRep() const;
+
 	static Dllp DllpObjRep(boost::dynamic_bitset<> dllpBits);
+  boost::dynamic_bitset<> getBitRep() const;
 };
