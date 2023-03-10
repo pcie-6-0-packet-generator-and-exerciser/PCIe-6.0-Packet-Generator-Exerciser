@@ -16,8 +16,9 @@ namespace Ui
     public:
         TLP* tlp;
     private:
-
+        void mouseMoveEvent(QMouseEvent* event);
         void manageLayout();
+       
     private:
         QLabel* textLabel_;
     };

@@ -1,6 +1,9 @@
 #include "tlp_card.h"
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QBoxLayout>
+#include <QMouseEvent>
+#include <QMimeData>
+#include <QDrag>
 
 namespace
 {
@@ -12,9 +15,8 @@ TLPCard::TLPCard(QWidget* parent, QString text)
 	: QFrame(parent),
 	textLabel_(new QLabel(text, this))
 {
+	
 	textLabel_->setAlignment(Qt::AlignHCenter);
-	//tlp = new TLP();
-	//tlp->header = new TLPHeader();
 	setProperty(tlpCardProperty, true);
 	setMinimumSize(200, 50);
 	manageLayout();
@@ -25,6 +27,18 @@ TLPCard::~TLPCard()
 	//delete tlp;
 	delete textLabel_;
 }
+void TLPCard::mouseMoveEvent(QMouseEvent* event) {
+	if ((event->buttons() & Qt::LeftButton)) {
+		QMimeData* mime = new QMimeData;
+		mime->data("application/x-tlpcard");
+		QDrag* drag = new QDrag(this);
+		drag->setMimeData(mime);
+		drag->setHotSpot(event->pos());
+		drag->exec(Qt::MoveAction);
+	}
+}
+
+
 
 void TLPCard::manageLayout() {
 	QVBoxLayout* contentLayout = new QVBoxLayout;

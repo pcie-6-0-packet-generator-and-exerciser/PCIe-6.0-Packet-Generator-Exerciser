@@ -2,6 +2,7 @@
 #include <QtWidgets/QFrame>
 #include "tlp_card.h"
 #include <list>
+#include <QVBoxLayout>
 namespace Ui
 {
     class SequenceBrowser: public QFrame
@@ -14,7 +15,10 @@ namespace Ui
     private:
         void createCardsSequence();
         void manageLayout();
+        void dropEvent(QDropEvent* event);
+        //void dragEnterEvent(QDragEnterEvent* event);
     private:
+        QVBoxLayout* cardLayout;
         std::list<TLPCard*> cards_;
     };
 
