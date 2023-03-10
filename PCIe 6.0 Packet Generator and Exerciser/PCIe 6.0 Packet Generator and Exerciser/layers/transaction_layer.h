@@ -10,5 +10,5 @@
 class TransactionLayer
 {
 public:
-	bool checkGateEquation(int sharedCreditLimit[2], int shardCreditConsumed[2], Tlp tlp);
+	bool checkGateEquation(int sharedCreditLimit[2], int shardCreditConsumed[2], int tlpDataConsumption, int tlpHeaderConsumption);
 };
