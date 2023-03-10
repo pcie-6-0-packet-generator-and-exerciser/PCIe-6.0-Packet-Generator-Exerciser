@@ -1,5 +1,5 @@
 #pragma once
-#include <math.h>
+#include <cmath>
 #define CREDIT_HEADER_FIELD_SIZE 8
 #define CREDIT_DATA_FIELD_SIZE 12
 
