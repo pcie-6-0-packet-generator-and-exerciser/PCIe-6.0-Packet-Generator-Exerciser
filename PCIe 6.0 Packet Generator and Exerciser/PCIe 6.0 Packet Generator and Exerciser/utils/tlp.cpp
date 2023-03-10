@@ -31,9 +31,7 @@ TLP TLP::createMemRead32Tlp(int requesterId, int tag, int address, std::bitset<4
 	memRead32Tlp.header->TLPtype = TLPType::MemRead32;
 	memRead32Tlp.header->lengthInDoubleWord = 0;
 
-	// this is done because & requires a Ivalue 
-	auto nonBase = AddressRouting32Bit(requesterId, tag, address);
-	memRead32Tlp.header->nonBase = &nonBase;
+		memRead32Tlp.header->nonBase = new AddressRouting32Bit(requesterId, tag, address);
 
 	// clears out the data payload
 	memRead32Tlp.dataPayload.reset();
@@ -61,10 +59,7 @@ TLP TLP::createMemWrite32Tlp(int dataPayloadLength, std::string dataPayload, int
 	memWrite32Tlp.header->OHCVector.push_back(new OHCA1(firstDWBE, lastDWBE));
 	memWrite32Tlp.header->TLPtype = TLPType::MemWrite32;
 	memWrite32Tlp.header->lengthInDoubleWord = dataPayloadLength;
-
-	// this is done because & requires a Ivalue 
-	auto nonBase = AddressRouting32Bit(requesterId, tag, address);
-	memWrite32Tlp.header->nonBase = &nonBase;
+	memWrite32Tlp.header->nonBase = new AddressRouting32Bit(requesterId, tag, address);
 
 	memWrite32Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	memWrite32Tlp.creditConsumedType = Dllp::CreditType::P;
@@ -88,10 +83,7 @@ TLP TLP::createMemRead64Tlp(int requesterId, int tag, long long address, std::bi
 	memRead64Tlp.header->OHCVector.push_back(new OHCA1(firstDWBE, lastDWBE));
 	memRead64Tlp.header->TLPtype = TLPType::MemRead64;
 	memRead64Tlp.header->lengthInDoubleWord = 0;
-
-	// this is done because & requires a Ivalue
-	auto nonBase = AddressRouting64Bit(requesterId, tag, address);;
-	memRead64Tlp.header->nonBase = &nonBase;
+	memRead64Tlp.header->nonBase = new AddressRouting64Bit(requesterId, tag, address);;
 
 	memRead64Tlp.dataPayload.reset();
 	memRead64Tlp.creditConsumedType = Dllp::CreditType::NP;
@@ -120,10 +112,7 @@ TLP TLP::createMemWrite64Tlp(int dataPayloadLength, std::string dataPayload, int
 	memWrite64Tlp.header->OHCVector.push_back(new OHCA1(firstDWBE, lastDWBE));
 	memWrite64Tlp.header->TLPtype = TLPType::MemWrite64;
 	memWrite64Tlp.header->lengthInDoubleWord = dataPayloadLength;
-
-	// this is done because & requires a Ivalue
-	auto nonBase = AddressRouting64Bit(requesterId, tag, address);
-	memWrite64Tlp.header->nonBase = &nonBase;
+	memWrite64Tlp.header->nonBase = new AddressRouting64Bit(requesterId, tag, address);
 
 	memWrite64Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	memWrite64Tlp.creditConsumedType = Dllp::CreditType::P;
@@ -151,10 +140,7 @@ TLP TLP::createConfigRead0Tlp(int requesterId, int tag, int registerNumber, int 
 	configRead0Tlp.header->OHCVector.push_back(new OHCA3(firstDWBE, lastDWBE, destinationSegment));
 	configRead0Tlp.header->TLPtype = TLPType::ConfigRead0;
 	configRead0Tlp.header->lengthInDoubleWord = 0;
-
-	// this is done because & requires a Ivalue 
-	auto nonBase = ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
-	configRead0Tlp.header->nonBase = &nonBase;
+	configRead0Tlp.header->nonBase = new ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
 
 	configRead0Tlp.dataPayload.reset();
 	configRead0Tlp.creditConsumedType = Dllp::CreditType::NP;
@@ -184,10 +170,7 @@ TLP TLP::createConfigWrite0Tlp(int dataPayloadLength, std::string dataPayload, i
 	configWrite0Tlp.header->OHCVector.push_back(new OHCA3(firstDWBE, lastDWBE, destinationSegment));
 	configWrite0Tlp.header->TLPtype = TLPType::ConfigWrite0;
 	configWrite0Tlp.header->lengthInDoubleWord = dataPayloadLength;
-
-	// this is done because & requires a Ivalue 
-	auto nonBase = ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
-	configWrite0Tlp.header->nonBase = &nonBase;
+	configWrite0Tlp.header->nonBase = new ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
 
 	configWrite0Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	configWrite0Tlp.creditConsumedType = Dllp::CreditType::NP;
@@ -216,10 +199,7 @@ TLP TLP::createConfigRead1Tlp(int requesterId, int tag, int registerNumber, int 
 	configRead1Tlp.header->OHCVector.push_back(new OHCA3(firstDWBE, lastDWBE, destinationSegment));
 	configRead1Tlp.header->TLPtype = TLPType::ConfigRead1;
 	configRead1Tlp.header->lengthInDoubleWord = 0;
-
-	// this is done because & requires a Ivalue 
-	auto nonBase = ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
-	configRead1Tlp.header->nonBase = &nonBase;
+	configRead1Tlp.header->nonBase = new ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
 
 	configRead1Tlp.dataPayload.reset();
 	configRead1Tlp.creditConsumedType = Dllp::CreditType::NP;
@@ -248,10 +228,7 @@ TLP TLP::createConfigWrite1Tlp(int dataPayloadLength, std::string dataPayload, i
 	configWrite1Tlp.header->OHCVector.push_back(new OHCA3(firstDWBE, lastDWBE, destinationSegment));
 	configWrite1Tlp.header->TLPtype = TLPType::ConfigWrite1;
 	configWrite1Tlp.header->lengthInDoubleWord = dataPayloadLength;
-
-	// this is done because & requires a Ivalue 
-	auto nonBase = ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
-	configWrite1Tlp.header->nonBase = &nonBase;
+	configWrite1Tlp.header->nonBase = new ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
 
 	configWrite1Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	configWrite1Tlp.creditConsumedType = Dllp::CreditType::NP;
@@ -282,9 +259,7 @@ TLP TLP::createCplTlp(int requesterId, int tag, int completerId, long byteCount,
 	cplTlp.header->OHCVector.push_back(new OHCA5(destinationSegment, completerSegment, lowerAddress, cplStatus));
 	cplTlp.header->TLPtype = TLPType::Cpl;
 	cplTlp.header->lengthInDoubleWord = 0;
-	// this is done because & requires a Ivalue 
-	auto nonBase = CompletionNonHeaderBase(requesterId, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddress.to_ulong());
-	cplTlp.header->nonBase = &nonBase;
+	cplTlp.header->nonBase = new CompletionNonHeaderBase(requesterId, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddress.to_ulong());
 
 	cplTlp.dataPayload.reset();
 	cplTlp.creditConsumedType = Dllp::CreditType::Cpl;
@@ -318,10 +293,7 @@ TLP TLP::createCplDTlp(int dataPayloadLength, std::string dataPayload, int reque
 	cplDTlp.header->OHCVector.push_back(new OHCA5(destinationSegment, completerSegment, lowerAddress, cplStatus));
 	cplDTlp.header->TLPtype = TLPType::CplD;
 	cplDTlp.header->lengthInDoubleWord = dataPayloadLength;
-
-	// this is done because & requires a Ivalue 
-	auto nonBase = CompletionNonHeaderBase(requesterId, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddress.to_ulong());
-	cplDTlp.header->nonBase = &nonBase;
+	cplDTlp.header->nonBase = new CompletionNonHeaderBase(requesterId, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddress.to_ulong());
 
 	cplDTlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	cplDTlp.creditConsumedType = Dllp::CreditType::Cpl;
@@ -344,10 +316,7 @@ TLP TLP::createVendorMsgTlp(int dataPayloadLength, std::string dataPayload, int 
 	vendorMsg.header->OHCVector.push_back(new OHCA4(destinationSegment));
 	vendorMsg.header->TLPtype = TLPType::VendorMsg;
 	vendorMsg.header->lengthInDoubleWord = dataPayloadLength;
-
-	// this is done because & requires a Ivalue 
-	auto nonBase = MessageNonHeaderBase(requesterId, messageCode);
-	vendorMsg.header->nonBase = &nonBase;
+	vendorMsg.header->nonBase = new MessageNonHeaderBase(requesterId, messageCode);
 
 	vendorMsg.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	vendorMsg.creditConsumedType = Dllp::CreditType::P;
