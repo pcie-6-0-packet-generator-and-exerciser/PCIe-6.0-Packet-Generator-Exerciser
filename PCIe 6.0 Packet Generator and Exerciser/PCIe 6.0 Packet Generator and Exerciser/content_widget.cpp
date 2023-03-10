@@ -46,21 +46,7 @@ void ContentWidget::createBody()
 	body_ = new QFrame(this);
 	QHBoxLayout* bodyLayout = new QHBoxLayout;
 	bodyLayout->setContentsMargins(5, 15, 5, 15);
-	bodyLayout->setSpacing(3);	
-	SequenceBrowser* sequenceBrowser = new SequenceBrowser(body_);
-	
-
-	QScrollBar* sideBar = new QScrollBar(Qt::Vertical, nullptr);
-
-	QScrollArea* scrollArea = new QScrollArea;
-	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	scrollArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-	scrollArea->setBackgroundRole(QPalette::Dark);
-
-	scrollArea->setVerticalScrollBar(sideBar);
-	scrollArea->setWidget(sequenceBrowser);
-	bodyLayout->addWidget(scrollArea);
-
+	bodyLayout->setSpacing(3);
 	//for type browser
 	TypeBrowser* typeBrowser = new TypeBrowser(body_);
 
@@ -75,6 +61,23 @@ void ContentWidget::createBody()
 	scrollAreaType->setVerticalScrollBar(sideBar2);
 	scrollAreaType->setWidget(typeBrowser);
 	bodyLayout->addWidget(scrollAreaType);
+	
+	
+	SequenceBrowser* sequenceBrowser = new SequenceBrowser(body_);
+	
+
+	QScrollBar* sideBar = new QScrollBar(Qt::Vertical, nullptr);
+
+	QScrollArea* scrollArea = new QScrollArea;
+	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	scrollArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+	scrollArea->setBackgroundRole(QPalette::Dark);
+
+	scrollArea->setVerticalScrollBar(sideBar);
+	scrollArea->setWidget(sequenceBrowser);
+	bodyLayout->addWidget(scrollArea);
+
+	
 
 	QWidget* spacer = new QWidget(body_);
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
