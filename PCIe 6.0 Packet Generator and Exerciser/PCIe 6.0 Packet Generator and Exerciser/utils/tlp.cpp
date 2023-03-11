@@ -54,17 +54,17 @@ TLP TLP::createMemRead32Tlp(int requesterId, int tag, int address, std::bitset<4
  * @param lastDWBE An array of four integers indicating which bytes are enabled in the last DW.
  * @return A TLP object representing the MemWrite32 TLP.
  */
-TLP TLP::createMemWrite32Tlp(int dataPayloadLength, std::string dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4>lastDWBE) {
+TLP TLP::createMemWrite32Tlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4>lastDWBE) {
 	TLP memWrite32Tlp;
 	memWrite32Tlp.header->OHCVector.push_back(new OHCA1(firstDWBE, lastDWBE));
 	memWrite32Tlp.header->TLPtype = TLPType::MemWrite32;
-	memWrite32Tlp.header->lengthInDoubleWord = dataPayloadLength;
+	memWrite32Tlp.header->lengthInDoubleWord = dataPayloadLengthInDW;
 	memWrite32Tlp.header->nonBase = new AddressRouting32Bit(requesterId, tag, address);
 
 	memWrite32Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	memWrite32Tlp.creditConsumedType = Dllp::CreditType::P;
 	memWrite32Tlp.headerConsumption = 1;
-	memWrite32Tlp.dataConsumption = (int)(dataPayloadLength / FC_UNIT_SIZE);
+	memWrite32Tlp.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);
 
 	return memWrite32Tlp;
 }
