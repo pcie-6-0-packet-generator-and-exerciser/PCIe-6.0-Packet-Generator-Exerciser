@@ -73,13 +73,13 @@
     <ClCompile Include="layers\flit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="layers\tlp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="layers\transaction_layer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="layers\datalink.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="layers\tlp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
