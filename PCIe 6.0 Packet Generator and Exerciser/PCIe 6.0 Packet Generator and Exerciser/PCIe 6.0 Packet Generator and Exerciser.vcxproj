@@ -83,6 +83,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="layers\transaction_layer.cpp" />
+    <ClCompile Include="layers\datalink.cpp" />
     <ClCompile Include="layers\flit.cpp" />
     <ClCompile Include="sequence_browser.cpp" />
     <ClCompile Include="tlp_card.cpp" />
@@ -106,6 +108,7 @@
     <ResourceCompile Include="PCIe 6.0 Packet Generator and Exerciser.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="layers\datalink.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\sequence.h" />
     <QtMoc Include="sequence_browser.h" />
@@ -117,6 +120,7 @@
     <QtMoc Include="content_widget.h" />
     <ClInclude Include="utils\ohc.h" />
     <ClInclude Include="layers\globals.h" />
+    <ClInclude Include="transaction_layer.h" />
     <ClInclude Include="utils\dllp.h" />
     <ClInclude Include="utils\queue_wrapper.h" />
   </ItemGroup>

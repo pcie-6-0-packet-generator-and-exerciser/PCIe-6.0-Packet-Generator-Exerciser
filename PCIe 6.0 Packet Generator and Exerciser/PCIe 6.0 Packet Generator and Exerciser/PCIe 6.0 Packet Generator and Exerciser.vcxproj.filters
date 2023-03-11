@@ -73,6 +73,7 @@
     <ClCompile Include="layers\flit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+
     <ClCompile Include="sequence_browser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -80,6 +81,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="type_browser.cpp">
+    <Filter>Source Files</Filter>
+    </ClCompile>
+
+    <ClCompile Include="layers\transaction_layer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\datalink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -109,6 +117,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\sequence.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="transaction_layer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="transaction_layer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\datalink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
