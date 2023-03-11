@@ -48,6 +48,7 @@ void TLPCard::mouseMoveEvent(QMouseEvent* event) {
 	QDataStream stream(&data, QIODevice::WriteOnly);
 	//stream << static_cast<quintptr>(this);
 	//stream << this;
+	stream << textLabel_->text();
 	mimeData->setData("application/x-tlp", data);
 	drag->setMimeData(mimeData);
 	drag->exec(Qt::CopyAction);
