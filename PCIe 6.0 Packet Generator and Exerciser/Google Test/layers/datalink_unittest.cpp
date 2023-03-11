@@ -932,3 +932,127 @@ TEST(UpdateCreditLimit, SetFI2OnCplDedicated) {
 	EXPECT_EQ(FI1, true);
 	EXPECT_EQ(FI2, true);
 }
+
+TEST(UpdateCreditLimit, NotSetFI1On2) {
+	const DatalinkLayer datalink;
+	const int PSharedCredit[2] = { 8, 5 };
+	bool FI1 = false;
+	bool FI2 = false;
+	int PSharedCreditLimit[2] = { -1 };
+	int NPSharedCreditLimit[2] = { 0 };
+	int CplSharedCreditLimit[2] = { -1 };
+	int PDedicatedCreditLimit[2] = { -1 };
+	int NPDedicatedCreditLimit[2] = { -1 };
+	int CplDedicatedCreditLimit[2] = { -1 };
+	Flit* flit = new Flit();
+	Dllp* dllp = new Dllp(1, 1, PSharedCredit[1], PSharedCredit[0], 0, true, Dllp::DllpType::initFC1, Dllp::CreditType::P);
+	flit->DLLPPayload = dllp->getBitRep();
+	datalink.updateCreditLimit(flit, PSharedCreditLimit, NPSharedCreditLimit, CplSharedCreditLimit, PDedicatedCreditLimit, NPDedicatedCreditLimit, CplDedicatedCreditLimit, FI1, FI2);
+	EXPECT_EQ(PSharedCreditLimit[0], PSharedCredit[0]);
+	EXPECT_EQ(PSharedCreditLimit[1], PSharedCredit[1]);
+	EXPECT_EQ(NPSharedCreditLimit[0], 0);
+	EXPECT_EQ(NPSharedCreditLimit[1], 0);
+	EXPECT_EQ(CplSharedCreditLimit[0], -1);
+	EXPECT_EQ(CplSharedCreditLimit[1], -1);
+	EXPECT_EQ(PDedicatedCreditLimit[0], -1);
+	EXPECT_EQ(PDedicatedCreditLimit[1], -1);
+	EXPECT_EQ(NPDedicatedCreditLimit[0], -1);
+	EXPECT_EQ(NPDedicatedCreditLimit[1], -1);
+	EXPECT_EQ(CplDedicatedCreditLimit[0], -1);
+	EXPECT_EQ(CplDedicatedCreditLimit[1], -1);
+	EXPECT_EQ(FI1, false);
+	EXPECT_EQ(FI2, false);
+}
+
+TEST(UpdateCreditLimit, NotSetFI1On3) {
+	const DatalinkLayer datalink;
+	const int PSharedCredit[2] = { 8, 5 };
+	bool FI1 = false;
+	bool FI2 = false;
+	int PSharedCreditLimit[2] = { -1 };
+	int NPSharedCreditLimit[2] = { 0 };
+	int CplSharedCreditLimit[2] = { 0 };
+	int PDedicatedCreditLimit[2] = { -1 };
+	int NPDedicatedCreditLimit[2] = { -1 };
+	int CplDedicatedCreditLimit[2] = { -1 };
+	Flit* flit = new Flit();
+	Dllp* dllp = new Dllp(1, 1, PSharedCredit[1], PSharedCredit[0], 0, true, Dllp::DllpType::initFC1, Dllp::CreditType::P);
+	flit->DLLPPayload = dllp->getBitRep();
+	datalink.updateCreditLimit(flit, PSharedCreditLimit, NPSharedCreditLimit, CplSharedCreditLimit, PDedicatedCreditLimit, NPDedicatedCreditLimit, CplDedicatedCreditLimit, FI1, FI2);
+	EXPECT_EQ(PSharedCreditLimit[0], PSharedCredit[0]);
+	EXPECT_EQ(PSharedCreditLimit[1], PSharedCredit[1]);
+	EXPECT_EQ(NPSharedCreditLimit[0], 0);
+	EXPECT_EQ(NPSharedCreditLimit[1], 0);
+	EXPECT_EQ(CplSharedCreditLimit[0], 0);
+	EXPECT_EQ(CplSharedCreditLimit[1], 0);
+	EXPECT_EQ(PDedicatedCreditLimit[0], -1);
+	EXPECT_EQ(PDedicatedCreditLimit[1], -1);
+	EXPECT_EQ(NPDedicatedCreditLimit[0], -1);
+	EXPECT_EQ(NPDedicatedCreditLimit[1], -1);
+	EXPECT_EQ(CplDedicatedCreditLimit[0], -1);
+	EXPECT_EQ(CplDedicatedCreditLimit[1], -1);
+	EXPECT_EQ(FI1, false);
+	EXPECT_EQ(FI2, false);
+}
+
+TEST(UpdateCreditLimit, NotSetFI1On4) {
+	const DatalinkLayer datalink;
+	const int PSharedCredit[2] = { 8, 5 };
+	bool FI1 = false;
+	bool FI2 = false;
+	int PSharedCreditLimit[2] = { -1 };
+	int NPSharedCreditLimit[2] = { 0 };
+	int CplSharedCreditLimit[2] = { 0 };
+	int PDedicatedCreditLimit[2] = { 0 };
+	int NPDedicatedCreditLimit[2] = { -1 };
+	int CplDedicatedCreditLimit[2] = { -1 };
+	Flit* flit = new Flit();
+	Dllp* dllp = new Dllp(1, 1, PSharedCredit[1], PSharedCredit[0], 0, true, Dllp::DllpType::initFC1, Dllp::CreditType::P);
+	flit->DLLPPayload = dllp->getBitRep();
+	datalink.updateCreditLimit(flit, PSharedCreditLimit, NPSharedCreditLimit, CplSharedCreditLimit, PDedicatedCreditLimit, NPDedicatedCreditLimit, CplDedicatedCreditLimit, FI1, FI2);
+	EXPECT_EQ(PSharedCreditLimit[0], PSharedCredit[0]);
+	EXPECT_EQ(PSharedCreditLimit[1], PSharedCredit[1]);
+	EXPECT_EQ(NPSharedCreditLimit[0], 0);
+	EXPECT_EQ(NPSharedCreditLimit[1], 0);
+	EXPECT_EQ(CplSharedCreditLimit[0], 0);
+	EXPECT_EQ(CplSharedCreditLimit[1], 0);
+	EXPECT_EQ(PDedicatedCreditLimit[0], 0);
+	EXPECT_EQ(PDedicatedCreditLimit[1], 0);
+	EXPECT_EQ(NPDedicatedCreditLimit[0], -1);
+	EXPECT_EQ(NPDedicatedCreditLimit[1], -1);
+	EXPECT_EQ(CplDedicatedCreditLimit[0], -1);
+	EXPECT_EQ(CplDedicatedCreditLimit[1], -1);
+	EXPECT_EQ(FI1, false);
+	EXPECT_EQ(FI2, false);
+}
+
+TEST(UpdateCreditLimit, NotSetFI1On5) {
+	const DatalinkLayer datalink;
+	const int PSharedCredit[2] = { 8, 5 };
+	bool FI1 = false;
+	bool FI2 = false;
+	int PSharedCreditLimit[2] = { -1 };
+	int NPSharedCreditLimit[2] = { 0 };
+	int CplSharedCreditLimit[2] = { 0 };
+	int PDedicatedCreditLimit[2] = { 0 };
+	int NPDedicatedCreditLimit[2] = { 0 };
+	int CplDedicatedCreditLimit[2] = { -1 };
+	Flit* flit = new Flit();
+	Dllp* dllp = new Dllp(1, 1, PSharedCredit[1], PSharedCredit[0], 0, true, Dllp::DllpType::initFC1, Dllp::CreditType::P);
+	flit->DLLPPayload = dllp->getBitRep();
+	datalink.updateCreditLimit(flit, PSharedCreditLimit, NPSharedCreditLimit, CplSharedCreditLimit, PDedicatedCreditLimit, NPDedicatedCreditLimit, CplDedicatedCreditLimit, FI1, FI2);
+	EXPECT_EQ(PSharedCreditLimit[0], PSharedCredit[0]);
+	EXPECT_EQ(PSharedCreditLimit[1], PSharedCredit[1]);
+	EXPECT_EQ(NPSharedCreditLimit[0], 0);
+	EXPECT_EQ(NPSharedCreditLimit[1], 0);
+	EXPECT_EQ(CplSharedCreditLimit[0], 0);
+	EXPECT_EQ(CplSharedCreditLimit[1], 0);
+	EXPECT_EQ(PDedicatedCreditLimit[0], 0);
+	EXPECT_EQ(PDedicatedCreditLimit[1], 0);
+	EXPECT_EQ(NPDedicatedCreditLimit[0], 0);
+	EXPECT_EQ(NPDedicatedCreditLimit[1], 0);
+	EXPECT_EQ(CplDedicatedCreditLimit[0], -1);
+	EXPECT_EQ(CplDedicatedCreditLimit[1], -1);
+	EXPECT_EQ(FI1, false);
+	EXPECT_EQ(FI2, false);
+}
