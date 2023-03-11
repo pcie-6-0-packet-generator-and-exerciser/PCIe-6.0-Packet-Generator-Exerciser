@@ -102,7 +102,7 @@ void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], in
 
 	}
 	// Set the FI1 flag if all credit limits are updated
-	if (P_SHARED_CREDIT_LIMIT[0] != -1 && NP_SHARED_CREDIT_LIMIT[0] != -1 && CPL_SHARED_CREDIT_LIMIT[0] != -1) {
+	if (P_SHARED_CREDIT_LIMIT[0] != -1 && NP_SHARED_CREDIT_LIMIT[0] != -1 && CPL_SHARED_CREDIT_LIMIT[0] != -1 && P_DEDICATED_CREDIT_LIMIT[0] != -1 && NP_DEDICATED_CREDIT_LIMIT[0] != -1 && CPL_DEDICATED_CREDIT_LIMIT[0] != -1) {
 		FI1 = true;
 		// Set the FI2 flag if any expected DLLPs are received
 		if (!FI2 && (sharedPFC2Flag || sharedNPFC2Flag || sharedCPLFC2Flag || dedicatedPFC2Flag || dedicatedNPFC2Flag || dedicatedCPLFC2Flag))
