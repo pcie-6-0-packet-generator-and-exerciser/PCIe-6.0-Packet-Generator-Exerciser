@@ -9,7 +9,7 @@
  * @param FI1 First indication (FI1) flag for credit update
  * @param FI2 Second indication (FI2) flag for credit update
 */
-void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], bool& FI1, bool& FI2) {
+void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], int P_DEDICATED_CREDIT_LIMIT[], int NP_DEDICATED_CREDIT_LIMIT[], int CPL_DEDICATED_CREDIT_LIMIT[], bool& FI1, bool& FI2) {
 	// Static variables to store the flags and state across function calls all initialized to false
 	static bool discard, sharedPFC2Flag, sharedNPFC2Flag, sharedCPLFC2Flag, dedicatedPFC2Flag, dedicatedNPFC2Flag, dedicatedCPLFC2Flag;
 
@@ -60,23 +60,46 @@ void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], in
 	// Update credit limits if the discard flag is not set and the FI1 flag is not set
 	if (!discard && !FI1)
 	{
-		switch (dllpObj.m_creditType)
+		switch (dllpObj.shared)
 		{
-		case Dllp::CreditType::Cpl:
-			CPL_SHARED_CREDIT_LIMIT[0] = dllpObj.HdrFC;
-			CPL_SHARED_CREDIT_LIMIT[1] = dllpObj.DataFc;
-			break;
-		case Dllp::CreditType::P:
-			P_SHARED_CREDIT_LIMIT[0] = dllpObj.HdrFC;
-			P_SHARED_CREDIT_LIMIT[1] = dllpObj.DataFc;
-			break;
-		case Dllp::CreditType::NP:
-			NP_SHARED_CREDIT_LIMIT[0] = dllpObj.HdrFC;
-			NP_SHARED_CREDIT_LIMIT[1] = dllpObj.DataFc;
-			break;
-		default:
-			break;
+		case false:
+			switch (dllpObj.m_creditType)
+			{
+			case Dllp::CreditType::Cpl:
+				CPL_DEDICATED_CREDIT_LIMIT[0] = dllpObj.HdrFC;
+				CPL_DEDICATED_CREDIT_LIMIT[1] = dllpObj.DataFc;
+				break;
+			case Dllp::CreditType::P:
+				P_DEDICATED_CREDIT_LIMIT[0] = dllpObj.HdrFC;
+				P_DEDICATED_CREDIT_LIMIT[1] = dllpObj.DataFc;
+				break;
+			case Dllp::CreditType::NP:
+				NP_DEDICATED_CREDIT_LIMIT[0] = dllpObj.HdrFC;
+				NP_DEDICATED_CREDIT_LIMIT[1] = dllpObj.DataFc;
+				break;
+			default:
+				break;
+			}
+		case true:
+			switch (dllpObj.m_creditType)
+			{
+			case Dllp::CreditType::Cpl:
+				CPL_SHARED_CREDIT_LIMIT[0] = dllpObj.HdrFC;
+				CPL_SHARED_CREDIT_LIMIT[1] = dllpObj.DataFc;
+				break;
+			case Dllp::CreditType::P:
+				P_SHARED_CREDIT_LIMIT[0] = dllpObj.HdrFC;
+				P_SHARED_CREDIT_LIMIT[1] = dllpObj.DataFc;
+				break;
+			case Dllp::CreditType::NP:
+				NP_SHARED_CREDIT_LIMIT[0] = dllpObj.HdrFC;
+				NP_SHARED_CREDIT_LIMIT[1] = dllpObj.DataFc;
+				break;
+			default:
+				break;
+			}
 		}
+
 	}
 	// Set the FI1 flag if all credit limits are updated
 	if (P_SHARED_CREDIT_LIMIT[0] != -1 && NP_SHARED_CREDIT_LIMIT[0] != -1 && CPL_SHARED_CREDIT_LIMIT[0] != -1) {
@@ -86,7 +109,7 @@ void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], in
 			FI2 = true;
 	}
 }
-Flit *DatalinkLayer::addDLLP(Flit *flit, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[])
+Flit* DatalinkLayer::addDLLP(Flit* flit, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[])
 {
 	Dllp* dllp = new Dllp(1, 1, credit[1], credit[0], 0, shared, dllpType, creditType);
 	flit->DLLPPayload = dllp->getBitRep();
