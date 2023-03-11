@@ -54,14 +54,14 @@ TLP TLP::createMemRead32Tlp(int requesterId, int tag, int address, std::bitset<4
  * @param lastDWBE An array of four integers indicating which bytes are enabled in the last DW.
  * @return A TLP object representing the MemWrite32 TLP.
  */
-TLP TLP::createMemWrite32Tlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4>lastDWBE) {
+TLP TLP::createMemWrite32Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4>lastDWBE) {
 	TLP memWrite32Tlp;
 	memWrite32Tlp.header->OHCVector.push_back(new OHCA1(firstDWBE, lastDWBE));
 	memWrite32Tlp.header->TLPtype = TLPType::MemWrite32;
 	memWrite32Tlp.header->lengthInDoubleWord = dataPayloadLengthInDW;
 	memWrite32Tlp.header->nonBase = new AddressRouting32Bit(requesterId, tag, address);
 
-	memWrite32Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
+	memWrite32Tlp.dataPayload = dataPayload;
 	memWrite32Tlp.creditConsumedType = Dllp::CreditType::P;
 	memWrite32Tlp.headerConsumption = 1;
 	memWrite32Tlp.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);
@@ -107,14 +107,14 @@ TLP TLP::createMemRead64Tlp(int requesterId, int tag, long long address, std::bi
  *
  * @return TLP for 64-bit memory write
  */
-TLP TLP::createMemWrite64Tlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int tag, long long address, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE) {
+TLP TLP::createMemWrite64Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, long long address, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE) {
 	TLP memWrite64Tlp;
 	memWrite64Tlp.header->OHCVector.push_back(new OHCA1(firstDWBE, lastDWBE));
 	memWrite64Tlp.header->TLPtype = TLPType::MemWrite64;
 	memWrite64Tlp.header->lengthInDoubleWord = dataPayloadLengthInDW;
 	memWrite64Tlp.header->nonBase = new AddressRouting64Bit(requesterId, tag, address);
 
-	memWrite64Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
+	memWrite64Tlp.dataPayload = dataPayload;
 	memWrite64Tlp.creditConsumedType = Dllp::CreditType::P;
 	memWrite64Tlp.headerConsumption = 1;
 	memWrite64Tlp.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);
@@ -165,14 +165,14 @@ TLP TLP::createConfigRead0Tlp(int requesterId, int tag, int registerNumber, int 
  * @param destinationSegment The destination segment number for routing purposes.
  * @return A TLP object representing the ConfigWrite0 TLP.
  */
-TLP TLP::createConfigWrite0Tlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE, int destinationSegment) {
+TLP TLP::createConfigWrite0Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE, int destinationSegment) {
 	TLP configWrite0Tlp;
 	configWrite0Tlp.header->OHCVector.push_back(new OHCA3(firstDWBE, lastDWBE, destinationSegment));
 	configWrite0Tlp.header->TLPtype = TLPType::ConfigWrite0;
 	configWrite0Tlp.header->lengthInDoubleWord = dataPayloadLengthInDW;
 	configWrite0Tlp.header->nonBase = new ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
 
-	configWrite0Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
+	configWrite0Tlp.dataPayload = dataPayload;
 	configWrite0Tlp.creditConsumedType = Dllp::CreditType::NP;
 	configWrite0Tlp.headerConsumption = 1;
 	configWrite0Tlp.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);
@@ -223,14 +223,14 @@ TLP TLP::createConfigRead1Tlp(int requesterId, int tag, int registerNumber, int 
 * @param destinationSegment The destination segment field of the OHCA3 extension header.
 * @return A TLP object representing the ConfigWrite1 TLP.
 */
-TLP TLP::createConfigWrite1Tlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE, int destinationSegment) {
+TLP TLP::createConfigWrite1Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE, int destinationSegment) {
 	TLP configWrite1Tlp;
 	configWrite1Tlp.header->OHCVector.push_back(new OHCA3(firstDWBE, lastDWBE, destinationSegment));
 	configWrite1Tlp.header->TLPtype = TLPType::ConfigWrite1;
 	configWrite1Tlp.header->lengthInDoubleWord = dataPayloadLengthInDW;
 	configWrite1Tlp.header->nonBase = new ConfigNonHeaderBase(requesterId, tag, registerNumber, busNumber, deviceNumber, functionNumber);
 
-	configWrite1Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
+	configWrite1Tlp.dataPayload = dataPayload;
 	configWrite1Tlp.creditConsumedType = Dllp::CreditType::NP;
 	configWrite1Tlp.headerConsumption = 1;
 	configWrite1Tlp.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);
@@ -288,14 +288,14 @@ TLP TLP::createCplTlp(int requesterId, int tag, int completerId, long byteCount,
  * @return A TLP object representing the CplD TLP with the specified parameters and fields
  */
 
-TLP TLP::createCplDTlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddress, OHCA5::CPLStatus cplStatus) {
+TLP TLP::createCplDTlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddress, OHCA5::CPLStatus cplStatus) {
 	TLP cplDTlp;
 	cplDTlp.header->OHCVector.push_back(new OHCA5(destinationSegment, completerSegment, lowerAddress, cplStatus));
 	cplDTlp.header->TLPtype = TLPType::CplD;
 	cplDTlp.header->lengthInDoubleWord = dataPayloadLengthInDW;
 	cplDTlp.header->nonBase = new CompletionNonHeaderBase(requesterId, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddress.to_ulong());
 
-	cplDTlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
+	cplDTlp.dataPayload = dataPayload;
 	cplDTlp.creditConsumedType = Dllp::CreditType::Cpl;
 	cplDTlp.headerConsumption = 1;
 	cplDTlp.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);
@@ -311,14 +311,14 @@ TLP TLP::createCplDTlp(int dataPayloadLengthInDW, std::string dataPayload, int r
  * @param destinationSegment The destination segment field of the OHCA4 extension header
  * @return A TLP object representing the VendorMsg TLP with the specified parameters and fields
  */
-TLP TLP::createVendorMsgTlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int messageCode, int destinationSegment) {
+TLP TLP::createVendorMsgTlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int messageCode, int destinationSegment) {
 	TLP vendorMsg;
 	vendorMsg.header->OHCVector.push_back(new OHCA4(destinationSegment));
 	vendorMsg.header->TLPtype = TLPType::VendorMsg;
 	vendorMsg.header->lengthInDoubleWord = dataPayloadLengthInDW;
 	vendorMsg.header->nonBase = new MessageNonHeaderBase(requesterId, messageCode);
 
-	vendorMsg.dataPayload = boost::dynamic_bitset<>(dataPayload);
+	vendorMsg.dataPayload = dataPayload;
 	vendorMsg.creditConsumedType = Dllp::CreditType::P;
 	vendorMsg.headerConsumption = 1;
 	vendorMsg.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);

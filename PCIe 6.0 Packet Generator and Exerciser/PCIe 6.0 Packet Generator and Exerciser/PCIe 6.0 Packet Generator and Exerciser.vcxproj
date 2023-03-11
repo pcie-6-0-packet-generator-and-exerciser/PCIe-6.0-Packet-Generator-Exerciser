@@ -108,7 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="layers\datalink.h" />
-    <ClInclude Include="layers\tlp.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\sequence.h" />
     <ClInclude Include="utils\non_header_base.h" />
