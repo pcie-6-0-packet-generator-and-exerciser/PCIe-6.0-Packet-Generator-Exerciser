@@ -10,7 +10,7 @@ namespace Ui
         Q_OBJECT
 
     public:
-        ContentWidget(QWidget* parent = nullptr);
+        explicit ContentWidget(QWidget* parent = nullptr);
         ~ContentWidget();
     private:
         void createHeader();
