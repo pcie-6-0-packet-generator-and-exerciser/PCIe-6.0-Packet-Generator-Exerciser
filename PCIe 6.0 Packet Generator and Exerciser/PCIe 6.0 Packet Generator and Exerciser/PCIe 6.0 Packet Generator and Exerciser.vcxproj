@@ -110,7 +110,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="layers\datalink.h" />
-    <ClInclude Include="layers\tlp.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\sequence.h" />
     <QtMoc Include="sequence_browser.h" />

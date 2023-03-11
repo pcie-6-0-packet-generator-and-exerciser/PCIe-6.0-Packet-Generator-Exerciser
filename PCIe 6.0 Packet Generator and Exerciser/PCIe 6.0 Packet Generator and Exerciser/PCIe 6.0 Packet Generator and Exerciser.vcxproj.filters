@@ -126,9 +126,6 @@
     <ClInclude Include="layers\datalink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="layers\tlp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="content_widget.h">
