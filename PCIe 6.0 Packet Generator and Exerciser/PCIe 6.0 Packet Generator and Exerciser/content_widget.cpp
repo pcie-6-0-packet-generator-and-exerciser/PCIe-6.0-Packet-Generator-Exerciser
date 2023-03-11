@@ -11,6 +11,7 @@
 namespace {
 	constexpr char headerFrameProperty[] = "headerFrame";
 	constexpr char centralTitleProperty[] = "centralTitle";
+	constexpr char widgetTitleProperty[] = "widgetTitle";
 }
 using namespace Ui;
 
@@ -48,32 +49,49 @@ void ContentWidget::createBody()
 	QHBoxLayout* bodyLayout = new QHBoxLayout;
 	bodyLayout->setContentsMargins(20, 20, 20, 20);
 	bodyLayout->setSpacing(3);	
-	//for type browser
-	TypeBrowser* typeBrowser = new TypeBrowser(body_);
 	
+	//type browser
+	QVBoxLayout* typeLayout = new QVBoxLayout;
+	typeLayout->setContentsMargins(5, 5, 5, 5);
+	typeLayout->setSpacing(10);
 
+	QLabel* typeLabel = new QLabel("Types Browser", body_);
+	typeLabel->setProperty(::widgetTitleProperty, true);
+	typeLabel->setMinimumWidth(400);
+	typeLabel->setAlignment(Qt::AlignHCenter | Qt::AlignCenter);
+	typeLayout->addWidget(typeLabel, 1, Qt::AlignHCenter);
+	typeLayout->setStretchFactor(typeLabel, 1);
 
+	TypeBrowser* typeBrowser = new TypeBrowser(body_);
 	QScrollBar* typeSideBar = new QScrollBar(Qt::Vertical, nullptr);
-
 	QScrollArea* typeScrollArea = new QScrollArea;
+	typeScrollArea->setWidget(typeBrowser);
 	typeScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	//typeScrollArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-	typeScrollArea->setBackgroundRole(QPalette::Dark);
+
 	typeScrollArea->setWidgetResizable(true);
 	typeScrollArea->setVerticalScrollBar(typeSideBar);
-	typeScrollArea->setWidget(typeBrowser);
-	bodyLayout->addWidget(typeScrollArea);
-	bodyLayout->setStretchFactor(typeScrollArea, 1);
+	typeScrollArea->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+	typeLayout->addWidget(typeScrollArea);
+	typeLayout->setStretchFactor(typeScrollArea, 10);
+	bodyLayout->addLayout(typeLayout);
+	bodyLayout->setStretchFactor(typeLayout, 1);
+
+	//sequence browser
+	QVBoxLayout* sequenceLayout = new QVBoxLayout;
+	sequenceLayout->setContentsMargins(5, 5, 5, 5);
+	sequenceLayout->setSpacing(10);
+
+	QLabel* sequenceLabel = new QLabel("Sequence Browser", body_);
+	sequenceLabel->setProperty(::widgetTitleProperty, true);
+	sequenceLabel->setMinimumWidth(400);
+	sequenceLabel->setAlignment(Qt::AlignHCenter | Qt::AlignCenter);
+	sequenceLayout->addWidget(sequenceLabel, 1, Qt::AlignHCenter);
+	sequenceLayout->setStretchFactor(sequenceLabel, 1);
+
+
 	SequenceBrowser* sequenceBrowser = new SequenceBrowser(body_);
-	
-
 	QScrollBar* sequenceSideBar = new QScrollBar(Qt::Vertical, nullptr);
-
 	QScrollArea* sequenceScrollArea = new QScrollArea;
-	/*QVBoxLayout* sequenceLayout = new QVBoxLayout;
-	sequenceLayout->setContentsMargins(10, 10, 10, 10);
-	sequenceLayout->addWidget(sequenceBrowser);
-	*///sequenceScrollArea->setLayout(sequenceLayout);
 	sequenceScrollArea->setWidget(sequenceBrowser);
 	sequenceScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	
@@ -82,14 +100,12 @@ void ContentWidget::createBody()
 
 	sequenceScrollArea->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
-	bodyLayout->addWidget(sequenceScrollArea);
+	sequenceLayout->addWidget(sequenceScrollArea);
+	sequenceLayout->setStretchFactor(sequenceScrollArea, 10);
+	bodyLayout->addLayout(sequenceLayout);
+	bodyLayout->setStretchFactor(sequenceLayout, 1);
 	bodyLayout->setStretchFactor(sequenceScrollArea, 1);
 
-	
-
-	/*QWidget* spacer = new QWidget(body_);
-	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	bodyLayout->addWidget(spacer);*/
 	body_->setLayout(bodyLayout);
 }
 

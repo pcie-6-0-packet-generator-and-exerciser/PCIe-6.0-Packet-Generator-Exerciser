@@ -9,16 +9,17 @@
 #include <QDropEvent>
 #include <QMimeData>
 
-
+namespace {
+	constexpr char transparentBackgroundProperty[] = "transparentBackground";
+}
 using namespace Ui;
 SequenceBrowser::SequenceBrowser(QWidget* parent)
 	: QFrame(parent)
 {	
 	setAcceptDrops(true);
 	cardLayout_ = new QVBoxLayout;
-	//setMinimumSize(500, 700);
-	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-	
+	setProperty(::transparentBackgroundProperty, true);
+	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);	
 	createCardsSequence();
 	manageLayout();
 }
@@ -44,10 +45,10 @@ void SequenceBrowser::dropEvent(QDropEvent* event)
 
 	cards_.push_back(card);
 	card->setParent(this);
-	cardLayout_->addWidget(card, 0, Qt::AlignHCenter);
+	cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
 		
-		event->acceptProposedAction();
-	//}
+	event->acceptProposedAction();
+	
 }
 
 void SequenceBrowser::createCardsSequence() {
@@ -69,9 +70,6 @@ void SequenceBrowser::manageLayout()
 	cardLayout_->setSpacing(10);
 	cardLayout_->setSizeConstraint(QLayout::SetMinimumSize);
 	std::list<TLPCard>::iterator it;
-	for (auto card : cards_) {
-		cardLayout_->addWidget(card, 9, Qt::AlignHCenter);
-	}
 	//contentLayout->addLayout(cardLayout_);
 	setLayout(cardLayout_);
 
