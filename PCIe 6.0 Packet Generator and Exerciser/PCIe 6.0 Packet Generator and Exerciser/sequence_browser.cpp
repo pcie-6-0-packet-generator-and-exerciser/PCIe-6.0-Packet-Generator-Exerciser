@@ -21,15 +21,10 @@ SequenceBrowser::~SequenceBrowser()
 
 }
 void SequenceBrowser::createCardsSequence() {
-	
-
 	for (int i = 0; i < 40; ++i) {
 		TLPCard* card = new TLPCard(this, "Card " + QString::number(i));
-		card->setFixedSize(50, 100);
 		cards_.push_back(card);
-		
 	}
-	
 }
 
 
