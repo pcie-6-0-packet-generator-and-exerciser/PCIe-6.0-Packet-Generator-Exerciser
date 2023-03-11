@@ -24,6 +24,7 @@ ContentWidget::ContentWidget(QWidget* parent)
 
 ContentWidget::~ContentWidget()
 {
+
 }
 
 void ContentWidget::createHeader() 
@@ -45,42 +46,47 @@ void ContentWidget::createBody()
 {
 	body_ = new QFrame(this);
 	QHBoxLayout* bodyLayout = new QHBoxLayout;
-	bodyLayout->setContentsMargins(5, 15, 5, 15);
+	bodyLayout->setContentsMargins(20, 20, 20, 20);
 	bodyLayout->setSpacing(3);	
 	//for type browser
 	TypeBrowser* typeBrowser = new TypeBrowser(body_);
 	
 
 
-	QScrollBar* sideBar2 = new QScrollBar(Qt::Vertical, nullptr);
+	QScrollBar* typeSideBar = new QScrollBar(Qt::Vertical, nullptr);
 
-	QScrollArea* scrollAreaType = new QScrollArea;
-	scrollAreaType->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	scrollAreaType->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-	scrollAreaType->setBackgroundRole(QPalette::Dark);
-
-	scrollAreaType->setVerticalScrollBar(sideBar2);
-	scrollAreaType->setWidget(typeBrowser);
-	bodyLayout->addWidget(scrollAreaType);
+	QScrollArea* typeScrollArea = new QScrollArea;
+	typeScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	typeScrollArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+	typeScrollArea->setBackgroundRole(QPalette::Dark);
+	typeScrollArea->setWidgetResizable(false);
+	typeScrollArea->setVerticalScrollBar(typeSideBar);
+	typeScrollArea->setWidget(typeBrowser);
+	bodyLayout->addWidget(typeScrollArea);
+	bodyLayout->setStretchFactor(typeScrollArea, 1);
 	SequenceBrowser* sequenceBrowser = new SequenceBrowser(body_);
 	
 
-	QScrollBar* sideBar = new QScrollBar(Qt::Vertical, nullptr);
+	QScrollBar* sequenceSideBar = new QScrollBar(Qt::Vertical, nullptr);
 
-	QScrollArea* scrollArea = new QScrollArea;
-	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	scrollArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-	scrollArea->setBackgroundRole(QPalette::Dark);
+	QScrollArea* sequenceScrollArea = new QScrollArea;
+	sequenceScrollArea->setMinimumSize(500, 700);
+	sequenceScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	//sequenceScrollArea->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed)
+	sequenceScrollArea->setBackgroundRole(QPalette::Dark);
+	sequenceScrollArea->setWidgetResizable(true);
+	sequenceScrollArea->setVerticalScrollBar(sequenceSideBar);
+	sequenceScrollArea->setWidget(sequenceBrowser);
+	sequenceBrowser->resize(500, 700);
 
-	scrollArea->setVerticalScrollBar(sideBar);
-	scrollArea->setWidget(sequenceBrowser);
-	bodyLayout->addWidget(scrollArea);
+	bodyLayout->addWidget(sequenceScrollArea);
+	bodyLayout->setStretchFactor(sequenceScrollArea, 1);
 
 	
 
-	QWidget* spacer = new QWidget(body_);
+	/*QWidget* spacer = new QWidget(body_);
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	bodyLayout->addWidget(spacer);
+	bodyLayout->addWidget(spacer);*/
 	body_->setLayout(bodyLayout);
 }
 

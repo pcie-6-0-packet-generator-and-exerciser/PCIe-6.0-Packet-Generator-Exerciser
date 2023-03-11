@@ -22,3 +22,7 @@ QLabel{
 	color: black;
 	font-size: 12px;
 }
+
+QScrollArea{
+	background-color: transparent;
+}

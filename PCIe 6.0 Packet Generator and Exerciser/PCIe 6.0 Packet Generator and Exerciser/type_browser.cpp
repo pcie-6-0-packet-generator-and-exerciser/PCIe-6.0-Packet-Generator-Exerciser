@@ -15,10 +15,11 @@ TypeBrowser::TypeBrowser(QWidget* parent)
 	: QFrame(parent)
 {
 	setAcceptDrops(true);
-	setFixedWidth(500);
-	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+	setMinimumSize(500, 700);
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	createCardsSequence();
 	manageLayout();
+	setStyleSheet("border: solid red 10px;");
 }
 
 TypeBrowser::~TypeBrowser()
@@ -54,21 +55,12 @@ void TypeBrowser::createCardsSequence() {
 
 	}*/
 	TLPCard* card = new TLPCard(this, "mem read 32b");
-	//card->tlp = new TLP();
-	/*card->tlp->header = new TLPHeader();
-	card->tlp->header->nonBase = new AddressRouting32Bit(5,10);
-	card->tlp->header->TLPtype = TLPType::MemRead32;*/
 	card->setFixedSize(100, 100);
 	cards_.push_back(card);
-	TLPCard* card2 = new TLPCard(this, "mem read 64b");
-	//card->tlp = new TLP();
-	/*card->tlp->header = new TLPHeader();
-	card->tlp->header->nonBase = new AddressRouting32Bit(5,10);
-	card->tlp->header->TLPtype = TLPType::MemRead32;*/
-	card->setFixedSize(100, 100);
-	cards_.push_back(card2);
 
-	
+	TLPCard* card2 = new TLPCard(this, "mem read 64b");
+	card2->setFixedSize(100, 100);
+	cards_.push_back(card2);
 }
 
 
@@ -77,24 +69,17 @@ void TypeBrowser::manageLayout()
 	QHBoxLayout* contentLayout = new QHBoxLayout;
 	contentLayout->setContentsMargins(0, 0, 0, 0);
 	contentLayout->setSpacing(0);
-	//QScrollBar* sideBar = new QScrollBar(Qt::Vertical, this);
-	//contentLayout->addWidget(sideBar);
-	//contentLayout->addWidget(new TLPCard(this, "Card "));
+	contentLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+
 	QVBoxLayout* cardLayout = new QVBoxLayout;
 	cardLayout->setContentsMargins(0, 0, 0, 0);
 	cardLayout->setSpacing(10);
-	//contentLayout->addWidget(textLabel_, Qt::AlignCenter);
+
 	std::list<TLPCard>::iterator it;
 	for (auto card : cards_) {
 		cardLayout->addWidget(card);
 	}
-	/*QScrollArea* scrollArea = new QScrollArea;
-	scrollArea->setFixedSize(200, 400);
-	scrollArea->setBackgroundRole(QPalette::Dark);
-	scrollArea->setWidget(this);*/
-
-	/*scrollarea->setverticalscrollbar(sidebar);*/
-	//setLayout(cardLayout);
+	
 	contentLayout->addLayout(cardLayout);
 	setLayout(contentLayout);
 

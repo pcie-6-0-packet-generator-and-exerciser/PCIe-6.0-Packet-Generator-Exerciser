@@ -18,7 +18,7 @@ namespace Ui
         void dropEvent(QDropEvent* event);
         void dragEnterEvent(QDragEnterEvent* event);
     private:
-        QVBoxLayout* cardLayout;
+        QVBoxLayout* cardLayout_;
         std::list<TLPCard*> cards_;
     };
 
