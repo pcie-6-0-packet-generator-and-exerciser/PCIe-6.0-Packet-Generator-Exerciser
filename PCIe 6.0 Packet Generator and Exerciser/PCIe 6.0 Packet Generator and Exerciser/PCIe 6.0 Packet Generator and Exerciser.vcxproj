@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{325867CC-7275-42C1-BB3E-F92DAC1317BF}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.19041.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
@@ -83,6 +83,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Endpoint\configuration_algorithm_classes\completion_construction_algorithms.cpp" />
+    <ClCompile Include="Endpoint\configuration_algorithm_classes\tlp_constructor.cpp" />
+    <ClCompile Include="Endpoint\configuration_classes\configuration.cpp" />
+    <ClCompile Include="Endpoint\configuration_classes\configuration_space.cpp" />
+    <ClCompile Include="Endpoint\configuration_classes\pcie_capability.cpp" />
+    <ClCompile Include="Endpoint\configuration_visitor_classes\configuration_read_visitor.cpp" />
+    <ClCompile Include="Endpoint\configuration_visitor_classes\configuration_request_handler.cpp" />
+    <ClCompile Include="Endpoint\configuration_visitor_classes\configuration_visitor.cpp" />
+    <ClCompile Include="Endpoint\configuration_visitor_classes\configuration_write_visitor.cpp" />
+    <ClCompile Include="Endpoint\controller_class\configuration_controller.cpp" />
+    <ClCompile Include="Endpoint\register_class\register.cpp" />
     <ClCompile Include="layers\transaction_layer.cpp" />
     <ClCompile Include="layers\datalink.cpp" />
     <ClCompile Include="layers\flit.cpp" />
@@ -105,6 +116,17 @@
     <ResourceCompile Include="PCIe 6.0 Packet Generator and Exerciser.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Endpoint\configuration_algorithm_classes\completion_construction_algorithms.h" />
+    <ClInclude Include="Endpoint\configuration_algorithm_classes\tlp_constructor.h" />
+    <ClInclude Include="Endpoint\configuration_classes\configuration.h" />
+    <ClInclude Include="Endpoint\configuration_classes\configuration_space.h" />
+    <ClInclude Include="Endpoint\configuration_classes\pcie_capability.h" />
+    <ClInclude Include="Endpoint\configuration_visitor_classes\configuration_read_visitor.h" />
+    <ClInclude Include="Endpoint\configuration_visitor_classes\configuration_request_handler.h" />
+    <ClInclude Include="Endpoint\configuration_visitor_classes\configuration_visitor.h" />
+    <ClInclude Include="Endpoint\configuration_visitor_classes\configuration_write_visitor.h" />
+    <ClInclude Include="Endpoint\controller_class\configuration_controller.h" />
+    <ClInclude Include="Endpoint\register_class\register.h" />
     <ClInclude Include="layers\datalink.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\sequence.h" />
