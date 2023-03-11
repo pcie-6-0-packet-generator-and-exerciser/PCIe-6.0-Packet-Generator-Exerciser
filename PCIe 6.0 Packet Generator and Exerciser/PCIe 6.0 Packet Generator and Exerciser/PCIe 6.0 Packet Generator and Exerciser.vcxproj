@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="layers\transaction_layer.cpp" />
     <ClCompile Include="layers\datalink.cpp" />
     <ClCompile Include="layers\flit.cpp" />
     <ClCompile Include="utils\non_header_base.cpp" />
@@ -113,6 +114,7 @@
     <QtMoc Include="content_widget.h" />
     <ClInclude Include="utils\ohc.h" />
     <ClInclude Include="layers\globals.h" />
+    <ClInclude Include="transaction_layer.h" />
     <ClInclude Include="utils\dllp.h" />
     <ClInclude Include="utils\queue_wrapper.h" />
   </ItemGroup>
