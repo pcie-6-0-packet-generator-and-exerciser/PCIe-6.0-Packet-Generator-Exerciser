@@ -2,9 +2,9 @@
 #include "endpoint_app.h"
 
 
-EndpointApp::EndpointApp() {
+EndpointApp::EndpointApp(uint64_t hostMemorySize, uint64_t deviceMemorySize) {
     pcieController_ = std::make_unique<PcieController>();
-    memoryMap_ = std::make_unique<MemoryMap>();
+    memoryMap_ = std::make_unique<MemoryMap>(hostMemorySize, deviceMemorySize);
     configurationSpace_ = std::make_unique<ConfigurationSpace>();
 }
 

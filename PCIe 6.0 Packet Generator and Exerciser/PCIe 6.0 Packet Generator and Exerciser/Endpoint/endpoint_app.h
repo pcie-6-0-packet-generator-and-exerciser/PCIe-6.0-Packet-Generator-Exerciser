@@ -10,8 +10,7 @@
 
 class EndpointApp {
 public:
-    EndpointApp();
-    //~EndpointApp();
+    EndpointApp(uint64_t hostMemorySize, uint64_t deviceMemorySize);
     void receivePacket(TLP packet);
     void sendPacket(TLP packet);
 private:
