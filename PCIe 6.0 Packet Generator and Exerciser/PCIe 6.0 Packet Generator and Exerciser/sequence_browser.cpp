@@ -16,8 +16,8 @@ SequenceBrowser::SequenceBrowser(QWidget* parent)
 {	
 	setAcceptDrops(true);
 	cardLayout_ = new QVBoxLayout;
-	setMinimumSize(500, 700);
-	//setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	//setMinimumSize(500, 700);
+	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 	
 	createCardsSequence();
 	manageLayout();
@@ -41,11 +41,10 @@ void SequenceBrowser::dropEvent(QDropEvent* event)
 	
 	//place holder
 	TLPCard* card = new TLPCard(this, "mem read 32b");
-	
-	card->setFixedSize(100, 100);
+
 	cards_.push_back(card);
 	card->setParent(this);
-	cardLayout_->addWidget(card);
+	cardLayout_->addWidget(card, 0, Qt::AlignHCenter);
 		
 		event->acceptProposedAction();
 	//}
@@ -53,29 +52,28 @@ void SequenceBrowser::dropEvent(QDropEvent* event)
 
 void SequenceBrowser::createCardsSequence() {
 	//place holder
-	TLPCard* card = new TLPCard(this, "Card ");
-	card->setFixedSize(50, 100);
-	cards_.push_back(card);
+	/*TLPCard* card = new TLPCard(this, "Card ");
+	cards_.push_back(card);*/
 	
 }
 
 
 void SequenceBrowser::manageLayout() 
 {
-	QHBoxLayout* contentLayout = new QHBoxLayout;
+	/*QHBoxLayout* contentLayout = new QHBoxLayout;
 	contentLayout->setContentsMargins(0, 0, 0, 0);
 	contentLayout->setSpacing(0);
-	contentLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+	contentLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);*/
 
 	cardLayout_->setContentsMargins(5, 5, 5, 5);
 	cardLayout_->setSpacing(10);
-	
+	cardLayout_->setSizeConstraint(QLayout::SetMinimumSize);
 	std::list<TLPCard>::iterator it;
 	for (auto card : cards_) {
-		cardLayout_->addWidget(card);
+		cardLayout_->addWidget(card, 9, Qt::AlignHCenter);
 	}
-	contentLayout->addLayout(cardLayout_);
-	setLayout(contentLayout);
+	//contentLayout->addLayout(cardLayout_);
+	setLayout(cardLayout_);
 
 	QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect;
 	effect->setBlurRadius(30);

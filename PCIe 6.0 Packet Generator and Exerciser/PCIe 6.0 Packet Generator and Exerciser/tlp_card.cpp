@@ -59,6 +59,6 @@ void TLPCard::manageLayout() {
 	QVBoxLayout* contentLayout = new QVBoxLayout;
 	contentLayout->setContentsMargins(0, 0, 0, 0);
 	contentLayout->setSpacing(0);
-	contentLayout->addWidget(textLabel_, Qt::AlignCenter);
+	contentLayout->addWidget(textLabel_, 0, Qt::AlignCenter | Qt::AlignHCenter);
 	setLayout(contentLayout);
 }
