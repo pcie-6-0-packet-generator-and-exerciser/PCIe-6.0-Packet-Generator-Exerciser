@@ -86,7 +86,6 @@
   <ItemGroup>
     <ClCompile Include="layers\transaction_layer.cpp" />
     <ClCompile Include="layers\datalink.cpp" />
-    <ClCompile Include="layers\tlp.cpp" />
     <ClCompile Include="layers\flit.cpp" />
     <ClCompile Include="sequence_browser.cpp" />
     <ClCompile Include="tlp_card.cpp" />
