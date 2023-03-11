@@ -11,7 +11,7 @@ public:
 	QueueWrapper<Flit> listenOn;
 	QueueWrapper<Flit> sendOn;
 
-	void receiveInit(void);
-	void receiveFlit(void);
+	void receiveInit(Flit flit);
+	void receiveFlit(Flit flit);
 };
 
