@@ -9,7 +9,7 @@
  * @param FI1 First indication (FI1) flag for credit update
  * @param FI2 Second indication (FI2) flag for credit update
 */
-void DatalinkLayer::updateCreditLimit(Flit flit, int(&P_SHARED_CREDIT_LIMIT)[2], int(&NP_SHARED_CREDIT_LIMIT)[2], int(&CPL_SHARED_CREDIT_LIMIT)[2], bool& FI1, bool& FI2) {
+void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], bool& FI1, bool& FI2) {
 	// Static variables to store the flags and state across function calls all initialized to false
 	static bool discard, sharedPFC2Flag, sharedNPFC2Flag, sharedCPLFC2Flag, dedicatedPFC2Flag, dedicatedNPFC2Flag, dedicatedCPLFC2Flag;
 
@@ -81,8 +81,8 @@ void DatalinkLayer::updateCreditLimit(Flit flit, int(&P_SHARED_CREDIT_LIMIT)[2],
 	// Set the FI1 flag if all credit limits are updated
 	if (P_SHARED_CREDIT_LIMIT[0] != -1 && NP_SHARED_CREDIT_LIMIT[0] != -1 && CPL_SHARED_CREDIT_LIMIT[0] != -1) {
 		FI1 = true;
-		// Set the FI2 flag if all expected DLLPs are received
-		if (!FI2 && sharedPFC2Flag && sharedNPFC2Flag && sharedCPLFC2Flag && dedicatedPFC2Flag && dedicatedNPFC2Flag && dedicatedCPLFC2Flag)
+		// Set the FI2 flag if any expected DLLPs are received
+		if (!FI2 && (sharedPFC2Flag || sharedNPFC2Flag || sharedCPLFC2Flag || dedicatedPFC2Flag || dedicatedNPFC2Flag || dedicatedCPLFC2Flag))
 			FI2 = true;
 	}
 }

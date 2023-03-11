@@ -18,6 +18,6 @@ private:
 	Flit *addDLLP(Flit *flit, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]);
   
 public:
-	void updateCreditLimit(Flit flit, int(&P_SHARED_CREDIT_LIMIT)[2], int(&NP_SHARED_CREDIT_LIMIT)[2], int(&CPL_SHARED_CREDIT_LIMIT)[2], bool& FI1, bool& FI2);
+	void updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], bool& FI1, bool& FI2);
 
 };
