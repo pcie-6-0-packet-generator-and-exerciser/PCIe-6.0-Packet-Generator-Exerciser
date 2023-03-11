@@ -6,8 +6,37 @@ QFrame[headerFrame = true] {
 	background-color: #4fc1e9;
 }
 
+QFrame[tlpCard = true]{
+	background-color: #e4e8f0;
+	border: 2px solid black;
+	border-radius: 10px;
+	padding: 2px;
+}
+
+QFrame[transparentBackground = true]{
+	background-color: transparent;
+
+}
 QLabel[centralTitle = true] {
 	color: white;
 	font-size: 20px;
 	font-weight: bold
+}
+QLabel[widgetTitle = true] {
+	background-color: #caecf8;
+	color: black;
+	font-size: 16px;
+	font-weight: bold;
+	border: 1px solid black;
+	border-radius: 5px
+
+}
+
+QLabel{
+	color: black;
+	font-size: 12px;
+}
+
+QScrollArea{
+	background-color: transparent;
 }

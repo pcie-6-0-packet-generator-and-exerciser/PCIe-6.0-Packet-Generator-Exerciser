@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{325867CC-7275-42C1-BB3E-F92DAC1317BF}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.19041.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.19041.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
@@ -88,6 +88,9 @@
     <ClCompile Include="layers\datalink.cpp" />
     <ClCompile Include="layers\tlp.cpp" />
     <ClCompile Include="layers\flit.cpp" />
+    <ClCompile Include="sequence_browser.cpp" />
+    <ClCompile Include="tlp_card.cpp" />
+    <ClCompile Include="type_browser.cpp" />
     <ClCompile Include="utils\non_header_base.cpp" />
     <ClCompile Include="content_widget.cpp" />
     <ClCompile Include="utils\ohc.cpp" />
@@ -111,6 +114,9 @@
     <ClInclude Include="layers\tlp.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\sequence.h" />
+    <QtMoc Include="sequence_browser.h" />
+    <QtMoc Include="tlp_card.h" />
+    <QtMoc Include="type_browser.h" />
     <ClInclude Include="utils\non_header_base.h" />
     <ClInclude Include="utils\tlp.h" />
     <ClInclude Include="utils\tlp_header.h" />

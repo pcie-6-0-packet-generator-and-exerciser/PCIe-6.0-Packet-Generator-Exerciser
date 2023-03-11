@@ -76,6 +76,15 @@
     <ClCompile Include="layers\tlp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sequence_browser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tlp_card.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="type_browser.cpp">
+    <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="layers\transaction_layer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -123,6 +132,15 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="content_widget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="sequence_browser.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="tlp_card.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="type_browser.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
