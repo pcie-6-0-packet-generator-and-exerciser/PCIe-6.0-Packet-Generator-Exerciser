@@ -84,6 +84,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="layers\flit.cpp" />
+    <ClCompile Include="layers\receiver.cpp" />
     <ClCompile Include="utils\non_header_base.cpp" />
     <ClCompile Include="content_widget.cpp" />
     <ClCompile Include="utils\ohc.cpp" />
@@ -104,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="layers\flit.h" />
+    <ClInclude Include="layers\receiver.h" />
     <ClInclude Include="layers\sequence.h" />
     <ClInclude Include="utils\non_header_base.h" />
     <ClInclude Include="utils\tlp.h" />
