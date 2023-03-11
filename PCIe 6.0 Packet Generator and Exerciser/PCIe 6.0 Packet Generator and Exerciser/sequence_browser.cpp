@@ -17,6 +17,7 @@ SequenceBrowser::SequenceBrowser(QWidget* parent)
 	setFixedWidth(500);
 	setAcceptDrops(true);
 	cardLayout = new QVBoxLayout;
+
 	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	createCardsSequence();
 	manageLayout();
@@ -32,11 +33,42 @@ SequenceBrowser::~SequenceBrowser()
 //	event->acceptProposedAction();
 //}
 
-
-
+// In the TypeBrowser class:
+void SequenceBrowser::dragEnterEvent(QDragEnterEvent* event)
+{
+	if (event->mimeData()->hasFormat("application/x-tlp"))
+		event->acceptProposedAction();
+}
 
 void SequenceBrowser::dropEvent(QDropEvent* event)
 {
+	QByteArray data = event->mimeData()->data("application/x-tlp");
+	QDataStream stream(&data, QIODevice::ReadOnly);
+	//quintptr ptr;
+	//stream >> ptr;
+	//TLPCard* card = qobject_cast<TLPCard*>(reinterpret_cast<QObject*>(ptr));
+	/*if (TLPCard* card = qobject_cast<TLPCard*>(reinterpret_cast<QObject*>(ptr)))
+	{*/
+		// add the TLPCard to the TypeBrowser layout
+	//place holder
+	TLPCard* card = new TLPCard(this, "mem read 32b");
+	//card->tlp = new TLP();
+	/*card->tlp->header = new TLPHeader();
+	card->tlp->header->nonBase = new AddressRouting32Bit(5,10);
+	card->tlp->header->TLPtype = TLPType::MemRead32;*/
+	card->setFixedSize(100, 100);
+	cards_.push_back(card);
+		card->setParent(this);
+		cardLayout->addWidget(card);
+		
+		event->acceptProposedAction();
+	//}
+}
+
+
+
+//void SequenceBrowser::dropEvent(QDropEvent* event)
+//{
 	//QByteArray data = event->mimeData()->data("application/x-tlpcard");
 	//QDataStream stream(&data, QIODevice::ReadOnly);
 
@@ -47,8 +79,8 @@ void SequenceBrowser::dropEvent(QDropEvent* event)
 	// ...
 	//cards_.push_back(cardWidget);
 	//cardLayout->addWidget(cardWidget);
-	event->acceptProposedAction();
-}
+	/*event->acceptProposedAction();
+}*/
 
 void SequenceBrowser::createCardsSequence() {
 	
@@ -59,6 +91,9 @@ void SequenceBrowser::createCardsSequence() {
 		cards_.push_back(card);
 		
 	}*/
+	TLPCard* card = new TLPCard(this, "Card ");
+	card->setFixedSize(50, 100);
+	cards_.push_back(card);
 	
 }
 
@@ -76,6 +111,7 @@ void SequenceBrowser::manageLayout()
 	
 	cardLayout->setContentsMargins(0, 0, 0, 0);
 	cardLayout->setSpacing(10);
+	
 	//contentLayout->addWidget(textLabel_, Qt::AlignCenter);
 	std::list<TLPCard>::iterator it;
 	for (auto card : cards_) {

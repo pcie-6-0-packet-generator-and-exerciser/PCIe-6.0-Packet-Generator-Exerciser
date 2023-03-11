@@ -4,6 +4,8 @@
 #include <QMouseEvent>
 #include <QMimeData>
 #include <QDrag>
+#include <iostream>
+
 
 namespace
 {
@@ -27,15 +29,27 @@ TLPCard::~TLPCard()
 	//delete tlp;
 	delete textLabel_;
 }
+
+
 void TLPCard::mouseMoveEvent(QMouseEvent* event) {
-	if ((event->buttons() & Qt::LeftButton)) {
-		QMimeData* mime = new QMimeData;
-		mime->data("application/x-tlpcard");
-		QDrag* drag = new QDrag(this);
-		drag->setMimeData(mime);
-		drag->setHotSpot(event->pos());
-		drag->exec(Qt::MoveAction);
-	}
+//	if ((event->buttons() & Qt::LeftButton)) {
+//		QMimeData* mime = new QMimeData;
+//		mime->data("application/x-tlpcard");
+//		QDrag* drag = new QDrag(this);
+//		drag->setMimeData(mime);
+//		drag->setHotSpot(event->pos());
+//		drag->exec(Qt::MoveAction);
+//	}
+
+	QDrag* drag = new QDrag(this);
+	QMimeData* mimeData = new QMimeData;
+	QByteArray data;
+	QDataStream stream(&data, QIODevice::WriteOnly);
+	//stream << static_cast<quintptr>(this);
+	//stream << this;
+	mimeData->setData("application/x-tlp", data);
+	drag->setMimeData(mimeData);
+	drag->exec(Qt::CopyAction);
 }
 
 

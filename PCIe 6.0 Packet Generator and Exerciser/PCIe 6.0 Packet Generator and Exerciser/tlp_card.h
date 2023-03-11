@@ -17,6 +17,7 @@ namespace Ui
         TLP* tlp;
     private:
         void mouseMoveEvent(QMouseEvent* event);
+        //void  mousePressEvent(QMouseEvent* event);
         void manageLayout();
        
     private:

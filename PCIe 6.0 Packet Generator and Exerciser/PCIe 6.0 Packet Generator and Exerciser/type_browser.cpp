@@ -36,6 +36,10 @@ void TypeBrowser::dragEnterEvent(QDragEnterEvent* event)
 //	event->acceptProposedAction();
 //
 //}
+// 
+
+
+
 
 
 
