@@ -23,15 +23,15 @@ public:
 		this->dataConsumption = 0;
 	}
 	static TLP createMemRead32Tlp(int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE);
-	static TLP createMemWrite32Tlp(int dataPayloadLength, std::string dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4>lastDWBE);
+	static TLP createMemWrite32Tlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4>lastDWBE);
 	static TLP createMemRead64Tlp(int requesterId, int tag, long long address, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE);
-	static TLP createMemWrite64Tlp(int dataPayloadLength, std::string dataPayload, int requesterId, int tag, long long address, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE);
+	static TLP createMemWrite64Tlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int tag, long long address, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE);
 	static TLP createConfigRead0Tlp(int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE, int destinationSegment);
-	static TLP createConfigWrite0Tlp(int dataPayloadLength, std::string dataPayload, int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE, int destinationSegment);
+	static TLP createConfigWrite0Tlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE, int destinationSegment);
 	static TLP createConfigRead1Tlp(int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE, int destinationSegment);
-	static TLP createConfigWrite1Tlp(int dataPayloadLength, std::string dataPayload, int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE, int destinationSegment);
+	static TLP createConfigWrite1Tlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE, int destinationSegment);
 	static TLP createCplTlp(int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddress, OHCA5::CPLStatus cplStatus);
-	static TLP createCplDTlp(int dataPayloadLength, std::string dataPayload, int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddress, OHCA5::CPLStatus cplStatus);
-	static TLP createVendorMsgTlp(int dataPayloadLength, std::string dataPayload, int requesterId, int messageCode, int destinationSegment);
+	static TLP createCplDTlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddress, OHCA5::CPLStatus cplStatus);
+	static TLP createVendorMsgTlp(int dataPayloadLengthInDW, std::string dataPayload, int requesterId, int messageCode, int destinationSegment);
 
 };
