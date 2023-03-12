@@ -1,5 +1,11 @@
 #pragma once
 
+#include <memory>
+#include "..\..\utils\tlp.h"
+#include "boost/dynamic_bitset.hpp"
+
+using namespace std;
+
 enum Register_Type
 {
     HARDWARE_INITIALIZED,
@@ -59,25 +65,21 @@ private:
     Register* next_;
 
 public:
-    Register(unsigned int v, Register_Name n, Register_Type t, unsigned int i, unsigned int m);
+    Register(unsigned int value, Register_Name name, Register_Type type, unsigned int initialValue, unsigned int mask);
 
     void setRegisterValue(unsigned int v);
 
-    void setRegisterName(Register_Name n);
-
-    void setRegisterType(Register_Type t);
-
-    void setNext(Register* n);
-
-    unsigned int getRegisterValue();
+    void setRegisterNext(Register* n);
 
     Register_Name getRegisterName();
 
     Register_Type getRegisterType();
 
-    unsigned int getInitialValue();
+    unsigned int getRegisterValue(); // For getting the current register value
 
-    unsigned int getMask();
+    unsigned int getRegisterInitialValue(); // For getting the initial register value
 
-    Register* getNext();
+    unsigned int getRegisterMask();
+
+    Register* getRegisterNext();
 };
