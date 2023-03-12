@@ -1,8 +1,7 @@
 #pragma once
 
 #include "configuration.h"
-
-class ConfigurationVisitor;
+#include "..\configuration_visitor_classes\configuration_visitor.h"
 
 /* Singleton Class */
 class ConfigurationSpace: public Configuration

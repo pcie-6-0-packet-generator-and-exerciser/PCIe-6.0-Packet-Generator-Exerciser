@@ -93,8 +93,7 @@ ConfigurationSpace::~ConfigurationSpace()
  */
 unsigned int ConfigurationSpace::accept(shared_ptr<ConfigurationVisitor> visitor)
 {
-    //return visitor->visitConfigurationSpace(this);
-    return 0;
+    return visitor->visitConfigurationSpace(this);
 }
 
 /**

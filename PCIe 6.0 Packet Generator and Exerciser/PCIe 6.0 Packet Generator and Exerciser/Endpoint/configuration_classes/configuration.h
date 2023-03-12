@@ -1,9 +1,10 @@
 #pragma once
 
-//#include "..\configuration_visitor_classes\configuration_visitor.h"
 #include "..\register_class\register.h"
 
 class ConfigurationVisitor;
+class ConfigurationReadVisitor;
+class ConfigurationWriteVisitor;
 
 class Configuration
 {

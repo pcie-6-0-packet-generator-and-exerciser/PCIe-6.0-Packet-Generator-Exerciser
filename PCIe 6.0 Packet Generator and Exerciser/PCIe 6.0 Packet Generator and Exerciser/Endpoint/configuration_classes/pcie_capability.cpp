@@ -1,7 +1,5 @@
 #include "pcie_capability.h"
 
-class ConfigurationVisitor;
-
 PCIECapability * PCIECapability::pcieCapability = nullptr;
 
 PCIECapability::PCIECapability()
@@ -22,6 +20,8 @@ PCIECapability* PCIECapability::constructPCIECapability()
 
 unsigned int PCIECapability::accept(shared_ptr<ConfigurationVisitor> visitor)
 {
+    /* To be used after making the PCIE Capability structure */
     //return visitor->visitPcieCapabilityStructure(this);
+
     return 0;
 }

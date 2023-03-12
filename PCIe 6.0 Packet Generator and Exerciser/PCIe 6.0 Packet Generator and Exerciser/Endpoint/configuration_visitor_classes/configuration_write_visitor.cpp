@@ -96,8 +96,8 @@ unsigned int ConfigurationWriteVisitor::visitConfigurationSpace(ConfigurationSpa
     return 1; // The Write is done Successfully
 }
 
-unsigned int ConfigurationWriteVisitor::visitPcieCapabilityStructure(PCIECapability * capability)
+/* To be used after making the PCIE Capability structure */
+/*unsigned int ConfigurationWriteVisitor::visitPcieCapabilityStructure(PCIECapability * capability)
 {
-    /* To be implemented when the PCIE Capability structure is finished */
     return 0;
-}
+}*/

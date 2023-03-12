@@ -24,10 +24,10 @@ ConfigurationController::ConfigurationController()
  */
 int ConfigurationController::getRegisterNumber(TLP * tlp)
 {
-    /* Here I need a pointer to the ConfigNonHeaderBase class and I should put here instead of (nonBase) */
-    //return tlp->header->nonBase->registerNumber;
+    /* Explicit casting to change the nonBase pointer to a ConfigNonHeaderBase pointer */
+    ConfigNonHeaderBase * configNonHeader = dynamic_cast<ConfigNonHeaderBase*>(tlp->header->nonBase);
 
-    return 0;
+    return configNonHeader->registerNumber;
 }
 
 /**

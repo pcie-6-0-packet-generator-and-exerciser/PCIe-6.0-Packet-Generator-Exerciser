@@ -16,7 +16,7 @@ class ConfigurationVisitor
 
         virtual unsigned int visitConfigurationSpace(ConfigurationSpace * configuration) = 0; // Pure virtual function
         
-        virtual unsigned int visitPcieCapabilityStructure(PCIECapability * capability) = 0; // Pure virtual function
+        //virtual unsigned int visitPcieCapabilityStructure(PCIECapability * capability) = 0; // Pure virtual function
 
         void setRegisterNumber(int registerNumber);
 };

@@ -18,7 +18,9 @@ unsigned int ConfigurationReadVisitor::visitConfigurationSpace(ConfigurationSpac
     return current->getRegisterValue();
 }
 
-unsigned int ConfigurationReadVisitor::visitPcieCapabilityStructure(PCIECapability * capability)
+/* To be used after making the PCIE Capability structure */
+
+/*unsigned int ConfigurationReadVisitor::visitPcieCapabilityStructure(PCIECapability* capability)
 {
     // traverse the linked list to find the node at the specified index
     Register * current = capability->getHead();
@@ -29,4 +31,4 @@ unsigned int ConfigurationReadVisitor::visitPcieCapabilityStructure(PCIECapabili
     }
 
     return current->getRegisterValue();
-}
+}*/
