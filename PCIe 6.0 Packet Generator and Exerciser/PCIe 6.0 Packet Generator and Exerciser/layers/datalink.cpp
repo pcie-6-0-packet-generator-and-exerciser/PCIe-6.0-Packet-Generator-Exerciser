@@ -10,8 +10,6 @@
  * @param FI2 Second indication (FI2) flag for credit update
 */
 void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], int P_DEDICATED_CREDIT_LIMIT[], int NP_DEDICATED_CREDIT_LIMIT[], int CPL_DEDICATED_CREDIT_LIMIT[], bool& FI1, bool& FI2) {
-	// flag to chek if any InitFC2 Dllp is recieved
-	static bool anyInitFC2Received;
 
 	// The flit contains a DLLP, with size of 32 bit from 14th byte
 	auto dllpPayload = boost::dynamic_bitset(32, (flit.DLLPPayload.to_ulong() >> (14 * 8)) & 0xffffffff);
