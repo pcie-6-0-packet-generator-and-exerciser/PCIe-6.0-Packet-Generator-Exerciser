@@ -1,6 +1,6 @@
 #pragma once
-#include "ohc.h";
-#include "non_header_base.h";
+#include "ohc.h"
+#include "non_header_base.h"
 #include <bitset>
 #include <string>
 #include <vector>
