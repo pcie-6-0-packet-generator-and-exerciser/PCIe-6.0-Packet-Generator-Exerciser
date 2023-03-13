@@ -1,8 +1,8 @@
 #pragma once
 #include "tlp_header.h"
 #include "dllp.h"
+#include <cmath>
 #define FC_UNIT_SIZE 4
-
 class TLP {
 public:
 	int headerConsumption;

@@ -64,7 +64,7 @@ TLP TLP::createMemWrite32Tlp(int dataPayloadLengthInDW, std::string dataPayload,
 	memWrite32Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	memWrite32Tlp.creditConsumedType = Dllp::CreditType::P;
 	memWrite32Tlp.headerConsumption = 1;
-	memWrite32Tlp.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);
+	memWrite32Tlp.dataConsumption = ceil(dataPayloadLengthInDW / FC_UNIT_SIZE);
 
 	return memWrite32Tlp;
 }
@@ -117,7 +117,7 @@ TLP TLP::createMemWrite64Tlp(int dataPayloadLengthInDW, std::string dataPayload,
 	memWrite64Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	memWrite64Tlp.creditConsumedType = Dllp::CreditType::P;
 	memWrite64Tlp.headerConsumption = 1;
-	memWrite64Tlp.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);
+	memWrite64Tlp.dataConsumption = ceil(dataPayloadLengthInDW / FC_UNIT_SIZE);
 
 	return memWrite64Tlp;
 }
@@ -175,7 +175,7 @@ TLP TLP::createConfigWrite0Tlp(int dataPayloadLengthInDW, std::string dataPayloa
 	configWrite0Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	configWrite0Tlp.creditConsumedType = Dllp::CreditType::NP;
 	configWrite0Tlp.headerConsumption = 1;
-	configWrite0Tlp.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);
+	configWrite0Tlp.dataConsumption = ceil(dataPayloadLengthInDW / FC_UNIT_SIZE);
 
 	return configWrite0Tlp;
 }
@@ -233,7 +233,7 @@ TLP TLP::createConfigWrite1Tlp(int dataPayloadLengthInDW, std::string dataPayloa
 	configWrite1Tlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	configWrite1Tlp.creditConsumedType = Dllp::CreditType::NP;
 	configWrite1Tlp.headerConsumption = 1;
-	configWrite1Tlp.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);
+	configWrite1Tlp.dataConsumption = ceil(dataPayloadLengthInDW / FC_UNIT_SIZE);
 
 	return configWrite1Tlp;
 }
@@ -298,7 +298,7 @@ TLP TLP::createCplDTlp(int dataPayloadLengthInDW, std::string dataPayload, int r
 	cplDTlp.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	cplDTlp.creditConsumedType = Dllp::CreditType::Cpl;
 	cplDTlp.headerConsumption = 1;
-	cplDTlp.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);
+	cplDTlp.dataConsumption = ceil(dataPayloadLengthInDW / FC_UNIT_SIZE);
 
 	return cplDTlp;
 }
@@ -321,7 +321,7 @@ TLP TLP::createVendorMsgTlp(int dataPayloadLengthInDW, std::string dataPayload, 
 	vendorMsg.dataPayload = boost::dynamic_bitset<>(dataPayload);
 	vendorMsg.creditConsumedType = Dllp::CreditType::P;
 	vendorMsg.headerConsumption = 1;
-	vendorMsg.dataConsumption = (int)(dataPayloadLengthInDW / FC_UNIT_SIZE);
+	vendorMsg.dataConsumption = ceil(dataPayloadLengthInDW / FC_UNIT_SIZE);
 
 	return vendorMsg;
 }
