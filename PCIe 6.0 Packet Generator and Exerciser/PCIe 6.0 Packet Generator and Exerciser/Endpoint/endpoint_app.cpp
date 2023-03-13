@@ -1,21 +1,27 @@
-
 #include "endpoint_app.h"
 
-
 EndpointApp::EndpointApp(uint64_t hostMemorySize, uint64_t deviceMemorySize) {
-    pcieController_ = std::make_unique<PcieController>();
     memoryMap_ = std::make_unique<MemoryMap>(hostMemorySize, deviceMemorySize);
-    configurationSpace_ = std::make_unique<ConfigurationSpace>();
+    memoryController_ = std::make_unique<MemoryController>(std::move(memoryMap_));
+    configurationController_ = std::make_unique<ConfigurationController>();
 }
 
-//EndpointApp::~EndpointApp() {}
 
-// get the packet from the layers and pass it to the pcie Controller
-
-void EndpointApp::receivePacket(TLP packet) {
-    pcieController_->handleTlp(packet);
+void EndpointApp::receivePacket(TLP* packet) {
+    if (packet->header->TLPtype == TLPType::MemRead32 || packet->header->TLPtype == TLPType::MemRead64
+        || packet->header->TLPtype == TLPType::MemWrite32 || packet->header->TLPtype == TLPType::MemWrite64) {
+        memoryController_->handleTlp(packet);
+    }
+    else if (packet->header->TLPtype == TLPType::ConfigRead0 || packet->header->TLPtype == TLPType::ConfigRead1
+            || packet->header->TLPtype == TLPType::ConfigWrite0 || packet->header->TLPtype == TLPType::ConfigWrite1) {
+        configurationController_->handleConfigurationRequest(packet);
+    }
+    else {
+        // If TLP type is not recognized, do nothing and return
+        return;
+    }
 }
 
-// get the completion from the pcie controller and pass it to the layers
-void EndpointApp::sendPacket(TLP packet) {
+void EndpointApp::sendPacket(TLP* packet) {
+    // Implementation of sending packets
 }

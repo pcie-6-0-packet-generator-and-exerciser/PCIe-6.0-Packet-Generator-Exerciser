@@ -16,7 +16,7 @@ public:
 
 private:
     std::vector<uint32_t> hostMemory_;
-    std::vector<uint32_t> deviceMemory_;
     uint64_t hostMemorySize_;
     uint64_t deviceMemorySize_;
+    std::vector<uint32_t> deviceMemory_;
 };

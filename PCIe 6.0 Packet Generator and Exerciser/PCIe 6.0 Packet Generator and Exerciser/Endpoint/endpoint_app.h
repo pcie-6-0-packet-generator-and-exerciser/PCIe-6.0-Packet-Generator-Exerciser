@@ -2,19 +2,18 @@
 
 #include <memory>
 #include <vector>
-#include "./configuration_space_class/configuration_space.h"
-#include "pcie_controller.h"
-#include "tlp_packet_handler.h"
+#include "./controller_class/configuration_controller.h"
 #include "memory_map.h"
 #include "../utils/tlp.h"
+#include "memory_controller.h"
 
 class EndpointApp {
 public:
     EndpointApp(uint64_t hostMemorySize, uint64_t deviceMemorySize);
-    void receivePacket(TLP packet);
-    void sendPacket(TLP packet);
+    void receivePacket(TLP * packet);
+    void sendPacket(TLP * packet);
 private:
-    std::unique_ptr<PcieController> pcieController_;
+    std::unique_ptr<MemoryController> memoryController_;
+    std::unique_ptr<ConfigurationController> configurationController_;
     std::unique_ptr<MemoryMap> memoryMap_;
-    std::unique_ptr<ConfigurationSpace> configurationSpace_;
 };
