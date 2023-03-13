@@ -104,6 +104,9 @@
     <ClInclude Include="utils\queue_wrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\datalink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="utils\non_header_base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
