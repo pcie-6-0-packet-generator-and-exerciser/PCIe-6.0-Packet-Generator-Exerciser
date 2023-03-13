@@ -1,5 +1,11 @@
-
 #include "receiver.h"
+
+Receiver::Receiver(Globals global, LayersWrapper layer, QueueWrapper<Flit> sendOnQueue) {
+	this->globals = global;
+	this->layers = layer;
+	this->sendOn = sendOnQueue;
+}
+
 //nopflit
 void Receiver::receiveInit(Flit flit) {
 	this->layers.receiveNOPFlit(flit,this->globals.P_SHARED_CREDIT_LIMIT,this->globals.NP_SHARED_CREDIT_LIMIT,this->globals.CPL_SHARED_CREDIT_LIMIT,this->globals.Fl1,this->globals.Fl2);
