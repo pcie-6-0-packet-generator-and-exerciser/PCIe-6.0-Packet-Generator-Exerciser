@@ -15,9 +15,9 @@ void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], in
 	auto dllpPayload = boost::dynamic_bitset(32, (flit.DLLPPayload.to_ulong() >> (14 * 8)) & 0xffffffff);
 	auto dllpObj = Dllp::DllpObjRep(dllpPayload);
 
-	// CASE: if FI1 flag is not set, and the recieved Dllp is of type initFC1
+	// State FC_INIT1: if FI1 flag is not set
 	// Wait for *all* credit limit type to be updated then set FI1 to true
-	if (!FI1 && dllpObj.m_type == Dllp::DllpType::initFC1) {
+	if (!FI1) {
 		switch (dllpObj.shared)
 		{
 		case false:
@@ -65,7 +65,7 @@ void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], in
 			FI1 = true;
 		}
 	}
-	// CASE 2: FI1 is set
+	// STATE FC_INIT2: FI1 is set
 	// Wait for *any* initFC2 Dllp to be recieved, then set FI2 to true
 	else if (!FI2 && FI1 && dllpObj.m_type == Dllp::DllpType::initFC2) {
 		// Set the FI2 flag if any expected DLLPs are received
