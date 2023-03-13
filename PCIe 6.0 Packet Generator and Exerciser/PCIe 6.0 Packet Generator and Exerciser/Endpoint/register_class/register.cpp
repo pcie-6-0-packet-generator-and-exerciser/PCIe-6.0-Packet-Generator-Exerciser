@@ -11,7 +11,7 @@
  */
 Register::Register(unsigned int v, Register_Name n, Register_Type t, unsigned int i, unsigned int m):value_(v), name_(n), type_(t), initialValue_(i), mask_(m), next_(nullptr){}
 
-void Register:: setRegisterValue(unsigned int v)
+void Register::setRegisterValue(unsigned int v)
 {
     value_ = v;
 }

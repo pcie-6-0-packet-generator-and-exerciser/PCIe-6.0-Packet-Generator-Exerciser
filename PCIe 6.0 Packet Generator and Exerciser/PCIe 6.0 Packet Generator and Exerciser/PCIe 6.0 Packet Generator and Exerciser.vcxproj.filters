@@ -121,6 +121,15 @@
     <ClCompile Include="Endpoint\controller_class\configuration_controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Endpoint\endpoint_app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Endpoint\memory_map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Endpoint\memory_controller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\ohc.h">
@@ -133,9 +142,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils\queue_wrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="layers\datalink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils\non_header_base.h">
@@ -162,37 +168,16 @@
     <ClInclude Include="layers\datalink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Endpoint\register_class\register.h">
+    <ClInclude Include="Endpoint\endpoint_app.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Endpoint\configuration_classes\configuration.h">
+    <ClInclude Include="Endpoint\memory_map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Endpoint\configuration_classes\configuration_space.h">
+    <ClInclude Include="Endpoint\memory_controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Endpoint\configuration_classes\pcie_capability.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Endpoint\configuration_visitor_classes\configuration_visitor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Endpoint\configuration_visitor_classes\configuration_read_visitor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Endpoint\configuration_visitor_classes\configuration_write_visitor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Endpoint\configuration_visitor_classes\configuration_request_handler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Endpoint\configuration_algorithm_classes\completion_construction_algorithms.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Endpoint\configuration_algorithm_classes\tlp_constructor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Endpoint\controller_class\configuration_controller.h">
+    <ClInclude Include="Endpoint\memory_request_handler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
