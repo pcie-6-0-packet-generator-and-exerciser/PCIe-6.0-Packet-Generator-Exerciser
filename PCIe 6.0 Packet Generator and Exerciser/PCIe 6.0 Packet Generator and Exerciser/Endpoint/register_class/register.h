@@ -43,6 +43,7 @@ enum Register_Name
 class Register
 {
 private:
+    int registerLengthInBytes_;
     unsigned int value_;
     Register_Name name_;
     Register_Type type_;
@@ -65,7 +66,7 @@ private:
     Register* next_;
 
 public:
-    Register(unsigned int value, Register_Name name, Register_Type type, unsigned int initialValue, unsigned int mask);
+    Register(unsigned int value, Register_Name name, Register_Type type, int registerLengthInDW, unsigned int initialValue, unsigned int mask);
 
     void setRegisterValue(unsigned int v);
 
@@ -82,4 +83,6 @@ public:
     unsigned int getRegisterMask();
 
     Register* getRegisterNext();
+
+    int getRegisterLengthInBytes();
 };
