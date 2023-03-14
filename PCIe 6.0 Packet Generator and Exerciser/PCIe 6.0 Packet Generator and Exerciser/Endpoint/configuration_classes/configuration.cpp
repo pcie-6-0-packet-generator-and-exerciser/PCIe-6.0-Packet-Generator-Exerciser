@@ -7,9 +7,9 @@ Register* Configuration::getHead()
     return nullptr;
 }
 
-void Configuration::pushRegister(unsigned int value, Register_Name name, Register_Type type, unsigned int initialValue, unsigned int mask)
+void Configuration::pushRegister(unsigned int value, Register_Name name, Register_Type type, int registerLengthInDW, unsigned int initialValue, unsigned int mask)
 {
-    Register* newRegister = new Register(value, name, type, initialValue, mask);
+    Register* newRegister = new Register(value, name, type, registerLengthInDW, initialValue, mask);
 
     // add the new node to the end of the linked list
     if (tail_ != nullptr)
@@ -30,4 +30,17 @@ void Configuration::pushRegister(unsigned int value, Register_Name name, Registe
 int Configuration::getSize()
 {
     return size_;
+}
+
+int Configuration::getRegisterLengthInBytes(int registerNumber)
+{
+    // traverse the linked list to find the node at the specified index
+    Register* current = head_;
+
+    for (int i = 0; i < registerNumber; i++)
+    {
+        current = current->getRegisterNext();
+    }
+
+    return current->getRegisterLengthInBytes();
 }

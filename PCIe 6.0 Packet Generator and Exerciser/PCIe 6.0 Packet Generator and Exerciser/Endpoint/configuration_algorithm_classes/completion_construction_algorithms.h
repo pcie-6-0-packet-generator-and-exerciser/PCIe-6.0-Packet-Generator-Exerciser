@@ -6,6 +6,8 @@
 class CompletionConstructionAlgorithms
 {
     public:
+        int registerLengthInDW;
+
         boost::dynamic_bitset<> dataToBeReadBits;
 
         CompletionConstructionAlgorithms();
