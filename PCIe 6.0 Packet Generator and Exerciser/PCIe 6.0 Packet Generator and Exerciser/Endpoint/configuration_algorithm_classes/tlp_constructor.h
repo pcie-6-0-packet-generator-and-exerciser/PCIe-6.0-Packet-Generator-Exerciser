@@ -10,6 +10,8 @@ class TLPConstructor
     public:
         void setData(boost::dynamic_bitset<> dataToBeReadBits);
 
+        void setRegisterLength(int registerLength);
+
         void setAlgorithm(shared_ptr<CompletionConstructionAlgorithms> completion);
 
         TLP performAlgorithm();

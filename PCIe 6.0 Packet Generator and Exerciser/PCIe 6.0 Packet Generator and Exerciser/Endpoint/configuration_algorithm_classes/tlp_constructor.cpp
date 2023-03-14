@@ -29,3 +29,8 @@ void TLPConstructor::setData(boost::dynamic_bitset<> dataToBeReadBits)
 {
     completion->dataToBeReadBits = dataToBeReadBits;
 }
+
+void TLPConstructor::setRegisterLength(int registerLength)
+{
+    completion->registerLengthInDW = registerLength;
+}

@@ -9,7 +9,7 @@
  * @param i -> Register initial value
  * @param m -> Register mask which is used so that no Read Only or Hardware Initialized bits are corrupted
  */
-Register::Register(unsigned int v, Register_Name n, Register_Type t, unsigned int i, unsigned int m):value_(v), name_(n), type_(t), initialValue_(i), mask_(m), next_(nullptr){}
+Register::Register(unsigned int v, Register_Name n, Register_Type t, int l, unsigned int i, unsigned int m):value_(v), name_(n), type_(t), registerLengthInBytes_(l), initialValue_(i), mask_(m), next_(nullptr) {}
 
 void Register:: setRegisterValue(unsigned int v)
 {
@@ -54,4 +54,9 @@ unsigned int Register::getRegisterInitialValue()
 unsigned int Register::getRegisterMask()
 {
     return mask_;
+}
+
+int Register::getRegisterLengthInBytes()
+{
+    return registerLengthInBytes_;
 }
