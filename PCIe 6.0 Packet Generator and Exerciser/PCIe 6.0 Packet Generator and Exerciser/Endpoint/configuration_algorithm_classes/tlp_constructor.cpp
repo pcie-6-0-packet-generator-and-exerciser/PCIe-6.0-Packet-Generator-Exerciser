@@ -32,5 +32,15 @@ void TLPConstructor::setData(boost::dynamic_bitset<> dataToBeReadBits)
 
 void TLPConstructor::setRegisterLength(int registerLength)
 {
-    completion->registerLengthInDW = registerLength;
+    completion->registerLengthInBytes = registerLength;
+}
+
+void TLPConstructor::setTLP(TLP* tlp)
+{
+    completion->tlp = tlp;
+}
+
+void TLPConstructor::setDeviceID(unsigned int deviceID)
+{
+    completion->deviceID = deviceID;
 }

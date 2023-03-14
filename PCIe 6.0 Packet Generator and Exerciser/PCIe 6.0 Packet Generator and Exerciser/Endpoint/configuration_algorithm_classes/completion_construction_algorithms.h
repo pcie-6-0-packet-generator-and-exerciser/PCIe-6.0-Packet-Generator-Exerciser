@@ -6,7 +6,11 @@
 class CompletionConstructionAlgorithms
 {
     public:
-        int registerLengthInDW;
+        TLP* tlp;
+
+        int registerLengthInBytes;
+
+        unsigned int deviceID;
 
         boost::dynamic_bitset<> dataToBeReadBits;
 
