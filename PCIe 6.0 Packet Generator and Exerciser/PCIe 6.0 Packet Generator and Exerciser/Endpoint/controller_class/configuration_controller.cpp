@@ -136,8 +136,13 @@ TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
         tlpConstructor->setAlgorithm(cplUR);
         return tlpConstructor->performAlgorithm();
     }
+    
+    configType = getTLPType(tlp); // Get the TLP type
 
-    configType = getTLPType(tlp);
+    /* 1st, getting the register length (in bytes), 2nd setting this length to be used while constructing the TLP */
+    tlpConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));
+    tlpConstructor->setTLP(tlp);
+    tlpConstructor->setDeviceID(configuration->getDeviceID());
 
     switch (configType)
     {

@@ -12,6 +12,10 @@ class TLPConstructor
 
         void setRegisterLength(int registerLength);
 
+        void setTLP(TLP* tlp);
+
+        void setDeviceID(unsigned int deviceID);
+
         void setAlgorithm(shared_ptr<CompletionConstructionAlgorithms> completion);
 
         TLP performAlgorithm();

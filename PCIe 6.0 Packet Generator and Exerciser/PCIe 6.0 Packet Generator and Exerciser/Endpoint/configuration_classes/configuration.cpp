@@ -44,3 +44,13 @@ int Configuration::getRegisterLengthInBytes(int registerNumber)
 
     return current->getRegisterLengthInBytes();
 }
+
+/**
+ * @brief Returning the Device ID as it's needed in the construction of Completion TLPs
+ * 
+ * @return 
+*/
+unsigned int Configuration::getDeviceID()
+{
+    return head_->getRegisterNext()->getRegisterNext()->getRegisterValue();
+}
