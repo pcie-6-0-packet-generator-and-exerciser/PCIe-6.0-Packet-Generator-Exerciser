@@ -27,7 +27,13 @@ void Configuration::pushRegister(unsigned int value, Register_Name name, Registe
     size_++;
 }
 
-int Configuration::getSize()
+
+/**
+ * @brief Getting the size of the linked list (Configuration Space)
+ *
+ * @return int -> size of the linked list
+ */
+int Configuration::getNumberOfRegisters()
 {
     return size_;
 }

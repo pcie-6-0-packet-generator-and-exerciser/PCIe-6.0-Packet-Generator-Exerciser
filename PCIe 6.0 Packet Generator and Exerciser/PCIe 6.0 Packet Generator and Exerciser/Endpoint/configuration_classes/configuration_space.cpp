@@ -97,16 +97,6 @@ unsigned int ConfigurationSpace::accept(shared_ptr<ConfigurationVisitor> visitor
 }
 
 /**
- * @brief Getting the size of the linked list (Configuration Space)
- * 
- * @return int -> size of the linked list
- */
-int ConfigurationSpace::getNumberOfRegisters()
-{
-    return size_;
-}
-
-/**
  * @brief Setting the Master Abort bit in the Status Register when we receive an Unsupported Request
  *        so a completion with UR will be sent to the requester, and this bit will be set to 1
  */
