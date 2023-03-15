@@ -98,5 +98,26 @@ unsigned int ConfigurationWriteVisitor::visitConfigurationSpace(ConfigurationSpa
 
 unsigned int ConfigurationWriteVisitor::visitPcieCapabilityStructure(PCIECapability * capability)
 {
-    return 0;
+    if (registerNumber < 0 || registerNumber >= capability->getNumberOfRegisters() || registerNumber != 21 || registerNumber != 22)
+        return 0; // Cpl with UR
+
+    /* Traversing the linked list till we get the specified Register to write in */
+    Register* current = capability->getHead();
+
+    for (int i = 0; i < registerNumber - 17; i++) // -17 because this structure's 1st Register starts after 17 Configuration Space Registers  
+    {
+        current = current->getRegisterNext();
+    }
+
+    /* 1st we get the register value and we mask it, where:
+    *  the bits which aren't Read Write bits (stay the same), and the bits we need to write in, we make clear them (make them = 0).
+    *
+    *  2nd we get the data to be written in our register and we also mask it, where:
+    *  the bits which aren't targetting Read Write bits (make them = 0), and the bits which we will use to write, we keep them as they are.
+    *
+    *  3rd we make an OR operation. */
+
+    current->setRegisterValue((current->getRegisterValue() & (current->getRegisterMask())) | (data & ~(current->getRegisterMask())));
+
+    return 1; // The Write is done Successfully
 }
