@@ -6,7 +6,7 @@
 
 class MemoryMap {
 public:
-    MemoryMap(uint64_t hostMemorySize, uint64_t deviceMemorySize);
+    MemoryMap(uint64_t prefetchableBar0, uint32_t nonPrefetchableBar2, uint16_t ioBar3);
 
     bool read(uint64_t address, uint32_t* data);
     bool write(uint64_t address, uint32_t data);
@@ -15,8 +15,7 @@ public:
     bool writeBlock(uint64_t address, const boost::dynamic_bitset<>& data);
 
 private:
-    std::vector<uint32_t> hostMemory_;
-    uint64_t hostMemorySize_;
-    uint64_t deviceMemorySize_;
-    std::vector<uint32_t> deviceMemory_;
+    std::vector<uint32_t> prefetchableBar0_;
+    std::vector<uint32_t> nonPrefetchableBar2_;
+    std::vector<uint32_t> ioBar3_;
 };

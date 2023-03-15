@@ -6,9 +6,9 @@
 
 class MemoryController {
 public:
-    MemoryController(std::unique_ptr<MemoryMap> memoryMap);
+    MemoryController(MemoryMap* memoryMap);
     void setPacketHandler(MemoryRequestHandler* handler);
-    void handleTlp(TLP* packet);
+    TLP handleTlp(TLP* packet);
 
 private:
     std::unique_ptr<MemoryMap> memoryMap_;

@@ -7,5 +7,5 @@ class MemoryMap;
 class MemoryRequestHandler {
 public:
     virtual ~MemoryRequestHandler() {}
-    virtual void handleTlp(TLP* packet, MemoryMap* memoryMap) = 0;
+    virtual TLP handleTlp(TLP* packet, MemoryMap* memoryMap) = 0;
 };

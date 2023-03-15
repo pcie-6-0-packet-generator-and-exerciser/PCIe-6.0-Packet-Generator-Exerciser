@@ -9,10 +9,14 @@
 
 class EndpointApp {
 public:
-    EndpointApp(uint64_t hostMemorySize, uint64_t deviceMemorySize);
-    void receivePacket(TLP * packet);
-    void sendPacket(TLP * packet);
+    EndpointApp();
+    void receivePacket(TLP* packet);
+    void sendPacket(TLP packet);
 private:
+    // Add BAR variables
+    uint64_t prefetchableBar0_;
+    uint32_t nonPrefetchableBar2_;
+    uint16_t ioBar3_;
     std::unique_ptr<MemoryController> memoryController_;
     std::unique_ptr<ConfigurationController> configurationController_;
     std::unique_ptr<MemoryMap> memoryMap_;

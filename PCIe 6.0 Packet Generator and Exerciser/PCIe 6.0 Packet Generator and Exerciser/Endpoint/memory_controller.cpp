@@ -1,6 +1,9 @@
 #include "memory_controller.h"
 
-MemoryController::MemoryController(std::unique_ptr<MemoryMap> memoryMap) : memoryMap_(std::move(memoryMap)), packetHandler_(nullptr) {
+MemoryController::MemoryController(MemoryMap* memoryMap)
+    : memoryMap_(memoryMap) ,packetHandler_(nullptr)
+{
+    // constructor implementation
 }
 
 
@@ -9,6 +12,6 @@ void MemoryController::setPacketHandler(MemoryRequestHandler* handler) {
 }
 
 // get the packet from the endpoint app and pass it to the packet handler
-void MemoryController::handleTlp(TLP* packet) {
-    packetHandler_->handleTlp(packet, memoryMap_.get());
+TLP MemoryController::handleTlp(TLP* packet) {
+    return packetHandler_->handleTlp(packet, memoryMap_.get());
 }
