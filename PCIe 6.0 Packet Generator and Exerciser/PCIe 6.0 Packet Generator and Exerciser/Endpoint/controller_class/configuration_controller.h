@@ -42,5 +42,5 @@ class ConfigurationController
 
         shared_ptr<ConfigurationRequestHandler> handler;
 
-        TLP handleConfigurationRequest(TLP * tlp);
+        TLP* handleConfigurationRequest(TLP * tlp);
 };

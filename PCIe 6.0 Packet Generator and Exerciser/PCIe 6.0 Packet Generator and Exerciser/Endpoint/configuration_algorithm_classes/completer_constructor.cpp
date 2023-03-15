@@ -15,7 +15,7 @@ void CompleterConstructor::setAlgorithm(shared_ptr<CompletionConstructionAlgorit
  * 
  * @return TLP -> The constructed TLP (Completion)
  */
-TLP CompleterConstructor::performAlgorithm()
+TLP* CompleterConstructor::performAlgorithm()
 {
     return completion->constructTLP();
 }

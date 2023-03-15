@@ -18,5 +18,5 @@ class CompleterConstructor
 
         void setAlgorithm(shared_ptr<CompletionConstructionAlgorithms> completion);
 
-        TLP performAlgorithm();
+        TLP* performAlgorithm();
 };

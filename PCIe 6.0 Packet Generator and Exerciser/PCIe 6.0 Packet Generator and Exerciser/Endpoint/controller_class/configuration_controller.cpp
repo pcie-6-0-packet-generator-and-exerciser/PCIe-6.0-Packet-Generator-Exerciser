@@ -136,7 +136,7 @@ boost::dynamic_bitset<> ConfigurationController::convertToBitSet(unsigned int ui
  * @param tlp -> TLP to be handled
  * @return TLP -> the resultant TLP
  */
-TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
+TLP* ConfigurationController::handleConfigurationRequest(TLP * tlp)
 {
     int Registernumber, validWriteOperation = 0;
     TLPType configType;
