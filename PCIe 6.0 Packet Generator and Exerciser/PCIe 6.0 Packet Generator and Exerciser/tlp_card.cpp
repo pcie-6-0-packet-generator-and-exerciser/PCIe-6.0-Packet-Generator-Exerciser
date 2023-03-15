@@ -31,16 +31,15 @@ TLPCard::~TLPCard()
 	delete textLabel_;
 }
 
+void TLPCard::mousePressEvent(QMouseEvent* event) {
+	if (event->button() == Qt::LeftButton) {
+		emit cardPressed(this);
+	}
+}
+
 
 void TLPCard::mouseMoveEvent(QMouseEvent* event) {
-//	if ((event->buttons() & Qt::LeftButton)) {
-//		QMimeData* mime = new QMimeData;
-//		mime->data("application/x-tlpcard");
-//		QDrag* drag = new QDrag(this);
-//		drag->setMimeData(mime);
-//		drag->setHotSpot(event->pos());
-//		drag->exec(Qt::MoveAction);
-//	}
+
 
 	QDrag* drag = new QDrag(this);
 	QMimeData* mimeData = new QMimeData;

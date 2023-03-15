@@ -7,6 +7,7 @@
 
 #include "sequence_browser.h"
 #include "type_browser.h"
+#include"packet_details_widget.h"
 
 namespace {
 	constexpr char headerFrameProperty[] = "headerFrame";
@@ -49,6 +50,7 @@ void ContentWidget::createBody()
 	QHBoxLayout* bodyLayout = new QHBoxLayout;
 	bodyLayout->setContentsMargins(20, 20, 20, 20);
 	bodyLayout->setSpacing(3);	
+
 	
 	//type browser
 	QVBoxLayout* typeLayout = new QVBoxLayout;
@@ -105,6 +107,13 @@ void ContentWidget::createBody()
 	bodyLayout->addLayout(sequenceLayout);
 	bodyLayout->setStretchFactor(sequenceLayout, 1);
 	bodyLayout->setStretchFactor(sequenceScrollArea, 1);
+
+
+	//packet details widget
+	PacketDetails* packetDetails = new PacketDetails(body_);
+	sequenceBrowser->packetDetails = packetDetails;
+	bodyLayout->addWidget(packetDetails);
+	bodyLayout->setStretchFactor(packetDetails, 2);
 
 	body_->setLayout(bodyLayout);
 }

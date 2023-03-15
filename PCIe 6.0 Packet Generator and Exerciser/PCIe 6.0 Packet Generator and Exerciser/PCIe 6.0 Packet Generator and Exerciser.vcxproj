@@ -97,13 +97,13 @@
     <ClCompile Include="layers\transaction_layer.cpp" />
     <ClCompile Include="layers\datalink.cpp" />
     <ClCompile Include="layers\flit.cpp" />
+    <ClCompile Include="packet_details_widget.cpp" />
     <ClCompile Include="sequence_browser.cpp" />
     <ClCompile Include="tlp_card.cpp" />
     <ClCompile Include="type_browser.cpp" />
     <ClCompile Include="utils\non_header_base.cpp" />
     <ClCompile Include="content_widget.cpp" />
     <ClCompile Include="utils\ohc.cpp" />
-
     <ClCompile Include="layers\globals.cpp" />
     <ClCompile Include="utils\dllp.cpp" />
     <ClCompile Include="utils\queue_wrapper.cpp" />
@@ -137,6 +137,7 @@
     <QtMoc Include="sequence_browser.h" />
     <QtMoc Include="tlp_card.h" />
     <QtMoc Include="type_browser.h" />
+    <QtMoc Include="packet_details_widget.h" />
     <ClInclude Include="utils\non_header_base.h" />
     <ClInclude Include="utils\tlp.h" />
     <ClInclude Include="utils\tlp_header.h" />
