@@ -24,7 +24,7 @@ public:
 
     int getRegisterLengthInBytes(int registerNumber);
 
-    int getSize();
+    int getNumberOfRegisters();
 
     unsigned int getDeviceID();
 };

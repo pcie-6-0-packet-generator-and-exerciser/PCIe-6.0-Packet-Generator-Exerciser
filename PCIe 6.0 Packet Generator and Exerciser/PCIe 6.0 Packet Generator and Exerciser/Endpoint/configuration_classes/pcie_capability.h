@@ -16,4 +16,6 @@ public:
     static PCIECapability * constructPCIECapability();
 
     unsigned int accept(shared_ptr<ConfigurationVisitor> visitor) override;
+
+    void setUnsupportedRequestDetectedBit();
 };
