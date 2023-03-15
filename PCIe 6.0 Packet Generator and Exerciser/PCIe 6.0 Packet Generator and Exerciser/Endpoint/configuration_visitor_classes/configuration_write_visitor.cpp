@@ -20,7 +20,7 @@ unsigned int ConfigurationWriteVisitor::visitConfigurationSpace(ConfigurationSpa
        The Register is a BAR (Base Address Register) with read only bits (not used by the endpoint to request for memory or IO space)
        so the root complex can't write to it, so we will return 0
     */
-    if (registerNumber < 0 || registerNumber >= configuration->getSize() || registerNumber == 11 || registerNumber == 12)
+    if (registerNumber < 0 || registerNumber >= configuration->getNumberOfRegisters() || registerNumber == 11 || registerNumber == 12)
     {
         configuration->setReceivedMasterAbortBit(); // Setting the Received Master Abort Bit in the Status Register as we received an Unsupported Request (UR)
         return 0; // Cpl with UR
@@ -96,8 +96,7 @@ unsigned int ConfigurationWriteVisitor::visitConfigurationSpace(ConfigurationSpa
     return 1; // The Write is done Successfully
 }
 
-/* To be used after making the PCIE Capability structure */
-/*unsigned int ConfigurationWriteVisitor::visitPcieCapabilityStructure(PCIECapability * capability)
+unsigned int ConfigurationWriteVisitor::visitPcieCapabilityStructure(PCIECapability * capability)
 {
     return 0;
-}*/
+}

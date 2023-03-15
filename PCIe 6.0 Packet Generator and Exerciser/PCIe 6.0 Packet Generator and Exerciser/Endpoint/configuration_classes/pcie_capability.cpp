@@ -54,10 +54,7 @@ PCIECapability* PCIECapability::constructPCIECapability()
 
 unsigned int PCIECapability::accept(shared_ptr<ConfigurationVisitor> visitor)
 {
-    /* To be used after making the PCIE Capability structure */
-    //return visitor->visitPcieCapabilityStructure(this);
-
-    return 0;
+    return visitor->visitPcieCapabilityStructure(this);
 }
 
 void PCIECapability::setUnsupportedRequestDetectedBit()
