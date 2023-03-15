@@ -6,9 +6,10 @@ Receiver::Receiver(Globals global, LayersWrapper layer, QueueWrapper<Flit> sendO
 	this->sendOn = sendOnQueue;
 }
 
+
 //nopflit
 void Receiver::receiveInit(Flit flit) {
-	this->layers.receiveNOPFlit(flit,this->globals.P_SHARED_CREDIT_LIMIT,this->globals.NP_SHARED_CREDIT_LIMIT,this->globals.CPL_SHARED_CREDIT_LIMIT,this->globals.Fl1,this->globals.Fl2);
+	this->layers.receiveNOPFlit(flit,this->globals.P_SHARED_CREDIT_LIMIT,this->globals.NP_SHARED_CREDIT_LIMIT,this->globals.CPL_SHARED_CREDIT_LIMIT,this->globals.P_DEDICATED_CREDIT, this->globals.NP_DEDICATED_CREDIT, this->globals.CPL_DEDICATED_CREDIT,this->globals.Fl1,this->globals.Fl2);
 }
 
 //payloadflit
