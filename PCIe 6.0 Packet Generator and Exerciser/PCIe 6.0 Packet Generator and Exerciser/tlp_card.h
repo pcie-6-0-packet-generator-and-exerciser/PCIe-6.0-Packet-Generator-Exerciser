@@ -13,16 +13,22 @@ namespace Ui
     public:
         explicit TLPCard(TLPType type, QWidget* parent = nullptr);
         ~TLPCard();
+       
     public:
         TLP tlp;
         //TLP* tlp;
     private:
+
         void mouseMoveEvent(QMouseEvent* event);
-        //void  mousePressEvent(QMouseEvent* event);
+        void  mousePressEvent(QMouseEvent* event);
         void manageLayout();
        
     private:
         QLabel* textLabel_;
         TLPType tlpType;
+
+    signals:
+        void cardPressed(TLPCard* card);
+
     };
 }

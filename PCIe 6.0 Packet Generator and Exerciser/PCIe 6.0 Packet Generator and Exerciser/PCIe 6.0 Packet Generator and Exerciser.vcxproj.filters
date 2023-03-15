@@ -121,6 +121,9 @@
     <ClCompile Include="Endpoint\controller_class\configuration_controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="packet_details_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Endpoint\endpoint_app\endpoint_app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -240,6 +243,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="type_browser.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="packet_details_widget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="result_browser.h">
