@@ -37,6 +37,12 @@ enum Register_Name
     Expansion_ROM_Base_Address,
     Capabilities_Pointer,
     Interrupt_PIN,
+    PCI_Express_Capabilities_Register,
+    Next_Cap_Pointer,
+    PCI_Express_Capabilities_ID,
+    Device_Capabilities,
+    Device_Control,
+    Device_Status,
     Empty
 };
 
