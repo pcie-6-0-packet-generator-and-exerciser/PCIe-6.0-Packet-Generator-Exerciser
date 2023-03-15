@@ -6,9 +6,14 @@
 #include "..\configuration_algorithm_classes\completion_construction_algorithms.h"
 #include "..\..\utils\tlp.h"
 
+/* Singleton class */
 class ConfigurationController
 {
     private:
+        static ConfigurationController* configurationController;
+
+        ConfigurationController(); // Making a private constructor to avoid the new operators
+
         shared_ptr<CompleterConstructor> completerConstructor;
         
         ConfigurationSpace * configuration;
@@ -33,7 +38,7 @@ class ConfigurationController
         boost::dynamic_bitset<> convertToBitSet(unsigned int uintValue);
     
     public:
-        ConfigurationController();
+        static ConfigurationController* constructConfigurationController();
 
         shared_ptr<ConfigurationRequestHandler> handler;
 

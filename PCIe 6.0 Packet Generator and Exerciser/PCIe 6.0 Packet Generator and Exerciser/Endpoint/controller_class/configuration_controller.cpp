@@ -1,5 +1,21 @@
 #include "configuration_controller.h"
 
+/* Initially making the Configuration Controller pointer = nullptr */
+ConfigurationController * ConfigurationController::configurationController = nullptr;
+
+/**
+ * @brief Making the Only available Configuration Controller (Singleton Class)
+ *
+ * @return ConfigurationController* -> a pointer to our only one Configuration Space
+ */
+ConfigurationController* ConfigurationController::constructConfigurationController()
+{
+    if (configurationController == nullptr)
+        configurationController = new ConfigurationController();
+
+    return configurationController;
+}
+
 /**
  * @brief Construct a new Configuration Controller and initializing some needed pointers to be used inside it 
  */
