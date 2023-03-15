@@ -44,44 +44,31 @@ unsigned int ConfigurationWriteVisitor::visitConfigurationSpace(ConfigurationSpa
         return 0; // Cpl with UR
     }
 
-    // In case the sent Register Number belongs to a Read Write Register, then you can modify its value
-    switch (registerNumber)
-    {
-    case 2: // Command Register
-        current->setRegisterValue((current->getRegisterValue() & (current->getRegisterMask())) | (data & ~(current->getRegisterMask()))) ;
-        break;
+    /* 1st we get the register value and we mask it, where:
+    the bits which aren't Read Write bits (stay the same), and the bits we need to write in, we make clear them (make them = 0).
 
-    case 3: // Status Register
+    2nd we get the data to be written in our register and we also mask it, where:
+    the bits which aren't targetting Read Write bits (make them = 0), and the bits which we will use to write, we keep them as they are.
+
+    3rd we make an OR operation. */
+
+    if (registerNumber == 3) // The Status Register
+    {
         // You can't write to the Signaled System Error bit and the SERR# Enable bit in the Command Register is = 0
-        if((data & 0x00004000) && !(command->getRegisterValue() & 0x00000100))
+        if ((data & 0x00004000) && !(command->getRegisterValue() & 0x00000100))
             data &= 0xFFFFBFFF;
 
         // You can't write to the Master Data Parity Error bit and the Parity Error Response bit in the Command Register is = 0
-        if((data & 0x00000100) && !(command->getRegisterValue() & 0x00000040))
+        if ((data & 0x00000100) && !(command->getRegisterValue() & 0x00000040))
             data &= 0xFFFFFEFF;
 
         // Then we can write to the Status Register
         current->setRegisterValue((current->getRegisterValue() & (current->getRegisterMask())) | (data & ~(current->getRegisterMask())));
-        break;
+    }
 
-    case 7: // BAR0
-        current->setRegisterValue((current->getRegisterValue() & (current->getRegisterMask())) | (data & ~(current->getRegisterMask())));
-        break;
-
-    case 8: // BAR1
-        current->setRegisterValue((current->getRegisterValue() & (current->getRegisterMask())) | (data & ~(current->getRegisterMask())));
-        break;
-
-    case 9: // BAR2
-        current->setRegisterValue((current->getRegisterValue() & (current->getRegisterMask())) | (data & ~(current->getRegisterMask())));
-        break;
-
-    case 10: // BAR3
-        current->setRegisterValue((current->getRegisterValue() & (current->getRegisterMask())) | (data & ~(current->getRegisterMask())));
-        break;
-
-    case 15: // Expansion ROM Base Address Register
-        if(configuration->isMemorySpaceEnabled()) // if the Memory space is enabled, so you can write in the bits (0, 11->31)
+    else if (registerNumber == 15)
+    {
+        if (configuration->isMemorySpaceEnabled()) // if the Memory space is enabled, so you can write in the bits (0, 11->31)
         {
             current->setRegisterValue((current->getRegisterValue() & (current->getRegisterMask())) | (data & ~(current->getRegisterMask())));
         }
@@ -90,7 +77,11 @@ unsigned int ConfigurationWriteVisitor::visitConfigurationSpace(ConfigurationSpa
             configuration->setReceivedMasterAbortBit(); // Setting the Received Master Abort Bit in the Status Register as we received an Unsupported Request (UR)
             return 0; // Cpl with UR
         }
-        break;
+    }
+
+    else
+    {
+        current->setRegisterValue((current->getRegisterValue() & (current->getRegisterMask())) | (data & ~(current->getRegisterMask())));
     }
 
     return 1; // The Write is done Successfully
@@ -110,12 +101,12 @@ unsigned int ConfigurationWriteVisitor::visitPcieCapabilityStructure(PCIECapabil
     }
 
     /* 1st we get the register value and we mask it, where:
-    *  the bits which aren't Read Write bits (stay the same), and the bits we need to write in, we make clear them (make them = 0).
-    *
-    *  2nd we get the data to be written in our register and we also mask it, where:
-    *  the bits which aren't targetting Read Write bits (make them = 0), and the bits which we will use to write, we keep them as they are.
-    *
-    *  3rd we make an OR operation. */
+    the bits which aren't Read Write bits (stay the same), and the bits we need to write in, we make clear them (make them = 0).
+
+    2nd we get the data to be written in our register and we also mask it, where:
+    the bits which aren't targetting Read Write bits (make them = 0), and the bits which we will use to write, we keep them as they are.
+    
+    3rd we make an OR operation. */
 
     current->setRegisterValue((current->getRegisterValue() & (current->getRegisterMask())) | (data & ~(current->getRegisterMask())));
 
