@@ -1,6 +1,6 @@
 #include "completion_construction_algorithms.h"
 
-CompletionConstructionAlgorithms::CompletionConstructionAlgorithms(): dataToBeReadBits(0), registerLengthInBytes(0){}
+CompletionConstructionAlgorithms::CompletionConstructionAlgorithms(): dataToBeReadBits(0), registerLengthInBytes(0), deviceID(0), tlp(nullptr){}
 
 /**
  * @brief Constructing a Completion TLP with Data Payload inside (return of a Configuration Read request)

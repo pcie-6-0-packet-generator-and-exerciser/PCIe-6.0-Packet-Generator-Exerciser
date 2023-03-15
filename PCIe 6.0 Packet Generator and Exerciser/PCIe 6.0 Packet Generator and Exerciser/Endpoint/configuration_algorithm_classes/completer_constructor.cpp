@@ -1,11 +1,11 @@
-#include "tlp_constructor.h"
+#include "completer_constructor.h"
 
 /**
  * @brief Determining the TLP construction algorithm to be made
  * 
  * @param completion -> the class pointer to be used for applying its implementation
  */
-void TLPConstructor::setAlgorithm(shared_ptr<CompletionConstructionAlgorithms> completion)
+void CompleterConstructor::setAlgorithm(shared_ptr<CompletionConstructionAlgorithms> completion)
 {
     this->completion = completion;
 }
@@ -15,7 +15,7 @@ void TLPConstructor::setAlgorithm(shared_ptr<CompletionConstructionAlgorithms> c
  * 
  * @return TLP -> The constructed TLP (Completion)
  */
-TLP TLPConstructor::performAlgorithm()
+TLP CompleterConstructor::performAlgorithm()
 {
     return completion->constructTLP();
 }
@@ -25,22 +25,22 @@ TLP TLPConstructor::performAlgorithm()
  * 
  * @param dataToBeReadBits -> the Data to be returned to handle the Read request
  */
-void TLPConstructor::setData(boost::dynamic_bitset<> dataToBeReadBits)
+void CompleterConstructor::setData(boost::dynamic_bitset<> dataToBeReadBits)
 {
     completion->dataToBeReadBits = dataToBeReadBits;
 }
 
-void TLPConstructor::setRegisterLength(int registerLength)
+void CompleterConstructor::setRegisterLength(int registerLength)
 {
     completion->registerLengthInBytes = registerLength;
 }
 
-void TLPConstructor::setTLP(TLP* tlp)
+void CompleterConstructor::setTLP(TLP* tlp)
 {
     completion->tlp = tlp;
 }
 
-void TLPConstructor::setDeviceID(unsigned int deviceID)
+void CompleterConstructor::setDeviceID(unsigned int deviceID)
 {
     completion->deviceID = deviceID;
 }

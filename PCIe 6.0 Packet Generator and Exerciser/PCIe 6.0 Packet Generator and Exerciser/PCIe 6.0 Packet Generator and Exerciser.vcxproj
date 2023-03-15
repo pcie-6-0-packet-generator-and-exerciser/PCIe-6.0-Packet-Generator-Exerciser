@@ -84,7 +84,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Endpoint\configuration_algorithm_classes\completion_construction_algorithms.cpp" />
-    <ClCompile Include="Endpoint\configuration_algorithm_classes\tlp_constructor.cpp" />
+    <ClCompile Include="Endpoint\configuration_algorithm_classes\completer_constructor.cpp" />
     <ClCompile Include="Endpoint\configuration_classes\configuration.cpp" />
     <ClCompile Include="Endpoint\configuration_classes\configuration_space.cpp" />
     <ClCompile Include="Endpoint\configuration_classes\pcie_capability.cpp" />
@@ -120,7 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Endpoint\configuration_algorithm_classes\completion_construction_algorithms.h" />
-    <ClInclude Include="Endpoint\configuration_algorithm_classes\tlp_constructor.h" />
+    <ClInclude Include="Endpoint\configuration_algorithm_classes\completer_constructor.h" />
     <ClInclude Include="Endpoint\configuration_classes\configuration.h" />
     <ClInclude Include="Endpoint\configuration_classes\configuration_space.h" />
     <ClInclude Include="Endpoint\configuration_classes\pcie_capability.h" />
