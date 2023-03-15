@@ -23,10 +23,7 @@ unsigned int ConfigurationRequestHandler::handleConfigurationRead(int registerNu
     if(registerNumber <= 16)
         return configuration->accept(readVisitor);
 
-    /* To be used after making the PCIE Capability structure */
-    //return capability->accept(readVisitor);
-
-    return 0;
+    return capability->accept(readVisitor);
 }
 
 /**
@@ -44,6 +41,5 @@ int ConfigurationRequestHandler::handleConfigurationWrite(int registerNumber, un
     if(registerNumber <= 16)
         return configuration->accept(writeVisitor);
     
-    /* To be used after making the PCIE Capability structure */
-    //return capability->accept(writeVisitor);
+    return capability->accept(writeVisitor);
 }
