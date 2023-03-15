@@ -16,23 +16,23 @@ class CompletionConstructionAlgorithms
 
         CompletionConstructionAlgorithms();
 
-        virtual TLP constructTLP() = 0;
+        virtual TLP* constructTLP() = 0;
 };
 
 class CompletionWithData: public CompletionConstructionAlgorithms
 {
     public:
-        TLP constructTLP() override;
+        TLP* constructTLP() override;
 };
 
 class CompletionWithUR: public CompletionConstructionAlgorithms
 {
     public:
-        TLP constructTLP() override;
+        TLP* constructTLP() override;
 };
 
 class CompletionWithoutData: public CompletionConstructionAlgorithms
 {
     public:
-        TLP constructTLP() override;
+        TLP* constructTLP() override;
 };
