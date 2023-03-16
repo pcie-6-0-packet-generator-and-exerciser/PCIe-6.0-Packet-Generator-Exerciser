@@ -18,17 +18,3 @@ bool MemoryMap::write(uint64_t address, uint32_t data)
     return true;
 
 }
-
-boost::dynamic_bitset<> MemoryMap::readBlock(uint64_t address, uint64_t length)
-{
-    // Initialize empty dynamic bitset for result
-     // to be implemented 
-    boost::dynamic_bitset<> result;
-    return result;
-}
-
-bool MemoryMap::writeBlock(uint64_t address, const boost::dynamic_bitset<>& data)
-{
-    // to be implemented 
-    return true;
-}

@@ -31,4 +31,5 @@ void EndpointApp::receivePacket(TLP* packet) {
 
 void EndpointApp::sendPacket(TLP packet) {
     // Implementation of sending packets
+    // todo this, this will be just sending it back to the layers or to the root complex actually.
 }

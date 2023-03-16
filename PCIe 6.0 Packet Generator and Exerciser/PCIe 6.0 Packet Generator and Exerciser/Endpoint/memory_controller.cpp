@@ -3,7 +3,7 @@
 MemoryController::MemoryController(MemoryMap* memoryMap)
     : memoryMap_(memoryMap) ,packetHandler_(nullptr)
 {
-    // constructor implementation
+
 }
 
 
