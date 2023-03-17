@@ -2,16 +2,16 @@
 #include "./globals.h"
 #include "../utils/queue_wrapper.h"
 #include "../utils/dllp.h"
-#include "./transaction.h"
+#include "../layers/transaction_layer.h"
 #include "./datalink.h"
-#include "./tlp.h"
+#include "../utils/tlp.h"
 
 class LayersWrapper {
 	
 public:
 	TransactionLayer transaction;
-	DataLinkLayer dataLink;
-	Tlp partialTlp;
+	DatalinkLayer dataLink;
+	TLP partialTlp;
 
-	void sendNOPFlit(const int P_CREDIT[2], const int NP_CREDIT[2], const int CPL_CREDIT[2], Dllp::DllpType dllpType);
+	void sendNOPFlit(const int P_SHARED_CREDIT[2], const int NP_SHARED_CREDIT[2], const int CPL_SHARED_CREDIT[2], const int P_DEDICATED_CREDIT[2], const int NP_DEDICATED_CREDIT[2], const int CPL_DEDICATED_CREDIT[2], Dllp::DllpType dllpType, QueueWrapper<Flit> sendOnQueue);
 };
