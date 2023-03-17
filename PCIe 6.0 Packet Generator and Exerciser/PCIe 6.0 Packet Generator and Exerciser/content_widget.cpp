@@ -4,6 +4,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QScrollArea>
+#include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include "sequence_browser.h"
 #include "type_browser.h"
@@ -13,6 +14,8 @@ namespace {
 	constexpr char headerFrameProperty[] = "headerFrame";
 	constexpr char centralTitleProperty[] = "centralTitle";
 	constexpr char widgetTitleProperty[] = "widgetTitle";
+	constexpr char submitButtonProperty[] = "submitButton";
+	constexpr int titleLabelWidth = 200;
 }
 using namespace Ui;
 
@@ -21,6 +24,7 @@ ContentWidget::ContentWidget(QWidget* parent)
 {
 	createHeader();
 	createBody();
+	createFooter();
 	manageLayout();
 }
 
@@ -58,7 +62,7 @@ void ContentWidget::createBody()
 
 	QLabel* typeLabel = new QLabel("Types Browser", body_);
 	typeLabel->setProperty(::widgetTitleProperty, true);
-	typeLabel->setMinimumWidth(300);
+	typeLabel->setMinimumWidth(::titleLabelWidth);
 	typeLabel->setAlignment(Qt::AlignHCenter | Qt::AlignCenter);
 	typeLayout->addWidget(typeLabel, 1, Qt::AlignHCenter);
 	typeLayout->setStretchFactor(typeLabel, 1);
@@ -84,7 +88,7 @@ void ContentWidget::createBody()
 
 	QLabel* sequenceLabel = new QLabel("Sequence Browser", body_);
 	sequenceLabel->setProperty(::widgetTitleProperty, true);
-	sequenceLabel->setMinimumWidth(300);
+	sequenceLabel->setMinimumWidth(::titleLabelWidth);
 	sequenceLabel->setAlignment(Qt::AlignHCenter | Qt::AlignCenter);
 	sequenceLayout->addWidget(sequenceLabel, 1, Qt::AlignHCenter);
 	sequenceLayout->setStretchFactor(sequenceLabel, 1);
@@ -100,6 +104,13 @@ void ContentWidget::createBody()
 	sequenceScrollArea->setVerticalScrollBar(sequenceSideBar);
 
 	sequenceScrollArea->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+
+	QGraphicsDropShadowEffect* sequenceShadowEffect = new QGraphicsDropShadowEffect;
+	sequenceShadowEffect->setBlurRadius(30);
+	sequenceShadowEffect->setOffset(0, 0);
+	sequenceShadowEffect->setColor(Qt::black);
+
+	sequenceScrollArea->setGraphicsEffect(sequenceShadowEffect);
 
 	sequenceLayout->addWidget(sequenceScrollArea);
 	sequenceLayout->setStretchFactor(sequenceScrollArea, 10);
@@ -137,16 +148,40 @@ void ContentWidget::createBody()
 
 	body_->setLayout(bodyLayout);
 }
+//createFooter
+void ContentWidget::createFooter()
+{
+	footer_ = new QFrame(this);
+	createSubmitButton();
+	QVBoxLayout* footerLayout = new QVBoxLayout;
+	footerLayout->setContentsMargins(100, 10, 100, 20);
+	footerLayout->setSpacing(0);
+	footerLayout->addWidget(submitButton_);
+	footerLayout->setAlignment(submitButton_, Qt::AlignRight);
+	footer_->setLayout(footerLayout);
+}
 
+void ContentWidget::createSubmitButton()
+{
+	submitButton_ = new QPushButton("Submit", this);
+	submitButton_->setMinimumWidth(200);
+	submitButton_->setMinimumHeight(30);
+	submitButton_->setMaximumWidth(400);
+	submitButton_->setMaximumHeight(50);
+	submitButton_->setContentsMargins(100, 50, 100, 100);
+	submitButton_->setProperty(::submitButtonProperty, true);
+}
 void ContentWidget::manageLayout() 
 {
 	QVBoxLayout* contentLayout = new QVBoxLayout;
 	contentLayout->setContentsMargins(0, 0, 0, 0);
 	contentLayout->setSpacing(0);
 	contentLayout->addWidget(header_);
-	contentLayout->setStretchFactor(header_, 1);
+	contentLayout->setStretchFactor(header_, 4);
 	contentLayout->addWidget(body_);
-	contentLayout->setStretchFactor(body_, 8);
+	contentLayout->setStretchFactor(body_, 32);
+	contentLayout->addWidget(footer_);
+	contentLayout->setStretchFactor(footer_, 1);
 
 	setLayout(contentLayout);
 

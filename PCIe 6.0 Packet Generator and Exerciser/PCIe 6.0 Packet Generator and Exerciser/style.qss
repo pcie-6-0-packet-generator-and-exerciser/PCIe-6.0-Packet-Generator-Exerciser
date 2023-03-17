@@ -39,4 +39,15 @@ QLabel{
 
 QScrollArea{
 	background-color: transparent;
+	border: 1px solid #dcdcdc;
+	border-radius: 10px;
+}
+
+QPushButton:hover:!pressed {
+	background-color: #45a0f8 ;
+}
+QPushButton[submitButton = true] {
+	background-color: #45aff8;
+	color: white;
+	font-size: 15px;
 }
