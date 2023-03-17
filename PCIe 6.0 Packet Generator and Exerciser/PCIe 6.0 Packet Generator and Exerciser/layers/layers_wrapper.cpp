@@ -13,10 +13,10 @@
 void LayersWrapper::sendNOPFlit(const int P_SHARED_CREDIT[2], const int NP_SHARED_CREDIT[2], const int CPL_SHARED_CREDIT[2], const int P_DEDICATED_CREDIT[2], const int NP_DEDICATED_CREDIT[2], const int CPL_DEDICATED_CREDIT[2], Dllp::DllpType dllpType, QueueWrapper<Flit> sendOn) {
 	Flit* flit = new Flit();
 
-	// STATE: INIT_FC1
 	// Loop over the 6 types of InitFC packets to be sent
 	switch (dllpType)
 	{
+	// STATE: INIT_FC1
 	case Dllp::DllpType::initFC1:
 		// Send NOP flit with shared InitFC1 Dllp
 		this->dataLink.sendFlit(flit, sendOn, Dllp::DllpType::initFC1, Dllp::CreditType::P, true, P_SHARED_CREDIT);
@@ -27,6 +27,7 @@ void LayersWrapper::sendNOPFlit(const int P_SHARED_CREDIT[2], const int NP_SHARE
 		this->dataLink.sendFlit(flit, sendOn, Dllp::DllpType::initFC1, Dllp::CreditType::NP, false, NP_DEDICATED_CREDIT);
 		this->dataLink.sendFlit(flit, sendOn, Dllp::DllpType::initFC1, Dllp::CreditType::Cpl, false, CPL_DEDICATED_CREDIT);
 			break;
+	// STATE: INIT_FC2
 	case Dllp::DllpType::initFC2:
 		// Send NOP flit with shared InitFC2 Dllp
 		this->dataLink.sendFlit(flit, sendOn, Dllp::DllpType::initFC2, Dllp::CreditType::P, true, P_SHARED_CREDIT);
