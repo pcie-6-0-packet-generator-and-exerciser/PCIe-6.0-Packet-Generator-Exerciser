@@ -121,6 +121,9 @@
     <ClCompile Include="Endpoint\controller_class\configuration_controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="layers\layers_wrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\ohc.h">
@@ -215,5 +218,8 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="packages.config" />
+    <ClInclude Include="layers\layers_wrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
