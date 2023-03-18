@@ -1,6 +1,6 @@
 #include "completion_construction_algorithms.h"
 
-CompletionConstructionAlgorithms::CompletionConstructionAlgorithms(): dataToBeReadBits(0), registerLengthInBytes(0){}
+CompletionConstructionAlgorithms::CompletionConstructionAlgorithms(): dataToBeReadBits(0), registerLengthInBytes(0), deviceID(0), tlp(nullptr){}
 
 /**
  * @brief Constructing a Completion TLP with Data Payload inside (return of a Configuration Read request)
@@ -8,8 +8,10 @@ CompletionConstructionAlgorithms::CompletionConstructionAlgorithms(): dataToBeRe
  * @return TLP -> The Constructed TLP (CplD)
  */
 
-TLP CompletionWithData::constructTLP()
+TLP* CompletionWithData::constructTLP()
 {
+    TLP tlpHolder; // This will be the return value 
+
     double registerLengthInDW = (double)(registerLengthInBytes / 4);
 
     bitset<2> lowerAddress = 0b00; // For any Completion for a Configuration Request
@@ -36,7 +38,9 @@ TLP CompletionWithData::constructTLP()
     /* Explicit casting to change the nonBase pointer to a ConfigNonHeaderBase pointer */
     ConfigNonHeaderBase* configNonHeader = dynamic_cast<ConfigNonHeaderBase*>(tlp->header->nonBase);
 
-    return TLP::createCplDTlp(registerLengthInDW, dataToBeReadBits, configNonHeader->requestID, configNonHeader->tag, deviceID, registerLengthInBytes, configNonHeader->busNumber, configNonHeader->deviceNumber, 0, destinationSegment, completerSegment, lowerAddress, cplStatus);
+    tlpHolder = TLP::createCplDTlp(registerLengthInDW, dataToBeReadBits, configNonHeader->requestID, configNonHeader->tag, deviceID, registerLengthInBytes, configNonHeader->busNumber, configNonHeader->deviceNumber, 0, destinationSegment, completerSegment, lowerAddress, cplStatus);
+
+    return &tlpHolder;
 }
 
 /**
@@ -44,8 +48,10 @@ TLP CompletionWithData::constructTLP()
  * 
  * @return TLP -> The Constructed TLP (Cpl)
  */
-TLP CompletionWithoutData::constructTLP()
+TLP* CompletionWithoutData::constructTLP()
 {
+    TLP tlpHolder; // This will be the return value
+
     int destinationSegment, completerSegment;
     /* Explicit casting to change the nonBase pointer to a ConfigNonHeaderBase pointer */
     ConfigNonHeaderBase* configNonHeader = dynamic_cast<ConfigNonHeaderBase*>(tlp->header->nonBase);
@@ -61,7 +67,9 @@ TLP CompletionWithoutData::constructTLP()
 
     OHCA5::CPLStatus cplStatus = OHCA5::CPLStatus::True; // Since the Configuration Request have been handled
 
-    return TLP::createCplTlp(configNonHeader->requestID, configNonHeader->tag, deviceID, 0, configNonHeader->busNumber, configNonHeader->deviceNumber, 0, destinationSegment, completerSegment, lowerAddress, cplStatus);
+    tlpHolder = TLP::createCplTlp(configNonHeader->requestID, configNonHeader->tag, deviceID, 0, configNonHeader->busNumber, configNonHeader->deviceNumber, 0, destinationSegment, completerSegment, lowerAddress, cplStatus);
+
+    return &tlpHolder;
 }
 
 /**
@@ -69,8 +77,10 @@ TLP CompletionWithoutData::constructTLP()
  * 
  * @return TLP -> The Constructed TLP (CplUR)
  */
-TLP CompletionWithUR::constructTLP()
+TLP* CompletionWithUR::constructTLP()
 {
+    TLP tlpHolder; // This will be the return value
+
     int destinationSegment, completerSegment;
 
     /* Explicit casting to change the nonBase pointer to a ConfigNonHeaderBase pointer */
@@ -87,6 +97,8 @@ TLP CompletionWithUR::constructTLP()
 
     OHCA5::CPLStatus cplStatus = OHCA5::CPLStatus::False; // Since the Configuration Request haven't been handled
 
-    return TLP::createCplTlp(configNonHeader->requestID, configNonHeader->tag, deviceID, 0, configNonHeader->busNumber, configNonHeader->deviceNumber, 0, destinationSegment, completerSegment, lowerAddress, cplStatus);
+    tlpHolder = TLP::createCplTlp(configNonHeader->requestID, configNonHeader->tag, deviceID, 0, configNonHeader->busNumber, configNonHeader->deviceNumber, 0, destinationSegment, completerSegment, lowerAddress, cplStatus);
+
+    return &tlpHolder;
 }
 

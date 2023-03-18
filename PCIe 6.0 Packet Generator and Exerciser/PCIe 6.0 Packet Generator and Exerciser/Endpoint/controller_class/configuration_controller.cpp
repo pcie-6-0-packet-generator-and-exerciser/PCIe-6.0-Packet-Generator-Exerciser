@@ -1,5 +1,21 @@
 #include "configuration_controller.h"
 
+/* Initially making the Configuration Controller pointer = nullptr */
+ConfigurationController * ConfigurationController::configurationController = nullptr;
+
+/**
+ * @brief Making the Only available Configuration Controller (Singleton Class)
+ *
+ * @return ConfigurationController* -> a pointer to our only one Configuration Space
+ */
+ConfigurationController* ConfigurationController::constructConfigurationController()
+{
+    if (configurationController == nullptr)
+        configurationController = new ConfigurationController();
+
+    return configurationController;
+}
+
 /**
  * @brief Construct a new Configuration Controller and initializing some needed pointers to be used inside it 
  */
@@ -9,7 +25,7 @@ ConfigurationController::ConfigurationController()
     capability =  PCIECapability::constructPCIECapability();
 
     handler = make_shared<ConfigurationRequestHandler>(configuration, capability);
-    tlpConstructor = make_shared<TLPConstructor>();
+    completerConstructor = make_shared<CompleterConstructor>();
 
     cplD = make_shared<CompletionWithData>();
     cpl = make_shared<CompletionWithoutData>();
@@ -120,7 +136,7 @@ boost::dynamic_bitset<> ConfigurationController::convertToBitSet(unsigned int ui
  * @param tlp -> TLP to be handled
  * @return TLP -> the resultant TLP
  */
-TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
+TLP* ConfigurationController::handleConfigurationRequest(TLP * tlp)
 {
     int Registernumber, validWriteOperation = 0;
     TLPType configType;
@@ -134,16 +150,16 @@ TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
 
     if(!isValidRegisterNumber(Registernumber))
     {
-        tlpConstructor->setAlgorithm(cplUR);
-        return tlpConstructor->performAlgorithm();
+        completerConstructor->setAlgorithm(cplUR);
+        return completerConstructor->performAlgorithm();
     }
     
     configType = getTLPType(tlp); // Get the TLP type
 
     /* 1st, getting the register length (in bytes), 2nd setting this length to be used while constructing the TLP */
-    tlpConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));
-    tlpConstructor->setTLP(tlp);
-    tlpConstructor->setDeviceID(configuration->getDeviceID());
+    completerConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));
+    completerConstructor->setTLP(tlp);
+    completerConstructor->setDeviceID(configuration->getDeviceID());
 
     switch (configType)
     {
@@ -152,10 +168,10 @@ TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
 
         dataToBeReadBits = convertToBitSet(dataToBeReadUint);
 
-        tlpConstructor->setData(dataToBeReadBits);
-        tlpConstructor->setAlgorithm(cplD);
+        completerConstructor->setData(dataToBeReadBits);
+        completerConstructor->setAlgorithm(cplD);
         
-        return tlpConstructor->performAlgorithm();
+        return completerConstructor->performAlgorithm();
 
     case TLPType::ConfigWrite0:
         dataToBeWrittenUint = getTLPData(tlp);
@@ -163,15 +179,17 @@ TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
         validWriteOperation = handler->handleConfigurationWrite(Registernumber, dataToBeWrittenUint);
         
         /* That should return a TLP to be returned */
-        if(validWriteOperation)
-            tlpConstructor->setAlgorithm(cpl);
-            return tlpConstructor->performAlgorithm();
+        if (validWriteOperation)
+        {
+            completerConstructor->setAlgorithm(cpl);
+            return completerConstructor->performAlgorithm();
+        }
         
-        tlpConstructor->setAlgorithm(cplUR);
-        return tlpConstructor->performAlgorithm();
+        completerConstructor->setAlgorithm(cplUR);
+        return completerConstructor->performAlgorithm();
 
     default:
-        tlpConstructor->setAlgorithm(cplUR);
-        return tlpConstructor->performAlgorithm();
+        completerConstructor->setAlgorithm(cplUR);
+        return completerConstructor->performAlgorithm();
     }
 }

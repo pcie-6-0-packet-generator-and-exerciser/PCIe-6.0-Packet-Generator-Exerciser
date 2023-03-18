@@ -2,7 +2,7 @@
 
 #include "completion_construction_algorithms.h"
 
-class TLPConstructor
+class CompleterConstructor
 {
     private:
         shared_ptr<CompletionConstructionAlgorithms> completion;
@@ -18,5 +18,5 @@ class TLPConstructor
 
         void setAlgorithm(shared_ptr<CompletionConstructionAlgorithms> completion);
 
-        TLP performAlgorithm();
+        TLP* performAlgorithm();
 };
