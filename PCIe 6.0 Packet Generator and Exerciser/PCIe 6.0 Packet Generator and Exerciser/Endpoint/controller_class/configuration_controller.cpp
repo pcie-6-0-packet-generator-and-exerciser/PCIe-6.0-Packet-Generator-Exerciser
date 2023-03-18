@@ -32,6 +32,7 @@ int ConfigurationController::getRegisterNumber(TLP * tlp)
 
 /**
  * @brief Knowing whether the Configuration request carries a valid Register number to be handled or not
+ *        Also notice that we have 23 Registers numbered from 0 -> 22
  * 
  * @param registerNumber -> Taken from the coming TLP
  * @return int -> 1 for valid Register number, 0 otherwise
@@ -39,7 +40,7 @@ int ConfigurationController::getRegisterNumber(TLP * tlp)
 int ConfigurationController::isValidRegisterNumber(int registerNumber)
 {
     /* This number will be changed when the PCIE Capability Structure ends */
-    if(registerNumber <= 16)
+    if(registerNumber <= 22)
         return 1;
     
     return 0;

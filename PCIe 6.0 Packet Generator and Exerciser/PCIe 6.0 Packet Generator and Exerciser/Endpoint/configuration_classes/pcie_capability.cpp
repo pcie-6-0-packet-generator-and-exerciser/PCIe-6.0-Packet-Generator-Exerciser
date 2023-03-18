@@ -24,8 +24,24 @@ PCIECapability::PCIECapability()
     pushRegister(0, Device_Status, READ_WRITE, 2, 0, 0x11111110);
 }
 
+/**
+    * @brief ConfigurationSpace desructor for deleting all nodes in the linked list to avoid memory leaks
+*/
 PCIECapability::~PCIECapability()
 {
+    Register* current = head_;
+    Register* next;
+
+    while (current)
+    {
+        size_--;
+
+        next = current->getRegisterNext();
+
+        delete current;
+
+        current = next;
+    }
 }
 
 PCIECapability* PCIECapability::constructPCIECapability()
@@ -38,8 +54,13 @@ PCIECapability* PCIECapability::constructPCIECapability()
 
 unsigned int PCIECapability::accept(shared_ptr<ConfigurationVisitor> visitor)
 {
-    /* To be used after making the PCIE Capability structure */
-    //return visitor->visitPcieCapabilityStructure(this);
+    return visitor->visitPcieCapabilityStructure(this);
+}
 
-    return 0;
+void PCIECapability::setUnsupportedRequestDetectedBit()
+{
+    Register* deviceStatus = tail_; // going to the Device Status Register (the last Register)
+
+    /* Setting the bit number 19 to tell that there is a detected Unsupported Request */
+    deviceStatus->setRegisterValue((deviceStatus->getRegisterValue() & 0xFFF3FFFF) | 0x00080000);
 }

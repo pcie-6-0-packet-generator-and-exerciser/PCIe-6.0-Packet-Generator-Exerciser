@@ -11,6 +11,7 @@ void Configuration::pushRegister(unsigned int value, Register_Name name, Registe
 {
     Register* newRegister = new Register(value, name, type, registerLengthInBytes, initialValue, mask);
 
+
     // add the new node to the end of the linked list
     if (tail_ != nullptr)
     {
@@ -27,7 +28,13 @@ void Configuration::pushRegister(unsigned int value, Register_Name name, Registe
     size_++;
 }
 
-int Configuration::getSize()
+
+/**
+ * @brief Getting the size of the linked list (Configuration Space)
+ *
+ * @return int -> size of the linked list
+ */
+int Configuration::getNumberOfRegisters()
 {
     return size_;
 }
