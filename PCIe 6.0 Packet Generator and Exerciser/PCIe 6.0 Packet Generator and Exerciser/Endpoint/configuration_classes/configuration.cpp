@@ -7,9 +7,9 @@ Register* Configuration::getHead()
     return nullptr;
 }
 
-void Configuration::pushRegister(unsigned int value, Register_Name name, Register_Type type, int registerLengthInDW, unsigned int initialValue, unsigned int mask)
+void Configuration::pushRegister(unsigned int value, Register_Name name, Register_Type type, int registerLengthInBytes, unsigned int initialValue, unsigned int mask)
 {
-    Register* newRegister = new Register(value, name, type, registerLengthInDW, initialValue, mask);
+    Register* newRegister = new Register(value, name, type, registerLengthInBytes, initialValue, mask);
 
     // add the new node to the end of the linked list
     if (tail_ != nullptr)
