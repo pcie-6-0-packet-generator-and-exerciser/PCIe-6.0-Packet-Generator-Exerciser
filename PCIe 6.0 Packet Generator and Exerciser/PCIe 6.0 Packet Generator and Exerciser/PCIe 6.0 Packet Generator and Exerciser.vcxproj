@@ -31,7 +31,7 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.4.2_msvc2019_64</QtInstall>
+    <QtInstall>C:\Qt\6.4.2\msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
@@ -93,6 +93,10 @@
     <ClCompile Include="Endpoint\configuration_visitor_classes\configuration_visitor.cpp" />
     <ClCompile Include="Endpoint\configuration_visitor_classes\configuration_write_visitor.cpp" />
     <ClCompile Include="Endpoint\controller_class\configuration_controller.cpp" />
+    <ClCompile Include="Endpoint\controller_class\memory_controller.cpp" />
+    <ClCompile Include="Endpoint\endpoint_app\endpoint_app.cpp" />
+    <ClCompile Include="Endpoint\endpoint_app\packet_listener.cpp" />
+    <ClCompile Include="Endpoint\memory_mapper\memory_mapper.cpp" />
     <ClCompile Include="Endpoint\register_class\register.cpp" />
     <ClCompile Include="layers\transaction_layer.cpp" />
     <ClCompile Include="layers\datalink.cpp" />
@@ -129,6 +133,10 @@
     <ClInclude Include="Endpoint\configuration_visitor_classes\configuration_visitor.h" />
     <ClInclude Include="Endpoint\configuration_visitor_classes\configuration_write_visitor.h" />
     <ClInclude Include="Endpoint\controller_class\configuration_controller.h" />
+    <ClInclude Include="Endpoint\controller_class\memory_controller.h" />
+    <ClInclude Include="Endpoint\endpoint_app\endpoint_app.h" />
+    <ClInclude Include="Endpoint\endpoint_app\memory_request_handler.h" />
+    <ClInclude Include="Endpoint\memory_mapper\memory_mapper.h" />
     <ClInclude Include="Endpoint\register_class\register.h" />
     <ClInclude Include="layers\datalink.h" />
     <ClInclude Include="layers\flit.h" />
