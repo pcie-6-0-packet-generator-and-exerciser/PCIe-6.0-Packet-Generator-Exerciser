@@ -1,4 +1,6 @@
 #pragma once
+#include "../memory_mapper/memory_mapper.h"
+#include "../../utils/tlp.h"
 
 class MemoryRequestHandler {
     public:
