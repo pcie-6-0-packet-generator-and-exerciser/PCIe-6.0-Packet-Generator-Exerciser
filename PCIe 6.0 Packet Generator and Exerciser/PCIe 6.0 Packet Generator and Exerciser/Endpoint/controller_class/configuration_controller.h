@@ -44,4 +44,6 @@ class ConfigurationController
         TLP handleConfigurationRequest(TLP * tlp);
 
         int IsMemorySpaceEnabled();
+
+        int IsIOSpaceEnabled();
 };
