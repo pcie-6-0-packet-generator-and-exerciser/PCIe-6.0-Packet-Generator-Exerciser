@@ -193,3 +193,13 @@ TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
         return *completerConstructor->performAlgorithm();
     }
 }
+
+int ConfigurationController::IsMemorySpaceEnabled()
+{
+    return configuration->isMemorySpaceEnabled();
+}
+
+int ConfigurationController::IsIOSpaceEnabled()
+{
+    return configuration->isIOSpaceEnabled();
+}

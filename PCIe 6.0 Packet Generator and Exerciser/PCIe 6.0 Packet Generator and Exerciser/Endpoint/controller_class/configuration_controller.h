@@ -15,6 +15,7 @@ class ConfigurationController
         ConfigurationController(); // Making a private constructor to avoid the new operators
 
         shared_ptr<CompleterConstructor> completerConstructor;
+        shared_ptr<ConfigurationRequestHandler> handler;
         
         ConfigurationSpace * configuration;
         PCIECapability * capability;
@@ -40,7 +41,9 @@ class ConfigurationController
     public:
         static ConfigurationController* constructConfigurationController();
 
-        shared_ptr<ConfigurationRequestHandler> handler;
-
         TLP handleConfigurationRequest(TLP * tlp);
+
+        int IsMemorySpaceEnabled();
+
+        int IsIOSpaceEnabled();
 };
