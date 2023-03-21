@@ -198,3 +198,8 @@ int ConfigurationController::IsMemorySpaceEnabled()
 {
     return configuration->isMemorySpaceEnabled();
 }
+
+int ConfigurationController::IsIOSpaceEnabled()
+{
+    return configuration->isIOSpaceEnabled();
+}
