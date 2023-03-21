@@ -27,6 +27,8 @@ class LayersWrapper {
 	*/
 	void updateConsumedCredits(Globals& globals, Dllp::CreditType creditType, int headerConsumption, int dataConsumption);
 
+	void updateAllocatedCredits(Globals& globals, Dllp::CreditType creditType, int headerConsumption, int dataConsumption);
+
 public:	
 
 	TransactionLayer* transaction;
@@ -60,5 +62,5 @@ public:
 	*/
 	void receiveNOPFlit(Flit* flit, Globals& globals);
 
-
+	void receivePayloadFlit(Globals& globals, std::queue<Flit> flits, QueueWrapper<std::queue<TLP>>& sendOn);
 };
