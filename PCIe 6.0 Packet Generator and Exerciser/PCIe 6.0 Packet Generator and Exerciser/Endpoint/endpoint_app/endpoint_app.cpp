@@ -22,8 +22,16 @@ void EndpointApp::receivePackets(std::queue<TLP> receivedQueue) {
 
         if (packet.header->TLPtype == TLPType::MemRead32 || packet.header->TLPtype == TLPType::MemRead64
             || packet.header->TLPtype == TLPType::MemWrite32 || packet.header->TLPtype == TLPType::MemWrite64) {
-            responseTlp = memoryController_->handleTlp(packet);
-            completionQueue_.push(responseTlp);
+            // should check if the memory is enabled or not
+            if (configurationController_->IsMemorySpaceEnabled() == 1) {
+                responseTlp = memoryController_->handleTlp(packet);
+                completionQueue_.push(responseTlp);
+            }
+            else {
+				auto cpl = std::make_unique<CompletionWithUR>();
+				responseTlp = *cpl->constructTLP();
+				completionQueue_.push(responseTlp);
+			}
         }
         else if (packet.header->TLPtype == TLPType::ConfigRead0 || packet.header->TLPtype == TLPType::ConfigRead1
             || packet.header->TLPtype == TLPType::ConfigWrite0 || packet.header->TLPtype == TLPType::ConfigWrite1) {
