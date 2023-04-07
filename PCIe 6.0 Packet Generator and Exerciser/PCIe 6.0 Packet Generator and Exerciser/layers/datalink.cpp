@@ -78,3 +78,6 @@ Flit* DatalinkLayer::addDLLP(Flit* flit, Dllp::DllpType dllpType, Dllp::CreditTy
 	flit->DLLPPayload = dllp->getBitRep();
 	return flit;
 }
+
+boost::dynamic_bitset<> DatalinkLayer::calculateCRC(Flit* flit) {
+}
