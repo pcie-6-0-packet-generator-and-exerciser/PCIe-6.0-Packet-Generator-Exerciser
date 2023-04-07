@@ -3,6 +3,7 @@
 #include "../layers/flit.h"
 #include "../utils/dllp.h"
 #include "boost/dynamic_bitset.hpp"
+#include "CRC.h"
 
 class DatalinkLayer {
 private:
@@ -15,10 +16,15 @@ private:
 	 * @param credit The credit to inform the receiver of
 	 * @return The flit after adding the DLLP
 	*/
-	Flit *addDLLP(Flit *flit, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]);
- 
+	Flit* addDLLP(Flit* flit, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]);
+
 public:
 	void updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], int P_DEDICATED_CREDIT_LIMIT[], int NP_DEDICATED_CREDIT_LIMIT[], int CPL_DEDICATED_CREDIT_LIMIT[], bool& FI1, bool& FI2);
-
+	
+	/**
+	 * @brief Calculates the CRC for a given Flit object.
+	 * @param flit pointer to the Flit object to calculate the CRC for.
+	 * @return A dynamic_bitset object representing the calculated CRC.
+	*/
 	boost::dynamic_bitset<> calculateCRC(Flit* flit);
 };
