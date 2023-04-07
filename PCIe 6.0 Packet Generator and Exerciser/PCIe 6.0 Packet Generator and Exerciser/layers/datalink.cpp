@@ -106,3 +106,9 @@ boost::dynamic_bitset<> DatalinkLayer::calculateCRC(Flit* flit) {
 
 	return boost::dynamic_bitset<>(crc);
 }
+
+
+Flit* DatalinkLayer::addCRC(Flit* flit) {
+	flit->CRCPayload = this->calculateCRC(flit);
+	return flit;
+}
