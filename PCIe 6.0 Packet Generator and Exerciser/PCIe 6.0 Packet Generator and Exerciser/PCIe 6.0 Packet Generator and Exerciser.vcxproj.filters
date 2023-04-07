@@ -219,6 +219,9 @@
     <ClInclude Include="Endpoint\endpoint_app\memory_request_handler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\CRC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="content_widget.h">
