@@ -13,15 +13,10 @@ class TransactionLayer
 {
 public:
 	/**
-	 * @brief Checks the gate equation to determine if a TLP can be transmitted.
-	 * @param sharedCreditLimit An array of shared credit limits.
-	 *							Example: sharedCreditLimit[1] = CplDSharedCreditLimit
-	 *									 sharedCreditLimit[0] = CplHSharedCreditLimit
-	 * @param shardCreditConsumed An array of shared credit limits.
-	 *							  Example: shardCreditConsumed[1] = CplDSharedCreditConsumed
-	 *								       shardCreditConsumed[0] = CplHSharedCreditConsumed
-	 * @param tlp The TLP (Transaction Layer Packet) object being transmitted.
-	 * @return True if the gate equation is valid, false otherwise.
+	 * @brief Checks the gate equation for a TLP.
+	 * @param globals pointer for Globals object
+	 * @param tlp pointer for TLP object
+	 * @return True if the gate equation is satisfied, false otherwise
 	*/
 	bool  checkGateEquation(const Globals* globals, const TLP* tlp);
 };

@@ -2,27 +2,43 @@
 
 bool  TransactionLayer::checkGateEquation(const Globals* globals, const TLP* tlp) {
 
-	// getting the shared credit limit and shared credit consumed
-	int sharedCreditLimit[2], shardCreditConsumed[2], tlpDataConsumption, tlpHeaderConsumption;
+	// shared credit limit and shared credit consumed for header and data
+	int dataSharedCreditLimit, dataSharedCreditConsumed, headerSharedCreditLimit, headerSharedCreditConsumed;
+	
+	// Tlp data and header consumption
+	int tlpDataConsumption = tlp->dataConsumption;
+	int tlpHeaderConsumption = tlp->headerConsumption;
 
-	//switch (tlp->header->TLPtype)
-	//{
-	//case TLPType::MemoryRead:
-	//default:
-	//	break;
-	//}
+	// getting the shared credit limit and shared credit consumed based on the Tlp credit consumption type
+	switch (tlp->creditConsumedType)
+	{
+	case Dllp::CreditType::Cpl:
+		headerSharedCreditLimit = globals->CPL_SHARED_CREDIT_LIMIT[0];
+		dataSharedCreditLimit = globals->CPL_SHARED_CREDIT_LIMIT[1];
+		headerSharedCreditConsumed = globals->CPL_SHARED_CREDITS_CONSUMED[0];
+		dataSharedCreditConsumed = globals->CPL_SHARED_CREDITS_CONSUMED[1];
+		break;
+	case Dllp::CreditType::NP:
+		headerSharedCreditLimit = globals->NP_SHARED_CREDIT_LIMIT[0];
+		dataSharedCreditLimit = globals->NP_SHARED_CREDIT_LIMIT[1];
+		headerSharedCreditConsumed = globals->NP_SHARED_CREDITS_CONSUMED[0];
+		dataSharedCreditConsumed = globals->NP_SHARED_CREDITS_CONSUMED[1];
+		break;
+	case Dllp::CreditType::P:
+		headerSharedCreditLimit = globals->P_SHARED_CREDIT_LIMIT[0];
+		dataSharedCreditLimit = globals->P_SHARED_CREDIT_LIMIT[1];
+		headerSharedCreditConsumed = globals->P_SHARED_CREDITS_CONSUMED[0];
+		dataSharedCreditConsumed = globals->P_SHARED_CREDITS_CONSUMED[1];
+		break;
+	}
 
 	// checking for the Data gate equation
-	int dataSharedCreditLimit = sharedCreditLimit[1];
-	int dataSharedCreditConsumed = shardCreditConsumed[1];
 	int twoPowCreditDataFieldSize = pow(2, CREDIT_DATA_FIELD_SIZE);
 
 	if ((dataSharedCreditLimit - (dataSharedCreditConsumed + tlpDataConsumption) % twoPowCreditDataFieldSize) % twoPowCreditDataFieldSize > twoPowCreditDataFieldSize / 2)
 		return false;
 
 	// checking for the Header gate equation
-	int headerSharedCreditLimit = sharedCreditLimit[0];
-	int headerSharedCreditConsumed = shardCreditConsumed[0];
 	int twoPowCreditHeaderFieldSize = pow(2, CREDIT_HEADER_FIELD_SIZE);
 
 	if ((headerSharedCreditLimit - (headerSharedCreditConsumed + tlpHeaderConsumption) % twoPowCreditHeaderFieldSize) % twoPowCreditHeaderFieldSize > twoPowCreditHeaderFieldSize / 2)
