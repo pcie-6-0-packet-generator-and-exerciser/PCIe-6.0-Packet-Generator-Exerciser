@@ -1,16 +1,17 @@
 #include "transaction_layer.h"
-/**
- * @brief Checks the gate equation to determine if a TLP can be transmitted.
- * @param sharedCreditLimit An array of shared credit limits.
- *							Example: sharedCreditLimit[1] = CplDSharedCreditLimit
- *									 sharedCreditLimit[0] = CplHSharedCreditLimit
- * @param shardCreditConsumed An array of shared credit limits.
- *							  Example: shardCreditConsumed[1] = CplDSharedCreditConsumed
- *								       shardCreditConsumed[0] = CplHSharedCreditConsumed
- * @param tlp The TLP (Transaction Layer Packet) object being transmitted.
- * @return True if the gate equation is valid, false otherwise.
-*/
-bool  TransactionLayer::checkGateEquation(int sharedCreditLimit[2], int shardCreditConsumed[2], int tlpDataConsumption, int tlpHeaderConsumption) {
+
+bool  TransactionLayer::checkGateEquation(const Globals* globals, const TLP* tlp) {
+
+	// getting the shared credit limit and shared credit consumed
+	int sharedCreditLimit[2], shardCreditConsumed[2], tlpDataConsumption, tlpHeaderConsumption;
+
+	//switch (tlp->header->TLPtype)
+	//{
+	//case TLPType::MemoryRead:
+	//default:
+	//	break;
+	//}
+
 	// checking for the Data gate equation
 	int dataSharedCreditLimit = sharedCreditLimit[1];
 	int dataSharedCreditConsumed = shardCreditConsumed[1];
