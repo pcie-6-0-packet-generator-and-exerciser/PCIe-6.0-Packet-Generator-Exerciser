@@ -18,5 +18,5 @@ public:
 	 * @param tlp pointer for TLP object
 	 * @return True if the gate equation is satisfied, false otherwise
 	*/
-	bool  checkGateEquation(const Globals* globals, const TLP* tlp);
+	bool  checkGateEquation(const Globals globals, const TLP tlp);
 };
