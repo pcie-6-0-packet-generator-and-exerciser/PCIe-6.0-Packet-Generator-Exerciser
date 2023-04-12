@@ -11,7 +11,7 @@ namespace Ui
         Q_OBJECT
 
     public:
-        explicit TLPCard(QWidget* parent = nullptr, QString text = "");
+        explicit TLPCard(TLPType type, QWidget* parent = nullptr);
         ~TLPCard();
     public:
         TLP* tlp;
@@ -22,5 +22,6 @@ namespace Ui
        
     private:
         QLabel* textLabel_;
+        TLPType tlpType;
     };
 }

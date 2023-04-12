@@ -13,11 +13,10 @@ namespace
 }
 using namespace Ui;
 
-TLPCard::TLPCard(QWidget* parent, QString text)
-	: QFrame(parent),
-	textLabel_(new QLabel(text, this))
+TLPCard::TLPCard( TLPType tlpType, QWidget* parent)
+	: QFrame(parent), textLabel_(new QLabel(TLPenumToString(tlpType), this))
 {
-	
+	this->tlpType = tlpType;
 	textLabel_->setAlignment(Qt::AlignHCenter);
 	setProperty(tlpCardProperty, true);
 	setMinimumSize(200, 100);
@@ -28,27 +27,19 @@ TLPCard::TLPCard(QWidget* parent, QString text)
 TLPCard::~TLPCard()
 {
 	//delete tlp;
+	delete tlp;
 	delete textLabel_;
 }
 
 
 void TLPCard::mouseMoveEvent(QMouseEvent* event) {
-//	if ((event->buttons() & Qt::LeftButton)) {
-//		QMimeData* mime = new QMimeData;
-//		mime->data("application/x-tlpcard");
-//		QDrag* drag = new QDrag(this);
-//		drag->setMimeData(mime);
-//		drag->setHotSpot(event->pos());
-//		drag->exec(Qt::MoveAction);
-//	}
+
 
 	QDrag* drag = new QDrag(this);
 	QMimeData* mimeData = new QMimeData;
 	QByteArray data;
 	QDataStream stream(&data, QIODevice::WriteOnly);
-	//stream << static_cast<quintptr>(this);
-	//stream << this;
-	stream << textLabel_->text();
+	stream << static_cast<int>(tlpType);
 	mimeData->setData("application/x-tlp", data);
 	drag->setMimeData(mimeData);
 	drag->exec(Qt::CopyAction);

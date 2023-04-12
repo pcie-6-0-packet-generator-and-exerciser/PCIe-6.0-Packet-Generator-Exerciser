@@ -2,7 +2,11 @@
 #include "tlp_header.h"
 #include "dllp.h"
 #include <cmath>
+#include<QString>
 #define FC_UNIT_SIZE 4
+
+QString TLPenumToString(TLPType value);
+
 class TLP {
 public:
 	int headerConsumption;
