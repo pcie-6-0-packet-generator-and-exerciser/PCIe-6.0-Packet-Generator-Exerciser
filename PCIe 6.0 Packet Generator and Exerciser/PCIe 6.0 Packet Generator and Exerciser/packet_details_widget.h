@@ -15,6 +15,7 @@ namespace Ui
         ~PacketDetails();
     private:
         void manageLayout();
+        void clearView();
 
 
     private:

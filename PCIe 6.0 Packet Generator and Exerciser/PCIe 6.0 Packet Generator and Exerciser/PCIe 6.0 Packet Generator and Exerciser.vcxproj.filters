@@ -124,6 +124,9 @@
     <ClCompile Include="packet_details_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="custom_line_edit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\ohc.h">
@@ -213,6 +216,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="packet_details_widget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="custom_line_edit.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

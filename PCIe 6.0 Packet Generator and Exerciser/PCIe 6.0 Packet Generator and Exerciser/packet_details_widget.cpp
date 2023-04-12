@@ -19,10 +19,22 @@ PacketDetails::~PacketDetails()
 
 void PacketDetails::updateDetails() {
 	//place holder
+	clearView();
+	
 	QLabel* label = new QLabel(QString("TLPCard details"), this);
+	if ()
+	
 	contentLayout_->addWidget(label);
 }
 
+void PacketDetails::clearView() {
+	// Removes any existing content from the view
+	QLayoutItem* child;
+	while ((child = contentLayout_->takeAt(0)) != nullptr) {
+		delete child->widget();
+		delete child;
+	}
+}
 
 void PacketDetails:: manageLayout() {
 	contentLayout_->setContentsMargins(0, 0, 0, 0);
