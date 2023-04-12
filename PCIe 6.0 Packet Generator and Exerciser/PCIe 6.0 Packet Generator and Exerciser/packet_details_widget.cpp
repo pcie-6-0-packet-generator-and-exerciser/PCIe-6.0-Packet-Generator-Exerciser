@@ -22,8 +22,6 @@ void PacketDetails::updateDetails() {
 	clearView();
 	
 	QLabel* label = new QLabel(QString("TLPCard details"), this);
-
-	
 	contentLayout_->addWidget(label);
 }
 
