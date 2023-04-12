@@ -1,5 +1,6 @@
 #pragma once
 #include <QtWidgets/QFrame>
+#include<QLineEdit>
 
 class QLabel;
 namespace Ui
