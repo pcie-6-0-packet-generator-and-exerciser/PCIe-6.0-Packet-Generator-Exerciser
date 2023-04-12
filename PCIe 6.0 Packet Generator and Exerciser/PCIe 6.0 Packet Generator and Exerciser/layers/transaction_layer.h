@@ -1,5 +1,7 @@
 #pragma once
 #include <cmath>
+#include "../layers/globals.h"
+#include "../utils/tlp.h"
 #define CREDIT_HEADER_FIELD_SIZE 8
 #define CREDIT_DATA_FIELD_SIZE 12
 
@@ -10,5 +12,11 @@
 class TransactionLayer
 {
 public:
-	bool checkGateEquation(int sharedCreditLimit[2], int shardCreditConsumed[2], int tlpDataConsumption, int tlpHeaderConsumption);
+	/**
+	 * @brief Checks the gate equation for a TLP.
+	 * @param globals pointer for Globals object
+	 * @param tlp pointer for TLP object
+	 * @return True if the gate equation is satisfied, false otherwise
+	*/
+	bool  checkGateEquation(const Globals globals, const TLP tlp);
 };

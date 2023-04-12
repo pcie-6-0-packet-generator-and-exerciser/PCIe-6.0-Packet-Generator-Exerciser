@@ -139,6 +139,9 @@
     <ClCompile Include="Endpoint\memory_handlers\memory_read_handler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="result_browser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\ohc.h">
@@ -237,6 +240,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="type_browser.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="result_browser.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
