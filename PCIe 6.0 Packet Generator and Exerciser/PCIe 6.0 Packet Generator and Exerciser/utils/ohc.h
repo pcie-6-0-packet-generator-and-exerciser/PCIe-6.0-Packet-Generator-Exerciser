@@ -1,4 +1,6 @@
 // Abstract class OHC
+#ifndef OHC_H
+#define OHC_H
 #include <bitset>
 #include "boost/dynamic_bitset.hpp"
 
@@ -88,3 +90,5 @@ public:
     boost::dynamic_bitset<> getBitRep() const override;
 
 };
+
+#endif // OHC_H

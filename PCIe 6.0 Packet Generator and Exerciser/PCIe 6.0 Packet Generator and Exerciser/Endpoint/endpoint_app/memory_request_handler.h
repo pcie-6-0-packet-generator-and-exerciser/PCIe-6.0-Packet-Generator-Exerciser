@@ -5,7 +5,8 @@
 class MemoryRequestHandler {
 public:
     virtual ~MemoryRequestHandler() {}
-    virtual TLP handleTlp(TLP* packet) = 0;
+    virtual TLP handleMemoryRead(TLP* packet, TLPType packetType) = 0;
+    virtual void handleMemoryWrite(TLP* packet, TLPType packetType) = 0;
     virtual void setMemoryMap(MemoryMap* memoryMap) = 0;
 };
 

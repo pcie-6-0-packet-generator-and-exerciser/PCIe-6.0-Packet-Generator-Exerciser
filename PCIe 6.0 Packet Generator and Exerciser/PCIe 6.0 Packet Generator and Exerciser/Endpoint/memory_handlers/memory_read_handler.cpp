@@ -8,10 +8,13 @@ public:
     void setMemoryMap(MemoryMap* memoryMap) override {
         memoryMap_ = memoryMap;
     }
-    TLP handleTlp(TLP* packet) override {
+    TLP handleMemoryRead(TLP* packet, TLPType packetType) override {
         // implementation for handling Memory Read TLPs
         TLP response;
         return response;
+    }
+    void handleMemoryWrite(TLP* packet, TLPType packetType) override {
+
     }
 private:
     MemoryMap* memoryMap_;
