@@ -31,7 +31,7 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.4.3_msvc2019_64</QtInstall>
+    <QtInstall>6.4.2_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
@@ -96,6 +96,8 @@
     <ClCompile Include="Endpoint\controller_class\memory_controller.cpp" />
     <ClCompile Include="Endpoint\endpoint_app\endpoint_app.cpp" />
     <ClCompile Include="Endpoint\endpoint_app\packet_listener.cpp" />
+    <ClCompile Include="Endpoint\memory_handlers\memory_read_handler.cpp" />
+    <ClCompile Include="Endpoint\memory_handlers\memory_write_handler.cpp" />
     <ClCompile Include="Endpoint\memory_mapper\memory_mapper.cpp" />
     <ClCompile Include="Endpoint\register_class\register.cpp" />
     <ClCompile Include="layers\transaction_layer.cpp" />

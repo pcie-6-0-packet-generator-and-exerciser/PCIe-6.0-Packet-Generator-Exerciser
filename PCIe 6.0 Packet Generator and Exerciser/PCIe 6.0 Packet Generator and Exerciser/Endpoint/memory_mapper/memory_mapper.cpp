@@ -32,7 +32,7 @@ bool MemoryMap::write(uint64_t address, uint32_t data) {
 		return true;
 	}
 	else if (address >= ioBar3_.size() && address < ioBar3_.size() + prefetchableBar0_.size() + nonPrefetchableBar2_.size()) {
-		// Handle I/O writes
+		// Handle I/O writes (not supported in our scope)
 		return false;
 	}
 	return false;
