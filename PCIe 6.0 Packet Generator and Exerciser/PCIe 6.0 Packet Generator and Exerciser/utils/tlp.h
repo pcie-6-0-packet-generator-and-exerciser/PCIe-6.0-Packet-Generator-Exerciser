@@ -13,7 +13,7 @@ public:
 	int dataConsumption;
 	TLPHeader* header;
 	Dllp::CreditType creditConsumedType;
-	boost::dynamic_bitset<> dataPayload = boost::dynamic_bitset<>(header->lengthInDoubleWord * 32);
+	boost::dynamic_bitset<> dataPayload;
 	int getTotalLength();
 	boost::dynamic_bitset<> getBitRep();
 
