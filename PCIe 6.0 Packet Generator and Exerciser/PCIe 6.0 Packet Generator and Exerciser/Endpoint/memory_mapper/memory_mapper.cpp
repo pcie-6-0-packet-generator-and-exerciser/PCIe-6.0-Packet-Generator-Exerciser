@@ -6,20 +6,19 @@ MemoryMap::MemoryMap(uint64_t prefetchableBar0, uint32_t nonPrefetchableBar2, ui
 	// Constructor implementation
 }
 
-bool MemoryMap::read(uint64_t address, uint32_t* data) {
+uint32_t* MemoryMap::read(uint64_t address, uint32_t* data) {
 	if (address < prefetchableBar0_.size()) {
 		*data = prefetchableBar0_[address];
-		return true;
+		return data;
 	}
 	else if (address >= nonPrefetchableBar2_.size() && address < nonPrefetchableBar2_.size() + prefetchableBar0_.size()) {
 		*data = nonPrefetchableBar2_[address - nonPrefetchableBar2_.size()];
-		return true;
+		return data;
 	}
 	else if (address >= ioBar3_.size() && address < ioBar3_.size() + prefetchableBar0_.size() + nonPrefetchableBar2_.size()) {
 		// Handle I/O reads
-		return false;
+		return data;
 	}
-	return false;
 }
 
 bool MemoryMap::write(uint64_t address, uint32_t data) {
