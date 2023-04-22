@@ -3,7 +3,8 @@
 #include "../layers/flit.h"
 #include "../utils/dllp.h"
 #include "boost/dynamic_bitset.hpp"
-#include "CRC.h"
+#include "boost/crc.hpp"
+#include <vector>
 
 class DatalinkLayer {
 private:
