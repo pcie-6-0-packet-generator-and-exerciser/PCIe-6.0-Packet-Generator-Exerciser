@@ -37,7 +37,7 @@ public:
 	 * @param shared Whether the credit is shared or dedicated
 	 * @param credit An array containing header and data credits
 	*/
-	void pushFlitToQueue(Flit flit, std::queue<Flit>* sendOn, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]);
+	void pushFlitToQueue(Flit* flit, std::queue<Flit*>* sendOn, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]);
 
 	/**
 	 * @brief Updates the shared credit limit values based on the received DLLP information
