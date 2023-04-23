@@ -11,6 +11,7 @@ namespace Ui
 
     public:
         explicit SequenceBrowser(QWidget* parent = nullptr);
+        std::list<TLPCard*> getTLPCards();
         ~SequenceBrowser();
     private:
         void createCardsSequence();

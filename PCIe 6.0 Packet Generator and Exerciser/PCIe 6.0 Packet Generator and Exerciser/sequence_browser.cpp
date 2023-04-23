@@ -75,3 +75,7 @@ void SequenceBrowser::manageLayout()
 	setLayout(cardLayout_);
 
 }
+
+std::list<TLPCard*> SequenceBrowser::getTLPCards() {
+	return cards_;
+}

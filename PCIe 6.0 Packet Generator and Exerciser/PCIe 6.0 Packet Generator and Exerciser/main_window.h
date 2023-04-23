@@ -1,8 +1,9 @@
 #pragma once
 #include <QtWidgets/QMainWindow>
+#include "utils/queue_wrapper.h"
 
 class QToolBar;
-
+class TLP;
 namespace Ui
 {
     class ContentWidget;
@@ -11,7 +12,7 @@ namespace Ui
         Q_OBJECT
 
     public:
-        MainWindow(QWidget* parent = nullptr);
+        MainWindow(QueueWrapper<TLP*>* rootComplexToLayers, QueueWrapper<TLP*>* layersToRootComplex);
         ~MainWindow();
     private:
         void createContentWidget();
@@ -21,6 +22,8 @@ namespace Ui
     private:
         QToolBar* toolBar_;
         ContentWidget* contentWidget_;
+        QueueWrapper<TLP*>* rootComplexToLayers_;
+        QueueWrapper<TLP*>* layersToRootComplex_;
     };
 
 }
