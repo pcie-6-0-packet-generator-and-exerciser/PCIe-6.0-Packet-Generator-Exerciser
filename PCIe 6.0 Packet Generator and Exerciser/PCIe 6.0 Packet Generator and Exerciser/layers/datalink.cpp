@@ -1,15 +1,5 @@
-
 #include "datalink.h"
 
-/**
- * @brief Updates the shared credit limit values based on the received DLLP information
- * @param flit Flit containing the DLLPs
- * @param P_SHARED_CREDIT_LIMIT Array of shared credit limit for posted traffic
- * @param NP_SHARED_CREDIT_LIMIT Array of shared credit limit for non-posted traffic
- * @param CPL_SHARED_CREDIT_LIMIT Array of shared credit limit for completion traffic
- * @param FI1 First indication (FI1) flag for credit update
- * @param FI2 Second indication (FI2) flag for credit update
-*/
 void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], int P_DEDICATED_CREDIT_LIMIT[], int NP_DEDICATED_CREDIT_LIMIT[], int CPL_DEDICATED_CREDIT_LIMIT[], bool& FI1, bool& FI2) {
 
 	// The flit contains a DLLP, with size of 32 bit from 14th byte
@@ -19,9 +9,8 @@ void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], in
 	// State FC_INIT1: if FI1 flag is not set
 	// Wait for *all* credit limit type to be updated then set FI1 to true
 	if (!FI1) {
-		switch (dllpObj.shared)
+		if (!dllpObj.shared)
 		{
-		case false:
 			switch (dllpObj.m_creditType)
 			{
 			case Dllp::CreditType::Cpl:
@@ -39,7 +28,8 @@ void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], in
 			default:
 				break;
 			}
-		case true:
+		}
+		else {
 			switch (dllpObj.m_creditType)
 			{
 			case Dllp::CreditType::Cpl:
@@ -73,6 +63,7 @@ void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], in
 		FI2 = true;
 	}
 }
+
 Flit* DatalinkLayer::addDLLP(Flit* flit, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[])
 {
 	Dllp* dllp = new Dllp(1, 1, credit[1], credit[0], 0, shared, dllpType, creditType);
@@ -102,8 +93,18 @@ boost::dynamic_bitset<> DatalinkLayer::calculateCRC(Flit* flit) {
 	return boost::dynamic_bitset<>(64, crc.checksum());
 }
 
-
 Flit* DatalinkLayer::addCRC(Flit* flit) {
 	flit->CRCPayload = this->calculateCRC(flit);
 	return flit;
+}
+
+void DatalinkLayer::pushFlitToQueue(Flit flit, std::queue<Flit>* sendOn, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]) {
+	// Add the dllp to the flit
+	flit = *this->addDLLP(&flit, dllpType, creditType, shared, credit);
+
+	// Add the CRC value to the flit 
+	flit = *this->addCRC(&flit);
+
+	// Send the flit to the receiver
+	sendOn->push(flit);
 }
