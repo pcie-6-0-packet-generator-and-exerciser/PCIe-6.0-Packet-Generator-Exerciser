@@ -37,10 +37,10 @@ public:
         }
 
         // Extract the memory address from the packet header
-        if (packetType == TLPType::MemRead32) {
+        if (packetType == TLPType::MemWrite32) {
             address = dynamic_cast<AddressRouting32Bit*>(packet->header->nonBase)->address;
         }
-        else if (packetType == TLPType::MemRead64) {
+        else if (packetType == TLPType::MemWrite64) {
             address = dynamic_cast<AddressRouting64Bit*>(packet->header->nonBase)->address;
         }
 
