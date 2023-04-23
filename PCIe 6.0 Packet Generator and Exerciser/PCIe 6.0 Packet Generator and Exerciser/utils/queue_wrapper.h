@@ -22,7 +22,11 @@ class QueueWrapper
 
 		void push(T t);
 
+		void push(std::queue<T>);
+
 		T pop();
+
+		std::queue<T> popAll();
 
 		int size();
 };
