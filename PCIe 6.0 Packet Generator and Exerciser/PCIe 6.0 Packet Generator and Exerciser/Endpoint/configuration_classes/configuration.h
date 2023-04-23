@@ -18,9 +18,13 @@ public:
 
     virtual unsigned int accept(shared_ptr<ConfigurationVisitor> visitor) = 0; // Pure virtual function
 
-    void pushRegister(unsigned int value, Register_Name name, Register_Type type, unsigned int initialValue, unsigned int mask);
+    void pushRegister(unsigned int value, Register_Name name, Register_Type type, int registerLengthInDW, unsigned int initialValue, unsigned int mask);
 
     Register * getHead();
 
-    int getSize();
+    int getRegisterLengthInBytes(int registerNumber);
+
+    int getNumberOfRegisters();
+
+    unsigned int getDeviceID();
 };

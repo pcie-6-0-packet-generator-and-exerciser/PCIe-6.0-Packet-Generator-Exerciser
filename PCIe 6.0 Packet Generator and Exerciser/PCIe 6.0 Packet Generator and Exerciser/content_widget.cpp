@@ -8,6 +8,7 @@
 #include <QtWidgets/QApplication>
 #include "sequence_browser.h"
 #include "type_browser.h"
+#include "result_browser.h"
 
 namespace {
 	constexpr char sequenceExplorerLabel[] = "Sequence Explorer";
@@ -103,7 +104,7 @@ void ContentWidget::createBody()
 
 	QLabel* sequenceLabel = new QLabel("Sequence Browser", body_);
 	sequenceLabel->setProperty(::widgetTitleProperty, true);
-	sequenceLabel->setMinimumWidth(::titleLabelWidth);
+	sequenceLabel->setMinimumWidth(400);
 	sequenceLabel->setAlignment(Qt::AlignHCenter | Qt::AlignCenter);
 	sequenceLayout->addWidget(sequenceLabel, 1, Qt::AlignHCenter);
 	sequenceLayout->setStretchFactor(sequenceLabel, 1);
@@ -132,6 +133,34 @@ void ContentWidget::createBody()
 	bodyLayout->addLayout(sequenceLayout);
 	bodyLayout->setStretchFactor(sequenceLayout, 1);
 	bodyLayout->setStretchFactor(sequenceScrollArea, 1);
+
+	//result browser
+	/*QVBoxLayout* resultLayout = new QVBoxLayout;
+	resultLayout->setContentsMargins(5, 5, 5, 5);
+	resultLayout->setSpacing(10);
+
+	QLabel* resultLabel = new QLabel("Result Browser", body_);
+	resultLabel->setProperty(::widgetTitleProperty, true);
+	resultLabel->setMinimumWidth(300);
+	resultLabel->setAlignment(Qt::AlignHCenter | Qt::AlignCenter);
+	resultLayout->addWidget(resultLabel, 1, Qt::AlignHCenter);
+	resultLayout->setStretchFactor(resultLabel, 1);
+
+	ResultBrowser* resultBrowser = new ResultBrowser(body_);
+	QScrollBar* resultSideBar = new QScrollBar(Qt::Vertical, nullptr);
+	QScrollArea* resultScrollArea = new QScrollArea;
+	resultScrollArea->setWidget(resultBrowser);
+	resultScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+	resultScrollArea->setWidgetResizable(true);
+	resultScrollArea->setVerticalScrollBar(resultSideBar);
+	resultScrollArea->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+
+	resultLayout->addWidget(resultScrollArea);
+	resultLayout->setStretchFactor(resultScrollArea, 10);
+	bodyLayout->addLayout(resultLayout);
+	bodyLayout->setStretchFactor(resultLayout, 1);*/
+
 
 	body_->setLayout(bodyLayout);
 }

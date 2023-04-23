@@ -1,15 +1,21 @@
 #pragma once
 
 #include "..\configuration_visitor_classes\configuration_request_handler.h"
-#include "..\configuration_algorithm_classes\tlp_constructor.h"
+#include "..\configuration_algorithm_classes\completer_constructor.h"
 #include "..\configuration_classes\configuration.h"
 #include "..\configuration_algorithm_classes\completion_construction_algorithms.h"
 #include "..\..\utils\tlp.h"
 
+/* Singleton class */
 class ConfigurationController
 {
     private:
-        shared_ptr<TLPConstructor> tlpConstructor;
+        static ConfigurationController* configurationController;
+
+        ConfigurationController(); // Making a private constructor to avoid the new operators
+
+        shared_ptr<CompleterConstructor> completerConstructor;
+        shared_ptr<ConfigurationRequestHandler> handler;
         
         ConfigurationSpace * configuration;
         PCIECapability * capability;
@@ -33,9 +39,11 @@ class ConfigurationController
         boost::dynamic_bitset<> convertToBitSet(unsigned int uintValue);
     
     public:
-        ConfigurationController();
-
-        shared_ptr<ConfigurationRequestHandler> handler;
+        static ConfigurationController* constructConfigurationController();
 
         TLP handleConfigurationRequest(TLP * tlp);
+
+        int IsMemorySpaceEnabled();
+
+        int IsIOSpaceEnabled();
 };

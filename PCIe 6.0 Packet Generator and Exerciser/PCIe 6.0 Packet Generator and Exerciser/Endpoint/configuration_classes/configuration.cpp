@@ -7,9 +7,10 @@ Register* Configuration::getHead()
     return nullptr;
 }
 
-void Configuration::pushRegister(unsigned int value, Register_Name name, Register_Type type, unsigned int initialValue, unsigned int mask)
+void Configuration::pushRegister(unsigned int value, Register_Name name, Register_Type type, int registerLengthInBytes, unsigned int initialValue, unsigned int mask)
 {
-    Register* newRegister = new Register(value, name, type, initialValue, mask);
+    Register* newRegister = new Register(value, name, type, registerLengthInBytes, initialValue, mask);
+
 
     // add the new node to the end of the linked list
     if (tail_ != nullptr)
@@ -27,7 +28,36 @@ void Configuration::pushRegister(unsigned int value, Register_Name name, Registe
     size_++;
 }
 
-int Configuration::getSize()
+
+/**
+ * @brief Getting the size of the linked list (Configuration Space)
+ *
+ * @return int -> size of the linked list
+ */
+int Configuration::getNumberOfRegisters()
 {
     return size_;
+}
+
+int Configuration::getRegisterLengthInBytes(int registerNumber)
+{
+    // traverse the linked list to find the node at the specified index
+    Register* current = head_;
+
+    for (int i = 0; i < registerNumber; i++)
+    {
+        current = current->getRegisterNext();
+    }
+
+    return current->getRegisterLengthInBytes();
+}
+
+/**
+ * @brief Returning the Device ID as it's needed in the construction of Completion TLPs
+ * 
+ * @return 
+*/
+unsigned int Configuration::getDeviceID()
+{
+    return head_->getRegisterNext()->getRegisterNext()->getRegisterValue();
 }

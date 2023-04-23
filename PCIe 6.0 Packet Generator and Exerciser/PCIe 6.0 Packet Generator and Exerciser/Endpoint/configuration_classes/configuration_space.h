@@ -21,8 +21,6 @@ public:
     int isMemorySpaceEnabled();
 
     int isIOSpaceEnabled();
-
-    int getNumberOfRegisters();
     
     void setReceivedMasterAbortBit();
 };

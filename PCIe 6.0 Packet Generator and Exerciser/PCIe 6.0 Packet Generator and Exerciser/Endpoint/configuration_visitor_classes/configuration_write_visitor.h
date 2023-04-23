@@ -14,5 +14,5 @@ class ConfigurationWriteVisitor: public ConfigurationVisitor
 
         unsigned int visitConfigurationSpace(ConfigurationSpace * configuration) override;
 
-        //unsigned int visitPcieCapabilityStructure(PCIECapability * capability) override;    
+        unsigned int visitPcieCapabilityStructure(PCIECapability * capability) override;    
 };
