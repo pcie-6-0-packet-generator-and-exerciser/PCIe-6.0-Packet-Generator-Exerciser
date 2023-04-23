@@ -39,11 +39,10 @@ void SequenceBrowser::dropEvent(QDropEvent* event)
 {
 	QByteArray data = event->mimeData()->data("application/x-tlp");
 	QDataStream stream(&data, QIODevice::ReadOnly);
-	QString type;
-	stream >> type;
-	//place holder
-	//TLPCard* card = new TLPCard(this, "mem read 32b");
-	TLPCard* card = new TLPCard(this, type);
+	int value;
+	stream >> value;
+	TLPType tlpType = static_cast<TLPType>(value);
+	TLPCard* card = new TLPCard(tlpType, this);
 
 	cards_.push_back(card);
 	card->setParent(this);

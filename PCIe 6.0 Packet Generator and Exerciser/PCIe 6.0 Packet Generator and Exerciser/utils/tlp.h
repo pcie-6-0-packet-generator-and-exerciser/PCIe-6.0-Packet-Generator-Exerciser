@@ -2,14 +2,18 @@
 #include "tlp_header.h"
 #include "dllp.h"
 #include <cmath>
+#include<QString>
 #define FC_UNIT_SIZE 4
+
+QString TLPenumToString(TLPType value);
+
 class TLP {
 public:
 	int headerConsumption;
 	int dataConsumption;
 	TLPHeader* header;
 	Dllp::CreditType creditConsumedType;
-	boost::dynamic_bitset<> dataPayload = boost::dynamic_bitset<>(header->lengthInDoubleWord * 32);
+	boost::dynamic_bitset<> dataPayload;
 	int getTotalLength();
 	boost::dynamic_bitset<> getBitRep();
 

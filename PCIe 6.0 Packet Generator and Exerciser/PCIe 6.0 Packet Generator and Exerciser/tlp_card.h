@@ -11,10 +11,11 @@ namespace Ui
         Q_OBJECT
 
     public:
-        explicit TLPCard(QWidget* parent = nullptr, QString text = "");
+        explicit TLPCard(TLPType type, QWidget* parent = nullptr);
         ~TLPCard();
     public:
-        TLP* tlp;
+        TLP tlp;
+        //TLP* tlp;
     private:
         void mouseMoveEvent(QMouseEvent* event);
         //void  mousePressEvent(QMouseEvent* event);
@@ -22,5 +23,6 @@ namespace Ui
        
     private:
         QLabel* textLabel_;
+        TLPType tlpType;
     };
 }
