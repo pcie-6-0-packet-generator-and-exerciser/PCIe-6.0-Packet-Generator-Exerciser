@@ -5,20 +5,26 @@
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QGraphicsDropShadowEffect>
-
+#include <QtWidgets/QApplication>
 #include "sequence_browser.h"
 #include "type_browser.h"
 
 namespace {
+	constexpr char sequenceExplorerLabel[] = "Sequence Explorer";
+	constexpr char resultExplorerLabel[] = "Result Explorer";
 	constexpr char headerFrameProperty[] = "headerFrame";
 	constexpr char centralTitleProperty[] = "centralTitle";
 	constexpr char widgetTitleProperty[] = "widgetTitle";
 	constexpr char submitButtonProperty[] = "submitButton";
+	constexpr char selectedTabProperty[] = "selectedTab";
+	constexpr char unselectedTabProprety[] = "unselectedTab";
 	constexpr int titleLabelWidth = 200;
 }
 using namespace Ui;
 
-ContentWidget::ContentWidget(QWidget* parent)
+ContentWidget::ContentWidget(QWidget* parent,
+			QueueWrapper<TLP*>* rootComplexToLayers,
+			QueueWrapper<TLP*>* layersToRootComplex)
 	: QFrame(parent)
 {
 	createHeader();
@@ -34,16 +40,26 @@ ContentWidget::~ContentWidget()
 
 void ContentWidget::createHeader() 
 {
+	createResultExplorerTab();
+	createSequenceExplorerTab();
 	header_ = new QFrame(this);
 	header_->setProperty(::headerFrameProperty, true);
 	QLabel* titleLabel = new QLabel("PCIe 6.0 Packet Generator and Exerciser", header_);
 	titleLabel->setProperty(::centralTitleProperty, true);
 	titleLabel->setAlignment(Qt::AlignCenter);
-	QHBoxLayout* headerLayout = new QHBoxLayout;
+	QVBoxLayout* headerLayout = new QVBoxLayout;
 	headerLayout->setContentsMargins(0, 0, 0, 0);
 	headerLayout->setSpacing(0);
 	headerLayout->addWidget(titleLabel);
 
+	QHBoxLayout* tabsLayout = new QHBoxLayout;
+	tabsLayout->addWidget(sequenceExplorerTab_, Qt::AlignLeft);
+	tabsLayout->addWidget(resultExplorerTab_, Qt::AlignLeft);
+	QWidget* horizontalSpacer = new QWidget;
+	horizontalSpacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	tabsLayout->addWidget(horizontalSpacer);
+
+	headerLayout->addLayout(tabsLayout);
 	header_->setLayout(headerLayout);
 }
 
@@ -93,10 +109,10 @@ void ContentWidget::createBody()
 	sequenceLayout->setStretchFactor(sequenceLabel, 1);
 
 
-	SequenceBrowser* sequenceBrowser = new SequenceBrowser(body_);
+	sequenceBrowser_ = new SequenceBrowser(body_);
 	QScrollBar* sequenceSideBar = new QScrollBar(Qt::Vertical, nullptr);
 	QScrollArea* sequenceScrollArea = new QScrollArea;
-	sequenceScrollArea->setWidget(sequenceBrowser);
+	sequenceScrollArea->setWidget(sequenceBrowser_);
 	sequenceScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	
 	sequenceScrollArea->setWidgetResizable(true);
@@ -141,7 +157,29 @@ void ContentWidget::createSubmitButton()
 	submitButton_->setMaximumHeight(50);
 	submitButton_->setContentsMargins(100, 50, 100, 100);
 	submitButton_->setProperty(::submitButtonProperty, true);
+
+	connect(submitButton_, SIGNAL(clicked()), this, SLOT(onSubmitButtonClick()));
 }
+
+void ContentWidget::createSequenceExplorerTab() {
+	sequenceExplorerTab_ = new QPushButton(::sequenceExplorerLabel, this);
+	//sequenceExplorerTab_->setMinimumWidth(100);
+	//sequenceExplorerTab_->setMinimumHeight(30);
+	sequenceExplorerTab_->setMaximumWidth(150);
+	sequenceExplorerTab_->setMaximumHeight(30);
+	sequenceExplorerTab_->setProperty(::selectedTabProperty, true);
+}
+
+void ContentWidget::createResultExplorerTab() {
+	resultExplorerTab_ = new QPushButton(::resultExplorerLabel, this);
+	//resultExplorerTab_->setMinimumWidth(100);
+	//resultExplorerTab_->setMinimumHeight(30);
+	resultExplorerTab_->setMaximumWidth(150);
+	resultExplorerTab_->setMaximumHeight(30);
+	resultExplorerTab_->setProperty(::unselectedTabProprety, true);
+}
+
+
 void ContentWidget::manageLayout() 
 {
 	QVBoxLayout* contentLayout = new QVBoxLayout;
@@ -155,6 +193,15 @@ void ContentWidget::manageLayout()
 	contentLayout->setStretchFactor(footer_, 1);
 
 	setLayout(contentLayout);
+}
 
-	//setStyleSheet("border: red 2px solid;");
+void ContentWidget::onSubmitButtonClick() {
+	sequenceExplorerTab_->setProperty(::selectedTabProperty, QVariant(false));
+	sequenceExplorerTab_->setProperty(::unselectedTabProprety, true);
+	sequenceExplorerTab_->update();
+	
+	resultExplorerTab_->setProperty(::unselectedTabProprety, false);
+	resultExplorerTab_->setProperty(::selectedTabProperty, QVariant(true));
+	resultExplorerTab_->update();
+	QCoreApplication::processEvents();
 }
