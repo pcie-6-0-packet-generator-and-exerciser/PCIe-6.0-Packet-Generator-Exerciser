@@ -141,6 +141,7 @@
     <ClInclude Include="Endpoint\endpoint_app\memory_request_handler.h" />
     <ClInclude Include="Endpoint\memory_mapper\memory_mapper.h" />
     <ClInclude Include="Endpoint\register_class\register.h" />
+    <ClInclude Include="layers\CRC.h" />
     <ClInclude Include="layers\datalink.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\sequence.h" />

@@ -88,17 +88,23 @@ boost::dynamic_bitset<> concatDynamicBitset(const boost::dynamic_bitset<>& bs1, 
 	bs1Copy |= bs2Copy;
 	return bs1Copy;
 }
-
+void insertBitsetToArray(const boost::dynamic_bitset<>& bitset, uint8_t bitsetArr[], const int start = 0) {
+	for (size_t i = start; i < bitset.size(); i++) {
+		bitsetArr[i / 8] |= (bitset[i] << (i % 8));
+	}
+}
 boost::dynamic_bitset<> DatalinkLayer::calculateCRC(Flit* flit) {
-	const uint64_t polynomial = 0x42F0E1EBA9EA3693, init = 0xFFFFFFFFFFFFFFFF, finalXor = 0xFFFFFFFFFFFFFFFF;
-	boost::dynamic_bitset<> flitPayloadBits = concatDynamicBitset(flit->TLPPayload, flit->DLLPPayload);
-	boost::crc_optimal<64, polynomial, init, finalXor, true, true> crc;
+	const uint64_t polynomial = 0b100001011001101110010101100011010101100110101001011;
 
-	std::vector<uint8_t> flitPayloadBytes(flitPayloadBits.size() / 8);
-	boost::to_block_range(flitPayloadBits, flitPayloadBytes.data());
+	uint8_t flitPayloadArray[242] = { 0 };
+
+	insertBitsetToArray(flit->TLPPayload, flitPayloadArray);
+	insertBitsetToArray(flit->DLLPPayload, flitPayloadArray, flit->TLPPayload.size());
 	
-	crc.process_bytes(flitPayloadBytes.data(), flitPayloadBytes.size());
-	return boost::dynamic_bitset<>(64, crc.checksum());
+	CRC::Parameters<uint8_t, 64> params = { polynomial, 0, 0, false, false };
+	uint8_t crc = CRC::Calculate(flitPayloadArray, sizeof(flitPayloadArray), params);
+
+	return boost::dynamic_bitset<>(crc);
 }
 
 
