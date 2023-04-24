@@ -22,7 +22,7 @@ public:
 	 * @param sendOn a pointer to a QueueWrapper object where the NOP Flit queue will be pushed
 	 * @return void
 	*/
-	void sendNOPFlit(int P_CREDIT[2], int NP_CREDIT[2], int CPL_CREDIT[2], Dllp::DllpType dllpType, QueueWrapper<std::queue<Flit*>*>* sendOn);
+	void sendNOPFlit(Globals globals, Dllp::DllpType dllpType, QueueWrapper<Flit*>* sendOn);
 
 };
 

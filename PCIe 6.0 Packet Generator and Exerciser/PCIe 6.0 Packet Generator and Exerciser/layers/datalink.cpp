@@ -98,7 +98,7 @@ Flit* DatalinkLayer::addCRC(Flit* flit) {
 	return flit;
 }
 
-void DatalinkLayer::pushFlitToQueue(Flit* flit, std::queue<Flit*>* sendOn, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]) {
+void DatalinkLayer::pushFlitToQueue(Flit* flit, QueueWrapper<Flit*>* sendOn, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]) {
 	// Add the dllp to the flit
 	flit = this->addDLLP(flit, dllpType, creditType, shared, credit);
 
