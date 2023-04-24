@@ -23,9 +23,18 @@ void LayersWrapper::sendNOPFlit(Globals globals, Dllp::DllpType dllpType, QueueW
 		credits[1] = sharedturn ? globals.CPL_SHARED_CREDIT_LIMIT[0] : globals.CPL_DEDICATED_CREDIT_LIMIT[0];
 		break;
 	}
-	
-	// Push NOP Flit to the specified queue
-	datalink->pushFlitToQueue(new Flit(), sendOn, dllpType, static_cast<Dllp::CreditType>(intCreditType), sharedturn, credits);
+
+	// Push the Flit to the queue
+	sendOn->push(
+		// Add the Dllp and the CRC to the Flit
+		datalink->prepareFlit(
+			new Flit(),
+			dllpType,
+			static_cast<Dllp::CreditType>(intCreditType),
+			sharedturn,
+			credits
+		)
+	);
 
 	// Update the shared turn and credits type
 	sharedturn ^= 1;
