@@ -16,17 +16,61 @@ class QueueWrapper
 	std::condition_variable condition_;
 
 	public:
-		QueueWrapper();
+		QueueWrapper()
+		{
+		}
 
-		~QueueWrapper();
+		~QueueWrapper()
+		{
+		}
 
-		void push(T t);
+		void push(T t)
+		{
+			std::unique_lock<std::mutex> mlock(mutex_);
+			queue_.push(t);
+			mlock.unlock();
+			condition_.notify_one();
+		}
 
-		void push(std::queue<T>);
+		void push(std::queue<T> q)
+		{
+			std::unique_lock<std::mutex> mlock(mutex_);
+			while (!q.empty())
+			{
+				queue_.push(q.front());
+				q.pop();
+			}
+			mlock.unlock();
+			condition_.notify_one();
+		}
 
-		T pop();
+		T pop()
+		{
+			std::unique_lock<std::mutex> mlock(mutex_);
+			while (queue_.empty())
+			{
+				condition_.wait(mlock);
+			}
+			auto item = queue_.front();
+			queue_.pop();
+			return item;
+		}
 
-		std::queue<T> popAll();
+		std::queue<T> popAll()
+		{
+			std::unique_lock<std::mutex> mlock(mutex_);
+			std::queue<T> q;
+			while (!queue_.empty())
+			{
+				q.push(queue_.front());
+				queue_.pop();
+			}
+			return q;
+		}
 
-		int size();
+		int size()
+		{
+			std::unique_lock<std::mutex> mlock(mutex_);
+			return queue_.size();
+		}
 };
