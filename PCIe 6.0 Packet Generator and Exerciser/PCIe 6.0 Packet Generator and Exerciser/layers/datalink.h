@@ -27,6 +27,14 @@ private:
 	*/
 	Flit* addCRC(Flit* flit);
 
+	/**
+	 * @brief Check the CRC of the flit with the CRCPayload 
+	 * @param flit 
+	 * @return true if they are the same / false if they are not the same
+	*/
+	bool checkCRC(Flit* flit);
+
+
 public:
 	/**
 	 * @brief sends a FLIT after adding DLLP and CRC values to the receiver
