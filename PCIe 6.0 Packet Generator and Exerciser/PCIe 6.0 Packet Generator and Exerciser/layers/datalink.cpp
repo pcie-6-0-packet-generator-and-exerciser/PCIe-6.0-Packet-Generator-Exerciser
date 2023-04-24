@@ -98,13 +98,12 @@ Flit* DatalinkLayer::addCRC(Flit* flit) {
 	return flit;
 }
 
-void DatalinkLayer::pushFlitToQueue(Flit* flit, std::queue<Flit*>* sendOn, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]) {
+Flit* DatalinkLayer::prepareFlit(Flit* flit, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]) {
 	// Add the dllp to the flit
 	flit = this->addDLLP(flit, dllpType, creditType, shared, credit);
 
 	// Add the CRC value to the flit 
 	flit = this->addCRC(flit);
 
-	// Send the flit to the receiver
-	sendOn->push(flit);
+	return flit;
 }
