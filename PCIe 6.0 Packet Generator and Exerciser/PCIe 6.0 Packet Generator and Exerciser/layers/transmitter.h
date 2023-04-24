@@ -22,7 +22,18 @@ public:
 	QueueWrapper<Flit*>* listenOn;
 	QueueWrapper<Flit*>* sendOn;
 
+	/**
+	 * @brief Sends an InitFC1 message to the receiver.
+	 * @param void
+	 * @return void
+	*/
 	void sendInitFC1(void);
+	
+	/**
+	 * @brief Sends an InitFC2 message to the receiver.
+	 * @param void
+	 * @return void
+	*/
 	void sendInitFC2(void);
 	void sendSequence(vector<TLP>* sequence);
 };
