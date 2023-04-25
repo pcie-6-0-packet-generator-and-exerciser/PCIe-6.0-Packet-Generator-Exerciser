@@ -100,6 +100,7 @@
     <ClCompile Include="Endpoint\memory_handlers\memory_write_handler.cpp" />
     <ClCompile Include="Endpoint\memory_mapper\memory_mapper.cpp" />
     <ClCompile Include="Endpoint\register_class\register.cpp" />
+    <ClCompile Include="layers\layers_wrapper.cpp" />
     <ClCompile Include="layers\transaction_layer.cpp" />
     <ClCompile Include="layers\datalink.cpp" />
     <ClCompile Include="layers\flit.cpp" />
@@ -112,7 +113,6 @@
     <ClCompile Include="utils\ohc.cpp" />
     <ClCompile Include="layers\globals.cpp" />
     <ClCompile Include="utils\dllp.cpp" />
-    <ClCompile Include="utils\queue_wrapper.cpp" />
     <ClCompile Include="utils\tlp.cpp" />
     <ClCompile Include="utils\tlp_header.cpp" />
     <None Include="packages.config" />
@@ -143,6 +143,7 @@
     <ClInclude Include="Endpoint\register_class\register.h" />
     <ClInclude Include="layers\datalink.h" />
     <ClInclude Include="layers\flit.h" />
+    <ClInclude Include="layers\layers_wrapper.h" />
     <ClInclude Include="layers\sequence.h" />
     <QtMoc Include="sequence_browser.h" />
     <QtMoc Include="tlp_card.h" />

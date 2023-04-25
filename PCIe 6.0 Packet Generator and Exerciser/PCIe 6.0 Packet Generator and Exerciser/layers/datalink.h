@@ -5,7 +5,7 @@
 #include "boost/dynamic_bitset.hpp"
 #include "boost/crc.hpp"
 #include <vector>
-#include <queue>
+#include "../utils/queue_wrapper.h"
 
 class DatalinkLayer {
 private:
@@ -39,13 +39,13 @@ public:
 	/**
 	 * @brief sends a FLIT after adding DLLP and CRC values to the receiver
 	 * @param flit The FLIT to be sent
-	 * @param sendOn The queue where the FLIT will be pushed
 	 * @param dllpType The type of DLLP to be added to the FLIT
 	 * @param creditType The type of credit to be added to the FLIT
 	 * @param shared Whether the credit is shared or dedicated
 	 * @param credit An array containing header and data credits
+	 * @return the Flit after adding the DLLP and CRC
 	*/
-	void pushFlitToQueue(Flit* flit, std::queue<Flit*>* sendOn, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]);
+	Flit* prepareFlit(Flit* flit, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]);
 
 	/**
 	 * @brief Updates the shared credit limit values based on the received DLLP information
