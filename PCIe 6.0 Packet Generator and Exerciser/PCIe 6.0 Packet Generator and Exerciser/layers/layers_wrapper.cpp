@@ -42,7 +42,7 @@ void LayersWrapper::sendNOPFlit(Globals globals, Dllp::DllpType dllpType, QueueW
 	intCreditType = (intCreditType + 1) % 3;
 }
 
-void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*> packets, QueueWrapper<Flit*>& sendOnQueue) {
+void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, QueueWrapper<Flit*>& sendOnQueue) {
 	queue<Flit*> flitsToSend;
 	Flit* flit = new Flit();
 	int flitIndexInBytes = 0;

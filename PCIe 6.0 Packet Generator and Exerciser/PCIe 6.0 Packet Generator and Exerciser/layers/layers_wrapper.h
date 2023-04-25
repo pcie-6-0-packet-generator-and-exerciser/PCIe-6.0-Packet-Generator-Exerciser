@@ -50,5 +50,5 @@ public:
 	 * @param packets The queue of packets to be sent to the other device
 	 * @param sendOnQueue The queue on which the packets should be sent
 	*/
-	void sendPayloadFlit(Globals& globals, queue<TLP*> packets, QueueWrapper<Flit*>& sendOnQueue);
+	void sendPayloadFlit(Globals& globals, queue<TLP*>& packets, QueueWrapper<Flit*>& sendOnQueue);
 };
