@@ -5,9 +5,7 @@
 #include "../utils/dllp.h"
 #include "../utils/tlp.h"
 #include "../layers/flit.h"
-#include <vector>
 #include <queue>
-#include <iterator>
 
 /**
  * @brief Represents a transmitter that sends packets over a network.
@@ -43,5 +41,5 @@ public:
 	 * @param sequence a vector of TLPs to send
 	 * @return void
 	*/
-	void sendSequence(vector<TLP*> sequence);
+	void sendSequence(std::queue<TLP*> sequence);
 };
