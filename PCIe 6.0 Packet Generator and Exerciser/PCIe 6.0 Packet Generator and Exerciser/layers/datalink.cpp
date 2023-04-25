@@ -100,7 +100,8 @@ Flit* DatalinkLayer::addCRC(Flit* flit) {
 
 bool DatalinkLayer::checkCRC(Flit* flit) {
 	Flit* CRCCalculated = addCRC(flit);
-	return (CRCCalculated == flit->CRCPayload)
+
+	return (CRCCalculated->CRCPayload.operator==(flit->CRCPayload));
 }
 
 
