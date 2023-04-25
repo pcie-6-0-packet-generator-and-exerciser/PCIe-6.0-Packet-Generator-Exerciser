@@ -5,6 +5,9 @@
 #include "../utils/dllp.h"
 #include "../utils/tlp.h"
 #include "../layers/flit.h"
+#include <vector>
+#include <queue>
+#include <iterator>
 
 /**
  * @brief Represents a transmitter that sends packets over a network.
@@ -35,5 +38,11 @@ public:
 	 * @return void
 	*/
 	void sendInitFC2(void);
-	void sendSequence(vector<TLP>* sequence);
+	
+	/**
+	 * @brief Sends an sequence of TLPs to the receiver.
+	 * @param sequence a vector of TLPs to send
+	 * @return void
+	*/
+	void sendSequence(vector<TLP*> sequence);
 };
