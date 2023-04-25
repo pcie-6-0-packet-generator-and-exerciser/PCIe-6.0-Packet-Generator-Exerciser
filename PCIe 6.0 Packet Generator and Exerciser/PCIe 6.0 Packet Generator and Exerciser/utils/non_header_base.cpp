@@ -128,6 +128,6 @@ NonHeaderBase* CompletionNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset
 
 //	CompletionNonHeaderBase(int requestID, int tg, int completer_ID,long byte_Count, int bus_Number, int device_Number ,int function_Number,int lower_Address) {
 
-    NonHeaderBase* recievedCompletionNonHeaderBase = new CompletionNonHeaderBase(completerIDValue, tagValue, completerIDValue, byteCountValue, busNumberValue, deviceNumberValue, functionNumberValue, lowerAddressValues);
+    NonHeaderBase* recievedCompletionNonHeaderBase = new CompletionNonHeaderBase(0, tagValue, completerIDValue, byteCountValue, busNumberValue, deviceNumberValue, functionNumberValue, lowerAddressValues);
     return recievedCompletionNonHeaderBase;
 }
