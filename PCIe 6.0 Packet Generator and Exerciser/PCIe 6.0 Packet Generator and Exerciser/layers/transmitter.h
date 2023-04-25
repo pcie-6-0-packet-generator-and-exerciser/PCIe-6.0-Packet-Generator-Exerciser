@@ -22,7 +22,6 @@ class Transmitter {
 public:
 	Globals globals;
 	LayersWrapper* layers;
-	QueueWrapper<TLP*>* listenOn;
 	QueueWrapper<Flit*>* sendOn;
 
 	/**
