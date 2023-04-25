@@ -8,6 +8,17 @@ boost::dynamic_bitset<> AddressRouting32Bit::getBitRep() const {
     return result;
 }
 
+NonHeaderBase* AddressRouting32Bit::getObjRep(boost::dynamic_bitset<> bitset)const {
+    unsigned long AddressRouting32BitValues = bitset.to_ulong();
+
+    int addressValue = (AddressRouting32BitValues & 0xffffffff);
+    int tagValue = ((AddressRouting32BitValues >> 32) & 0x3fff);
+    int requestID((AddressRouting32BitValues >> 48) & 0xffff);
+
+    NonHeaderBase* recievedAddressRouting32Bit = new AddressRouting32Bit(requestID, tagValue, addressValue);
+    return recievedAddressRouting32Bit;
+}
+
 boost::dynamic_bitset<> AddressRouting64Bit::getBitRep() const {
     boost::dynamic_bitset<> result ((headerSizeInBytes * 8) - 32) ;
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, address));
@@ -16,11 +27,34 @@ boost::dynamic_bitset<> AddressRouting64Bit::getBitRep() const {
     return result;
 }
 
+NonHeaderBase* AddressRouting64Bit::getObjRep(boost::dynamic_bitset<> bitset)const {
+    unsigned long AddressRouting64BitValues = bitset.to_ulong();
+
+    int addressValue = (AddressRouting64BitValues & 0xffffffffffffffff);
+    int tagValue = ((AddressRouting64BitValues >> 64) & 0x3fff);
+    int requestIDValue((AddressRouting64BitValues >> 80) & 0xffff);
+    //	AddressRouting64Bit(int requestID, int tg, long long adres) {
+
+    NonHeaderBase* recievedAddressRouting64Bit = new AddressRouting64Bit(requestIDValue, tagValue, addressValue);
+    return recievedAddressRouting64Bit;
+}
+
 boost::dynamic_bitset<> MessageNonHeaderBase::getBitRep() const {
     boost::dynamic_bitset<> result((headerSizeInBytes * 8) - 32);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, messageCode) << 64);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, requestID) << 80);
     return result;
+}
+
+NonHeaderBase* MessageNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset)const {
+    unsigned long MessageNonHeaderBaseValue = bitset.to_ulong();
+
+    int messageCodeValue = ((MessageNonHeaderBaseValue >> 64) & 0xff);
+    int requestIDValue((MessageNonHeaderBaseValue >> 80) & 0xffff);
+//	MessageNonHeaderBase(int requestID, int message_Code) {
+
+    NonHeaderBase* recievedMessageNonHeaderBase = new MessageNonHeaderBase(requestIDValue, messageCodeValue);
+    return recievedMessageNonHeaderBase;
 }
 
 boost::dynamic_bitset<> ConfigNonHeaderBase::getBitRep() const {
@@ -33,6 +67,24 @@ boost::dynamic_bitset<> ConfigNonHeaderBase::getBitRep() const {
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, requestID) << 48);
     return result;
 }
+
+NonHeaderBase* ConfigNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset)const {
+    unsigned long ConfigNonHeaderBaseValue = bitset.to_ulong();
+
+    int registerNumberValue = ((ConfigNonHeaderBaseValue >> 2) & 0x3ff);
+    int functionNumberValue = ((ConfigNonHeaderBaseValue >> 16) & 0x07);
+    int deviceNumberValue = ((ConfigNonHeaderBaseValue >> 19) & 0x1f);
+    int busNumberValue = ((ConfigNonHeaderBaseValue >> 24) & 0xff);
+    int tagValue = ((ConfigNonHeaderBaseValue >> 32) & 0x3fff);
+    int requestIDValue = ((ConfigNonHeaderBaseValue >> 48) & 0xffff);
+
+
+//	ConfigNonHeaderBase(int requestID, int tg, int register_Number, int bus_Number ,int device_Number,int function_Number ) {
+
+    NonHeaderBase* recievedConfigNonHeaderBase = new ConfigNonHeaderBase(requestIDValue, tagValue, registerNumberValue, busNumberValue, deviceNumberValue, functionNumberValue);
+    return recievedConfigNonHeaderBase;
+}
+
 boost::dynamic_bitset<> CompletionNonHeaderBase::getBitRep() const {
     boost::dynamic_bitset<> result((headerSizeInBytes * 8) - 32);
 
@@ -42,8 +94,10 @@ boost::dynamic_bitset<> CompletionNonHeaderBase::getBitRep() const {
     lastBit[0] = myBitset[5];
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, byteCount));
     //Add the lowerAddress
-    for (int i = 0; i < 5; i++) {
-        result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, myBitset[i] << (12 + i)));
+    int y = 2;
+    for (int i = 0; i < 4; i++) {
+        result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, myBitset[y] << (12 + i)));
+        y++;
     }
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, functionNumber) << 16);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, deviceNumber) << 19);
@@ -53,4 +107,27 @@ boost::dynamic_bitset<> CompletionNonHeaderBase::getBitRep() const {
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, completerID) << 48);
 
     return result;
+}
+
+NonHeaderBase* CompletionNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset)const {
+    unsigned long CompletionNonHeaderBaseValue = bitset.to_ulong();
+    long byteCountValue = (CompletionNonHeaderBaseValue & 0xfff);
+    int registerNumberValue = ((CompletionNonHeaderBaseValue >> 2) & 0x3ff);
+    int functionNumberValue = ((CompletionNonHeaderBaseValue >> 16) & 0x07);
+    int deviceNumberValue = ((CompletionNonHeaderBaseValue >> 19) & 0x1f);
+    int busNumberValue = ((CompletionNonHeaderBaseValue >> 24) & 0xff);
+    int tagValue = ((CompletionNonHeaderBaseValue >> 32) & 0x3fff);
+    int completerIDValue = ((CompletionNonHeaderBaseValue >> 48) & 0xffff);
+    std::bitset<6> lowerAddressValuesbits;
+    lowerAddressValuesbits[2]= ((CompletionNonHeaderBaseValue >> 12) & 0x1);
+    lowerAddressValuesbits[3] = ((CompletionNonHeaderBaseValue >> 13) & 0x1);
+    lowerAddressValuesbits[4] = ((CompletionNonHeaderBaseValue >> 14) & 0x1);
+    lowerAddressValuesbits[5] = ((CompletionNonHeaderBaseValue >> 15) & 0x1);
+    lowerAddressValuesbits[6] = ((CompletionNonHeaderBaseValue >> 46) & 0x1);
+    int lowerAddressValues = lowerAddressValuesbits.to_ulong();
+
+//	CompletionNonHeaderBase(int requestID, int tg, int completer_ID,long byte_Count, int bus_Number, int device_Number ,int function_Number,int lower_Address) {
+
+    NonHeaderBase* recievedCompletionNonHeaderBase = new CompletionNonHeaderBase(completerIDValue, tagValue, completerIDValue, byteCountValue, busNumberValue, deviceNumberValue, functionNumberValue, lowerAddressValues);
+    return recievedCompletionNonHeaderBase;
 }
