@@ -3,7 +3,7 @@
 #define OHC_H
 #include <bitset>
 #include "boost/dynamic_bitset.hpp"
-#include "tlp.h"
+
 
 class OHC {
 public:
