@@ -98,6 +98,12 @@ Flit* DatalinkLayer::addCRC(Flit* flit) {
 	return flit;
 }
 
+bool DatalinkLayer::checkCRC(Flit* flit) {
+	Flit* CRCCalculated = addCRC(flit);
+
+	return (CRCCalculated->CRCPayload == (flit->CRCPayload));
+}
+
 Flit* DatalinkLayer::prepareFlit(Flit* flit, Dllp::DllpType dllpType, Dllp::CreditType creditType, bool shared, int credit[]) {
 	// Add the dllp to the flit
 	flit = this->addDLLP(flit, dllpType, creditType, shared, credit);
