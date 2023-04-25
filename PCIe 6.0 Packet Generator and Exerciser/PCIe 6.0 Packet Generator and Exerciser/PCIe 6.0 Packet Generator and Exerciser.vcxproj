@@ -110,7 +110,6 @@
     <ClCompile Include="type_browser.cpp" />
     <ClCompile Include="utils\non_header_base.cpp" />
     <ClCompile Include="content_widget.cpp" />
-    <ClCompile Include="layers\layers_wrapper.cpp" />
     <ClCompile Include="utils\ohc.cpp" />
     <ClCompile Include="layers\globals.cpp" />
     <ClCompile Include="utils\dllp.cpp" />
@@ -154,7 +153,6 @@
     <ClInclude Include="utils\tlp.h" />
     <ClInclude Include="utils\tlp_header.h" />
     <QtMoc Include="content_widget.h" />
-    <ClInclude Include="layers\layers_wrapper.h" />
     <ClInclude Include="utils\ohc.h" />
     <ClInclude Include="layers\globals.h" />
     <ClInclude Include="transaction_layer.h" />

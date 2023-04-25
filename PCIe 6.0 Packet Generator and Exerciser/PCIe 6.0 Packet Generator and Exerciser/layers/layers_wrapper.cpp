@@ -59,7 +59,7 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*> packets, Queue
 			packets.pop();
 			packetIndexInBytes = 0;
 		}
-		if (transaction.checkGateEquation(globals, packet)) {
+		if (transaction->checkGateEquation(globals, packet)) {
 			// If it can be sent, check if the current half of the flit contains less than 8 TLPs
 			if (flitIndexInBytes >= 128 ? flit->secondHalfTLPCount < 8 : flit->firstHalfTLPCount < 8) {
 				// If it does, check if what's left of the TLP can fit in what's remaining of the flit
@@ -187,7 +187,8 @@ void LayersWrapper::pushReadyFlit(Globals globals, Flit* flit, queue<Flit*>& que
 		break;
 	}
 	creditCounter = (creditCounter + 1) % 6;
-	datalink.pushFlitToQueue(flit, &queue, Dllp::DllpType::updateFC, creditType, shared, credit);
+	flit = datalink->prepareFlit(flit, Dllp::DllpType::updateFC, creditType, shared, credit);
+	queue.push(flit);
 }
 
 void LayersWrapper::updateConsumedCredits(Globals& globals, Dllp::CreditType creditType, int headerConsumption, int dataConsumption) {
