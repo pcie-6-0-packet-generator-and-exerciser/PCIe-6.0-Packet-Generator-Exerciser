@@ -142,6 +142,9 @@
     <ClCompile Include="layers\layers_wrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="layers\transmitter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\ohc.h">
@@ -229,6 +232,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\layers_wrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\transmitter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
