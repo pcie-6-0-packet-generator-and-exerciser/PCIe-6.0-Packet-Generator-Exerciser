@@ -10,9 +10,6 @@
  * @param listenOn the queue which is listened on
  */
 void normalFlowSender(Transmitter& transmitter, QueueWrapper<TLP*>& listenOn);
-#include "../utils/queue_wrapper.h"
-#include "globals.h"
-#include "sequence.h"
 
 /**
  * @brief This function is meant to be used to create a thread for each of the root-complex and endpoint
@@ -20,4 +17,4 @@ void normalFlowSender(Transmitter& transmitter, QueueWrapper<TLP*>& listenOn);
  * @param queueListenOn The QueueWrapper that the layers will receive TLPs from
  * @param queueSendOn The QueueWrapper that the layers will send on to layers of the other side
 */
-void initilizationSender(Globals globals, QueueWrapper<Sequence> queueListenOn, QueueWrapper<Flit> queueSendOn);
+void initilizationSender(Globals& globals, QueueWrapper<TLP*> queueListenOn, QueueWrapper<Flit*> queueSendOn);

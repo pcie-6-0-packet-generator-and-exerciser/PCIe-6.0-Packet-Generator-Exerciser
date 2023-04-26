@@ -1,5 +1,6 @@
 #include "thread_functions.h"
 #include <thread>
+#include "transmitter.h"
 
 void normalFlowSender(Transmitter& transmitter, QueueWrapper<TLP*>& listenOn) {
 	while (true) {
@@ -8,13 +9,13 @@ void normalFlowSender(Transmitter& transmitter, QueueWrapper<TLP*>& listenOn) {
 	}
 }
 
-void initilizationSender(Globals globals, QueueWrapper<Sequence> queueListenOn, QueueWrapper<Flit> queueSendOn) {
-	Transmitter transmitter = new Transmitter(globals, NULL, queueSendOn);
+void initilizationSender(Globals& globals, QueueWrapper<TLP*>& queueListenOn, QueueWrapper<Flit*>* queueSendOn) {
+	auto* transmitter = new Transmitter(globals, queueSendOn);
 	while (!globals.Fl1) {
-		transmitter.sendInitFC1();
+		transmitter->sendInitFC1();
 	}
 	while (!globals.Fl2) {
-		transmitter.sendInitFC2();
+		transmitter->sendInitFC2();
 	}
 	std::thread normalFlowSender(globals, queueListenOn, queueSendOn);
 	normalFlowSender.join();

@@ -22,6 +22,8 @@ public:
 	LayersWrapper* layers;
 	QueueWrapper<Flit*>* sendOn;
 
+	Transmitter(Globals& globals, QueueWrapper<Flit*>* sendOn);
+
 	/**
 	 * @brief Sends an InitFC1 message to the receiver.
 	 * @param void

@@ -1,5 +1,11 @@
 #include "transmitter.h"
 
+Transmitter::Transmitter(Globals& globals, QueueWrapper<Flit*>* sendOn)
+{
+	this->globals = globals;
+	this->sendOn = sendOn;
+}
+
 void Transmitter::sendInitFC1(void) {
 	this->layers->sendNOPFlit(this->globals, Dllp::DllpType::initFC1, this->sendOn);
 }
