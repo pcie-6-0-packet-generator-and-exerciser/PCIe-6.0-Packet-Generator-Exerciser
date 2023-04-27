@@ -12,7 +12,7 @@ public:
         memoryMap_ = memoryMap;
     }
 
-    TLP handleMemoryRead(TLP* packet, TLPType packetType) override {
+    TLP* handleMemoryRead(TLP* packet, TLPType packetType) override {
 
         uint32_t address = 0;
 
@@ -40,12 +40,12 @@ public:
         }
 
         // need to return the Completion TLP to be pushed into the Completion Queue in the Endpoint App Class
-        TLP completionTLP;
-        completionTLP.header = new TLPHeader();
-        completionTLP.header->TLPtype = TLPType::CplD;
-        completionTLP.header->nonBase = packet->header->nonBase;
-        completionTLP.header->OHCVector = packet->header->OHCVector;
-        completionTLP.dataPayload = data;
+        TLP* completionTLP;
+        completionTLP->header = new TLPHeader();
+        completionTLP->header->TLPtype = TLPType::CplD;
+        completionTLP->header->nonBase = packet->header->nonBase;
+        completionTLP->header->OHCVector = packet->header->OHCVector;
+        completionTLP->dataPayload = data;
 
         return completionTLP;
     }

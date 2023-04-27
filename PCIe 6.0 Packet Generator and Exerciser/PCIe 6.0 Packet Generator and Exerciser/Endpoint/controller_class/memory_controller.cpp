@@ -13,29 +13,29 @@ void MemoryController::setPacketHandler(std::unique_ptr<MemoryRequestHandler> ha
     packetHandler_ = std::move(handler);
 }
 
-TLP MemoryController::handleMemoryReadRequests(TLP packet)
+TLP* MemoryController::handleMemoryReadRequests(TLP* packet)
 {
-    if (packet.header->TLPtype == TLPType::MemRead32 || packet.header->TLPtype == TLPType::MemRead64)
+    if (packet->header->TLPtype == TLPType::MemRead32 || packet->header->TLPtype == TLPType::MemRead64)
     {
         auto readHandler = std::make_unique<MemoryReadHandler>();
         readHandler->setMemoryMap(memoryMap_.get());
         packetHandler_ = std::move(readHandler);
-        return packetHandler_->handleMemoryRead(&packet, packet.header->TLPtype);
+        return packetHandler_->handleMemoryRead(packet, packet->header->TLPtype);
     }
     else
     {
         // Handle unsupported TLP types
-        return TLP();
+        return 0;
     }
 }
 
-void MemoryController::handleMemoryWriteRequests(TLP packet) {
-    if (packet.header->TLPtype == TLPType::MemWrite32 || packet.header->TLPtype == TLPType::MemWrite64)
+void MemoryController::handleMemoryWriteRequests(TLP* packet) {
+    if (packet->header->TLPtype == TLPType::MemWrite32 || packet->header->TLPtype == TLPType::MemWrite64)
     {
         auto writeHandler = std::make_unique<MemoryWriteHandler>();
         writeHandler->setMemoryMap(memoryMap_.get());
         packetHandler_ = std::move(writeHandler);
-        return packetHandler_->handleMemoryWrite(&packet, packet.header->TLPtype);
+        return packetHandler_->handleMemoryWrite(packet, packet->header->TLPtype);
     }
 
 }

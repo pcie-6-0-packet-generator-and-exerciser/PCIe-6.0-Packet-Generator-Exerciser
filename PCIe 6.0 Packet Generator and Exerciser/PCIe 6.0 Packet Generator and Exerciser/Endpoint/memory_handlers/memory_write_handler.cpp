@@ -46,9 +46,8 @@ public:
 
         memoryMap_->write(address, data_uint);
     }
-    TLP handleMemoryRead(TLP* packet, TLPType packetType) override {
-        TLP result;
-        return result;
+    TLP* handleMemoryRead(TLP* packet, TLPType packetType) override {
+        return 0;
     }
 
 private:

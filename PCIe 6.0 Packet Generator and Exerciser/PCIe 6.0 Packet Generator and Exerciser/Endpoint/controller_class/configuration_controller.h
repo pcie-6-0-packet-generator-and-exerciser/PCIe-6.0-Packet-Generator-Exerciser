@@ -41,7 +41,7 @@ class ConfigurationController
     public:
         static ConfigurationController* constructConfigurationController();
 
-        TLP handleConfigurationRequest(TLP * tlp);
+        TLP* handleConfigurationRequest(TLP * tlp);
 
         int IsMemorySpaceEnabled();
 

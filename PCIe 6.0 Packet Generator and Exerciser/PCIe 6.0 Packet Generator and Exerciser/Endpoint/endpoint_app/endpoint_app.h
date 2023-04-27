@@ -8,9 +8,10 @@
 class EndpointApp {
 public:
 	EndpointApp();
-	void receivePackets(std::queue<TLP> receievedTLPs);
-	void sendCompletions();
+	void receivePackets(std::queue<TLP*> receievedTLPs);
+	std::queue<TLP*> sendCompletions();
     void clearCompletionsQueue();
+    void run(QueueWrapper<TLP*> sendOn, QueueWrapper<TLP*> listenOn);
 
 private:
     // Add BAR variables
@@ -22,5 +23,5 @@ private:
     std::unique_ptr<MemoryMap> memoryMap_;
 
     // Add queue wrapper for completions sent to root complex
-    std::queue<TLP> completionQueue_;
+    std::queue<TLP*> completionQueue_;
 };
