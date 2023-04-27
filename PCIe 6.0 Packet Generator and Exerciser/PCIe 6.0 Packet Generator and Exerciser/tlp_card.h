@@ -3,6 +3,8 @@
 #include <QtWidgets/QFrame>
 #include "utils/tlp.h"
 
+QString TLPenumToString(TLPType value);
+
 class QLabel;
 namespace Ui
 {

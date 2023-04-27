@@ -17,7 +17,34 @@ namespace
 }
 using namespace Ui;
 
+QString TLPenumToString(TLPType value)
+{
+	switch (value) {
+	case TLPType::MemRead32:
+		return "Memory Read 32b";
+	case TLPType::MemRead64:
+		return "Memory Read 64b";
+	case TLPType::MemWrite32:
+		return "Memory Write 32b";
+	case TLPType::MemWrite64:
+		return "Memory Write 64b";
+	case TLPType::VendorMsg:
+		return "Vendor Message";
+	case TLPType::ConfigRead0:
+		return "Configuration Read 0";
+	case TLPType::ConfigWrite0:
+		return "Configuration Write 0";
+	case TLPType::ConfigRead1:
+		return "Configuration Read 1";
+	case TLPType::ConfigWrite1:
+		return "Configuration Write 1";
+	case TLPType::Cpl:
+		return "Completion Without Data";
+	case TLPType::CplD:
+		return "Completion With Data";
 
+	}
+};
 
 
 TLPCard::TLPCard( TLPType tlpType, QWidget* parent)
