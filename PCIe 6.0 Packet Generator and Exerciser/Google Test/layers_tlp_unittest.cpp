@@ -134,3 +134,300 @@ TEST(TLPGetBitRep, OHCA5FullPacket) {
 	boost::dynamic_bitset<> bitRep = ohc->getBitRep();
 	EXPECT_EQ(bitRep.to_ulong(), 0x5BF90009);
 }
+
+TEST(TLPGetBitRep, NonHeaderAddress32Address) {
+	AddressRouting32Bit* nha = new AddressRouting32Bit(0, 0, 0);
+	srand(1);
+	for (int i = 0; i < 256; i++) {
+		// generate random 30-bit number
+		int random = rand() % 1073741824;
+		nha->address = random;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(2));
+		bitRep.resize(30);
+		EXPECT_EQ(bitRep.to_ulong(), random);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderAddress32Tag) {
+	AddressRouting32Bit* nha = new AddressRouting32Bit(0, 0, 0);
+	srand(1);
+	for (int i = 0; i < 256; i++) {
+		// generate random 14-bit number
+		int random = rand() % 16384;
+		nha->tag = random;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(32));
+		bitRep.resize(14);
+		EXPECT_EQ(bitRep.to_ulong(), random);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderAddress32RequesterID) {
+	AddressRouting32Bit* nha = new AddressRouting32Bit(0, 0, 0);
+	srand(1);
+	for (int i = 0; i < 256; i++) {
+		// generate random 16-bit number
+		int random = rand() % 65536;
+		nha->requestID = random;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(48));
+		bitRep.resize(16);
+		EXPECT_EQ(bitRep.to_ulong(), random);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderAddress32FullPacket) {
+	AddressRouting32Bit* nha = new AddressRouting32Bit(48169, 10254, 73741824);
+	boost::dynamic_bitset<> bitRep = nha->getBitRep();
+	boost::dynamic_bitset<> bitRep2(bitRep.operator>>(32));
+	bitRep2.resize(32);
+	bitRep.resize(32);
+	EXPECT_EQ(bitRep2.to_ulong(), 0xBC29280E);
+	EXPECT_EQ(bitRep.to_ulong(), 0x1194D800);
+}
+
+TEST(TLPGetBitRep, NonHeaderAddress64Address) {
+	AddressRouting64Bit* nha = new AddressRouting64Bit(0, 0, 0);
+	srand(1);
+	for (int i = 0; i < 256; i++) {
+		// generate random 62-bit number
+		long long random = rand() % 4611686018427387904;
+		nha->address = random;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(2));
+		bitRep.resize(62);
+		long long lower = random & 0x3FFFFFFF;
+		long long upper = random >> 30;
+		boost::dynamic_bitset<> bitRep2(bitRep);
+		bitRep2.resize(30);
+		boost::dynamic_bitset<> bitRep3(bitRep.operator>>(30));
+		bitRep3.resize(32);
+		EXPECT_EQ(bitRep2.to_ulong(), lower);
+		EXPECT_EQ(bitRep3.to_ulong(), upper);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderAddress64Tag) {
+	AddressRouting64Bit* nha = new AddressRouting64Bit(0, 0, 0);
+	srand(1);
+	for (int i = 0; i < 256; i++) {
+		// generate random 14-bit number
+		int random = rand() % 16384;
+		nha->tag = random;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(64));
+		bitRep.resize(14);
+		EXPECT_EQ(bitRep.to_ulong(), random);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderAddress64RequesterID) {
+	AddressRouting64Bit* nha = new AddressRouting64Bit(0, 0, 0);
+	srand(1);
+	for (int i = 0; i < 256; i++) {
+		// generate random 16-bit number
+		int random = rand() % 65536;
+		nha->requestID = random;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(80));
+		bitRep.resize(16);
+		EXPECT_EQ(bitRep.to_ulong(), random);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderAddress64FullPacket) {
+	AddressRouting64Bit* nha = new AddressRouting64Bit(48169, 10254, 4294967297);
+	boost::dynamic_bitset<> bitRep = nha->getBitRep();
+	boost::dynamic_bitset<> bitRep2(bitRep.operator>>(32));
+	boost::dynamic_bitset<> bitRep3(bitRep.operator>>(64));
+	bitRep.resize(32);
+	bitRep2.resize(32);
+	bitRep3.resize(32);
+	EXPECT_EQ(bitRep3.to_ulong(), 0xBC29280E);
+	EXPECT_EQ(bitRep2.to_ulong(), 0x00000001);
+	EXPECT_EQ(bitRep.to_ulong(), 0x00000004);
+}
+
+TEST(TLPGetBitRep, NonHeaderConfigRegisterNumber) {
+	ConfigNonHeaderBase* nha = new ConfigNonHeaderBase(0, 0, 0, 0, 0, 0);
+	for (int i = 0; i <1024; i++) {
+		nha->registerNumber = i;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(2));
+		bitRep.resize(10);
+		EXPECT_EQ(bitRep.to_ulong(), i);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderConfigBusNumber) {
+	ConfigNonHeaderBase* nha = new ConfigNonHeaderBase(0, 0, 0, 0, 0, 0);
+	for (int i = 0; i < 256; i++) {
+		nha->busNumber = i;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(24));
+		bitRep.resize(8);
+		EXPECT_EQ(bitRep.to_ulong(), i);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderConfigDeviceNumber) {
+	ConfigNonHeaderBase* nha = new ConfigNonHeaderBase(0, 0, 0, 0, 0, 0);
+	for (int i = 0; i < 32; i++) {
+		nha->deviceNumber = i;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(19));
+		bitRep.resize(5);
+		EXPECT_EQ(bitRep.to_ulong(), i);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderConfigFunctionNumber) {
+	ConfigNonHeaderBase* nha = new ConfigNonHeaderBase(0, 0, 0, 0, 0, 0);
+	for (int i = 0; i < 8; i++) {
+		nha->functionNumber = i;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(16));
+		bitRep.resize(3);
+		EXPECT_EQ(bitRep.to_ulong(), i);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderConfigTag) {
+	ConfigNonHeaderBase* nha = new ConfigNonHeaderBase(0, 0, 0, 0, 0, 0);
+	srand(1);
+	for (int i = 0; i < 256; i++) {
+		// generate random 14-bit number
+		int random = rand() % 16384;
+		nha->tag = random;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(32));
+		bitRep.resize(14);
+		EXPECT_EQ(bitRep.to_ulong(), random);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderConfigRequesterID) {
+	ConfigNonHeaderBase* nha = new ConfigNonHeaderBase(0, 0, 0, 0, 0, 0);
+	srand(1);
+	for (int i = 0; i < 256; i++) {
+		// generate random 16-bit number
+		int random = rand() % 65536;
+		nha->requestID = random;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(48));
+		bitRep.resize(16);
+		EXPECT_EQ(bitRep.to_ulong(), random);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderMessageMessageCode) {
+	MessageNonHeaderBase* nha = new MessageNonHeaderBase(0, 0);
+	for (int i = 0; i < 256; i++) {
+		nha->messageCode = i;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(64));
+		bitRep.resize(8);
+		EXPECT_EQ(bitRep.to_ulong(), i);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderMessageRequesterID) {
+	MessageNonHeaderBase* nha = new MessageNonHeaderBase(0, 0);
+	srand(1);
+	for (int i = 0; i < 256; i++) {
+		// generate random 16-bit number
+		int random = rand() % 65536;
+		nha->requestID = random;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(80));
+		bitRep.resize(16);
+		EXPECT_EQ(bitRep.to_ulong(), random);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderCompletionByteCount) {
+	CompletionNonHeaderBase* nha = new CompletionNonHeaderBase(0, 0, 0, 0, 0, 0, 0, 0);
+	srand(1);
+	for (int i = 0; i < 256; i++) {
+		// generate random 12-bit number
+		long random = rand() % 4096;
+		nha->byteCount = random;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.resize(12);
+		EXPECT_EQ(bitRep.to_ulong(), random);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderCompletionLowerAddress) {
+	CompletionNonHeaderBase* nha = new CompletionNonHeaderBase(0, 0, 0, 0, 0, 0, 0, 0);
+	for (int i = 0; i < 32; i++) {
+		nha->lowerAddress = i;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		EXPECT_EQ(bitRep[46], i >> 4);
+		bitRep.operator=(bitRep.operator>>(12));
+		bitRep.resize(4);
+		EXPECT_EQ(bitRep.to_ulong(), i & 0xF);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderCompletionBusNumber) {
+	CompletionNonHeaderBase* nha = new CompletionNonHeaderBase(0, 0, 0, 0, 0, 0, 0, 0);
+	for (int i = 0; i < 256; i++) {
+		nha->busNumber = i;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(24));
+		bitRep.resize(8);
+		EXPECT_EQ(bitRep.to_ulong(), i);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderCompletionDeviceNumber) {
+	CompletionNonHeaderBase* nha = new CompletionNonHeaderBase(0, 0, 0, 0, 0, 0, 0, 0);
+	for (int i = 0; i < 32; i++) {
+		nha->deviceNumber = i;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(19));
+		bitRep.resize(5);
+		EXPECT_EQ(bitRep.to_ulong(), i);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderCompletionFunctionNumber) {
+	CompletionNonHeaderBase* nha = new CompletionNonHeaderBase(0, 0, 0, 0, 0, 0, 0, 0);
+	for (int i = 0; i < 8; i++) {
+		nha->functionNumber = i;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(16));
+		bitRep.resize(3);
+		EXPECT_EQ(bitRep.to_ulong(), i);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderCompletionTag) {
+	CompletionNonHeaderBase* nha = new CompletionNonHeaderBase(0, 0, 0, 0, 0, 0, 0, 0);
+	srand(1);
+	for (int i = 0; i < 256; i++) {
+		// generate random 14-bit number
+		int random = rand() % 16384;
+		nha->tag = random;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(32));
+		bitRep.resize(14);
+		EXPECT_EQ(bitRep.to_ulong(), random);
+	}
+}
+
+TEST(TLPGetBitRep, NonHeaderCompletionCompleterID) {
+	CompletionNonHeaderBase* nha = new CompletionNonHeaderBase(0, 0, 0, 0, 0, 0, 0, 0);
+	srand(1);
+	for (int i = 0; i < 256; i++) {
+		// generate random 16-bit number
+		int random = rand() % 65536;
+		nha->completerID = random;
+		boost::dynamic_bitset<> bitRep = nha->getBitRep();
+		bitRep.operator=(bitRep.operator>>(48));
+		bitRep.resize(16);
+		EXPECT_EQ(bitRep.to_ulong(), random);
+	}
+}
