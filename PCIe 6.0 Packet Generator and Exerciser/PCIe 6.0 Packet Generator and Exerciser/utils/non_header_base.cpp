@@ -1,5 +1,15 @@
 #include "non_header_base.h"
 
+boost::dynamic_bitset<> get_bits(const boost::dynamic_bitset<>& bits, size_t start_index, size_t end_index) {
+    size_t length = end_index - start_index + 1;
+    boost::dynamic_bitset<> result(length);
+    for (size_t i = 0; i < length; ++i) {
+        result[i] = bits[start_index + i];
+    }
+    return result;
+}
+
+
 boost::dynamic_bitset<> AddressRouting32Bit::getBitRep() const {
     boost::dynamic_bitset<> result ((headerSizeInBytes * 8) - 32) ;
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, address));
@@ -9,11 +19,16 @@ boost::dynamic_bitset<> AddressRouting32Bit::getBitRep() const {
 }
 
 NonHeaderBase* AddressRouting32Bit::getObjRep(boost::dynamic_bitset<> bitset)const {
-    unsigned long AddressRouting32BitValues = bitset.to_ulong();
+    boost::dynamic_bitset<> addressValue_sub_bits = get_bits(bitset,0,15);
+    int addressValue = addressValue_sub_bits.to_ulong();
 
-    int addressValue = (AddressRouting32BitValues & 0xffffffff);
-    int tagValue = ((AddressRouting32BitValues >> 32) & 0x3fff);
-    int requestID((AddressRouting32BitValues >> 48) & 0xffff);
+    //int tagValue = ((AddressRouting32BitValues >> 32) & 0x3fff);
+    boost::dynamic_bitset<> tagValue_sub_bits = get_bits(bitset, 32, 45);
+    int tagValue = tagValue_sub_bits.to_ulong();
+
+    //int requestID((AddressRouting32BitValues >> 48) & 0xffff);
+    boost::dynamic_bitset<> requestID_sub_bits = get_bits(bitset, 48, 63);
+    int requestID = requestID_sub_bits.to_ulong();
 
     NonHeaderBase* recievedAddressRouting32Bit = new AddressRouting32Bit(requestID, tagValue, addressValue);
     return recievedAddressRouting32Bit;
@@ -110,8 +125,8 @@ boost::dynamic_bitset<> CompletionNonHeaderBase::getBitRep() const {
 }
 
 NonHeaderBase* CompletionNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset)const {
-    unsigned long CompletionNonHeaderBaseValue = bitset.to_ulong();
-    long byteCountValue = (CompletionNonHeaderBaseValue & 0xfff);
+    boost::dynamic_bitset<> CompletionNonHeaderBaseValue = bitset;
+    long byteCountValue = (CompletionNonHeaderBaseValue.resize(12)); 
     int registerNumberValue = ((CompletionNonHeaderBaseValue >> 2) & 0x3ff);
     int functionNumberValue = ((CompletionNonHeaderBaseValue >> 16) & 0x07);
     int deviceNumberValue = ((CompletionNonHeaderBaseValue >> 19) & 0x1f);
