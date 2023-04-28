@@ -136,7 +136,7 @@ boost::dynamic_bitset<> ConfigurationController::convertToBitSet(unsigned int ui
  * @param tlp -> TLP to be handled
  * @return TLP -> the resultant TLP
  */
-TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
+TLP* ConfigurationController::handleConfigurationRequest(TLP * tlp)
 {
     int Registernumber, validWriteOperation = 0;
     TLPType configType;
@@ -151,7 +151,7 @@ TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
     if(!isValidRegisterNumber(Registernumber))
     {
         completerConstructor->setAlgorithm(cplUR);
-        return *completerConstructor->performAlgorithm();
+        return completerConstructor->performAlgorithm();
     }
     
     configType = getTLPType(tlp); // Get the TLP type
@@ -171,7 +171,7 @@ TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
         completerConstructor->setData(dataToBeReadBits);
         completerConstructor->setAlgorithm(cplD);
         
-        return *completerConstructor->performAlgorithm();
+        return completerConstructor->performAlgorithm();
 
     case TLPType::ConfigWrite0:
         dataToBeWrittenUint = getTLPData(tlp);
@@ -182,15 +182,15 @@ TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
         if (validWriteOperation)
         {
             completerConstructor->setAlgorithm(cpl);
-            return *completerConstructor->performAlgorithm();
+            return completerConstructor->performAlgorithm();
         }
         
         completerConstructor->setAlgorithm(cplUR);
-        return *completerConstructor->performAlgorithm();
+        return completerConstructor->performAlgorithm();
 
     default:
         completerConstructor->setAlgorithm(cplUR);
-        return *completerConstructor->performAlgorithm();
+        return completerConstructor->performAlgorithm();
     }
 }
 

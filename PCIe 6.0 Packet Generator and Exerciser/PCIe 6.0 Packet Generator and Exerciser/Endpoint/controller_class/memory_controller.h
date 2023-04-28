@@ -13,7 +13,7 @@ private:
 public:
     explicit MemoryController(std::unique_ptr<MemoryMap> memoryMap);
     void setPacketHandler(std::unique_ptr<MemoryRequestHandler> handler);
-    TLP handleMemoryReadRequests(TLP packet);
-    void handleMemoryWriteRequests(TLP packet);
+    TLP* handleMemoryReadRequests(TLP* packet);
+    void handleMemoryWriteRequests(TLP* packet);
 
 };

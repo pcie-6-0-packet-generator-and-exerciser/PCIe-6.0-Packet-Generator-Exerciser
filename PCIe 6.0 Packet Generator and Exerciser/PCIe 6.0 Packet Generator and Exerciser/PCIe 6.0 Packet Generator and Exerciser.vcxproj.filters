@@ -121,9 +121,6 @@
     <ClCompile Include="Endpoint\endpoint_app\endpoint_app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Endpoint\endpoint_app\packet_listener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Endpoint\controller_class\memory_controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
