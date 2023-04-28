@@ -95,7 +95,6 @@
     <ClCompile Include="Endpoint\controller_class\configuration_controller.cpp" />
     <ClCompile Include="Endpoint\controller_class\memory_controller.cpp" />
     <ClCompile Include="Endpoint\endpoint_app\endpoint_app.cpp" />
-    <ClCompile Include="Endpoint\endpoint_app\packet_listener.cpp" />
     <ClCompile Include="Endpoint\memory_handlers\memory_read_handler.cpp" />
     <ClCompile Include="Endpoint\memory_handlers\memory_write_handler.cpp" />
     <ClCompile Include="Endpoint\memory_mapper\memory_mapper.cpp" />
