@@ -4,6 +4,8 @@
 #include "../PCIe 6.0 Packet Generator and Exerciser/Endpoint/configuration_visitor_classes/configuration_read_visitor.h"
 #include "../PCIe 6.0 Packet Generator and Exerciser/Endpoint/configuration_algorithm_classes/completion_construction_algorithms.h"
 
+/********************************************************** Writing in the Configuration Space ********************************/
+
 ConfigurationSpace* config = ConfigurationSpace::constructConfigurationSpace();
 
 /* Test for Boundary register number */
@@ -402,4 +404,87 @@ TEST(WritingInTheConfigurationSpace, RW2)
 	EXPECT_EQ(returnVal, 1); // Make sure that the Write operation is carried out
 
 	command->setRegisterValue(0);
+}
+
+/******************************************************** Reading from the Configuration Space ********************************/
+
+/* Test for reading from a RW Register */
+TEST(ReadingFromTheConfigurationSpace, RW)
+{
+	unsigned int registerVal;
+
+	ConfigurationReadVisitor* read = new ConfigurationReadVisitor();
+
+	read->setRegisterNumber(3);
+	registerVal = read->visitConfigurationSpace(config);
+
+	EXPECT_EQ(registerVal, 17);
+}
+
+/* Test for reading from a RO Register */
+TEST(ReadingFromTheConfigurationSpace, RO)
+{
+	unsigned int registerVal;
+
+	ConfigurationReadVisitor* read = new ConfigurationReadVisitor();
+
+	read->setRegisterNumber(5);
+	registerVal = read->visitConfigurationSpace(config);
+
+	EXPECT_EQ(registerVal, 557056);
+}
+
+/* Test for reading from a HwInit Register */
+TEST(ReadingFromTheConfigurationSpace, HwInit)
+{
+	unsigned int registerVal;
+
+	ConfigurationReadVisitor* read = new ConfigurationReadVisitor();
+
+	read->setRegisterNumber(14);
+	registerVal = read->visitConfigurationSpace(config);
+
+	EXPECT_EQ(registerVal, 0);
+}
+
+/* Test for reading from a Register after writing a value inside */
+TEST(ReadingFromTheConfigurationSpace, WriteThenRead)
+{
+	unsigned int registerVal;
+
+	ConfigurationReadVisitor* read = new ConfigurationReadVisitor();
+	Register* temp = config->getHead();
+
+	for (int i = 0; i < 10; i++)
+		temp = temp->getRegisterNext();
+
+	temp->setRegisterValue((unsigned int)0x100ABC);
+
+	read->setRegisterNumber(10);
+	registerVal = read->visitConfigurationSpace(config);
+
+	EXPECT_EQ(registerVal, 1051324);
+}
+
+/* Test for reading from a HwInit Register */
+TEST(ReadingFromTheConfigurationSpace, WriteThenRead2)
+{
+	int returnVal;
+	unsigned int registerValBefore, registerValAfter;
+
+	ConfigurationReadVisitor* read = new ConfigurationReadVisitor();
+	ConfigurationWriteVisitor* write = new ConfigurationWriteVisitor();
+
+	read->setRegisterNumber(7);
+	registerValBefore = read->visitConfigurationSpace(config);
+
+	write->setRegisterNumber(7);
+	write->setData((unsigned int)0xF33CDFFF);
+	returnVal = write->visitConfigurationSpace(config);
+
+	registerValAfter = read->visitConfigurationSpace(config);
+
+	EXPECT_EQ(returnVal, 1);
+	EXPECT_EQ(registerValBefore, 12);
+	EXPECT_EQ(registerValAfter, 3221225484);
 }
