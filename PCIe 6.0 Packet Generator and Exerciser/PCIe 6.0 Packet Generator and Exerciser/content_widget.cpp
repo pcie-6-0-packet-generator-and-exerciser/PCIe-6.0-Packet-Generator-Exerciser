@@ -19,6 +19,8 @@ namespace {
 	constexpr char submitButtonProperty[] = "submitButton";
 	constexpr char selectedTabProperty[] = "selectedTab";
 	constexpr char unselectedTabProprety[] = "unselectedTab";
+	constexpr char unselectedTabStyleString[] = "background-color:#45aff8; color:white; font-size: 15px;";
+	constexpr char selectedTabStyleString[] = "background-color: white; color: #45aff8; font-size: 15px;";
 	constexpr int titleLabelWidth = 200;
 }
 using namespace Ui;
@@ -32,6 +34,7 @@ ContentWidget::ContentWidget(QWidget* parent,
 	createBody();
 	createFooter();
 	manageLayout();
+
 }
 
 ContentWidget::~ContentWidget()
@@ -94,8 +97,10 @@ void ContentWidget::createBody()
 	typeScrollArea->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 	typeLayout->addWidget(typeScrollArea);
 	typeLayout->setStretchFactor(typeScrollArea, 10);
-	bodyLayout->addLayout(typeLayout);
-	bodyLayout->setStretchFactor(typeLayout, 1);
+	typeFrame_ = new QFrame(this);
+	typeFrame_->setLayout(typeLayout);
+	bodyLayout->addWidget(typeFrame_);
+	bodyLayout->setStretchFactor(typeFrame_, 1);
 
 	//sequence browser
 	QVBoxLayout* sequenceLayout = new QVBoxLayout;
@@ -126,25 +131,26 @@ void ContentWidget::createBody()
 	sequenceShadowEffect->setOffset(0, 0);
 	sequenceShadowEffect->setColor(Qt::black);
 
-	sequenceScrollArea->setGraphicsEffect(sequenceShadowEffect);
-
+	//sequenceScrollArea->setGraphicsEffect(sequenceShadowEffect);
+	
 	sequenceLayout->addWidget(sequenceScrollArea);
 	sequenceLayout->setStretchFactor(sequenceScrollArea, 10);
-	bodyLayout->addLayout(sequenceLayout);
-	bodyLayout->setStretchFactor(sequenceLayout, 1);
-	bodyLayout->setStretchFactor(sequenceScrollArea, 1);
+	QFrame* sequenceFrame = new QFrame(this);
+	sequenceFrame->setLayout(sequenceLayout);
+	bodyLayout->addWidget(sequenceFrame);
+	bodyLayout->setStretchFactor(sequenceFrame, 1);
 
 	//result browser
-	/*QVBoxLayout* resultLayout = new QVBoxLayout;
-	resultLayout->setContentsMargins(5, 5, 5, 5);
-	resultLayout->setSpacing(10);
+	QVBoxLayout* resultBrowserLayout = new QVBoxLayout;
+	resultBrowserLayout->setContentsMargins(5, 5, 5, 5);
+	resultBrowserLayout->setSpacing(10);
 
 	QLabel* resultLabel = new QLabel("Result Browser", body_);
 	resultLabel->setProperty(::widgetTitleProperty, true);
 	resultLabel->setMinimumWidth(300);
 	resultLabel->setAlignment(Qt::AlignHCenter | Qt::AlignCenter);
-	resultLayout->addWidget(resultLabel, 1, Qt::AlignHCenter);
-	resultLayout->setStretchFactor(resultLabel, 1);
+	resultBrowserLayout->addWidget(resultLabel, 1, Qt::AlignHCenter);
+	resultBrowserLayout->setStretchFactor(resultLabel, 1);
 
 	ResultBrowser* resultBrowser = new ResultBrowser(body_);
 	QScrollBar* resultSideBar = new QScrollBar(Qt::Vertical, nullptr);
@@ -156,11 +162,14 @@ void ContentWidget::createBody()
 	resultScrollArea->setVerticalScrollBar(resultSideBar);
 	resultScrollArea->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
-	resultLayout->addWidget(resultScrollArea);
-	resultLayout->setStretchFactor(resultScrollArea, 10);
-	bodyLayout->addLayout(resultLayout);
-	bodyLayout->setStretchFactor(resultLayout, 1);*/
+	resultBrowserLayout->addWidget(resultScrollArea);
+	resultBrowserLayout->setStretchFactor(resultScrollArea, 10);
 
+	resultFrame_ = new QFrame(this);
+	resultFrame_->setLayout(resultBrowserLayout);
+	bodyLayout->addWidget(resultFrame_);
+	bodyLayout->setStretchFactor(resultFrame_, 1);
+	resultFrame_->setVisible(false);
 
 	body_->setLayout(bodyLayout);
 }
@@ -197,6 +206,7 @@ void ContentWidget::createSequenceExplorerTab() {
 	sequenceExplorerTab_->setMaximumWidth(150);
 	sequenceExplorerTab_->setMaximumHeight(30);
 	sequenceExplorerTab_->setProperty(::selectedTabProperty, true);
+	connect(sequenceExplorerTab_, SIGNAL(clicked()), this, SLOT(onSequenceExplorerTabClick()));
 }
 
 void ContentWidget::createResultExplorerTab() {
@@ -206,6 +216,7 @@ void ContentWidget::createResultExplorerTab() {
 	resultExplorerTab_->setMaximumWidth(150);
 	resultExplorerTab_->setMaximumHeight(30);
 	resultExplorerTab_->setProperty(::unselectedTabProprety, true);
+	connect(resultExplorerTab_, SIGNAL(clicked()), this, SLOT(onResultExplorerTabClick()));
 }
 
 
@@ -225,12 +236,25 @@ void ContentWidget::manageLayout()
 }
 
 void ContentWidget::onSubmitButtonClick() {
-	sequenceExplorerTab_->setProperty(::selectedTabProperty, QVariant(false));
+	typeFrame_->setVisible(false);
+	resultFrame_->setVisible(true);
+	sequenceExplorerTab_->setProperty(::selectedTabProperty, false);
 	sequenceExplorerTab_->setProperty(::unselectedTabProprety, true);
-	sequenceExplorerTab_->update();
-	
 	resultExplorerTab_->setProperty(::unselectedTabProprety, false);
-	resultExplorerTab_->setProperty(::selectedTabProperty, QVariant(true));
+	resultExplorerTab_->setProperty(::selectedTabProperty, true);
 	resultExplorerTab_->update();
-	QCoreApplication::processEvents();
+}
+
+void ContentWidget::onSequenceExplorerTabClick() {
+	typeFrame_->setVisible(true);
+	resultFrame_->setVisible(false);
+	sequenceExplorerTab_->setStyleSheet(::selectedTabStyleString);
+	resultExplorerTab_->setStyleSheet(::unselectedTabStyleString);
+}
+
+void ContentWidget::onResultExplorerTabClick() {
+	typeFrame_->setVisible(false);
+	resultFrame_->setVisible(true);
+	sequenceExplorerTab_->setStyleSheet(::unselectedTabStyleString);
+	resultExplorerTab_->setStyleSheet(::selectedTabStyleString);
 }

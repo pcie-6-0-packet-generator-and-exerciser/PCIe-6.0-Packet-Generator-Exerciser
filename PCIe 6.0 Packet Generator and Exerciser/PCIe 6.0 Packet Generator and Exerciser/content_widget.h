@@ -5,11 +5,11 @@
 #include "utils/queue_wrapper.cpp"
 class TLP;
 class QPushButton;
+class QVBoxLayout;
 
 namespace Ui
 {
     class SequenceBrowser;
-
     class ContentWidget: public QFrame
     {
         Q_OBJECT
@@ -29,10 +29,14 @@ namespace Ui
         void manageLayout();
     public Q_SLOTS:
         void onSubmitButtonClick();
+        void onSequenceExplorerTabClick();
+        void onResultExplorerTabClick();
     private:
         QFrame* header_;
         QFrame* body_;
         QFrame* footer_;
+        QFrame* typeFrame_;
+        QFrame* resultFrame_;
         SequenceBrowser* sequenceBrowser_;
         QPushButton* submitButton_;
         QPushButton* sequenceExplorerTab_;
