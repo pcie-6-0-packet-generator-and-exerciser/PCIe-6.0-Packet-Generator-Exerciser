@@ -32,6 +32,8 @@ namespace Ui
         void onSequenceExplorerTabClick();
         void onResultExplorerTabClick();
     private:
+        QueueWrapper<TLP*>* rootComplexToLayers_;
+        QueueWrapper<TLP*>* layersToRootComplex_;
         QFrame* header_;
         QFrame* body_;
         QFrame* footer_;

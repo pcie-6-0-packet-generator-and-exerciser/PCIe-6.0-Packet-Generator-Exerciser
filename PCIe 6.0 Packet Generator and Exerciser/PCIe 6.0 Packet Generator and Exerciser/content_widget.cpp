@@ -28,8 +28,11 @@ using namespace Ui;
 ContentWidget::ContentWidget(QWidget* parent,
 			QueueWrapper<TLP*>* rootComplexToLayers,
 			QueueWrapper<TLP*>* layersToRootComplex)
-	: QFrame(parent)
+	: QFrame(parent),
+	rootComplexToLayers_(rootComplexToLayers),
+	layersToRootComplex_(layersToRootComplex)
 {
+
 	createHeader();
 	createBody();
 	createFooter();
@@ -236,13 +239,11 @@ void ContentWidget::manageLayout()
 }
 
 void ContentWidget::onSubmitButtonClick() {
+	//push in rootComplexToLayers_
 	typeFrame_->setVisible(false);
 	resultFrame_->setVisible(true);
-	sequenceExplorerTab_->setProperty(::selectedTabProperty, false);
-	sequenceExplorerTab_->setProperty(::unselectedTabProprety, true);
-	resultExplorerTab_->setProperty(::unselectedTabProprety, false);
-	resultExplorerTab_->setProperty(::selectedTabProperty, true);
-	resultExplorerTab_->update();
+	sequenceExplorerTab_->setStyleSheet(::unselectedTabStyleString);
+	resultExplorerTab_->setStyleSheet(::selectedTabStyleString);
 }
 
 void ContentWidget::onSequenceExplorerTabClick() {
