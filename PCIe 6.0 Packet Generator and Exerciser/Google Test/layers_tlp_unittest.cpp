@@ -431,3 +431,155 @@ TEST(TLPGetBitRep, NonHeaderCompletionCompleterID) {
 		EXPECT_EQ(bitRep.to_ulong(), random);
 	}
 }
+
+TEST(TLPGetBitRep, HeaderTC) {
+	TLPHeader* h = new TLPHeader();
+	for (int i = 0; i < 8; i++) {
+		h->TC = i;
+		h->nonBase = new AddressRouting32Bit(0, 0, 0);
+		boost::dynamic_bitset<> bitRep = h->getBitRep();
+		bitRep.operator=(bitRep.operator>>(21 + 64));
+		bitRep.resize(3);
+		EXPECT_EQ(bitRep.to_ulong(), i);
+	}
+}
+
+TEST(TLPGetBitRep, HeaderOHC) {
+	TLPHeader* h = new TLPHeader();
+	for (int i = 0; i < 32; i++) {
+		h->OHC = i;
+		h->nonBase = new AddressRouting32Bit(0, 0, 0);
+		boost::dynamic_bitset<> bitRep = h->getBitRep();
+		bitRep.operator=(bitRep.operator>>(16 + 64));
+		bitRep.resize(5);
+		EXPECT_EQ(bitRep.to_ulong(), i);
+	}
+}
+
+TEST(TLPGetBitRep, HeaderLength) {
+	TLPHeader* h = new TLPHeader();
+	for (int i = 1; i < 1024; i++) {
+		h->lengthInDoubleWord = i;
+		h->nonBase = new AddressRouting32Bit(0, 0, 0);
+		boost::dynamic_bitset<> bitRep = h->getBitRep();
+		bitRep.operator=(bitRep.operator>>(64));
+		bitRep.resize(10);
+		EXPECT_EQ(bitRep.to_ulong(), i);
+	}
+	h->lengthInDoubleWord = 1024;
+	boost::dynamic_bitset<> bitRep = h->getBitRep();
+	bitRep.operator=(bitRep.operator>>(64));
+	bitRep.resize(10);
+	EXPECT_EQ(bitRep.to_ulong(), 0);
+}
+
+TEST(TLPGetBitRep, HeaderType) {
+	TLPHeader* h = new TLPHeader();
+	h->TLPtype = TLPType::MemRead32;
+	h->nonBase = new AddressRouting32Bit(0, 0, 0);
+	boost::dynamic_bitset<> bitRep = h->getBitRep();
+	bitRep.operator=(bitRep.operator>>(24 + 64));
+	bitRep.resize(8);
+	EXPECT_EQ(bitRep.to_ulong(), static_cast<int>(TLPType::MemRead32));
+}
+
+TEST(TLPGetBitRep, HeaderFullPacketNoOHC) {
+	TLPHeader* h = new TLPHeader();
+	h->TLPtype = TLPType::MemWrite64;
+	h->lengthInDoubleWord = 781;
+	h->OHC = 26;
+	h->TC = 0;
+	h->nonBase = new AddressRouting64Bit(48169, 10254, 4294967297);
+	boost::dynamic_bitset<> bitRep = h->getBitRep();
+	boost::dynamic_bitset<> bitRep2(bitRep.operator>>(32));
+	boost::dynamic_bitset<> bitRep3(bitRep.operator>>(64));
+	boost::dynamic_bitset<> bitRep4(bitRep.operator>>(96));
+	bitRep.resize(32);
+	bitRep2.resize(32);
+	bitRep3.resize(32);
+	bitRep4.resize(32);
+	EXPECT_EQ(bitRep4.to_ulong(), 0x601A030D);
+	EXPECT_EQ(bitRep3.to_ulong(), 0xBC29280E);
+	EXPECT_EQ(bitRep2.to_ulong(), 0x00000001);
+	EXPECT_EQ(bitRep.to_ulong(), 0x00000004);
+}
+
+TEST(TLPGetBitRep, HeaderFullPacketWithOHC) {
+	TLPHeader* h = new TLPHeader();
+	h->TLPtype = TLPType::MemWrite64;
+	h->lengthInDoubleWord = 781;
+	h->OHC = 26;
+	h->TC = 0;
+	h->nonBase = new AddressRouting64Bit(48169, 10254, 4294967297);
+	OHCA3* ohc = new OHCA3(std::bitset<4>(9), std::bitset<4>(7), 186);
+	h->OHCVector.push_back(ohc);
+	boost::dynamic_bitset<> bitRep = h->getBitRep();
+	boost::dynamic_bitset<> bitRep2(bitRep.operator>>(32));
+	boost::dynamic_bitset<> bitRep3(bitRep.operator>>(64));
+	boost::dynamic_bitset<> bitRep4(bitRep.operator>>(96));
+	boost::dynamic_bitset<> bitRep5(bitRep.operator>>(128));
+	bitRep.resize(32);
+	bitRep2.resize(32);
+	bitRep3.resize(32);
+	bitRep4.resize(32);
+	bitRep5.resize(32);
+	EXPECT_EQ(bitRep5.to_ulong(), 0x601A030D);
+	EXPECT_EQ(bitRep4.to_ulong(), 0xBC29280E);
+	EXPECT_EQ(bitRep3.to_ulong(), 0x00000001);
+	EXPECT_EQ(bitRep2.to_ulong(), 0x00000004);
+	EXPECT_EQ(bitRep.to_ulong(), 0xBA000079);
+}
+
+TEST(TLPGetBitRep, TLPFullPacketNoDatapayload) {
+	TLP* tlp = new TLP();
+	TLPHeader* h = new TLPHeader();
+	h->TLPtype = TLPType::MemRead64;
+	h->lengthInDoubleWord = 0;
+	h->OHC = 26;
+	h->TC = 0;
+	h->nonBase = new AddressRouting64Bit(48169, 10254, 4294967297);
+	tlp->header = h;
+	boost::dynamic_bitset<> bitRep = tlp->getBitRep();
+	boost::dynamic_bitset<> bitRep2(bitRep.operator>>(32));
+	boost::dynamic_bitset<> bitRep3(bitRep.operator>>(64));
+	boost::dynamic_bitset<> bitRep4(bitRep.operator>>(96));
+	bitRep.resize(32);
+	bitRep2.resize(32);
+	bitRep3.resize(32);
+	bitRep4.resize(32);
+	EXPECT_EQ(bitRep4.to_ulong(), 0x201A0000);
+	EXPECT_EQ(bitRep3.to_ulong(), 0xBC29280E);
+	EXPECT_EQ(bitRep2.to_ulong(), 0x00000001);
+	EXPECT_EQ(bitRep.to_ulong(), 0x00000004);
+}
+
+TEST(TLPGetBitRep, TLPFullPacketWithDatapayload) {
+	TLP* tlp = new TLP();
+	TLPHeader* h = new TLPHeader();
+	h->TLPtype = TLPType::MemWrite64;
+	h->lengthInDoubleWord = 2;
+	h->OHC = 26;
+	h->TC = 0;
+	h->nonBase = new AddressRouting64Bit(48169, 10254, 4294967297);
+	tlp->header = h;
+	tlp->dataPayload = boost::dynamic_bitset<>(64, 0x00000001);
+	tlp->dataPayload.operator|=(boost::dynamic_bitset<>(64, 0x00000001) << 32);
+	boost::dynamic_bitset<> bitRep = tlp->getBitRep();
+	boost::dynamic_bitset<> bitRep2(bitRep.operator>>(32));
+	boost::dynamic_bitset<> bitRep3(bitRep.operator>>(64));
+	boost::dynamic_bitset<> bitRep4(bitRep.operator>>(96));
+	boost::dynamic_bitset<> bitRep5(bitRep.operator>>(128));
+	boost::dynamic_bitset<> bitRep6(bitRep.operator>>(160));
+	bitRep.resize(32);
+	bitRep2.resize(32);
+	bitRep3.resize(32);
+	bitRep4.resize(32);
+	bitRep5.resize(32);
+	bitRep6.resize(32);
+	EXPECT_EQ(bitRep6.to_ulong(), 0x601A030D);
+	EXPECT_EQ(bitRep5.to_ulong(), 0xBC29280E);
+	EXPECT_EQ(bitRep4.to_ulong(), 0x00000001);
+	EXPECT_EQ(bitRep3.to_ulong(), 0x00000004);
+	EXPECT_EQ(bitRep2.to_ulong(), 0x00000001);
+	EXPECT_EQ(bitRep.to_ulong(), 0x00000001);
+}
