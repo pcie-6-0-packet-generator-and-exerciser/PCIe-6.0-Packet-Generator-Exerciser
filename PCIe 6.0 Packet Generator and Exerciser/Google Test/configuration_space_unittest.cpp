@@ -488,3 +488,91 @@ TEST(ReadingFromTheConfigurationSpace, WriteThenRead2)
 	EXPECT_EQ(registerValBefore, 12);
 	EXPECT_EQ(registerValAfter, 3221225484);
 }
+
+/* Test for the initial value and mask of a register */
+TEST(ConfigurationSpaceFunctions, InitialValueAndMask)
+{
+	Register* temp = config->getHead();
+
+	for (int i = 0; i < 7; i++)
+		temp = temp->getRegisterNext();
+
+	temp->setRegisterValue(temp->getRegisterInitialValue());
+
+	EXPECT_EQ(temp->getRegisterValue(), 12);
+	EXPECT_EQ(temp->getRegisterMask(), 0x3FFFFFFF);
+}
+
+/* Test for the initial value and mask of a register */
+TEST(ConfigurationSpaceFunctions, InitialValueAndMask2)
+{
+	Register* temp = config->getHead();
+
+	for (int i = 0; i < 5; i++)
+		temp = temp->getRegisterNext();
+
+	EXPECT_EQ(temp->getRegisterValue(), 557056);
+	EXPECT_EQ(temp->getRegisterMask(), 0);
+}
+
+/* Test the setRegisterValue() function */
+TEST(ConfigurationSpaceFunctions, SetRegisterValue)
+{
+	Register* temp = config->getHead();
+
+	for (int i = 0; i < 9; i++)
+		temp = temp->getRegisterNext();
+
+	temp->setRegisterValue(0x259A);
+
+	EXPECT_EQ(temp->getRegisterValue(), 9626);
+}
+
+/* Test for setReceivedMasterAbortBit() function */
+TEST(ConfigurationSpaceFunctions, SetReceivedMasterAbortBit)
+{
+	unsigned int statusValBefore, statusValAfter;
+
+	Register* status = config->getHead();
+
+	status = status->getRegisterNext()->getRegisterNext()->getRegisterNext();
+	statusValBefore = status->getRegisterValue();
+	config->setReceivedMasterAbortBit();
+	statusValAfter = status->getRegisterValue();
+
+	EXPECT_NE(statusValBefore, statusValAfter);
+}
+
+/* Test for the initial state of the Memory Space Enable bit */
+TEST(ConfigurationSpaceFunctions, IsMemorySpaceEnabled)
+{
+	EXPECT_EQ(config->isMemorySpaceEnabled(), 0);
+}
+
+/* Test for the state of the Memory Space Enable bit after manipulating it */
+TEST(ConfigurationSpaceFunctions, IsMemorySpaceEnabled2)
+{
+	Register* command = config->getHead();
+
+	command = command->getRegisterNext()->getRegisterNext();
+	command->setRegisterValue((unsigned int)0x2);
+
+	EXPECT_EQ(config->isMemorySpaceEnabled(), 1);
+}
+
+/* Test for the initial state of the IO Space Enable bit */
+TEST(ConfigurationSpaceFunctions, isIOSpaceEnabled)
+{
+	EXPECT_EQ(config->isIOSpaceEnabled(), 0);
+}
+
+/* Test for the state of the IO Space Enable bit after manipulating it */
+TEST(ConfigurationSpaceFunctions, IsIOSpaceEnabled2)
+{
+	Register* command = config->getHead();
+
+	command = command->getRegisterNext()->getRegisterNext();
+	command->setRegisterValue((unsigned int)0x1);
+
+	EXPECT_EQ(config->isIOSpaceEnabled(), 1);
+}
