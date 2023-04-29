@@ -118,3 +118,76 @@ TEST(WritingInThePCIeCapability, RW2)
 
 	temp->setRegisterValue(temp->getRegisterInitialValue());
 }
+
+/**************************************************** Reading from the PCIe Capability Structure ********************************/
+
+/* Test to read from a RO Register */
+TEST(ReadingFromThePCIeCapability, RO)
+{
+	unsigned int registerVal;
+
+	ConfigurationReadVisitor* read = new ConfigurationReadVisitor();
+
+	read->setRegisterNumber(18);
+	registerVal = read->visitPcieCapabilityStructure(pcie);
+
+	EXPECT_EQ(registerVal, 128);
+}
+
+/* Test to read from a RW Register */
+TEST(ReadingFromThePCIeCapability, RW)
+{
+	unsigned int registerVal;
+
+	ConfigurationReadVisitor* read = new ConfigurationReadVisitor();
+
+	read->setRegisterNumber(21);
+	registerVal = read->visitPcieCapabilityStructure(pcie);
+
+	EXPECT_EQ(registerVal, 1);
+}
+
+/* Test to write then to read from a Register */
+TEST(ReadingFromThePCIeCapability, WriteThenRead)
+{
+	unsigned int registerVal, registerValAfter;
+
+	ConfigurationReadVisitor* read = new ConfigurationReadVisitor();
+
+	Register* temp = pcie->getHead();
+
+	for (int i = 0; i < 5; i++)
+		temp = temp->getRegisterNext();
+
+	temp->setRegisterValue((unsigned int)0xFF00123);
+
+	read->setRegisterNumber(22);
+	registerVal = read->visitPcieCapabilityStructure(pcie);
+
+	EXPECT_EQ(registerVal, 267387171);
+
+	temp->setRegisterValue(temp->getRegisterInitialValue());
+}
+
+/* Test to write then to read from a Register */
+TEST(ReadingFromThePCIeCapability, WriteThenRead2)
+{
+	int returnVal;
+	unsigned int registerValBefore, registerValAfter;
+
+	ConfigurationReadVisitor* read = new ConfigurationReadVisitor();
+	ConfigurationWriteVisitor* write = new ConfigurationWriteVisitor();
+
+	read->setRegisterNumber(22);
+	registerValBefore = read->visitPcieCapabilityStructure(pcie);
+
+	write->setRegisterNumber(22);
+	write->setData((unsigned int)0x0123AFBC);
+
+	returnVal = write->visitPcieCapabilityStructure(pcie);
+	registerValAfter = read->visitPcieCapabilityStructure(pcie);
+
+	EXPECT_EQ(returnVal, 1);
+	EXPECT_EQ(registerValBefore, 0);
+	EXPECT_EQ(registerValAfter, 2272940);
+}
