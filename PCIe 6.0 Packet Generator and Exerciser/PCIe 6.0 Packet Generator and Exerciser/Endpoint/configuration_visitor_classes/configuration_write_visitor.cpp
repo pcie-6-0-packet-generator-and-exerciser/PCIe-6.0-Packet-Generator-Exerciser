@@ -89,7 +89,7 @@ unsigned int ConfigurationWriteVisitor::visitConfigurationSpace(ConfigurationSpa
 
 unsigned int ConfigurationWriteVisitor::visitPcieCapabilityStructure(PCIECapability * capability)
 {
-    if (registerNumber < 0 || registerNumber >= capability->getNumberOfRegisters() || registerNumber != 21 || registerNumber != 22)
+    if (registerNumber < 0 || (registerNumber - 17) >= capability->getNumberOfRegisters() || (registerNumber != 21 && registerNumber != 22))
         return 0; // Cpl with UR
 
     /* Traversing the linked list till we get the specified Register to write in */
