@@ -2,7 +2,6 @@
 
 #include <QtWidgets/QFrame>
 #include "utils/queue_wrapper.h"
-#include "utils/queue_wrapper.cpp"
 class TLP;
 class QPushButton;
 class QVBoxLayout;
