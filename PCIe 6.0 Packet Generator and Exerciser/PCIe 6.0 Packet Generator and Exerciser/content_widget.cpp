@@ -239,7 +239,7 @@ void ContentWidget::manageLayout()
 }
 
 void ContentWidget::onSubmitButtonClick() {
-	//push in rootComplexToLayers_
+	rootComplexToLayers_->push(sequenceBrowser_->getTLPCards());
 	typeFrame_->setVisible(false);
 	resultFrame_->setVisible(true);
 	sequenceExplorerTab_->setStyleSheet(::unselectedTabStyleString);

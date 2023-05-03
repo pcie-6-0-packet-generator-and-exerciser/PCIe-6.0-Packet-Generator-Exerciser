@@ -2,7 +2,6 @@
 #include <QtWidgets/QApplication>
 #include <QFile>
 #include "utils/queue_wrapper.h"
-#include "utils/queue_wrapper.cpp"
 #include "utils/tlp.h"
 int main(int argc, char *argv[])
 {
