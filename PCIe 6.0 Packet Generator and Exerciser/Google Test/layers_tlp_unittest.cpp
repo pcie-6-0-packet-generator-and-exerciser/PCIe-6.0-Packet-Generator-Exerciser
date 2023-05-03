@@ -591,3 +591,50 @@ TEST(TLPGetBitRep, TLPFullPacketWithDatapayload) {
 	EXPECT_EQ(bitRep2.to_ulong(), 0x00000001);
 	EXPECT_EQ(bitRep.to_ulong(), 0x00000001);
 }
+
+void setBits(boost::dynamic_bitset<>& bitset, int start, int end, int value) {
+	for (int i = start; i <= end; i++) {
+		bitset[i] = value & 1;
+		value = value >> 1;
+	}
+}
+
+TEST(TLPGetObjRep, OHCA1) {
+	boost::dynamic_bitset<> ohcbits = boost::dynamic_bitset<>(32);
+	setBits(ohcbits, 0, 3, 12);
+	setBits(ohcbits, 4, 7, 5);
+	OHCA1* ohc = (OHCA1*)OHCA1::getObjRep(ohcbits);
+	EXPECT_EQ(ohc->firstDWBE.to_ulong(), 12);
+	EXPECT_EQ(ohc->lastDWBE.to_ulong(), 5);
+}
+
+TEST(TLPGetObjRep, OHCA3) {
+	boost::dynamic_bitset<> ohcbits = boost::dynamic_bitset<>(32);
+	setBits(ohcbits, 0, 3, 12);
+	setBits(ohcbits, 4, 7, 5);
+	setBits(ohcbits, 24, 31, 158);
+	OHCA3* ohc = (OHCA3*)OHCA3::getObjRep(ohcbits);
+	EXPECT_EQ(ohc->firstDWBE.to_ulong(), 12);
+	EXPECT_EQ(ohc->lastDWBE.to_ulong(), 5);
+	EXPECT_EQ(ohc->destinationSegment, 158);
+}
+
+TEST(TLPGetObjRep, OHCA4) {
+	boost::dynamic_bitset<> ohcbits = boost::dynamic_bitset<>(32);
+	setBits(ohcbits, 24, 31, 255);
+	OHCA4* ohc = (OHCA4*)OHCA4::getObjRep(ohcbits);
+	EXPECT_EQ(ohc->destinationSegment, 255);
+}
+
+TEST(TLPGetObjRep, OHCA5) {
+	boost::dynamic_bitset<> ohcbits = boost::dynamic_bitset<>(32);
+	setBits(ohcbits, 0, 2, 1);
+	setBits(ohcbits, 3, 4, 2);
+	setBits(ohcbits, 16, 23, 72);
+	setBits(ohcbits, 24, 31, 126);
+	OHCA5* ohc = (OHCA5*)OHCA5::getObjRep(ohcbits);
+	EXPECT_EQ(ohc->CPLStatusEnum, OHCA5::CPLStatus::True);
+	EXPECT_EQ(ohc->lowerAddress, 2);
+	EXPECT_EQ(ohc->completerSegment, 72);
+	EXPECT_EQ(ohc->destinationSegment, 126);
+}
