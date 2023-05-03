@@ -15,8 +15,7 @@ namespace Ui
         ~TLPCard();
        
     public:
-        TLP tlp;
-        //TLP* tlp;
+        TLP* tlp;
     private:
 
         void mouseMoveEvent(QMouseEvent* event);

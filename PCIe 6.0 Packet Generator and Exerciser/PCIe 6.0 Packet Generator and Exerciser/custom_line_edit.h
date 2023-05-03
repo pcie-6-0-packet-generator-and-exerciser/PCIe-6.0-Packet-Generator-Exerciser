@@ -1,6 +1,8 @@
 #pragma once
 #include <QtWidgets/QFrame>
-#include<QLineEdit>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QBoxLayout>
+#include <Qtwidgets/QLineEdit>
 
 class QLabel;
 namespace Ui
@@ -10,10 +12,12 @@ namespace Ui
         Q_OBJECT
 
     public:
-        explicit CustomLineEdit(QWidget* parent, QString text, int width, int height);
+        explicit CustomLineEdit(const QString &labelText, int width, int height, const QString &content, QWidget* parent );
         ~CustomLineEdit();
-    public: 
+    public:
         QLineEdit* lineEdit;
+        QLabel* label;
+        QVBoxLayout* layout;
 
     };
 }

@@ -1,6 +1,9 @@
 #pragma once
 #include <QtWidgets/QFrame>
 #include<QVBoxLayout>
+#include <QPushButton>
+#include <QString>
+#include "custom_line_edit.h"
 #include "utils/tlp.h"
 
 
@@ -15,14 +18,19 @@ namespace Ui
         ~PacketDetails();
     private:
         void manageLayout();
-        void clearView();
+        void clearView(QLayout* layout);
+        void viewMemRead32();
+        void viewMemRead64();
 
 
     private:
-
         QVBoxLayout* contentLayout_ ;
+        QPushButton* saveButton;
+        TLP* currentTLP;
+        std::vector<CustomLineEdit*> currentLineEdits;
 
     public slots:
-        void updateDetails();
+        void updateView(TLP* tlp);
+        void saveValues();
     };
 }

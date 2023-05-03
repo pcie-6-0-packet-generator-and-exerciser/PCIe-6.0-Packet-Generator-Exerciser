@@ -49,8 +49,9 @@ void SequenceBrowser::dropEvent(QDropEvent* event)
 	cards_.push_back(card);
 	card->setParent(this);
 	cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
-	connect(card, &TLPCard::cardPressed, this->packetDetails, &PacketDetails::updateDetails);
-		
+	//connect(card, &TLPCard::cardPressed, this->packetDetails, &PacketDetails::updateDetails);	
+	connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
+	
 	event->acceptProposedAction();
 	
 }
