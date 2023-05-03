@@ -16,7 +16,7 @@ boost::dynamic_bitset<> OHCA1::getBitRep() const {
     return result;
 }
 
- OHC* OHCA1::getObjRep(boost::dynamic_bitset<> bitset)const {
+ OHC* OHCA1::getObjRep(boost::dynamic_bitset<> bitset) {
 	unsigned long Ohc1Values = bitset.to_ulong();
     std::bitset<4> firstDWBEBitset;
     std::bitset<4> lastDWBEBitset;
@@ -50,7 +50,7 @@ boost::dynamic_bitset<>  OHCA3::getBitRep() const {
     return result;
 }
 
-OHC* OHCA3::getObjRep(boost::dynamic_bitset<> bitset)const {
+OHC* OHCA3::getObjRep(boost::dynamic_bitset<> bitset) {
     unsigned long Ohc3Values = bitset.to_ulong();
 
     std::bitset<4> firstDWBEBitset;
@@ -77,7 +77,7 @@ boost::dynamic_bitset<>  OHCA4::getBitRep() const {
     return result;
 }
 
-OHC* OHCA4::getObjRep(boost::dynamic_bitset<> bitset)const {
+OHC* OHCA4::getObjRep(boost::dynamic_bitset<> bitset) {
     unsigned long Ohc4Values = bitset.to_ulong();
 
     int destinationSegmentValue = ((Ohc4Values >> 24) & 0xff);
@@ -103,7 +103,7 @@ boost::dynamic_bitset<> OHCA5::getBitRep() const {
 
 //OHCA5(int destinationSeg, int completerSeg, std::bitset<2> lowerAddresssetter, CPLStatus myEnumsetter) :
 
-OHC* OHCA5::getObjRep(boost::dynamic_bitset<> bitset)const {
+OHC* OHCA5::getObjRep(boost::dynamic_bitset<> bitset) {
     unsigned long Ohc5Values = bitset.to_ulong();
     std::bitset<2> lowerAddresssetterBitset;
     int destinationSegmentValue = ((Ohc5Values >> 24) & 0xff);
