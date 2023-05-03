@@ -18,8 +18,8 @@ boost::dynamic_bitset<> AddressRouting32Bit::getBitRep() const {
     return result;
 }
 
-NonHeaderBase* AddressRouting32Bit::getObjRep(boost::dynamic_bitset<> bitset)const {
-    boost::dynamic_bitset<> addressValue_sub_bits = get_bits(bitset,0,15);
+NonHeaderBase* AddressRouting32Bit::getObjRep(boost::dynamic_bitset<> bitset){
+    boost::dynamic_bitset<> addressValue_sub_bits = get_bits(bitset,2,31);
     int addressValue = addressValue_sub_bits.to_ulong();
 
     //int tagValue = ((AddressRouting32BitValues >> 32) & 0x3fff);
@@ -42,8 +42,8 @@ boost::dynamic_bitset<> AddressRouting64Bit::getBitRep() const {
     return result;
 }
 
-NonHeaderBase* AddressRouting64Bit::getObjRep(boost::dynamic_bitset<> bitset)const {
-    boost::dynamic_bitset<> addressValue_sub_bits = get_bits(bitset, 0, 63);
+NonHeaderBase* AddressRouting64Bit::getObjRep(boost::dynamic_bitset<> bitset) {
+    boost::dynamic_bitset<> addressValue_sub_bits = get_bits(bitset, 2, 63);
     int addressValue = addressValue_sub_bits.to_ulong();
 
     boost::dynamic_bitset<> tagValue_sub_bits = get_bits(bitset, 64, 77);
@@ -64,7 +64,7 @@ boost::dynamic_bitset<> MessageNonHeaderBase::getBitRep() const {
     return result;
 }
 
-NonHeaderBase* MessageNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset)const {
+NonHeaderBase* MessageNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset) {
     boost::dynamic_bitset<> messageCodeValue_sub_bits = get_bits(bitset, 64, 71);
     int messageCodeValue = messageCodeValue_sub_bits.to_ulong();
 
@@ -87,7 +87,7 @@ boost::dynamic_bitset<> ConfigNonHeaderBase::getBitRep() const {
     return result;
 }
 
-NonHeaderBase* ConfigNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset)const {
+NonHeaderBase* ConfigNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset) {
     
     boost::dynamic_bitset<> registerNumberValue_sub_bits = get_bits(bitset, 2, 11);
     int registerNumberValue = registerNumberValue_sub_bits.to_ulong();
@@ -136,12 +136,9 @@ boost::dynamic_bitset<> CompletionNonHeaderBase::getBitRep() const {
     return result;
 }
 
-NonHeaderBase* CompletionNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset)const {
+NonHeaderBase* CompletionNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset) {
     boost::dynamic_bitset<> byteCountValue_sub_bits = get_bits(bitset, 0, 11);
     long byteCountValue = byteCountValue_sub_bits.to_ulong();
-
-    boost::dynamic_bitset<> registerNumberValue_sub_bits = get_bits(bitset, 2, 11);
-    int registerNumberValue = registerNumberValue_sub_bits.to_ulong();
 
     boost::dynamic_bitset<> functionNumberValue_sub_bits = get_bits(bitset, 16, 18);
     int functionNumberValue = functionNumberValue_sub_bits.to_ulong();

@@ -9,8 +9,6 @@ public:
 	int requestID;
 	int headerSizeInBytes;
 	virtual boost::dynamic_bitset<> getBitRep() const = 0; // pure virtual function, making this an abstract class
-	virtual NonHeaderBase* getObjRep(boost::dynamic_bitset<> nonheaderbaseBits) const = 0;
-
 };
 // Concrete class AddressRouting32Bit from NonHeaderBase
 class AddressRouting32Bit : public	NonHeaderBase {
@@ -25,7 +23,7 @@ public:
 		headerSizeInBytes = 12;
 	}
 	boost::dynamic_bitset<> getBitRep() const override;
-	NonHeaderBase* getObjRep(boost::dynamic_bitset<> nonheaderbaseBits) const  override;
+	static NonHeaderBase* getObjRep(boost::dynamic_bitset<> nonheaderbaseBits);
 
 };
 // Concrete class AddressRouting64Bit from NonHeaderBase
@@ -42,7 +40,7 @@ public:
 		headerSizeInBytes = 16;
 	}
 	boost::dynamic_bitset<> getBitRep() const override;
-	NonHeaderBase* getObjRep(boost::dynamic_bitset<> nonheaderbaseBits) const  override;
+	static NonHeaderBase* getObjRep(boost::dynamic_bitset<> nonheaderbaseBits);
 
 
 };
@@ -65,7 +63,7 @@ public:
 		functionNumber = function_Number;
 	}
 	boost::dynamic_bitset<> getBitRep() const override;
-	NonHeaderBase* getObjRep(boost::dynamic_bitset<> nonheaderbaseBits) const  override;
+	static NonHeaderBase* getObjRep(boost::dynamic_bitset<> nonheaderbaseBits);
 
 
 };
@@ -80,7 +78,7 @@ public:
 		messageCode = message_Code;
 	}
 	boost::dynamic_bitset<> getBitRep() const override;
-	NonHeaderBase* getObjRep(boost::dynamic_bitset<> nonheaderbaseBits) const  override;
+	static NonHeaderBase* getObjRep(boost::dynamic_bitset<> nonheaderbaseBits);
 
 
 };
@@ -107,7 +105,7 @@ public:
 		lowerAddress = lower_Address;
 	}
 	boost::dynamic_bitset<> getBitRep() const override;
-	NonHeaderBase* getObjRep(boost::dynamic_bitset<> nonheaderbaseBits) const  override;
+	static NonHeaderBase* getObjRep(boost::dynamic_bitset<> nonheaderbaseBits);
 
 
 };
