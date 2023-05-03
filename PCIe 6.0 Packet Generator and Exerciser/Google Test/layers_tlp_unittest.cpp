@@ -592,7 +592,7 @@ TEST(TLPGetBitRep, TLPFullPacketWithDatapayload) {
 	EXPECT_EQ(bitRep.to_ulong(), 0x00000001);
 }
 
-void setBits(boost::dynamic_bitset<>& bitset, int start, int end, int value) {
+void setBits(boost::dynamic_bitset<>& bitset, int start, int end, long long value) {
 	for (int i = start; i <= end; i++) {
 		bitset[i] = value & 1;
 		value = value >> 1;
@@ -637,4 +637,72 @@ TEST(TLPGetObjRep, OHCA5) {
 	EXPECT_EQ(ohc->lowerAddress, 2);
 	EXPECT_EQ(ohc->completerSegment, 72);
 	EXPECT_EQ(ohc->destinationSegment, 126);
+}
+
+TEST(TLPGetObjRep, NonHeaderAddressRouting32) {
+	boost::dynamic_bitset<> nhbits = boost::dynamic_bitset<>(64);
+	setBits(nhbits, 2, 31, 0x3465123F);
+	setBits(nhbits, 32, 45, 15023);
+	setBits(nhbits, 48, 63, 0xA6B9);
+	AddressRouting32Bit* nh = (AddressRouting32Bit*)AddressRouting32Bit::getObjRep(nhbits);
+	EXPECT_EQ(nh->address, 0x3465123F);
+	EXPECT_EQ(nh->tag, 15023);
+	EXPECT_EQ(nh->requestID, 0xA6B9);
+}
+
+TEST(TLPGetObjRep, NonHeaderAddressRouting64) {
+	boost::dynamic_bitset<> nhbits = boost::dynamic_bitset<>(96);
+	setBits(nhbits, 2, 63, 0x34651230A6B953F);
+	setBits(nhbits, 64, 77, 14906);
+	setBits(nhbits, 80, 95, 0x9FAB);
+	AddressRouting64Bit* nh = (AddressRouting64Bit*)AddressRouting64Bit::getObjRep(nhbits);
+	EXPECT_EQ(nh->address, 0x34651230A6B953F);
+	EXPECT_EQ(nh->tag, 14906);
+	EXPECT_EQ(nh->requestID, 0x9FAB);
+}
+
+TEST(TLPGetObjRep, NonHeaderConfig) {
+	boost::dynamic_bitset<> nhbits = boost::dynamic_bitset<>(64);
+	setBits(nhbits, 2, 11, 0x3B2);
+	setBits(nhbits, 16, 18, 5);
+	setBits(nhbits, 19, 23, 26);
+	setBits(nhbits, 24, 31, 0xFF);
+	setBits(nhbits, 32, 45, 15023);
+	setBits(nhbits, 48, 63, 0xA6B9);
+	ConfigNonHeaderBase* nh = (ConfigNonHeaderBase*)ConfigNonHeaderBase::getObjRep(nhbits);
+	EXPECT_EQ(nh->registerNumber, 0x3B2);
+	EXPECT_EQ(nh->functionNumber, 5);
+	EXPECT_EQ(nh->deviceNumber, 26);
+	EXPECT_EQ(nh->busNumber, 0xFF);
+	EXPECT_EQ(nh->tag, 15023);
+	EXPECT_EQ(nh->requestID, 0xA6B9);
+}
+
+TEST(TLPGetObjRep, NonHeaderMessage) {
+	boost::dynamic_bitset<> nhbits = boost::dynamic_bitset<>(96);
+	setBits(nhbits, 64, 71, 0xB3);
+	setBits(nhbits, 80, 95, 0x9FAB);
+	MessageNonHeaderBase* nh = (MessageNonHeaderBase*)MessageNonHeaderBase::getObjRep(nhbits);
+	EXPECT_EQ(nh->messageCode, 0xB3);
+	EXPECT_EQ(nh->requestID, 0x9FAB);
+}
+
+TEST(TLPGetObjRep, NonHeaderCompletion) {
+	boost::dynamic_bitset<> nhbits = boost::dynamic_bitset<>(64);
+	setBits(nhbits, 0, 11, 0x3B2);
+	setBits(nhbits, 12, 15, 6);
+	setBits(nhbits, 16, 18, 5);
+	setBits(nhbits, 19, 23, 26);
+	setBits(nhbits, 24, 31, 0xFF);
+	setBits(nhbits, 32, 45, 15023);
+	nhbits[46] = true;
+	setBits(nhbits, 48, 63, 0xAB);
+	CompletionNonHeaderBase* nh = (CompletionNonHeaderBase*)CompletionNonHeaderBase::getObjRep(nhbits);
+	EXPECT_EQ(nh->byteCount, 0x3B2);
+	EXPECT_EQ(nh->lowerAddress, 14);
+	EXPECT_EQ(nh->busNumber, 5);
+	EXPECT_EQ(nh->deviceNumber, 26);
+	EXPECT_EQ(nh->functionNumber, 0xFF);
+	EXPECT_EQ(nh->tag, 15023);
+	EXPECT_EQ(nh->completerID, 0xAB);
 }
