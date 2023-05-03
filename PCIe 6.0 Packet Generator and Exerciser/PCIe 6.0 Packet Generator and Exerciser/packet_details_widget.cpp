@@ -14,26 +14,29 @@ PacketDetails::PacketDetails(QWidget* parent)
 PacketDetails::~PacketDetails()
 {
 }
+void PacketDetails::createHeader() {
+	QHBoxLayout* headerLayout = new QHBoxLayout(this);
+	CustomLineEdit* type = new CustomLineEdit("Type", 100, 50, QString::number(static_cast<int>(currentTLP->header->TLPtype), 2).rightJustified(8, '0'), this);
+	headerLayout->addWidget(type);
+	CustomLineEdit* tc = new CustomLineEdit("TC", 100, 50, "000", this);
+	headerLayout->addWidget(tc);
+	CustomLineEdit* ohc = new CustomLineEdit("OHC", 100, 50, "00001", this);
+	headerLayout->addWidget(ohc);
+	CustomLineEdit* ts = new CustomLineEdit("TS", 100, 50, "000", this);
+	headerLayout->addWidget(ts);
+	CustomLineEdit* attr = new CustomLineEdit("Attr", 100, 50, "000", this);
+	headerLayout->addWidget(attr);
+	CustomLineEdit* length = new CustomLineEdit("Length", 100, 50, QString::number(static_cast<int>(currentTLP->header->lengthInDoubleWord), 2).rightJustified(8, '0'), this);
+	headerLayout->addWidget(length);
+	contentLayout_->addLayout(headerLayout);
+}
 void PacketDetails::viewMemRead32() {
 	/*CustomLineEdit* lineEdit = new CustomLineEdit( "Address",100,50,"content",this);
 	contentLayout_->addWidget(lineEdit);
 	currentLineEdits.push_back(lineEdit);*/
 
 	//header
-	QHBoxLayout* headerLayout = new QHBoxLayout(this);
-	CustomLineEdit* type = new CustomLineEdit("Type", 100, 50, QString::number(static_cast<int>(TLPType::MemRead32), 2).rightJustified(8, '0'), this);
-	headerLayout->addWidget(type);
-	CustomLineEdit* tc = new CustomLineEdit("TC", 100,50, "000", this);
-	headerLayout->addWidget(tc);
-	CustomLineEdit* ohc = new CustomLineEdit("OHC", 100,50, "00001", this);
-	headerLayout->addWidget(ohc);
-	CustomLineEdit* ts = new CustomLineEdit("TS", 100,50, "000", this);
-	headerLayout->addWidget(ts);
-	CustomLineEdit* attr = new CustomLineEdit("Attr", 100,50, "000", this);
-	headerLayout->addWidget(attr);
-	CustomLineEdit* length = new CustomLineEdit("Length", 100,50, "00000000000", this);
-	headerLayout->addWidget(length);
-	contentLayout_->addLayout(headerLayout);
+	createHeader();
 
 	QHBoxLayout* secondDwLayout = new QHBoxLayout(this);
 	CustomLineEdit* requesterId = new CustomLineEdit("Requester ID", 100,50, "0000000000000", this);
@@ -87,20 +90,8 @@ void PacketDetails::viewMemRead64() {
 	currentLineEdits.push_back(lineEdit);*/
 
 	//header
-	QHBoxLayout* headerLayout = new QHBoxLayout(this);
-	CustomLineEdit* type = new CustomLineEdit("Type", 100, 50, QString::number(static_cast<int>(TLPType::MemRead32), 2).rightJustified(8, '0'), this);
-	headerLayout->addWidget(type);
-	CustomLineEdit* tc = new CustomLineEdit("TC", 100, 50, "000", this);
-	headerLayout->addWidget(tc);
-	CustomLineEdit* ohc = new CustomLineEdit("OHC", 100, 50, "00001", this);
-	headerLayout->addWidget(ohc);
-	CustomLineEdit* ts = new CustomLineEdit("TS", 100, 50, "000", this);
-	headerLayout->addWidget(ts);
-	CustomLineEdit* attr = new CustomLineEdit("Attr", 100, 50, "000", this);
-	headerLayout->addWidget(attr);
-	CustomLineEdit* length = new CustomLineEdit("Length", 100, 50, "00000000000", this);
-	headerLayout->addWidget(length);
-	contentLayout_->addLayout(headerLayout);
+	createHeader();
+
 
 	QHBoxLayout* secondDwLayout = new QHBoxLayout(this);
 	CustomLineEdit* requesterId = new CustomLineEdit("Requester ID", 100, 50, "0000000000000", this);

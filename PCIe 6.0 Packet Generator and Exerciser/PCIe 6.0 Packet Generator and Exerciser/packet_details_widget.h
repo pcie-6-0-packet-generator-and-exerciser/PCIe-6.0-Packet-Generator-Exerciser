@@ -19,8 +19,10 @@ namespace Ui
     private:
         void manageLayout();
         void clearView(QLayout* layout);
+        void createHeader();
         void viewMemRead32();
         void viewMemRead64();
+
 
 
     private:
