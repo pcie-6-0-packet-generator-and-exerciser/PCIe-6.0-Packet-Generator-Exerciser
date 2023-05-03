@@ -77,6 +77,10 @@ void SequenceBrowser::manageLayout()
 
 }
 
-std::list<TLPCard*> SequenceBrowser::getTLPCards() {
-	return cards_;
+std::queue<TLP*> SequenceBrowser::getTLPCards() {
+	std::queue<TLP*> tlpCards;
+	for (auto card : cards_) {
+		tlpCards.push(card->tlp);
+	}
+	return tlpCards;
 }
