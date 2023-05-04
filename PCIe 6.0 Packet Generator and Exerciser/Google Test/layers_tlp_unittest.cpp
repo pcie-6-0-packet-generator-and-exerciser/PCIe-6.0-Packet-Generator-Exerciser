@@ -848,3 +848,56 @@ TEST(TLPGetObjRep, HeaderCompletion) {
 	EXPECT_EQ(h->TC, 5);
 	EXPECT_EQ(static_cast<int>(h->TLPtype), 10);
 }
+
+TEST(TLPGetObjRep, TLPwithNoPayload) {
+	boost::dynamic_bitset<> tlpbits = boost::dynamic_bitset<>(128);
+	setBits(tlpbits, 0, 3, 12);
+	setBits(tlpbits, 4, 7, 5);
+	setBits(tlpbits, 34, 63, 0x3465123F);
+	setBits(tlpbits, 64, 77, 15023);
+	setBits(tlpbits, 80, 95, 0xA6B9);
+	setBits(tlpbits, 96, 105, 0x3FA);
+	setBits(tlpbits, 112, 116, 26);
+	setBits(tlpbits, 117, 119, 5);
+	setBits(tlpbits, 120, 127, 3);
+	TLP* tlp = (TLP*)TLP::getObjRep(tlpbits);
+	OHCA1* ohc = (OHCA1*)(tlp->header->OHCVector[0]);
+	EXPECT_EQ(ohc->firstDWBE.to_ulong(), 12);
+	EXPECT_EQ(ohc->lastDWBE.to_ulong(), 5);
+	AddressRouting32Bit* nh = (AddressRouting32Bit*)(tlp->header->nonBase);
+	EXPECT_EQ(nh->address, 0x3465123F);
+	EXPECT_EQ(nh->tag, 15023);
+	EXPECT_EQ(nh->requestID, 0xA6B9);
+	EXPECT_EQ(tlp->header->lengthInDoubleWord, 0x3FA);
+	EXPECT_EQ(tlp->header->OHC, 26);
+	EXPECT_EQ(tlp->header->TC, 5);
+	EXPECT_EQ(static_cast<int>(tlp->header->TLPtype), 3);
+}
+
+TEST(TLPGetObjRep, TLPwithPayload) {
+	boost::dynamic_bitset<> tlpbits = boost::dynamic_bitset<>(192);
+	setBits(tlpbits, 0, 63, 0x3465123F2BC014DA);
+	setBits(tlpbits, 64, 67, 12);
+	setBits(tlpbits, 68, 71, 5);
+	setBits(tlpbits, 98, 127, 0x3465123F);
+	setBits(tlpbits, 128, 141, 15023);
+	setBits(tlpbits, 144, 159, 0xA6B9);
+	setBits(tlpbits, 160, 169, 0x3FA);
+	setBits(tlpbits, 176, 180, 26);
+	setBits(tlpbits, 181, 183, 5);
+	setBits(tlpbits, 184, 191, 64);
+	TLP* tlp = (TLP*)TLP::getObjRep(tlpbits);
+	OHCA1* ohc = (OHCA1*)(tlp->header->OHCVector[0]);
+	EXPECT_EQ(ohc->firstDWBE.to_ulong(), 12);
+	EXPECT_EQ(ohc->lastDWBE.to_ulong(), 5);
+	AddressRouting32Bit* nh = (AddressRouting32Bit*)(tlp->header->nonBase);
+	EXPECT_EQ(nh->address, 0x3465123F);
+	EXPECT_EQ(nh->tag, 15023);
+	EXPECT_EQ(nh->requestID, 0xA6B9);
+	EXPECT_EQ(tlp->header->lengthInDoubleWord, 0x3FA);
+	EXPECT_EQ(tlp->header->OHC, 26);
+	EXPECT_EQ(tlp->header->TC, 5);
+	EXPECT_EQ(static_cast<int>(tlp->header->TLPtype), 64);
+	EXPECT_EQ(tlp->dataPayload.to_ulong(), 0x2BC014DA);
+	EXPECT_EQ((tlp->dataPayload.operator>>(32)).to_ulong(), 0x3465123F);
+}
