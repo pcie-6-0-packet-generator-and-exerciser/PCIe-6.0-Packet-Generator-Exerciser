@@ -706,3 +706,145 @@ TEST(TLPGetObjRep, NonHeaderCompletion) {
 	EXPECT_EQ(nh->tag, 15023);
 	EXPECT_EQ(nh->completerID, 0xAB);
 }
+
+TEST(TLPGetObjRep, HeaderMem32) {
+	boost::dynamic_bitset<> hbits = boost::dynamic_bitset<>(128);
+	setBits(hbits, 0, 3, 12);
+	setBits(hbits, 4, 7, 5);
+	setBits(hbits, 34, 63, 0x3465123F);
+	setBits(hbits, 64, 77, 15023);
+	setBits(hbits, 80, 95, 0xA6B9);
+	setBits(hbits, 96, 105, 0x3FA);
+	setBits(hbits, 112, 116, 26);
+	setBits(hbits, 117, 119, 5);
+	setBits(hbits, 120, 127, 3);
+	TLPHeader* h = (TLPHeader*)TLPHeader::getObjRep(hbits);
+	OHCA1* ohc = (OHCA1*)(h->OHCVector[0]);
+	EXPECT_EQ(ohc->firstDWBE.to_ulong(), 12);
+	EXPECT_EQ(ohc->lastDWBE.to_ulong(), 5);
+	AddressRouting32Bit* nh = (AddressRouting32Bit*)(h->nonBase);
+	EXPECT_EQ(nh->address, 0x3465123F);
+	EXPECT_EQ(nh->tag, 15023);
+	EXPECT_EQ(nh->requestID, 0xA6B9);
+	EXPECT_EQ(h->lengthInDoubleWord, 0x3FA);
+	EXPECT_EQ(h->OHC, 26);
+	EXPECT_EQ(h->TC, 5);
+	EXPECT_EQ(static_cast<int>(h->TLPtype), 3);
+}
+
+TEST(TLPGetObjRep, HeaderMem64) {
+	boost::dynamic_bitset<> hbits = boost::dynamic_bitset<>(160);
+	setBits(hbits, 0, 3, 12);
+	setBits(hbits, 4, 7, 5);
+	setBits(hbits, 34, 95, 0x34651230A6B953F);
+	setBits(hbits, 96, 109, 14906);
+	setBits(hbits, 112, 127, 0x9FAB);
+	setBits(hbits, 128, 137, 0x3FA);
+	setBits(hbits, 144, 148, 26);
+	setBits(hbits, 149, 151, 5);
+	setBits(hbits, 152, 159, 32);
+	TLPHeader* h = (TLPHeader*)TLPHeader::getObjRep(hbits);
+	OHCA1* ohc = (OHCA1*)(h->OHCVector[0]);
+	EXPECT_EQ(ohc->firstDWBE.to_ulong(), 12);
+	EXPECT_EQ(ohc->lastDWBE.to_ulong(), 5);
+	AddressRouting32Bit* nh = (AddressRouting32Bit*)(h->nonBase);
+	EXPECT_EQ(nh->address, 0x34651230A6B953F);
+	EXPECT_EQ(nh->tag, 14906);
+	EXPECT_EQ(nh->requestID, 0x9FAB);
+	EXPECT_EQ(h->lengthInDoubleWord, 0x3FA);
+	EXPECT_EQ(h->OHC, 26);
+	EXPECT_EQ(h->TC, 5);
+	EXPECT_EQ(static_cast<int>(h->TLPtype), 32);
+}
+
+TEST(TLPGetObjRep, HeaderConfig) {
+	boost::dynamic_bitset<> hbits = boost::dynamic_bitset<>(128);
+	setBits(hbits, 0, 3, 12);
+	setBits(hbits, 4, 7, 5);
+	setBits(hbits, 24, 31, 158);
+	setBits(hbits, 34, 43, 0x3B2);
+	setBits(hbits, 48, 50, 5);
+	setBits(hbits, 51, 55, 26);
+	setBits(hbits, 56, 63, 0xFF);
+	setBits(hbits, 64, 77, 15023);
+	setBits(hbits, 80, 95, 0xA6B9);
+	setBits(hbits, 96, 105, 0x3FA);
+	setBits(hbits, 112, 116, 26);
+	setBits(hbits, 117, 119, 5);
+	setBits(hbits, 120, 127, 4);
+	TLPHeader* h = (TLPHeader*)TLPHeader::getObjRep(hbits);
+	OHCA3* ohc = (OHCA3*)(h->OHCVector[0]);
+	EXPECT_EQ(ohc->firstDWBE.to_ulong(), 12);
+	EXPECT_EQ(ohc->lastDWBE.to_ulong(), 5);
+	EXPECT_EQ(ohc->destinationSegment, 158);
+	ConfigNonHeaderBase* nh = (ConfigNonHeaderBase*)(h->nonBase);
+	EXPECT_EQ(nh->registerNumber, 0x3B2);
+	EXPECT_EQ(nh->functionNumber, 5);
+	EXPECT_EQ(nh->deviceNumber, 26);
+	EXPECT_EQ(nh->busNumber, 0xFF);
+	EXPECT_EQ(nh->tag, 15023);
+	EXPECT_EQ(nh->requestID, 0xA6B9);
+	EXPECT_EQ(h->lengthInDoubleWord, 0x3FA);
+	EXPECT_EQ(h->OHC, 26);
+	EXPECT_EQ(h->TC, 5);
+	EXPECT_EQ(static_cast<int>(h->TLPtype), 4);
+}
+
+TEST(TLPGetObjRep, HeaderMessage) {
+	boost::dynamic_bitset<> hbits = boost::dynamic_bitset<>(160);
+	setBits(hbits, 24, 31, 255);
+	setBits(hbits, 96, 103, 0xB3);
+	setBits(hbits, 112, 127, 0x9FAB);
+	setBits(hbits, 128, 137, 0x3FA);
+	setBits(hbits, 144, 148, 26);
+	setBits(hbits, 149, 151, 5);
+	setBits(hbits, 152, 159, 75);
+	TLPHeader* h = (TLPHeader*)TLPHeader::getObjRep(hbits);
+	OHCA4* ohc = (OHCA4*)(h->OHCVector[0]);
+	EXPECT_EQ(ohc->destinationSegment, 255);
+	MessageNonHeaderBase* nh = (MessageNonHeaderBase*)(h->nonBase);
+	EXPECT_EQ(nh->messageCode, 0xB3);
+	EXPECT_EQ(nh->requestID, 0x9FAB);
+	EXPECT_EQ(h->lengthInDoubleWord, 0x3FA);
+	EXPECT_EQ(h->OHC, 26);
+	EXPECT_EQ(h->TC, 5);
+	EXPECT_EQ(static_cast<int>(h->TLPtype), 75);
+}
+
+TEST(TLPGetObjRep, HeaderCompletion) {
+	boost::dynamic_bitset<> hbits = boost::dynamic_bitset<>(128);
+	setBits(hbits, 0, 2, 1);
+	setBits(hbits, 3, 4, 2);
+	setBits(hbits, 16, 23, 72);
+	setBits(hbits, 24, 31, 126);
+	setBits(hbits, 32, 43, 0x3B2);
+	setBits(hbits, 44, 47, 6);
+	setBits(hbits, 48, 50, 5);
+	setBits(hbits, 51, 55, 26);
+	setBits(hbits, 56, 63, 0xFF);
+	setBits(hbits, 64, 77, 15023);
+	hbits[78] = true;
+	setBits(hbits, 80, 95, 0xAB);
+	setBits(hbits, 96, 105, 0x3FA);
+	setBits(hbits, 112, 116, 26);
+	setBits(hbits, 117, 119, 5);
+	setBits(hbits, 120, 127, 10);
+	TLPHeader* h = (TLPHeader*)TLPHeader::getObjRep(hbits);
+	OHCA5* ohc = (OHCA5*)(h->OHCVector[0]);
+	EXPECT_EQ(ohc->CPLStatusEnum, OHCA5::CPLStatus::True);
+	EXPECT_EQ(ohc->lowerAddress, 2);
+	EXPECT_EQ(ohc->completerSegment, 72);
+	EXPECT_EQ(ohc->destinationSegment, 126);
+	CompletionNonHeaderBase* nh = (CompletionNonHeaderBase*)(h->nonBase);
+	EXPECT_EQ(nh->byteCount, 0x3B2);
+	EXPECT_EQ(nh->lowerAddress, 14);
+	EXPECT_EQ(nh->busNumber, 5);
+	EXPECT_EQ(nh->deviceNumber, 26);
+	EXPECT_EQ(nh->functionNumber, 0xFF);
+	EXPECT_EQ(nh->tag, 15023);
+	EXPECT_EQ(nh->completerID, 0xAB);
+	EXPECT_EQ(h->lengthInDoubleWord, 0x3FA);
+	EXPECT_EQ(h->OHC, 26);
+	EXPECT_EQ(h->TC, 5);
+	EXPECT_EQ(static_cast<int>(h->TLPtype), 10);
+}
