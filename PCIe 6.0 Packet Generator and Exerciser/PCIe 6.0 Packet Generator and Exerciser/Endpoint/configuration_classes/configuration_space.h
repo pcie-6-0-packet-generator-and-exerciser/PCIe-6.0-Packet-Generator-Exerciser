@@ -18,9 +18,9 @@ public:
 
     unsigned int accept(shared_ptr<ConfigurationVisitor> visitor) override;
 
-    int isMemorySpaceEnabled();
+    bool isMemorySpaceEnabled();
 
-    int isIOSpaceEnabled();
+    bool isIOSpaceEnabled();
     
     void setReceivedMasterAbortBit();
 };

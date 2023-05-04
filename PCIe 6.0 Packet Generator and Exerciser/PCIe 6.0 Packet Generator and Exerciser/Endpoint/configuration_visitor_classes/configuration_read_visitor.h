@@ -4,6 +4,7 @@
 
 class ConfigurationReadVisitor: public ConfigurationVisitor
 {
+public:
     unsigned int visitConfigurationSpace(ConfigurationSpace * configuration) override;
     
     unsigned int visitPcieCapabilityStructure(PCIECapability * capability) override;
