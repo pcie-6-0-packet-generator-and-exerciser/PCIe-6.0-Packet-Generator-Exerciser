@@ -14,6 +14,7 @@ public:
 	boost::dynamic_bitset<> dataPayload;
 	int getTotalLength();
 	boost::dynamic_bitset<> getBitRep();
+	static TLP* getObjRep(boost::dynamic_bitset<> TLPBits);
 
 	TLP() {
 		// default constructor of TLPHeader

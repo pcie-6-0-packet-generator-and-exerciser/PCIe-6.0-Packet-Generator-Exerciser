@@ -1,4 +1,6 @@
 #include "tlp.h"
+#include "bitset_utils.h"
+
 
 int TLP::getTotalLength() {
 	int OHCLength = header->OHCVector.size() * 4;
@@ -13,6 +15,28 @@ boost::dynamic_bitset<> TLP::getBitRep() {
 	result |= ((boost::dynamic_bitset<>((header->getBitRep())) << getTotalLength()));
 
 	return result;
+}
+
+
+/**
+ * int headerConsumption;
+	int dataConsumption;
+	TLPHeader* header;
+	Dllp::CreditType creditConsumedType;
+	boost::dynamic_bitset<> dataPayload;
+*/
+TLP* TLP::getObjRep(boost::dynamic_bitset<> bitset) {
+	TLP* tlp = new TLP();
+	int size = bitset.size();
+	boost::dynamic_bitset<> length_bitset = get_bits(bitset, size - 32, size - 23);
+	int lengthValue = length_bitset.to_ulong();
+	boost::dynamic_bitset<> payload_sub_bits = get_bits(bitset, 0,size- (lengthValue*4)-1);//totalsize - (lengthofheader*4) -1
+	tlp->dataPayload = payload_sub_bits;
+
+	boost::dynamic_bitset<> tlpHeader_sub_bits = get_bits(bitset, size - (lengthValue * 4), size-1);
+	tlp->header = TLPHeader::getObjRep(tlpHeader_sub_bits);
+
+	return tlp;
 }
 
 /**
