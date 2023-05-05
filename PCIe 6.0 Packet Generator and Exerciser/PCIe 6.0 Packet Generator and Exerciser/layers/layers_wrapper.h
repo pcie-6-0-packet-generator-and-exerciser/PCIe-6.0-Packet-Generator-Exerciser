@@ -51,4 +51,14 @@ public:
 	 * @param sendOnQueue The queue on which the packets should be sent
 	*/
 	void sendPayloadFlit(Globals& globals, queue<TLP*>& packets, QueueWrapper<Flit*>& sendOnQueue);
+
+
+	/**
+	 * @brief This function is used to receive nop flits
+	 * @param globals The globals object containing the credits tracked by this device
+	 * @param flit flit to checkcrc on it
+	*/
+	void receiveNOPFlit(Flit* flit, Globals& globals);
+
+
 };
