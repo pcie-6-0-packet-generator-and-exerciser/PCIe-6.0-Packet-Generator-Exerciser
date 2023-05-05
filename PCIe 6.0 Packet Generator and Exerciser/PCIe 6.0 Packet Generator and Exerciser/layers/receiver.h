@@ -13,6 +13,6 @@ public:
 
 	Receiver(Globals& global, LayersWrapper layer, QueueWrapper<Flit>& sendOnQueue);
 
-	void receiveInit(Flit flit);
+	void receiveInit(Flit* flit ,Globals& globals);
 	void receiveFlit(Flit flit);
 };
