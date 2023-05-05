@@ -209,3 +209,15 @@ void LayersWrapper::updateConsumedCredits(Globals& globals, Dllp::CreditType cre
 	creditConsumed[0] = (creditConsumed[0] + headerConsumption) % (int)pow(2, headerFieldSize);
 	creditConsumed[1] = (creditConsumed[1] + dataConsumption) % (int)pow(2, dataFieldSize);
 }
+
+void LayersWrapper::receiveNOPFlit(Flit* flit, Globals& globals) {
+	//First passes the FLIT to checkCRC()
+	if (datalink->checkCRC(flit)) {
+		//updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], int P_DEDICATED_CREDIT_LIMIT[], int NP_DEDICATED_CREDIT_LIMIT[], int CPL_DEDICATED_CREDIT_LIMIT[], bool& FI1, bool& FI2) {
+		datalink->updateCreditLimit(flit, globals.P_SHARED_CREDIT_LIMIT, globals.NP_SHARED_CREDIT_LIMIT, globals.CPL_SHARED_CREDIT_LIMIT, globals.P_DEDICATED_CREDIT_LIMIT, globals.NP_DEDICATED_CREDIT_LIMIT, globals.CPL_DEDICATED_CREDIT_LIMIT, globals.Fl1, globals.Fl2);
+	}
+	else {
+		//cout Error
+	}
+
+}
