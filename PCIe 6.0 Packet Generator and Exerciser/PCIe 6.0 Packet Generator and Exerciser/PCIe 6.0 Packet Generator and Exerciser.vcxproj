@@ -109,6 +109,7 @@
     <ClCompile Include="sequence_browser.cpp" />
     <ClCompile Include="tlp_card.cpp" />
     <ClCompile Include="type_browser.cpp" />
+    <ClCompile Include="utils\bitset_utils.cpp" />
     <ClCompile Include="utils\non_header_base.cpp" />
     <ClCompile Include="content_widget.cpp" />
     <ClCompile Include="utils\ohc.cpp" />
@@ -152,6 +153,7 @@
     <QtMoc Include="type_browser.h" />
     <QtMoc Include="result_browser.h" />
     <ClInclude Include="layers\transmitter.h" />
+    <ClInclude Include="utils\bitset_utils.h" />
     <ClInclude Include="utils\non_header_base.h" />
     <ClInclude Include="utils\tlp.h" />
     <ClInclude Include="utils\tlp_header.h" />
