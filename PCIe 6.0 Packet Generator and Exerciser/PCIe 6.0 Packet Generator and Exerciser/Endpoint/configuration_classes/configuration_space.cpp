@@ -113,7 +113,7 @@ void ConfigurationSpace::setReceivedMasterAbortBit()
  * 
  * @return int -> whether the Memory Space is enabled or not
  */
-int ConfigurationSpace::isMemorySpaceEnabled()
+bool ConfigurationSpace::isMemorySpaceEnabled()
 {
     // Traverse the linked list to find the Command Register
     Register * current = head_;
@@ -129,7 +129,7 @@ int ConfigurationSpace::isMemorySpaceEnabled()
  * 
  * @return int -> whether the IO Space is enabled or not
  */
-int ConfigurationSpace::isIOSpaceEnabled()
+bool ConfigurationSpace::isIOSpaceEnabled()
 {
     // Traverse the linked list to find the Command Register
     Register * current = head_;
