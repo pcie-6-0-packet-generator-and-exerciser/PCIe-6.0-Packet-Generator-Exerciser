@@ -142,6 +142,9 @@
     <ClCompile Include="layers\transmitter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="layers\receiver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="utils\bitset_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -235,6 +238,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="layers\transmitter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\receiver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils\bitset_utils.h">

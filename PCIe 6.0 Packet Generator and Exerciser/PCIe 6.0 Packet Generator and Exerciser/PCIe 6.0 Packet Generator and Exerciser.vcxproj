@@ -100,6 +100,7 @@
     <ClCompile Include="Endpoint\memory_mapper\memory_mapper.cpp" />
     <ClCompile Include="Endpoint\register_class\register.cpp" />
     <ClCompile Include="layers\layers_wrapper.cpp" />
+    <ClCompile Include="layers\receiver.cpp" />
     <ClCompile Include="layers\transaction_layer.cpp" />
     <ClCompile Include="layers\datalink.cpp" />
     <ClCompile Include="layers\flit.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="layers\datalink.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\layers_wrapper.h" />
+    <ClInclude Include="layers\receiver.h" />
     <ClInclude Include="layers\sequence.h" />
     <QtMoc Include="sequence_browser.h" />
     <QtMoc Include="tlp_card.h" />
