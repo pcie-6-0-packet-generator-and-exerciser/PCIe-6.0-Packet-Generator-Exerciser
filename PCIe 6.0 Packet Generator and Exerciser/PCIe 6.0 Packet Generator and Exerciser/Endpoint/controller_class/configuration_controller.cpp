@@ -176,8 +176,12 @@ TLP* ConfigurationController::handleConfigurationRequest(TLP * tlp)
         /* Setting the construction algorithm to be used, getting the register length (in bytes), and setting this length to be used while constructing the TLP */
         completerConstructor->setAlgorithm(cplD);
         completerConstructor->setTLP(tlp);
-        completerConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));
         completerConstructor->setDeviceID(configuration->getDeviceID());
+
+        if (Registernumber <= 16)
+            completerConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));    
+        else
+            completerConstructor->setRegisterLength(capability->getRegisterLengthInBytes(Registernumber - 17));
 
         dataToBeReadUint = handler->handleConfigurationRead(Registernumber);
         dataToBeReadBits = convertToBitSet(dataToBeReadUint);
@@ -198,32 +202,32 @@ TLP* ConfigurationController::handleConfigurationRequest(TLP * tlp)
         {
             completerConstructor->setAlgorithm(cpl);
             completerConstructor->setTLP(tlp);
-            completerConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));
             completerConstructor->setDeviceID(configuration->getDeviceID());
 
-            cplTlp = completerConstructor->performAlgorithm();
+            if(Registernumber <= 16)
+                completerConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));
+            else
+                completerConstructor->setRegisterLength(capability->getRegisterLengthInBytes(Registernumber - 17));
 
-            return cplTlp;
+            return completerConstructor->performAlgorithm();
         }
         
         completerConstructor->setAlgorithm(cplUR);
         completerConstructor->setTLP(tlp);
-        completerConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));
         completerConstructor->setDeviceID(configuration->getDeviceID());
 
-        urTlp = completerConstructor->performAlgorithm();
+        if(Registernumber <= 16)
+            completerConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));
+        else
+            completerConstructor->setRegisterLength(capability->getRegisterLengthInBytes(Registernumber - 17));
 
-        return urTlp;
+        return completerConstructor->performAlgorithm();
 
     default:
         completerConstructor->setAlgorithm(cplUR);
         completerConstructor->setTLP(tlp);
-        completerConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));
-        completerConstructor->setDeviceID(configuration->getDeviceID());
 
-        urTlp = completerConstructor->performAlgorithm();
-
-        return urTlp;
+        return completerConstructor->performAlgorithm();
     }
 }
 

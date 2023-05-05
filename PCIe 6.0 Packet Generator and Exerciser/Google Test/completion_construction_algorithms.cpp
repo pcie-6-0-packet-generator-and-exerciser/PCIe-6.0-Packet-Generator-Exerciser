@@ -12,9 +12,9 @@ TEST(ConstructingCompletions, Cpl)
 	std::bitset<2> lowerAddress(0b00);
 	data.push_back(1); data.push_back(1); data.push_back(0); data.push_back(0);
 
-	TLP tlp = TLP::createConfigWrite0Tlp(1, data, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	TLP* tlp = TLP::createConfigWrite0Tlp(1, data, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-	completion->tlp = &tlp;
+	completion->tlp = tlp;
 
 	TLP* complete = completion->constructTLP();
 
@@ -34,9 +34,9 @@ TEST(ConstructingCompletions, cplD)
 	CompletionWithData* completion = new CompletionWithData();
 	std::bitset<2> lowerAddress(0b00);
 
-	TLP tlp = TLP::createConfigRead0Tlp(0, 0, 0, 0, 0, 0, 0, 0, 0);
+	TLP* tlp = TLP::createConfigRead0Tlp(0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-	completion->tlp = &tlp;
+	completion->tlp = tlp;
 
 	TLP* complete = completion->constructTLP();
 
@@ -55,9 +55,9 @@ TEST(ConstructingCompletions, CplUR)
 	CompletionWithUR* completion = new CompletionWithUR();
 	std::bitset<2> lowerAddress(0b00);
 
-	TLP tlp = TLP::createConfigRead0Tlp(0, 0, 0, 0, 0, 0, 0, 0, 0);
+	TLP* tlp = TLP::createConfigRead0Tlp(0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-	completion->tlp = &tlp;
+	completion->tlp = tlp;
 
 	TLP* complete = completion->constructTLP();
 
@@ -76,9 +76,9 @@ TEST(ConstructingCompletions, CplUR2)
 
 	data.push_back(1); data.push_back(1); data.push_back(0); data.push_back(0);
 
-	TLP tlp = TLP::createConfigWrite0Tlp(1, data, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	TLP* tlp = TLP::createConfigWrite0Tlp(1, data, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-	completion->tlp = &tlp;
+	completion->tlp = tlp;
 
 	TLP* complete = completion->constructTLP();
 
