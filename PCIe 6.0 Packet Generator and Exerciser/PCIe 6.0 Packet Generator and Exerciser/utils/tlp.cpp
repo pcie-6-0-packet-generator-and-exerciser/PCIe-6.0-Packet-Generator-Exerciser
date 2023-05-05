@@ -32,11 +32,11 @@ TLP* TLP::getObjRep(boost::dynamic_bitset<> bitset) {
 	int lengthValue = length_bitset.to_ulong();
 
 	boost::dynamic_bitset<> TLPType_bitset = get_bits(bitset, size - 8, size - 1);
-	if (TLPType_bitset.to_ulong() == 64 ||96 ) { //64 -->MemWrite32 96-->MemWrite64
+	if (TLPType_bitset.to_ulong() == (64 || 96 || 68 || 69 || 74)) { //64 -->MemWrite32 96-->MemWrite64 68-->ConfigWrite0 69-->ConfigWrite1 74-->CplD
 		boost::dynamic_bitset<> payload_sub_bits = get_bits(bitset, 0, size - (lengthValue * 32) - 1);//totalsize - (lengthofheader*4) -1
 		tlp->dataPayload = payload_sub_bits;
 	}
-	boost::dynamic_bitset<> tlpHeader_sub_bits = get_bits(bitset, size - (lengthValue * 32), size-1);
+	boost::dynamic_bitset<> tlpHeader_sub_bits = get_bits(bitset, size - (lengthValue * 32), size - 1);
 	tlp->header = TLPHeader::getObjRep(tlpHeader_sub_bits);
 
 	return tlp;
@@ -58,7 +58,7 @@ TLP TLP::createMemRead32Tlp(int requesterId, int tag, int address, std::bitset<4
 	memRead32Tlp.header->TLPtype = TLPType::MemRead32;
 	memRead32Tlp.header->lengthInDoubleWord = 0;
 
-		memRead32Tlp.header->nonBase = new AddressRouting32Bit(requesterId, tag, address);
+	memRead32Tlp.header->nonBase = new AddressRouting32Bit(requesterId, tag, address);
 
 	// clears out the data payload
 	memRead32Tlp.dataPayload.reset();
