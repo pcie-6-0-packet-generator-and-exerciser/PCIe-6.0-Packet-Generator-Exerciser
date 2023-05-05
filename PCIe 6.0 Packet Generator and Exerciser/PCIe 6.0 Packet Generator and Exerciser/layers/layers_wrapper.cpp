@@ -222,6 +222,45 @@ void LayersWrapper::receiveNOPFlit(Flit* flit, Globals& globals) {
 	}
 }
 
+int getHeaderLengthByType(TLPType type) {
+	switch (type) {
+	case TLPType::MemRead32:
+		return 12;
+		break;
+	case TLPType::MemWrite32:
+		return 12;
+		break;
+	case TLPType::MemRead64:
+		return 16;
+		break;
+	case TLPType::MemWrite64:
+		return 16;
+		break;
+	case TLPType::Cpl:
+		return 12;
+		break;
+	case TLPType::CplD:
+		return 16;
+		break;
+	case TLPType::VendorMsg:
+		return 12;
+		break;
+	case TLPType::ConfigRead0:
+		return 12;
+		break;
+	case TLPType::ConfigWrite0:
+		return 12;
+		break;
+	case TLPType::ConfigRead1:
+		return 16;
+		break;
+	case TLPType::ConfigWrite1:
+		return 16;
+		break;
+	default:
+		break;
+	}
+}
 
 void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits, QueueWrapper<TLP*>& sendOn)
 {
@@ -382,46 +421,6 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 		updateAllocatedCredits(globals, tlp->creditConsumedType, tlp->headerConsumption, tlp->dataConsumption);
 	}
 	sendOn.push(extractedTLPs);
-}
-
-int getHeaderLengthByType(TLPType type) {
-	switch (type) {
-		case TLPType::MemRead32:
-			return 12;
-			break;
-		case TLPType::MemWrite32:
-			return 12;
-			break;
-		case TLPType::MemRead64:
-			return 16;
-			break;
-		case TLPType::MemWrite64:
-			return 16;
-			break;
-		case TLPType::Cpl:
-			return 12;
-			break;
-		case TLPType::CplD:
-			return 16;
-			break;
-		case TLPType::VendorMsg:
-			return 12;
-			break;
-		case TLPType::ConfigRead0:
-			return 12;
-			break;
-		case TLPType::ConfigWrite0:
-			return 12;
-			break;
-		case TLPType::ConfigRead1:
-			return 16;
-			break;
-		case TLPType::ConfigWrite1:
-			return 16;
-			break;
-		default:
-			break;
-	}
 }
 
 void LayersWrapper::updateAllocatedCredits(Globals& globals, Dllp::CreditType creditType, int headerConsumption, int dataConsumption) {
