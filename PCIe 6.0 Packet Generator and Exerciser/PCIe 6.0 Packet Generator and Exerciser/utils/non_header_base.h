@@ -9,6 +9,7 @@ public:
 	int requestID;
 	int headerSizeInBytes;
 	virtual boost::dynamic_bitset<> getBitRep() const = 0; // pure virtual function, making this an abstract class
+
 };
 // Concrete class AddressRouting32Bit from NonHeaderBase
 class AddressRouting32Bit : public	NonHeaderBase {
