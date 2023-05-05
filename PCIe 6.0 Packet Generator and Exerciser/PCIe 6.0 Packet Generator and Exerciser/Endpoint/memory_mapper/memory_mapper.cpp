@@ -1,25 +1,28 @@
 #include "memory_mapper.h"
 
-MemoryMap::MemoryMap(uint64_t prefetchableBar0, uint32_t nonPrefetchableBar2, uint16_t ioBar3)
-	: prefetchableBar0_(prefetchableBar0 / sizeof(uint32_t)), nonPrefetchableBar2_(nonPrefetchableBar2 / sizeof(uint32_t)),
-	ioBar3_(ioBar3 / sizeof(uint32_t)) {
+MemoryMap::MemoryMap(uint64_t prefetchableBar0Size, uint32_t nonPrefetchableBar2Size, uint16_t ioBar3Size)
+	: prefetchableBar0_(prefetchableBar0Size), nonPrefetchableBar2_(nonPrefetchableBar2Size),
+	ioBar3_(ioBar3Size) {
 	// Constructor implementation
 }
 
-uint32_t* MemoryMap::read(uint64_t address, uint32_t* data) {
+uint32_t MemoryMap::read(uint64_t address, uint32_t* data) {
 	if (address < prefetchableBar0_.size()) {
 		*data = prefetchableBar0_[address];
-		return data;
+		return *data;
 	}
-	else if (address >= nonPrefetchableBar2_.size() && address < nonPrefetchableBar2_.size() + prefetchableBar0_.size()) {
-		*data = nonPrefetchableBar2_[address - nonPrefetchableBar2_.size()];
-		return data;
+	if (address >= prefetchableBar0_.size() && address < prefetchableBar0_.size() + nonPrefetchableBar2_.size()) {
+		*data = nonPrefetchableBar2_[address - prefetchableBar0_.size()];
+		return *data;
 	}
-	else if (address >= ioBar3_.size() && address < ioBar3_.size() + prefetchableBar0_.size() + nonPrefetchableBar2_.size()) {
+	else if (address >= prefetchableBar0_.size() + nonPrefetchableBar2_.size() && address < prefetchableBar0_.size() + nonPrefetchableBar2_.size() + ioBar3_.size()) {
 		// Handle I/O reads
-		return data;
+		return 0;
 	}
+	// Return an error value if the address is out of range
+	return 0xDEADBEEF;
 }
+
 
 bool MemoryMap::write(uint64_t address, uint32_t data) {
 	if (address < prefetchableBar0_.size()) {

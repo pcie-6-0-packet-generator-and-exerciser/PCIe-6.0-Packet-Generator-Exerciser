@@ -14,15 +14,15 @@
 // this test goal is to check that the memory mapper is working correctly
 TEST(MemoryReadRequests, checkMemoryMapper) {
 
-	 // Constructing the memory map
-	MemoryMap* memoryMap = new MemoryMap(0x100000000ull, 0x4000000, 0x100);
+    // Constructing the memory map with a smaller memory region
+    MemoryMap* memoryMap = new MemoryMap(0x1000, 0x4000, 0x10);
 
-	// writing data to memory
-	bool isDone = memoryMap->write(0x100000000ull, 0x12345678);
+    // writing data to memory
+    bool isDone = memoryMap->write(0x1000ull, 151515);
 
-	// read data from memory
-	uint32_t data1;
-	memoryMap->read(0x100000000ull, &data1);
-	EXPECT_EQ(data1, 0x12345678 );
-
+    // read data from memory
+    uint32_t data1 = 0;
+    memoryMap->read(0x1000ull, &data1);
+    EXPECT_EQ(data1, 151515);
 }
+

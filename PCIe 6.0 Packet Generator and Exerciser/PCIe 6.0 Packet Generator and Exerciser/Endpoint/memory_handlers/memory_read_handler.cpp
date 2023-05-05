@@ -30,9 +30,10 @@ public:
         else if (packetType == TLPType::MemRead64) {
             address = dynamic_cast<AddressRouting64Bit*>(packet->header->nonBase)->address;
         }
-        uint32_t* data_uint = 0;
-        data_uint = memoryMap_->read(address, data_uint);
-        dynamic_bitset<> data(32, *data_uint);
+        uint32_t* data_uint = nullptr;
+        uint32_t readData = 0;
+        readData = memoryMap_->read(address, data_uint);
+        dynamic_bitset<> data(32, readData);
 
         for (int i = startIndex; i <= endIndex; i++) {
             // Extract the i-th bit from the data payload and add it to the data_uint
