@@ -240,6 +240,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			if (!datalink->checkCRC(flit)) {
 				// malformed
 			}
+			datalink->updateCreditLimit(flit, globals.P_SHARED_CREDIT_LIMIT, globals.NP_SHARED_CREDIT_LIMIT, globals.CPL_SHARED_CREDIT_LIMIT, globals.P_DEDICATED_CREDIT_LIMIT, globals.NP_DEDICATED_CREDIT_LIMIT, globals.CPL_DEDICATED_CREDIT_LIMIT, globals.Fl1, globals.Fl2);
 			payload = flit->TLPPayload;
 		}
 		boost::dynamic_bitset<> tlpCommonHeader(4*8);
@@ -273,6 +274,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			if (!datalink->checkCRC(flit)) {
 				// malformed
 			}
+			datalink->updateCreditLimit(flit, globals.P_SHARED_CREDIT_LIMIT, globals.NP_SHARED_CREDIT_LIMIT, globals.CPL_SHARED_CREDIT_LIMIT, globals.P_DEDICATED_CREDIT_LIMIT, globals.NP_DEDICATED_CREDIT_LIMIT, globals.CPL_DEDICATED_CREDIT_LIMIT, globals.Fl1, globals.Fl2);
 			payload = flit->TLPPayload;
 			// Add the rest
 			bytesToAdd = 3 - bytesToAdd;
@@ -314,6 +316,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			if (datalink->checkCRC(flit)) {
 				// malformed
 			}
+			datalink->updateCreditLimit(flit, globals.P_SHARED_CREDIT_LIMIT, globals.NP_SHARED_CREDIT_LIMIT, globals.CPL_SHARED_CREDIT_LIMIT, globals.P_DEDICATED_CREDIT_LIMIT, globals.NP_DEDICATED_CREDIT_LIMIT, globals.CPL_DEDICATED_CREDIT_LIMIT, globals.Fl1, globals.Fl2);
 			payload = flit->TLPPayload;
 			// Add the rest
 			bytesToAdd = headerLength - 4 - bytesToAdd;
@@ -353,6 +356,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 					if (datalink->checkCRC(flit)) {
 						// malformed
 					}
+					datalink->updateCreditLimit(flit, globals.P_SHARED_CREDIT_LIMIT, globals.NP_SHARED_CREDIT_LIMIT, globals.CPL_SHARED_CREDIT_LIMIT, globals.P_DEDICATED_CREDIT_LIMIT, globals.NP_DEDICATED_CREDIT_LIMIT, globals.CPL_DEDICATED_CREDIT_LIMIT, globals.Fl1, globals.Fl2);
 					payload = flit->TLPPayload;
 				}
 				else {
