@@ -223,10 +223,10 @@ void LayersWrapper::receiveNOPFlit(Flit* flit, Globals& globals) {
 }
 
 
-void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit> flits, QueueWrapper<std::queue<TLP>>& sendOn)
+void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits, QueueWrapper<TLP*>& sendOn)
 {
-	std::queue<TLP> extractedTLPs;
-	Flit flit;
+	std::queue<TLP*> extractedTLPs;
+	Flit* flit;
 	bool nextFlit = true;
 	int flitIndexinBytes = 0;
 	boost::dynamic_bitset<> payload;
@@ -237,10 +237,10 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit> flits,
 			flit = flits.front();
 			flits.pop();
 			flitIndexinBytes = 0;
-			if (!checkCRC(flit)) {
+			if (!datalink->checkCRC(flit)) {
 				// malformed
 			}
-			payload = flit.TLPPayload;
+			payload = flit->TLPPayload;
 		}
 		boost::dynamic_bitset<> tlpCommonHeader(4*8);
 		int type;
@@ -270,10 +270,10 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit> flits,
 			flit = flits.front();
 			flits.pop();
 			flitIndexinBytes = 0;
-			if (!checkCRC(flit)) {
+			if (!datalink->checkCRC(flit)) {
 				// malformed
 			}
-			payload = flit.TLPPayload;
+			payload = flit->TLPPayload;
 			// Add the rest
 			bytesToAdd = 3 - bytesToAdd;
 			tlpCommonHeader.operator|=(payload.operator>>((236 - bytesToAdd) * 8));
@@ -311,10 +311,10 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit> flits,
 			flit = flits.front();
 			flits.pop();
 			flitIndexinBytes = 0;
-			if (!checkCRC(flit)) {
+			if (datalink->checkCRC(flit)) {
 				// malformed
 			}
-			payload = flit.TLPPayload;
+			payload = flit->TLPPayload;
 			// Add the rest
 			bytesToAdd = headerLength - 4 - bytesToAdd;
 			tlpWholeHeader.operator|=(payload.operator>>((236 - bytesToAdd) * 8));
@@ -350,10 +350,10 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit> flits,
 					flit = flits.front();
 					flits.pop();
 					flitIndexinBytes = 0;
-					if (!checkCRC(flit)) {
+					if (datalink->checkCRC(flit)) {
 						// malformed
 					}
-					payload = flit.TLPPayload;
+					payload = flit->TLPPayload;
 				}
 				else {
 					boost::dynamic_bitset<> payloadCopy(236 * 8);
@@ -373,9 +373,9 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit> flits,
 		tlpWhole.operator<<(tlpWhole.size() - tlpWholeHeader.size());
 		tlpPayload.resize(tlpWhole.size());
 		tlpWhole.operator|=(tlpPayload);
-		TLP tlp = TLP::getObjRep(tlpWhole);
+		TLP* tlp = TLP::getObjRep(tlpWhole);
 		extractedTLPs.push(tlp);
-		updateAllocatedCredits(globals, tlp.creditConsumedType, tlp.headerConsumption, tlp.dataConsumption);
+		updateAllocatedCredits(globals, tlp->creditConsumedType, tlp->headerConsumption, tlp->dataConsumption);
 	}
 	sendOn.push(extractedTLPs);
 }

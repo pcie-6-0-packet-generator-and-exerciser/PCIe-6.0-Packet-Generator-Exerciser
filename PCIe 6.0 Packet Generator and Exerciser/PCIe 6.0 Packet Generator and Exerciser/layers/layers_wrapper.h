@@ -62,5 +62,5 @@ public:
 	*/
 	void receiveNOPFlit(Flit* flit, Globals& globals);
 
-	void receivePayloadFlit(Globals& globals, std::queue<Flit> flits, QueueWrapper<std::queue<TLP>>& sendOn);
+	void receivePayloadFlit(Globals& globals, std::queue<Flit*> flits, QueueWrapper<TLP*>& sendOn);
 };
