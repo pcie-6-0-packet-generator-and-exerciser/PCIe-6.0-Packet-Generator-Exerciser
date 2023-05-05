@@ -11,7 +11,7 @@ public:
 	LayersWrapper layers;
 	QueueWrapper<Flit>& sendOn;
 
-	Receiver(Globals global, LayersWrapper layer, QueueWrapper<Flit>& sendOnQueue);
+	Receiver(Globals& global, LayersWrapper layer, QueueWrapper<Flit>& sendOnQueue);
 
 	void receiveInit(Flit flit);
 	void receiveFlit(Flit flit);

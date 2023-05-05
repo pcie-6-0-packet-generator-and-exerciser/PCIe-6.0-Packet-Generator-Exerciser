@@ -1,7 +1,7 @@
 #include "receiver.h"
 
 
-Receiver::Receiver(Globals global, LayersWrapper layer, QueueWrapper<Flit>& sendOnQueue)
+Receiver::Receiver(Globals& global, LayersWrapper layer, QueueWrapper<Flit>& sendOnQueue)
 	: globals(global), layers(layer), sendOn(sendOnQueue)
 {
 	// Constructor body (if needed)
