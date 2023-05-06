@@ -18,15 +18,32 @@ namespace Ui
         ~PacketDetails();
     private:
         void manageLayout();
-        void clearView(QLayout* layout);
+        void clearView();
         void createHeader();
+        void createMem32bCommon();
+        void createMem64bCommon();
+        void createMemOHCvector(int row);
+
+
+
         void viewMemRead32();
         void viewMemRead64();
+        void viewMemWrite32();
+        void viewMemWrite64();
+        void viewConfigRead0();
+        void viewConfigWriteWrite();
+        void viewVendorMsg();
+       
+
+            
+        long long combineAddresses(std::string upperAddress, std::string lowerAddress);
+        int binaryToInteger(const std::string& binary);
 
 
 
     private:
         QVBoxLayout* contentLayout_ ;
+        QGridLayout* detailsLayout_;
         QPushButton* saveButton;
         TLP* currentTLP;
         std::vector<CustomLineEdit*> currentLineEdits;
