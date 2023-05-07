@@ -17,6 +17,6 @@ void initilizationSender(Globals& globals, QueueWrapper<TLP*>& queueListenOn, Qu
 	while (!globals.Fl2) {
 		transmitter->sendInitFC2();
 	}
-	std::thread normalFlowSender(globals, queueListenOn, queueSendOn);
+	std::thread normalFlowSender(normalFlowSender, *transmitter, queueListenOn);
 	normalFlowSender.join();
 }

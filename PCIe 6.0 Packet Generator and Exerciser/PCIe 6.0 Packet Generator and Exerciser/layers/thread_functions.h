@@ -17,4 +17,4 @@ void normalFlowSender(Transmitter& transmitter, QueueWrapper<TLP*>& listenOn);
  * @param queueListenOn The QueueWrapper that the layers will receive TLPs from
  * @param queueSendOn The QueueWrapper that the layers will send on to layers of the other side
 */
-void initilizationSender(Globals& globals, QueueWrapper<TLP*> queueListenOn, QueueWrapper<Flit*> queueSendOn);
+void initilizationSender(Globals& globals, QueueWrapper<TLP*>& queueListenOn, QueueWrapper<Flit*>& queueSendOn);
