@@ -9,4 +9,4 @@
  * @param transmitter takes the sequence of TLPs and sends them over the network
  * @param listenOn the queue which is listened on
  */
-void noramlFlowSender(Transmitter& transmitter, QueueWrapper<TLP*>& listenOn);
+void normalFlowSender(Transmitter& transmitter, QueueWrapper<TLP*>& listenOn);
