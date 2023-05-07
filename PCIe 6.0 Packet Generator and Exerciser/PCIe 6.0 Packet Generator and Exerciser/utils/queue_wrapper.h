@@ -59,6 +59,10 @@ class QueueWrapper
 		std::queue<T> popAll()
 		{
 			std::unique_lock<std::mutex> mlock(mutex_);
+			while (queue_.empty())
+			{
+				condition_.wait(mlock);
+			}
 			std::queue<T> q;
 			while (!queue_.empty())
 			{
