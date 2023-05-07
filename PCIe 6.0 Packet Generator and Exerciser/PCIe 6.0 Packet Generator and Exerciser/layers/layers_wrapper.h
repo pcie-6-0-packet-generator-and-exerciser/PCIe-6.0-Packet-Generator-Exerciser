@@ -27,6 +27,13 @@ class LayersWrapper {
 	*/
 	void updateConsumedCredits(Globals& globals, Dllp::CreditType creditType, int headerConsumption, int dataConsumption);
 
+	/**
+	 * @brief This is a utility function used by receivePayloadFlit. It updates the credits allocated by this device
+	 * @param globals The globals object containing the credits tracked by this device
+	 * @param creditType The type of credit consumed by the packet received
+	 * @param headerConsumption The amount of header credits consumed by the packet received
+	 * @param dataConsumption The amount of data credits consumed by the packet received
+	*/
 	void updateAllocatedCredits(Globals& globals, Dllp::CreditType creditType, int headerConsumption, int dataConsumption);
 
 public:	
@@ -62,5 +69,11 @@ public:
 	*/
 	void receiveNOPFlit(Flit* flit, Globals& globals);
 
+	/**
+	 * @brief This function is used to receive a payload flit. It unpacks flits to their original TLPs according to the PCIe 6.0 spec
+	 * @param globals The globals object containing the credits tracked by this device
+	 * @param flits The queue of flits received from the other device
+	 * @param sendOn The queue on which the packets should be sent
+	*/
 	void receivePayloadFlit(Globals& globals, std::queue<Flit*> flits, QueueWrapper<TLP*>& sendOn);
 };
