@@ -1,5 +1,5 @@
 #include "packet_details_widget.h"
-
+#include <unordered_map>
 
 
 using namespace Ui;
@@ -63,13 +63,14 @@ void PacketDetails::createMem32bCommon() {
 	detailsLayout_->addWidget(tag,1,3);
 
 	//address
-	CustomLineEdit* address = new CustomLineEdit("Address", 100, 50, QString::number(static_cast<int>(addressRouting->address), 2), this);
+	CustomLineEdit* address = new CustomLineEdit("Address", 100, 50, QString::number(static_cast<int>(addressRouting->address), 2).rightJustified(30, '0'), this, false);
 	detailsLayout_->addWidget(address,2,0);
 	CustomLineEdit* at = new CustomLineEdit("AT", 100, 50, "000", this);
 	detailsLayout_->addWidget(at,2,1);
 
 	//saving to CurrentLineEdits
-	currentLineEdits.push_back(address);
+	//currentLineEdits.push_back(address);
+	lineEditsMap["address"] = address;
 	
 
 	
@@ -91,17 +92,19 @@ void PacketDetails::createMem64bCommon() {
 
 	//address
 	int upperAddressValue = (int)(addressRouting->address >> 32);
-	CustomLineEdit* upperAddress = new CustomLineEdit("Address[63:32]", 100, 50, QString::number(static_cast<int>(upperAddressValue), 2).rightJustified(32, '0'), this);
+	CustomLineEdit* upperAddress = new CustomLineEdit("Address[63:32]", 100, 50, QString::number(static_cast<int>(upperAddressValue), 2).rightJustified(32, '0'), this, false);
 	detailsLayout_->addWidget(upperAddress, 2, 0);
 	int lowerAddressValue = (int)addressRouting->address & 0xFFFFFFFF;
-	CustomLineEdit* lowerAddress = new CustomLineEdit("Address[31:2]", 100, 50, QString::number(static_cast<long long>(lowerAddressValue), 2).rightJustified(30, '0'), this);
+	CustomLineEdit* lowerAddress = new CustomLineEdit("Address[31:2]", 100, 50, QString::number(static_cast<long long>(lowerAddressValue), 2).rightJustified(30, '0'), this,false);
 	detailsLayout_->addWidget(lowerAddress, 3, 0);
 	CustomLineEdit* at = new CustomLineEdit("AT", 100, 50, "000", this);
 	detailsLayout_->addWidget(at, 3, 1);
 
 	//saving to address CurrentLineEdits
-	currentLineEdits.push_back(upperAddress);
-	currentLineEdits.push_back(lowerAddress);
+	//currentLineEdits.push_back(upperAddress);
+	//currentLineEdits.push_back(lowerAddress);
+	lineEditsMap["upperAddress"] = upperAddress;
+	lineEditsMap["lowerAddress"] = lowerAddress;
 
 
 }
@@ -119,15 +122,33 @@ void PacketDetails::createMemOHCvector(int row) {
 
 	OHC* ohcElement = currentTLP->header->OHCVector[0];
 	OHCA1* ohca1 = dynamic_cast<OHCA1*>(ohcElement);
-	CustomLineEdit* firstDWBE = new CustomLineEdit("First DW BE", 100, 50, QString::fromStdString(ohca1->firstDWBE.to_string()), this);
+	CustomLineEdit* firstDWBE = new CustomLineEdit("First DW BE", 100, 50, QString::fromStdString(ohca1->firstDWBE.to_string()), this, false);
 	detailsLayout_->addWidget(firstDWBE,row,4);
-	CustomLineEdit* lastDWBE = new CustomLineEdit("Last DW BE", 100, 50, QString::fromStdString(ohca1->lastDWBE.to_string()), this);
+	CustomLineEdit* lastDWBE = new CustomLineEdit("Last DW BE", 100, 50, QString::fromStdString(ohca1->lastDWBE.to_string()), this, false);
 	detailsLayout_->addWidget(lastDWBE,row,5);
 
-	//saving to currentLineEdits
-	currentLineEdits.push_back(firstDWBE);
-	currentLineEdits.push_back(lastDWBE);
 
+	//saving to currentLineEdits
+	//currentLineEdits.push_back(firstDWBE);
+	//currentLineEdits.push_back(lastDWBE);
+	lineEditsMap["firstDWBE"] = firstDWBE;
+	lineEditsMap["lastDWBE"] = lastDWBE;
+
+
+}
+
+
+void PacketDetails::createDataPayload(int row) {
+	
+	
+	string dataString;
+	boost::to_string(currentTLP->dataPayload, dataString);
+	CustomLineEdit* data = new CustomLineEdit("Data", 100, 50, QString::fromStdString(dataString), this, false);
+	detailsLayout_->addWidget(data,row,0);
+
+	//saving to currentLineEdits
+	//currentLineEdits.push_back(data);
+	lineEditsMap["dataPayload"] = data;
 }
 void PacketDetails::viewMemRead32() {
 	
@@ -146,10 +167,29 @@ void PacketDetails::viewMemRead64() {
 	createMemOHCvector(4);
 
 }
+void PacketDetails::viewMemWrite32() {
+
+
+	//header
+	createHeader();
+	createMem32bCommon();
+	createMemOHCvector(3);
+	createDataPayload(4);
+
+
+}
+void PacketDetails::viewMemWrite64() {
+
+	createHeader();
+	createMem64bCommon();
+	createMemOHCvector(4);
+	createDataPayload(5);
+}
 
 
 void PacketDetails::updateView(TLP* tlp) {
 	// Updates the view with the new TLP if the TLP is different from the current one
+	//--------------------------------------------------commented till implementing equal in tlp-----------------------------------------------------------------
 	/*if (tlp == currentTLP) {
 		return;
 	}*/
@@ -164,6 +204,11 @@ void PacketDetails::updateView(TLP* tlp) {
 	else if (tlp->header->TLPtype == TLPType::MemRead64) {
 		viewMemRead64();
 		contentLayout_->addLayout(detailsLayout_);
+	}
+	else if (tlp->header->TLPtype == TLPType::MemWrite32) {
+		viewMemWrite32();
+		contentLayout_->addLayout(detailsLayout_);
+
 	}
 	else {
 		//place holder
@@ -192,6 +237,45 @@ void PacketDetails::clearView() {
 	
 }
 
+void PacketDetails::saveMemCommon32() {
+	AddressRouting32Bit* addressRouting = dynamic_cast<AddressRouting32Bit*>(currentTLP->header->nonBase);
+	//addressRouting->address = binaryToInteger(currentLineEdits[0]->lineEdit->text().toStdString());
+	addressRouting->address = binaryToInteger(lineEditsMap["address"]->lineEdit->text().toStdString());
+
+
+	OHCA1* ohca1 = dynamic_cast<OHCA1*>(currentTLP->header->OHCVector[0]);
+	//ohca1->firstDWBE = std::bitset<4>(currentLineEdits[1]->lineEdit->text().toStdString());
+	ohca1->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->text().toStdString());
+	//ohca1->lastDWBE = std::bitset<4>(currentLineEdits[2]->lineEdit->text().toStdString());
+	ohca1->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->text().toStdString());
+}
+void PacketDetails::saveMemCommon64() {
+	AddressRouting64Bit* addressRouting = dynamic_cast<AddressRouting64Bit*>(currentTLP->header->nonBase);
+	//std::string upperAddress = currentLineEdits[0]->lineEdit->text().toStdString();
+	//std::string lowerAddress = currentLineEdits[1]->lineEdit->text().toStdString();
+	std::string upperAddress = lineEditsMap["upperAddress"]->lineEdit->text().toStdString();
+	std::string lowerAddress = lineEditsMap["lowerAddress"]->lineEdit->text().toStdString();
+	addressRouting->address = combineAddresses(upperAddress, lowerAddress);
+
+
+	OHCA1* ohca1 = dynamic_cast<OHCA1*>(currentTLP->header->OHCVector[0]);
+	//ohca1->firstDWBE = std::bitset<4>(currentLineEdits[2]->lineEdit->text().toStdString());
+	ohca1->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->text().toStdString());
+	//ohca1->lastDWBE = std::bitset<4>(currentLineEdits[3]->lineEdit->text().toStdString());
+	ohca1->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->text().toStdString());
+}
+void PacketDetails::saveDataPayload() {
+	//saving data payload
+	currentTLP->dataPayload.clear();
+	//std::string dataString = currentLineEdits[3]->lineEdit->text().toStdString();
+	std::string dataString = lineEditsMap["dataPayload"]->lineEdit->text().toStdString();
+	//append each bit to the data payload
+	for (int i = dataString.size() - 1; i >= 0; i--) {
+		currentTLP->dataPayload.push_back(dataString[i] - '0');
+	}
+	//adjust tlp length
+	currentTLP->header->lengthInDoubleWord = ceil((float)currentTLP->dataPayload.size() / 32);
+}
 
 
 
@@ -200,20 +284,22 @@ void PacketDetails::saveValues() {
 	//QLabel* savedlabel = new QLabel(QString("Values saved"), this);
 	//contentLayout_->addWidget(savedlabel);
 	if (currentTLP->header->TLPtype == TLPType::MemRead32) {
-		AddressRouting32Bit* addressRouting = dynamic_cast<AddressRouting32Bit*>(currentTLP->header->nonBase);
-		addressRouting->address = binaryToInteger(currentLineEdits[0]->lineEdit->text().toStdString());
-		OHCA1* ohca1 = dynamic_cast<OHCA1*>(currentTLP->header->OHCVector[0]);
-		ohca1->firstDWBE = std::bitset<4>(currentLineEdits[1]->lineEdit->text().toStdString());
-		ohca1->lastDWBE = std::bitset<4>(currentLineEdits[2]->lineEdit->text().toStdString());
+		saveMemCommon32();
 	}
 	else if (currentTLP->header->TLPtype == TLPType::MemRead64) {
-		AddressRouting64Bit* addressRouting = dynamic_cast<AddressRouting64Bit*>(currentTLP->header->nonBase);
-		std::string upperAddress = currentLineEdits[0]->lineEdit->text().toStdString();
-		std::string lowerAddress = currentLineEdits[1]->lineEdit->text().toStdString();
-		addressRouting->address = combineAddresses(upperAddress,lowerAddress);
-		OHCA1* ohca1 = dynamic_cast<OHCA1*>(currentTLP->header->OHCVector[0]);
-		ohca1->firstDWBE = std::bitset<4>(currentLineEdits[2]->lineEdit->text().toStdString());
-		ohca1->lastDWBE = std::bitset<4>(currentLineEdits[3]->lineEdit->text().toStdString());
+		saveMemCommon64();
+	}
+	else if (currentTLP->header->TLPtype == TLPType::MemWrite32) {
+		saveMemCommon32();
+
+		//saving data payload
+		saveDataPayload();
+
+	}
+	else if (currentTLP->header->TLPtype == TLPType::MemWrite64) {
+		saveMemCommon64();
+		//saving data payload
+		saveDataPayload();
 	}
 	else
 	{
