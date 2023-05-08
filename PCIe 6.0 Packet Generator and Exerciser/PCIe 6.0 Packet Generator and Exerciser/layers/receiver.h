@@ -9,10 +9,11 @@ class Receiver {
 public:
 	Globals globals;
 	LayersWrapper layers;
-	QueueWrapper<Flit>& sendOn;
+	QueueWrapper<TLP*>& sendOn;
 
-	Receiver(Globals& global, LayersWrapper layer, QueueWrapper<Flit>& sendOnQueue);
+	Receiver(Globals& global, LayersWrapper layer, QueueWrapper<TLP*>& sendOnQueue);
 
-	void receiveInit(Flit* flit ,Globals& globals);
-	void receiveFlit(Flit flit);
+	void receiveInit(Flit* flit, Globals& globals);
+	void receiveFlit(std::queue<Flit*> flits);
+
 };
