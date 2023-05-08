@@ -119,6 +119,12 @@ TLPCard::~TLPCard()
 
 }
 
+void TLPCard::mousePressEvent(QMouseEvent* event) {
+	if (event->button() == Qt::LeftButton) {
+		emit cardPressed(this);
+	}
+}
+
 void TLPCard::setCurrentTab(currentTab tab) {
 	currentTab_ = tab;
 }
