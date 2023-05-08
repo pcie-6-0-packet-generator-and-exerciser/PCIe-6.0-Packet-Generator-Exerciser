@@ -6,3 +6,10 @@ void normalFlowSender(Transmitter& transmitter, QueueWrapper<TLP*>& listenOn) {
 		transmitter.sendSequence(listenOn.popAll());
 	}
 }
+
+
+void normalFlowReceiver(Receiver& receiver, QueueWrapper<Flit*>& listenOn) {
+	while (true) {
+		receiver.receiveFlit(*listenOn.pop());
+	}
+}
