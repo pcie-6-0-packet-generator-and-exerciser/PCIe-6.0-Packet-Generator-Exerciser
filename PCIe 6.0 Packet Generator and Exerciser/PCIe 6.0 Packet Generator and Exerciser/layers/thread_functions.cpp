@@ -10,7 +10,6 @@ void normalFlowSender(Transmitter& transmitter, QueueWrapper<TLP*>& listenOn) {
 
 void normalFlowReceiver(Receiver& receiver, QueueWrapper<Flit*>& listenOn) {
 	while (true) {
-		// popAll() waits if the queue is empty
-		receiver.receiveFlit(listenOn.popAll());
+		receiver.receiveFlit(*listenOn.pop());
 	}
 }
