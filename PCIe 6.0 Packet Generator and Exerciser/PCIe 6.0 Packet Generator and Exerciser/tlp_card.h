@@ -13,6 +13,7 @@ namespace Ui
         Q_OBJECT
 
     public:
+        explicit TLPCard(QWidget* parent = nullptr);
         explicit TLPCard(TLPType type, QWidget* parent = nullptr);
         explicit TLPCard(TLP* tlp, QWidget* parent = nullptr);
         ~TLPCard();

@@ -46,6 +46,15 @@ QString TLPenumToString(TLPType value)
 	}
 };
 
+TLPCard::TLPCard(QWidget* parent) {
+	//this function is called when a new tlp card is created
+	//it sets the tlp type and creates a new tlp object based on the tlp type
+	textLabel_ = new QLabel("", this);
+	textLabel_->setAlignment(Qt::AlignHCenter);
+	setProperty(tlpCardProperty, true);
+	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+	manageLayout();
+}
 
 TLPCard::TLPCard( TLPType tlpType, QWidget* parent)
 	: QFrame(parent), textLabel_(new QLabel(TLPenumToString(tlpType), this))
