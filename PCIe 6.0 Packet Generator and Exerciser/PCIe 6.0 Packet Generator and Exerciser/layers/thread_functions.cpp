@@ -9,14 +9,14 @@ void normalFlowSender(Transmitter& transmitter, QueueWrapper<TLP*>& listenOn) {
 	}
 }
 
-void initilizationSender(Globals& globals, QueueWrapper<TLP*>& queueListenOn, QueueWrapper<Flit*>* queueSendOn) {
-	auto* transmitter = new Transmitter(globals, queueSendOn);
+void initilizationSender(Globals& globals, QueueWrapper<TLP*>& queueListenOn, QueueWrapper<Flit*>& queueSendOn) {
+	auto* transmitter = new Transmitter(globals, &queueSendOn);
 	while (!globals.Fl1) {
 		transmitter->sendInitFC1();
 	}
 	while (!globals.Fl2) {
 		transmitter->sendInitFC2();
 	}
-	std::thread normalFlowSender(normalFlowSender, *transmitter, queueListenOn);
-	normalFlowSender.join();
+	std::thread normalFlowSenderThread(normalFlowSender, std::ref(*transmitter), std::ref(queueListenOn));
+	normalFlowSenderThread.join();
 }

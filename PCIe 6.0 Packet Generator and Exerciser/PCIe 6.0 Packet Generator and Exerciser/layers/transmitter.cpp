@@ -1,9 +1,8 @@
 #include "transmitter.h"
 
-Transmitter::Transmitter(Globals& globals, QueueWrapper<Flit*>* sendOn)
+Transmitter::Transmitter(Globals& globals, QueueWrapper<Flit*>* sendOn) : globals(globals), sendOn(sendOn) 
 {
-	this->globals = globals;
-	this->sendOn = sendOn;
+	this->layers = new LayersWrapper();
 }
 
 void Transmitter::sendInitFC1(void) {
