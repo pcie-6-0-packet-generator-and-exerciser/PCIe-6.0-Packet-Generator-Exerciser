@@ -119,10 +119,15 @@ TLPCard::~TLPCard()
 
 }
 
+void TLPCard::setCurrentTab(currentTab tab) {
+	currentTab_ = tab;
+}
 
 void TLPCard::mouseMoveEvent(QMouseEvent* event) {
-
-
+	//if the currentTab is resultExplorer, return
+	if (currentTab_ == currentTab::resultExplorer) {
+		return;
+	}
 	QDrag* drag = new QDrag(this);
 	QMimeData* mimeData = new QMimeData;
 	QByteArray data;

@@ -13,6 +13,7 @@ namespace Ui
     public:
         explicit SequenceBrowser(QWidget* parent = nullptr);
         std::queue<TLP*> getTLPCards();
+        void setCurrentTab(currentTab tab);
         ~SequenceBrowser();
     private:
         void createCardsSequence();
@@ -22,6 +23,7 @@ namespace Ui
     private:
         QVBoxLayout* cardLayout_;
         std::list<TLPCard*> cards_;
+        currentTab currentTab_ = currentTab::sequenceExplorer;
     };
 
 }

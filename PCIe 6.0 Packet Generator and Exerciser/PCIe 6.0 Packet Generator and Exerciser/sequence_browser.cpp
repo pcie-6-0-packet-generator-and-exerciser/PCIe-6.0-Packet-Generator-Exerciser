@@ -29,6 +29,9 @@ SequenceBrowser::~SequenceBrowser()
 
 }
 
+void SequenceBrowser::setCurrentTab(currentTab tab) {
+	currentTab_ = tab;
+}
 void SequenceBrowser::dragEnterEvent(QDragEnterEvent* event)
 {
 	if (event->mimeData()->hasFormat("application/x-tlp"))
