@@ -181,6 +181,13 @@ void ContentWidget::createBody()
 	bodyLayout->addWidget(packetDetails);
 	bodyLayout->setStretchFactor(packetDetails, 2);
 
+
+	//packet details widget
+	PacketDetails* packetDetails = new PacketDetails(body_);
+	sequenceBrowser->packetDetails = packetDetails;
+	bodyLayout->addWidget(packetDetails);
+	bodyLayout->setStretchFactor(packetDetails, 2);
+
 	body_->setLayout(bodyLayout);
 
 	connect (sequenceSideBar, SIGNAL(valueChanged(int)), resultSideBar, SLOT(setValue(int)));
