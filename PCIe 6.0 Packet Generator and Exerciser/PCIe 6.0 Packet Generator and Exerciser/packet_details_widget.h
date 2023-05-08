@@ -23,6 +23,7 @@ namespace Ui
         void createMem32bCommon();
         void createMem64bCommon();
         void createMemOHCvector(int row);
+        void createDataPayload(int row);
 
 
 
@@ -34,6 +35,9 @@ namespace Ui
         void viewConfigWriteWrite();
         void viewVendorMsg();
        
+        void saveMemCommon32();
+        void saveMemCommon64();
+        void saveDataPayload();
 
             
         long long combineAddresses(std::string upperAddress, std::string lowerAddress);
@@ -47,6 +51,7 @@ namespace Ui
         QPushButton* saveButton;
         TLP* currentTLP;
         std::vector<CustomLineEdit*> currentLineEdits;
+        std::unordered_map<std::string, CustomLineEdit*> lineEditsMap;
 
     public slots:
         void updateView(TLP* tlp);

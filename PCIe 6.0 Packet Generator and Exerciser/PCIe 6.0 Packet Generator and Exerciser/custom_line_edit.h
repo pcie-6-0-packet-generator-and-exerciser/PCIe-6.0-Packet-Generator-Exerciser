@@ -12,7 +12,7 @@ namespace Ui
         Q_OBJECT
 
     public:
-        explicit CustomLineEdit(const QString &labelText, int width, int height, const QString &content, QWidget* parent );
+        explicit CustomLineEdit(const QString &labelText, int width, int height, const QString &content, QWidget* parent , bool readOnly = true);
         ~CustomLineEdit();
     public:
         QLineEdit* lineEdit;
