@@ -161,3 +161,49 @@ NonHeaderBase* CompletionNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset
     NonHeaderBase* recievedCompletionNonHeaderBase = new CompletionNonHeaderBase(0, tagValue, completerIDValue, byteCountValue, busNumberValue, deviceNumberValue, functionNumberValue, lowerAddressValues);
     return recievedCompletionNonHeaderBase;
 }
+
+//implement getTag for all classes that implemented setTag
+
+int AddressRouting32Bit::getTag() const {
+	return tag;
+}
+
+int AddressRouting64Bit::getTag() const {
+	return tag;
+}
+
+int ConfigNonHeaderBase::getTag() const {
+	return tag;
+}
+
+
+int MessageNonHeaderBase::getTag() const {
+	return -1;
+}
+
+int CompletionNonHeaderBase::getTag() const {
+	return tag;
+}
+
+//implement setTag for all classes
+void AddressRouting32Bit::setTag(int tag) {
+	this->tag = tag;
+}
+
+void AddressRouting64Bit::setTag(int tag) {
+	this->tag = tag;
+}
+
+void ConfigNonHeaderBase::setTag(int tag) {
+	this->tag = tag;
+}
+
+void MessageNonHeaderBase::setTag(int tag) {
+}
+
+void CompletionNonHeaderBase::setTag(int tag) {
+	this->tag = tag;
+}
+
+
+

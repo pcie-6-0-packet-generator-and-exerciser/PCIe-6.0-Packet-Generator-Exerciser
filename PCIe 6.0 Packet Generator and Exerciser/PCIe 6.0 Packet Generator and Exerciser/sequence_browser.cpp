@@ -29,6 +29,9 @@ SequenceBrowser::~SequenceBrowser()
 
 }
 
+void SequenceBrowser::setCurrentTab(currentTab tab) {
+	currentTab_ = tab;
+}
 void SequenceBrowser::dragEnterEvent(QDragEnterEvent* event)
 {
 	if (event->mimeData()->hasFormat("application/x-tlp"))
@@ -80,4 +83,14 @@ void SequenceBrowser::manageLayout()
 	effect->setColor(Qt::black);
 
 	setGraphicsEffect(effect);
+}
+
+std::queue<TLP*> SequenceBrowser::getTLPCards() {
+	std::queue<TLP*> tlpCards;
+	int tag = 1;
+	for (auto card : cards_) {
+		card->tlp->header->nonBase->setTag(tag++);
+		tlpCards.push(card->tlp);
+	}
+	return tlpCards;
 }
