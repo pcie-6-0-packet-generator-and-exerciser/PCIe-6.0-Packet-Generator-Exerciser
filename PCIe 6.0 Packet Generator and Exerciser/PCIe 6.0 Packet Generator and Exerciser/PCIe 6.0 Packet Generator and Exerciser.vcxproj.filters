@@ -127,6 +127,12 @@
     <ClCompile Include="Endpoint\endpoint_app\endpoint_app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="custom_line_edit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Endpoint\endpoint_app\endpoint_app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Endpoint\controller_class\memory_controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
