@@ -12,9 +12,7 @@ void Receiver::receiveInit(Flit* flit,Globals& globals) {
 	//void LayersWrapper::receiveNOPFlit(Flit* flit, Globals& globals) 
 	this->layers.receiveNOPFlit(flit, globals);
 }
-/*
+
 //payloadflit
-void Receiver::receiveFlit(Flit flit) {
-	this->layers.receivePayloadFlit(flit, this->sendOn, this->globals.P_CREDIT, this->globals.NP_CREDIT, this->globals.CPL_CREDIT);
+void Receiver::receiveFlit(std::queue<Flit*> flits) {
 }
-*/
