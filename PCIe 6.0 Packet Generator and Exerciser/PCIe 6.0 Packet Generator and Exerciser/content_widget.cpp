@@ -173,6 +173,9 @@ void ContentWidget::createBody()
 	resultFrame_->setVisible(false);
 
 	body_->setLayout(bodyLayout);
+
+	connect (sequenceSideBar, SIGNAL(valueChanged(int)), resultSideBar, SLOT(setValue(int)));
+	connect (resultSideBar, SIGNAL(valueChanged(int)), sequenceSideBar, SLOT(setValue(int)));
 }
 //createFooter
 void ContentWidget::createFooter()
@@ -246,7 +249,8 @@ void ContentWidget::onSubmitButtonClick() {
 	resultFrame_->setVisible(true);
 	sequenceExplorerTab_->setStyleSheet(::unselectedTabStyleString);
 	resultExplorerTab_->setStyleSheet(::selectedTabStyleString);
-
+	sequenceBrowser_->setCurrentTab(currentTab::resultExplorer);
+	sequenceBrowser_->setAcceptDrops(false);
 
 }
 
@@ -255,6 +259,8 @@ void ContentWidget::onSequenceExplorerTabClick() {
 	resultFrame_->setVisible(false);
 	sequenceExplorerTab_->setStyleSheet(::selectedTabStyleString);
 	resultExplorerTab_->setStyleSheet(::unselectedTabStyleString);
+	sequenceBrowser_->setCurrentTab(currentTab::sequenceExplorer);
+	sequenceBrowser_->setAcceptDrops(true);
 }
 
 void ContentWidget::onResultExplorerTabClick() {
@@ -262,4 +268,6 @@ void ContentWidget::onResultExplorerTabClick() {
 	resultFrame_->setVisible(true);
 	sequenceExplorerTab_->setStyleSheet(::unselectedTabStyleString);
 	resultExplorerTab_->setStyleSheet(::selectedTabStyleString);
+	sequenceBrowser_->setCurrentTab(currentTab::resultExplorer);
+	sequenceBrowser_->setAcceptDrops(false);
 }
