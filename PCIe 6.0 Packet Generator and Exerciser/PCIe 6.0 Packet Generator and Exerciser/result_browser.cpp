@@ -16,7 +16,6 @@ ResultBrowser::ResultBrowser(QWidget* parent)
 	cardLayout_ = new QVBoxLayout;
 	setProperty(::transparentBackgroundProperty, true);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-	createCardsSequence();
 	manageLayout();
 }
 
@@ -24,10 +23,14 @@ ResultBrowser::~ResultBrowser()
 {
 }
 
-void ResultBrowser::createCardsSequence() {
-	//place holder
-	/*TLPCard* card = new TLPCard(this, "Card ");
-		cards_.push_back(card);*/
+void ResultBrowser::createCardsSequence(std::queue<TLP*> incomingPackets) {
+	//instantiate the cards and set the tlp to the tlp in the queue then add the card to cards_
+	while(!incomingPackets.empty()) {
+		TLP* incomingTlp = incomingPackets.front();
+		incomingPackets.pop();
+		TLPCard* card = new TLPCard(incomingTlp, this);
+		cards_.push_back(card);
+	}
 }
 
 void ResultBrowser::manageLayout() {

@@ -9,6 +9,7 @@ class QVBoxLayout;
 namespace Ui
 {
     class SequenceBrowser;
+    class ResultBrowser;
     class ContentWidget: public QFrame
     {
         Q_OBJECT
@@ -39,6 +40,7 @@ namespace Ui
         QFrame* typeFrame_;
         QFrame* resultFrame_;
         SequenceBrowser* sequenceBrowser_;
+        ResultBrowser* resultBrowser_;
         QPushButton* submitButton_;
         QPushButton* sequenceExplorerTab_;
         QPushButton* resultExplorerTab_;

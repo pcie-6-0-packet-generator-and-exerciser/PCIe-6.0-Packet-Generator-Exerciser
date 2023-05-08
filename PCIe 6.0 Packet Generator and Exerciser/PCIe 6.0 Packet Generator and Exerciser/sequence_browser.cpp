@@ -74,6 +74,12 @@ void SequenceBrowser::manageLayout()
 	//contentLayout->addLayout(cardLayout_);
 	setLayout(cardLayout_);
 
+	QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect;
+	effect->setBlurRadius(30);
+	effect->setOffset(0, 0);
+	effect->setColor(Qt::black);
+
+	setGraphicsEffect(effect);
 }
 
 std::queue<TLP*> SequenceBrowser::getTLPCards() {

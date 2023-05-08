@@ -32,12 +32,10 @@ ContentWidget::ContentWidget(QWidget* parent,
 	rootComplexToLayers_(rootComplexToLayers),
 	layersToRootComplex_(layersToRootComplex)
 {
-
 	createHeader();
 	createBody();
 	createFooter();
 	manageLayout();
-
 }
 
 ContentWidget::~ContentWidget()
@@ -129,12 +127,12 @@ void ContentWidget::createBody()
 
 	sequenceScrollArea->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
-	QGraphicsDropShadowEffect* sequenceShadowEffect = new QGraphicsDropShadowEffect;
+	/*QGraphicsDropShadowEffect* sequenceShadowEffect = new QGraphicsDropShadowEffect;
 	sequenceShadowEffect->setBlurRadius(30);
 	sequenceShadowEffect->setOffset(0, 0);
 	sequenceShadowEffect->setColor(Qt::black);
 
-	//sequenceScrollArea->setGraphicsEffect(sequenceShadowEffect);
+	sequenceScrollArea->setGraphicsEffect(sequenceShadowEffect);*/
 	
 	sequenceLayout->addWidget(sequenceScrollArea);
 	sequenceLayout->setStretchFactor(sequenceScrollArea, 10);
@@ -155,10 +153,10 @@ void ContentWidget::createBody()
 	resultBrowserLayout->addWidget(resultLabel, 1, Qt::AlignHCenter);
 	resultBrowserLayout->setStretchFactor(resultLabel, 1);
 
-	ResultBrowser* resultBrowser = new ResultBrowser(body_);
+	resultBrowser_ = new ResultBrowser(body_);
 	QScrollBar* resultSideBar = new QScrollBar(Qt::Vertical, nullptr);
 	QScrollArea* resultScrollArea = new QScrollArea;
-	resultScrollArea->setWidget(resultBrowser);
+	resultScrollArea->setWidget(resultBrowser_);
 	resultScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	resultScrollArea->setWidgetResizable(true);
@@ -240,10 +238,16 @@ void ContentWidget::manageLayout()
 
 void ContentWidget::onSubmitButtonClick() {
 	rootComplexToLayers_->push(sequenceBrowser_->getTLPCards());
+
+	//****Uncomment this to see the result when the layers are connected to the root complex****
+	//std::queue<TLP*> resultPackets = layersToRootComplex_->popAll();
+
 	typeFrame_->setVisible(false);
 	resultFrame_->setVisible(true);
 	sequenceExplorerTab_->setStyleSheet(::unselectedTabStyleString);
 	resultExplorerTab_->setStyleSheet(::selectedTabStyleString);
+
+
 }
 
 void ContentWidget::onSequenceExplorerTabClick() {

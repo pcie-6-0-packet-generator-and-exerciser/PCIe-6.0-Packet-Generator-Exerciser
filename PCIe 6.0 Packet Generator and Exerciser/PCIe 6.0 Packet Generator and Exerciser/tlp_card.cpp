@@ -93,10 +93,21 @@ TLPCard::TLPCard( TLPType tlpType, QWidget* parent)
 	manageLayout();
 }
 
+TLPCard::TLPCard(TLP* tlp, QWidget* parent) {
+	textLabel_ = new QLabel(TLPenumToString(tlp->header->TLPtype), this);
+	this->tlp = tlp;
+	textLabel_->setAlignment(Qt::AlignHCenter);
+	setProperty(tlpCardProperty, true);
+	setMinimumSize(200, 100);
+	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	manageLayout();
+}
+
 TLPCard::~TLPCard()
 {
 	//delete tlp;
 	delete textLabel_;
+
 }
 
 
