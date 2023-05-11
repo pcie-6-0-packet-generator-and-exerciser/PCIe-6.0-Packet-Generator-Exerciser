@@ -59,5 +59,5 @@ int Configuration::getRegisterLengthInBytes(int registerNumber)
 */
 unsigned int Configuration::getDeviceID()
 {
-    return head_->getRegisterNext()->getRegisterNext()->getRegisterValue();
+    return head_->getRegisterNext()->getRegisterValue();
 }
