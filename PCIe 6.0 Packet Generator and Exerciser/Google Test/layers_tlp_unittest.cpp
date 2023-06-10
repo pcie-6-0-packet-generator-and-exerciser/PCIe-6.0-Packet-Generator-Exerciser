@@ -537,20 +537,24 @@ TEST(TLPGetBitRep, TLPFullPacketNoDatapayload) {
 	h->lengthInDoubleWord = 0;
 	h->OHC = 26;
 	h->TC = 0;
+	OHCA3* ohc = new OHCA3(std::bitset<4>(9), std::bitset<4>(7), 186);
+	h->OHCVector.push_back(ohc);
 	h->nonBase = new AddressRouting64Bit(48169, 10254, 4294967297);
 	tlp->header = h;
 	boost::dynamic_bitset<> bitRep = tlp->getBitRep();
 	boost::dynamic_bitset<> bitRep2(bitRep.operator>>(32));
 	boost::dynamic_bitset<> bitRep3(bitRep.operator>>(64));
 	boost::dynamic_bitset<> bitRep4(bitRep.operator>>(96));
+	boost::dynamic_bitset<> bitRep5(bitRep.operator>>(128));
 	bitRep.resize(32);
 	bitRep2.resize(32);
 	bitRep3.resize(32);
 	bitRep4.resize(32);
-	EXPECT_EQ(bitRep4.to_ulong(), 0x201A0000);
-	EXPECT_EQ(bitRep3.to_ulong(), 0xBC29280E);
-	EXPECT_EQ(bitRep2.to_ulong(), 0x00000001);
-	EXPECT_EQ(bitRep.to_ulong(), 0x00000004);
+	EXPECT_EQ(bitRep5.to_ulong(), 0x201A0000);
+	EXPECT_EQ(bitRep4.to_ulong(), 0xBC29280E);
+	EXPECT_EQ(bitRep3.to_ulong(), 0x00000001);
+	EXPECT_EQ(bitRep2.to_ulong(), 0x00000004);
+	EXPECT_EQ(bitRep.to_ulong(), 0xBA000079);
 }
 
 TEST(TLPGetBitRep, TLPFullPacketWithDatapayload) {
@@ -560,6 +564,8 @@ TEST(TLPGetBitRep, TLPFullPacketWithDatapayload) {
 	h->lengthInDoubleWord = 2;
 	h->OHC = 26;
 	h->TC = 0;
+	OHCA3* ohc = new OHCA3(std::bitset<4>(9), std::bitset<4>(7), 186);
+	h->OHCVector.push_back(ohc);
 	h->nonBase = new AddressRouting64Bit(48169, 10254, 4294967297);
 	tlp->header = h;
 	tlp->dataPayload = boost::dynamic_bitset<>(64, 0x00000001);
@@ -570,16 +576,18 @@ TEST(TLPGetBitRep, TLPFullPacketWithDatapayload) {
 	boost::dynamic_bitset<> bitRep4(bitRep.operator>>(96));
 	boost::dynamic_bitset<> bitRep5(bitRep.operator>>(128));
 	boost::dynamic_bitset<> bitRep6(bitRep.operator>>(160));
+	boost::dynamic_bitset<> bitRep7(bitRep.operator>>(192));
 	bitRep.resize(32);
 	bitRep2.resize(32);
 	bitRep3.resize(32);
 	bitRep4.resize(32);
 	bitRep5.resize(32);
 	bitRep6.resize(32);
-	EXPECT_EQ(bitRep6.to_ulong(), 0x601A030D);
-	EXPECT_EQ(bitRep5.to_ulong(), 0xBC29280E);
-	EXPECT_EQ(bitRep4.to_ulong(), 0x00000001);
-	EXPECT_EQ(bitRep3.to_ulong(), 0x00000004);
+	EXPECT_EQ(bitRep7.to_ulong(), 0x601A0002);
+	EXPECT_EQ(bitRep6.to_ulong(), 0xBC29280E);
+	EXPECT_EQ(bitRep5.to_ulong(), 0x00000001);
+	EXPECT_EQ(bitRep4.to_ulong(), 0x00000004);
+	EXPECT_EQ(bitRep3.to_ulong(), 0xBA000079);
 	EXPECT_EQ(bitRep2.to_ulong(), 0x00000001);
 	EXPECT_EQ(bitRep.to_ulong(), 0x00000001);
 }

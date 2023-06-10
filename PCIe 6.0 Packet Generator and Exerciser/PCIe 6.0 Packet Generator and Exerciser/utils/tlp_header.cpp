@@ -19,7 +19,7 @@ boost::dynamic_bitset<> TLPHeader::getBitRep() const {
     for (int i = 0; i < OHCVector.size(); i++) {
         boost::dynamic_bitset<> OHC_header = OHCVector[i]->getBitRep();
         OHC_header.resize(totalLength);
-        result |= (OHC_header << ( OHCLength - i * 32));
+        result |= (OHC_header << (OHCLength - 32 - i * 32));
     }
     return result;
 
