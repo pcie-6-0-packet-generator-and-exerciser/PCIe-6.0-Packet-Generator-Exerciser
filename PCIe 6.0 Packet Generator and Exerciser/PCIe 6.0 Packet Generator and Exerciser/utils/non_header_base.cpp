@@ -109,20 +109,18 @@ NonHeaderBase* ConfigNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset) {
 boost::dynamic_bitset<> CompletionNonHeaderBase::getBitRep() const {
     boost::dynamic_bitset<> result((headerSizeInBytes * 8) - 32);
 
-    std::bitset<6> myBitset(lowerAddress);  // convert integer to bitset
+    std::bitset<5> myBitset(lowerAddress);  // convert integer to bitset
 
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, byteCount));
     //Add the lowerAddress
-    int y = 2;
     for (int i = 0; i < 4; i++) {
-        result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, myBitset[y] << (12 + i)));
-        y++;
+        result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, myBitset[i] << (12 + i)));
     }
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, functionNumber) << 16);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, deviceNumber) << 19);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, busNumber) << 24);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, tag) << 32);
-    result[46] = myBitset[5];
+    result[46] = myBitset[4];
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, completerID) << 48);
 
     return result;
