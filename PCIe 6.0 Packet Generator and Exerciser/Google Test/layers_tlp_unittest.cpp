@@ -699,10 +699,10 @@ TEST(TLPGetObjRep, NonHeaderCompletion) {
 	setBits(nhbits, 48, 63, 0xAB);
 	CompletionNonHeaderBase* nh = (CompletionNonHeaderBase*)CompletionNonHeaderBase::getObjRep(nhbits);
 	EXPECT_EQ(nh->byteCount, 0x3B2);
-	EXPECT_EQ(nh->lowerAddress, 14);
-	EXPECT_EQ(nh->busNumber, 5);
+	EXPECT_EQ(nh->lowerAddress, 22);
+	EXPECT_EQ(nh->busNumber, 0xFF);
 	EXPECT_EQ(nh->deviceNumber, 26);
-	EXPECT_EQ(nh->functionNumber, 0xFF);
+	EXPECT_EQ(nh->functionNumber, 5);
 	EXPECT_EQ(nh->tag, 15023);
 	EXPECT_EQ(nh->completerID, 0xAB);
 }
@@ -747,7 +747,7 @@ TEST(TLPGetObjRep, HeaderMem64) {
 	OHCA1* ohc = (OHCA1*)(h->OHCVector[0]);
 	EXPECT_EQ(ohc->firstDWBE.to_ulong(), 12);
 	EXPECT_EQ(ohc->lastDWBE.to_ulong(), 5);
-	AddressRouting32Bit* nh = (AddressRouting32Bit*)(h->nonBase);
+	AddressRouting64Bit* nh = (AddressRouting64Bit*)(h->nonBase);
 	EXPECT_EQ(nh->address, 0x34651230A6B953F);
 	EXPECT_EQ(nh->tag, 14906);
 	EXPECT_EQ(nh->requestID, 0x9FAB);
@@ -837,10 +837,10 @@ TEST(TLPGetObjRep, HeaderCompletion) {
 	EXPECT_EQ(ohc->destinationSegment, 126);
 	CompletionNonHeaderBase* nh = (CompletionNonHeaderBase*)(h->nonBase);
 	EXPECT_EQ(nh->byteCount, 0x3B2);
-	EXPECT_EQ(nh->lowerAddress, 14);
-	EXPECT_EQ(nh->busNumber, 5);
+	EXPECT_EQ(nh->lowerAddress, 22);
+	EXPECT_EQ(nh->busNumber, 0xFF);
 	EXPECT_EQ(nh->deviceNumber, 26);
-	EXPECT_EQ(nh->functionNumber, 0xFF);
+	EXPECT_EQ(nh->functionNumber, 5);
 	EXPECT_EQ(nh->tag, 15023);
 	EXPECT_EQ(nh->completerID, 0xAB);
 	EXPECT_EQ(h->lengthInDoubleWord, 0x3FA);
@@ -882,7 +882,7 @@ TEST(TLPGetObjRep, TLPwithPayload) {
 	setBits(tlpbits, 98, 127, 0x3465123F);
 	setBits(tlpbits, 128, 141, 15023);
 	setBits(tlpbits, 144, 159, 0xA6B9);
-	setBits(tlpbits, 160, 169, 0x3FA);
+	setBits(tlpbits, 160, 169, 2);
 	setBits(tlpbits, 176, 180, 26);
 	setBits(tlpbits, 181, 183, 5);
 	setBits(tlpbits, 184, 191, 64);
@@ -894,10 +894,14 @@ TEST(TLPGetObjRep, TLPwithPayload) {
 	EXPECT_EQ(nh->address, 0x3465123F);
 	EXPECT_EQ(nh->tag, 15023);
 	EXPECT_EQ(nh->requestID, 0xA6B9);
-	EXPECT_EQ(tlp->header->lengthInDoubleWord, 0x3FA);
+	EXPECT_EQ(tlp->header->lengthInDoubleWord, 2);
 	EXPECT_EQ(tlp->header->OHC, 26);
 	EXPECT_EQ(tlp->header->TC, 5);
 	EXPECT_EQ(static_cast<int>(tlp->header->TLPtype), 64);
-	EXPECT_EQ(tlp->dataPayload.to_ulong(), 0x2BC014DA);
-	EXPECT_EQ((tlp->dataPayload.operator>>(32)).to_ulong(), 0x3465123F);
+	boost::dynamic_bitset<> payloadMSBs = tlp->dataPayload.operator>>(32);
+	boost::dynamic_bitset<> payloadLSBs = tlp->dataPayload;
+	payloadMSBs.resize(32);
+	payloadLSBs.resize(32);
+	EXPECT_EQ(payloadLSBs.to_ulong(), 0x2BC014DA);
+	EXPECT_EQ(payloadMSBs.to_ulong(), 0x3465123F);
 }

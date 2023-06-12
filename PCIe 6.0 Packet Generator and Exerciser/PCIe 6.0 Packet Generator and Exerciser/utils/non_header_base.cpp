@@ -1,8 +1,6 @@
 #include "non_header_base.h"
 #include "bitset_utils.h"
 
-
-
 boost::dynamic_bitset<> AddressRouting32Bit::getBitRep() const {
     boost::dynamic_bitset<> result ((headerSizeInBytes * 8) - 32) ;
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, address) << 2);
@@ -37,8 +35,11 @@ boost::dynamic_bitset<> AddressRouting64Bit::getBitRep() const {
 }
 
 NonHeaderBase* AddressRouting64Bit::getObjRep(boost::dynamic_bitset<> bitset) {
-    boost::dynamic_bitset<> addressValue_sub_bits = get_bits(bitset, 2, 63);
-    int addressValue = addressValue_sub_bits.to_ulong();
+    boost::dynamic_bitset<> addressValue1_sub_bits = get_bits(bitset, 2, 31);
+    boost::dynamic_bitset<> addressValue2_sub_bits = get_bits(bitset, 32, 63);
+    long long addressValue = addressValue2_sub_bits.to_ulong();
+    addressValue = addressValue << 30;
+    addressValue |= addressValue1_sub_bits.to_ulong();
 
     boost::dynamic_bitset<> tagValue_sub_bits = get_bits(bitset, 64, 77);
     int tagValue = tagValue_sub_bits.to_ulong();
@@ -145,12 +146,12 @@ NonHeaderBase* CompletionNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset
     boost::dynamic_bitset<> completerIDValue_sub_bits = get_bits(bitset, 48, 63);
     int completerIDValue = completerIDValue_sub_bits.to_ulong();
 
-    std::bitset<6> lowerAddressValuesbits;
-    lowerAddressValuesbits[2] = bitset[12];
-    lowerAddressValuesbits[3] = bitset[13];
-    lowerAddressValuesbits[4] = bitset[14];
-    lowerAddressValuesbits[5] = bitset[15];
-    lowerAddressValuesbits[6] = bitset[46];
+    std::bitset<5> lowerAddressValuesbits;
+    lowerAddressValuesbits[0] = bitset[12];
+    lowerAddressValuesbits[1] = bitset[13];
+    lowerAddressValuesbits[2] = bitset[14];
+    lowerAddressValuesbits[3] = bitset[15];
+    lowerAddressValuesbits[4] = bitset[46];
     int lowerAddressValues = lowerAddressValuesbits.to_ulong();
 
 //	CompletionNonHeaderBase(int requestID, int tg, int completer_ID,long byte_Count, int bus_Number, int device_Number ,int function_Number,int lower_Address) {

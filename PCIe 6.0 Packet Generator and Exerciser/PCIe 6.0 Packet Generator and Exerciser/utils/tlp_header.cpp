@@ -38,7 +38,7 @@ TLPHeader* TLPHeader::getObjRep(boost::dynamic_bitset<> bitset) {
 
             tlpHeader->TLPtype = TLPType::MemRead32;
 
-            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 32 - 1);
+            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, 0, (OHCVector * 32) - 1);
             tlpHeader->OHCVector.push_back(OHCA1::getObjRep(OHCVector_sub_bits));
             break;
         }
@@ -46,65 +46,72 @@ TLPHeader* TLPHeader::getObjRep(boost::dynamic_bitset<> bitset) {
             boost::dynamic_bitset<> nonHeader_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 96 - 1);
             tlpHeader->nonBase = AddressRouting32Bit::getObjRep(nonHeader_sub_bits);
             tlpHeader->TLPtype = TLPType::MemWrite32;
-            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 32 - 1);
+            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, 0, (OHCVector * 32) - 1);
             tlpHeader->OHCVector.push_back(OHCA1::getObjRep(OHCVector_sub_bits));
             break; }
         case 32: {
             boost::dynamic_bitset<> nonHeader_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 128 - 1);
             tlpHeader->nonBase = AddressRouting64Bit::getObjRep(nonHeader_sub_bits);
             tlpHeader->TLPtype = TLPType::MemRead64;
-            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 32 - 1);
+            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, 0, (OHCVector * 32) - 1);
             tlpHeader->OHCVector.push_back(OHCA1::getObjRep(OHCVector_sub_bits));
             break; }
         case 96: {
             boost::dynamic_bitset<> nonHeader_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 128 - 1);
             tlpHeader->nonBase = AddressRouting64Bit::getObjRep(nonHeader_sub_bits);
             tlpHeader->TLPtype = TLPType::MemWrite64;
-            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 32 - 1);
+            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, 0, (OHCVector * 32) - 1);
             tlpHeader->OHCVector.push_back(OHCA1::getObjRep(OHCVector_sub_bits));
             break; }
         case 10: {
             boost::dynamic_bitset<> nonHeader_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 96 - 1);
             tlpHeader->nonBase = CompletionNonHeaderBase::getObjRep(nonHeader_sub_bits);
             tlpHeader->TLPtype = TLPType::Cpl;
-            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 32 - 1);
+            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, 0, (OHCVector * 32) - 1);
             tlpHeader->OHCVector.push_back(OHCA5::getObjRep(OHCVector_sub_bits));
             break; }
         case 74: {
             boost::dynamic_bitset<> nonHeader_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 96 - 1);
             tlpHeader->nonBase = CompletionNonHeaderBase::getObjRep(nonHeader_sub_bits);
             tlpHeader->TLPtype = TLPType::CplD;
-            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 32 - 1);
+            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, 0, (OHCVector * 32) - 1);
             tlpHeader->OHCVector.push_back(OHCA5::getObjRep(OHCVector_sub_bits));
             break; }
         case 4: {
             boost::dynamic_bitset<> nonHeader_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 96 - 1);
             tlpHeader->nonBase = ConfigNonHeaderBase::getObjRep(nonHeader_sub_bits);
             tlpHeader->TLPtype = TLPType::ConfigRead0;
-            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 32 - 1);
+            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, 0, (OHCVector * 32) - 1);
             tlpHeader->OHCVector.push_back(OHCA3::getObjRep(OHCVector_sub_bits));
             break; }
         case 68: {
             boost::dynamic_bitset<> nonHeader_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 96 - 1);
             tlpHeader->nonBase = ConfigNonHeaderBase::getObjRep(nonHeader_sub_bits);
             tlpHeader->TLPtype = TLPType::ConfigWrite0;
-            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 32 - 1);
+            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, 0, (OHCVector * 32) - 1);
             tlpHeader->OHCVector.push_back(OHCA3::getObjRep(OHCVector_sub_bits));
             break; }
         case 5: {
             boost::dynamic_bitset<> nonHeader_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 96 - 1);
             tlpHeader->nonBase = ConfigNonHeaderBase::getObjRep(nonHeader_sub_bits);
             tlpHeader->TLPtype = TLPType::ConfigRead1;
-            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 32 - 1);
+            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, 0, (OHCVector * 32) - 1);
             tlpHeader->OHCVector.push_back(OHCA3::getObjRep(OHCVector_sub_bits));
             break; }
         case 69: {
             boost::dynamic_bitset<> nonHeader_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 96 - 1);
             tlpHeader->nonBase = ConfigNonHeaderBase::getObjRep(nonHeader_sub_bits);
             tlpHeader->TLPtype = TLPType::ConfigWrite1;
-            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 32 - 1);
+            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, 0, (OHCVector * 32) - 1);
             tlpHeader->OHCVector.push_back(OHCA3::getObjRep(OHCVector_sub_bits));
             break; }
+        case 75: {
+            boost::dynamic_bitset<> nonHeader_sub_bits = get_bits(bitset, OHCVector * 32, (OHCVector * 32) + 96 - 1);
+            tlpHeader->nonBase = MessageNonHeaderBase::getObjRep(nonHeader_sub_bits);
+            tlpHeader->TLPtype = TLPType::VendorMsg;
+            boost::dynamic_bitset<> OHCVector_sub_bits = get_bits(bitset, 0, (OHCVector * 32) - 1);
+            tlpHeader->OHCVector.push_back(OHCA4::getObjRep(OHCVector_sub_bits));
+        }
     }
 
 

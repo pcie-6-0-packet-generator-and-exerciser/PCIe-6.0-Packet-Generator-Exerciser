@@ -1,6 +1,45 @@
 #include "tlp.h"
 #include "bitset_utils.h"
 
+int getHeaderLengthByType(TLPType type) {
+	switch (type) {
+	case TLPType::MemRead32:
+		return 12;
+		break;
+	case TLPType::MemWrite32:
+		return 12;
+		break;
+	case TLPType::MemRead64:
+		return 16;
+		break;
+	case TLPType::MemWrite64:
+		return 16;
+		break;
+	case TLPType::Cpl:
+		return 12;
+		break;
+	case TLPType::CplD:
+		return 16;
+		break;
+	case TLPType::VendorMsg:
+		return 12;
+		break;
+	case TLPType::ConfigRead0:
+		return 12;
+		break;
+	case TLPType::ConfigWrite0:
+		return 12;
+		break;
+	case TLPType::ConfigRead1:
+		return 16;
+		break;
+	case TLPType::ConfigWrite1:
+		return 16;
+		break;
+	default:
+		break;
+	}
+}
 
 int TLP::getTotalLength() {
 	int OHCLength = header->OHCVector.size() * 4;
@@ -34,14 +73,19 @@ TLP* TLP::getObjRep(boost::dynamic_bitset<> bitset) {
 	TLP* tlp = new TLP();
 	int size = bitset.size();
 	boost::dynamic_bitset<> length_bitset = get_bits(bitset, size - 32, size - 23);
-	int lengthValue = length_bitset.to_ulong();
-
+	int lengthValue = (length_bitset.to_ulong() == 0 ? 1024 : length_bitset.to_ulong());
+	int OHCVectorLength = 1;
 	boost::dynamic_bitset<> TLPType_bitset = get_bits(bitset, size - 8, size - 1);
-	if (TLPType_bitset.to_ulong() == (64 || 96 || 68 || 69 || 74)) { //64 -->MemWrite32 96-->MemWrite64 68-->ConfigWrite0 69-->ConfigWrite1 74-->CplD
+	int headerLength = getHeaderLengthByType((TLPType)TLPType_bitset.to_ulong());
+	if (TLPType_bitset.to_ulong() == 64
+		|| TLPType_bitset.to_ulong() == 96
+		|| TLPType_bitset.to_ulong() == 68
+		|| TLPType_bitset.to_ulong() == 69
+		|| TLPType_bitset.to_ulong() == 74) { //64 -->MemWrite32 96-->MemWrite64 68-->ConfigWrite0 69-->ConfigWrite1 74-->CplD
 		boost::dynamic_bitset<> payload_sub_bits = get_bits(bitset, 0, size - (lengthValue * 32) - 1);//totalsize - (lengthofheader*4) -1
 		tlp->dataPayload = payload_sub_bits;
 	}
-	boost::dynamic_bitset<> tlpHeader_sub_bits = get_bits(bitset, size - (lengthValue * 32), size - 1);
+	boost::dynamic_bitset<> tlpHeader_sub_bits = get_bits(bitset, size - (headerLength * 8) - OHCVectorLength * 32, size - 1);
 	tlp->header = TLPHeader::getObjRep(tlpHeader_sub_bits);
 
 	return tlp;
