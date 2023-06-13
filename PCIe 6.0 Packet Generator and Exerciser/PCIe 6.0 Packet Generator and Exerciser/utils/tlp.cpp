@@ -10,9 +10,14 @@ int TLP::getTotalLength() {
 }
 
 boost::dynamic_bitset<> TLP::getBitRep() {
-	boost::dynamic_bitset<> result(getTotalLength() * 8);
-	result |= (dataPayload);
-	result |= ((boost::dynamic_bitset<>((header->getBitRep())) << getTotalLength()));
+	int totalLength = getTotalLength() * 8;
+	boost::dynamic_bitset<> result(totalLength);
+	boost::dynamic_bitset<> dataPayloadCopy = dataPayload;
+	dataPayloadCopy.resize(totalLength);
+	result |= dataPayloadCopy;
+	boost::dynamic_bitset<> headerCopy = header->getBitRep();
+	headerCopy.resize(totalLength);
+	result |= (headerCopy << dataPayload.size());
 
 	return result;
 }
