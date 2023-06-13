@@ -43,6 +43,17 @@ enum Register_Name
     Device_Capabilities,
     Device_Control,
     Device_Status,
+    IO_BASE,
+    IO_LIMIT,
+    SECONDARY_STATUS,
+    MEMORY_BASE,
+    MEMORY_LIMIT,
+    PREFETCHABLE_MEMORY_BASE,
+    PREFETCHABLE_MEMORY_LIMIT,
+    PREFETCHABLE_BASE_UPPER32,
+    PREFETCHABLE_LIMIT_UPPER32,
+    IO_BASE_UPPER16,
+    IO_LIMIT_UPPER16,
     Empty
 };
 
