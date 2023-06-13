@@ -1,6 +1,5 @@
 #include "receiver.h"
 
-
 Receiver::Receiver(Globals& global, LayersWrapper layer, QueueWrapper<TLP*>& sendOnQueue)
 	: globals(global), layers(layer), sendOn(sendOnQueue)
 {
@@ -14,7 +13,7 @@ void Receiver::receiveInit(Flit* flit, Globals& globals) {
 }
 
 //payloadflit
-void Receiver::receiveFlit(queue<Flit*> flits) {
+void Receiver::receiveFlit(std::queue<Flit*> flits) {
 	//	void receivePayloadFlit(Globals& globals, std::queue<Flit> flits, QueueWrapper<std::queue<TLP>>& sendOn);
 	this->layers.receivePayloadFlit(this->globals, flits, this->sendOn);
 }
