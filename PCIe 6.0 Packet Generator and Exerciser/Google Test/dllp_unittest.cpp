@@ -8,6 +8,17 @@
 #define INITFC2_P 0b1100
 #define INITFC2_NP 0b1101
 #define INITFC2_CPL 0b1110
+#define TYPE_SIZE 4
+#define DLLP_SIZE 32
+#define TYPE_END_INDEX 31
+#define DATA_FC_END_INDEX 11
+#define DATA_FC_SIZE 12
+#define HEADER_FC_END_INDEX 21
+#define HEADER_FC_SIZE 8
+#define VC_END_INDEX 26
+#define VC_SIZE 3
+#define SHARED_END_INDEX 27
+#define SHARED_SIZE 1
 
 /**
  * @brief Helper function that set the bits in a bitset from a given value
@@ -34,10 +45,10 @@ void set_bits(boost::dynamic_bitset<>& bit_set, std::size_t start, std::size_t l
 
 TEST(DllpGetObjRep, emptyFC1PDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
-	boost::dynamic_bitset<> dllpBitRep(32);
+	boost::dynamic_bitset<> dllpBitRep(DLLP_SIZE);
 
 	// set the Dllp type to initFC1 and the credit type to P
-	set_bits(dllpBitRep, 31, 4, INITFC1_P);
+	set_bits(dllpBitRep, TYPE_END_INDEX, TYPE_SIZE, INITFC1_P);
 
 	// get the Dllp object representation
 	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
@@ -54,10 +65,10 @@ TEST(DllpGetObjRep, emptyFC1PDllpTest) {
 
 TEST(DllpGetObjRep, emptyFC1NPDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
-	boost::dynamic_bitset<> dllpBitRep(32);
+	boost::dynamic_bitset<> dllpBitRep(DLLP_SIZE);
 
 	// set the Dllp type to initFC1 and the credit type to NP
-	set_bits(dllpBitRep, 31, 4, INITFC1_NP);
+	set_bits(dllpBitRep, TYPE_END_INDEX, TYPE_SIZE, INITFC1_NP);
 
 	// get the Dllp object representation
 	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
@@ -74,10 +85,10 @@ TEST(DllpGetObjRep, emptyFC1NPDllpTest) {
 
 TEST(DllpGetObjRep, emptyFC1CPLDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
-	boost::dynamic_bitset<> dllpBitRep(32);
+	boost::dynamic_bitset<> dllpBitRep(DLLP_SIZE);
 
 	// set the Dllp type to initFC1 and the credit type to Cpl
-	set_bits(dllpBitRep, 31, 4, INITFC1_CPL);
+	set_bits(dllpBitRep, TYPE_END_INDEX, TYPE_SIZE, INITFC1_CPL);
 
 	// get the Dllp object representation
 	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
@@ -94,10 +105,10 @@ TEST(DllpGetObjRep, emptyFC1CPLDllpTest) {
 
 TEST(DllpGetObjRep, emptyFC2PDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
-	boost::dynamic_bitset<> dllpBitRep(32);
+	boost::dynamic_bitset<> dllpBitRep(DLLP_SIZE);
 
 	// set the Dllp type to initFC2 and the credit type to P
-	set_bits(dllpBitRep, 31, 4, INITFC2_P);
+	set_bits(dllpBitRep, TYPE_END_INDEX, TYPE_SIZE, INITFC2_P);
 
 	// get the Dllp object representation
 	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
@@ -114,10 +125,10 @@ TEST(DllpGetObjRep, emptyFC2PDllpTest) {
 
 TEST(DllpGetObjRep, emptyFC2CNPLDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
-	boost::dynamic_bitset<> dllpBitRep(32);
+	boost::dynamic_bitset<> dllpBitRep(DLLP_SIZE);
 
 	// set the Dllp type to initFC2 and the credit type to NP
-	set_bits(dllpBitRep, 31, 4, INITFC2_NP);
+	set_bits(dllpBitRep, TYPE_END_INDEX, TYPE_SIZE, INITFC2_NP);
 
 	// get the Dllp object representation
 	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
@@ -134,10 +145,10 @@ TEST(DllpGetObjRep, emptyFC2CNPLDllpTest) {
 
 TEST(DllpGetObjRep, emptyFC2CPLDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
-	boost::dynamic_bitset<> dllpBitRep(32);
+	boost::dynamic_bitset<> dllpBitRep(DLLP_SIZE);
 
 	// set the Dllp type to initFC2 and the credit type to Cpl
-	set_bits(dllpBitRep, 31, 4, INITFC2_CPL);
+	set_bits(dllpBitRep, TYPE_END_INDEX, TYPE_SIZE, INITFC2_CPL);
 
 	// get the Dllp object representation
 	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
@@ -154,13 +165,13 @@ TEST(DllpGetObjRep, emptyFC2CPLDllpTest) {
 
 TEST(DllpGetObjRep, sharedInitFC1PDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
-	boost::dynamic_bitset<> dllpBitRep(32);
+	boost::dynamic_bitset<> dllpBitRep(DLLP_SIZE);
 
 	// set the Dllp type to initFC1 and the credit type to P
-	set_bits(dllpBitRep, 31, 4, INITFC1_P);
+	set_bits(dllpBitRep, TYPE_END_INDEX, TYPE_SIZE, INITFC1_P);
 
-	// set the Dllp type to initFC2 and the credit type to Cpl
-	set_bits(dllpBitRep, 27, 1, 0b1);
+	// set the Dllp shared bit to 1
+	set_bits(dllpBitRep, SHARED_END_INDEX, SHARED_SIZE, 0b1);
 
 	// get the Dllp object representation
 	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
@@ -177,13 +188,13 @@ TEST(DllpGetObjRep, sharedInitFC1PDllpTest) {
 
 TEST(DllpGetObjRep, DllpWithDataFC) {
 	// Dllp size is 32 bit, initialized with 0s
-	boost::dynamic_bitset<> dllpBitRep(32);
+	boost::dynamic_bitset<> dllpBitRep(DLLP_SIZE);
 
 	// set the Dllp type to initFC1 and the credit type to P
-	set_bits(dllpBitRep, 31, 4, INITFC1_P);
+	set_bits(dllpBitRep, TYPE_END_INDEX, TYPE_SIZE, INITFC1_P);
 
-	// set the Dllp type to initFC2 and the credit type to Cpl
-	set_bits(dllpBitRep, 11, 12, 0b111111111111);
+	// set the Dllp data FC to 0b111111111111
+	set_bits(dllpBitRep, DATA_FC_END_INDEX, DATA_FC_SIZE, 0b111111111111);
 
 	// get the Dllp object representation
 	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
@@ -201,13 +212,13 @@ TEST(DllpGetObjRep, DllpWithDataFC) {
 
 TEST(DllpGetObjRep, DllpWithHeaderFC) {
 	// Dllp size is 32 bit, initialized with 0s
-	boost::dynamic_bitset<> dllpBitRep(32);
+	boost::dynamic_bitset<> dllpBitRep(DLLP_SIZE);
 
 	// set the Dllp type to initFC1 and the credit type to P
-	set_bits(dllpBitRep, 31, 4, INITFC1_P);
+	set_bits(dllpBitRep, TYPE_END_INDEX, TYPE_SIZE, INITFC1_P);
 
-	// set the Dllp type to initFC2 and the credit type to Cpl
-	set_bits(dllpBitRep, 21, 8, 0b11111111);
+	// set the Dllp header FC to 0b11111111
+	set_bits(dllpBitRep, HEADER_FC_END_INDEX, HEADER_FC_SIZE, 0b11111111);
 
 	// get the Dllp object representation
 	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
@@ -224,13 +235,13 @@ TEST(DllpGetObjRep, DllpWithHeaderFC) {
 
 TEST(DllpGetObjRep, DllpWithVC) {
 	// Dllp size is 32 bit, initialized with 0s
-	boost::dynamic_bitset<> dllpBitRep(32);
+	boost::dynamic_bitset<> dllpBitRep(DLLP_SIZE);
 
 	// set the Dllp type to initFC1 and the credit type to P
-	set_bits(dllpBitRep, 31, 4, INITFC1_P);
+	set_bits(dllpBitRep, TYPE_END_INDEX, TYPE_SIZE, INITFC1_P);
 
-	// set the Dllp type to initFC2 and the credit type to Cpl
-	set_bits(dllpBitRep, 26, 3, 0b111);
+	// set the Dllp VC to 0b111
+	set_bits(dllpBitRep, VC_END_INDEX, VC_SIZE, 0b111);
 
 	// get the Dllp object representation
 	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
