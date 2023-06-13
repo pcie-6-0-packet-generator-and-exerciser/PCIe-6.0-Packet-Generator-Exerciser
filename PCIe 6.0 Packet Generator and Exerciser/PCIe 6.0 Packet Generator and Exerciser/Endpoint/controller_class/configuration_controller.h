@@ -23,6 +23,7 @@ class ConfigurationController
 public:
         ConfigurationSpace* configuration;
         PCIECapability* capability;
+        Type1Config* t1;
         /* Any function that needs to perform something on the TLP should take a pointer to it */
 
         int getRegisterNumber(TLP * tlp);
