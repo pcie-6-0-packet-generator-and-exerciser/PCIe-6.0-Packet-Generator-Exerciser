@@ -35,7 +35,7 @@ TEST(checkEquationsuite, CPL_passed_values) {
 	globals->CPL_SHARED_CREDIT_LIMIT[0] = 0;
 	globals->CPL_SHARED_CREDIT_LIMIT[1] = 0;
 	globals->CPL_SHARED_CREDITS_CONSUMED[0] = 0;
-	globals->CPL_SHARED_CREDITS_CONSUMED[0] = 0;
+	globals->CPL_SHARED_CREDITS_CONSUMED[1] = 0;
 	tlp->headerConsumption = 0;
 	tlp->dataConsumption = 0;
 	TransactionLayer* transcationLayer = new TransactionLayer();
