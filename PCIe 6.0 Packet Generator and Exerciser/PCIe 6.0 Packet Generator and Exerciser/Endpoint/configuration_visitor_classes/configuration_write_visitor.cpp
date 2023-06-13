@@ -112,3 +112,23 @@ unsigned int ConfigurationWriteVisitor::visitPcieCapabilityStructure(PCIECapabil
 
     return 1; // The Write is done Successfully
 }
+
+
+//set data + set register number
+unsigned int ConfigurationWriteVisitor::visitType1ConfigSpace(Type1Config* t1)
+{
+    if (registerNumber < 0 || registerNumber >= t1->getNumberOfRegisters())
+        return 0; // Cpl with UR
+
+    /* Traversing the linked list till we get the specified Register to write in */
+    Register* current = t1->getHead();
+
+    for (int i = 0; i < registerNumber; i++)
+        current = current->getRegisterNext();
+
+    // The Register is either Read Only, or Hardware Initialized
+    if (current->getRegisterType() == 0 || current->getRegisterType() == 1)
+        return 0; // Cpl with UR
+
+    current->setRegisterValue(data);
+}
