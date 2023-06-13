@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{e1882641-fc04-466f-8127-ebe4ec106b2c}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -39,6 +39,7 @@
     <ClCompile Include="completion_construction_algorithms.cpp" />
     <ClCompile Include="configuration_controller_unittest.cpp" />
     <ClCompile Include="configuration_space_unittest.cpp" />
+    <ClCompile Include="dllp_unittest.cpp" />
     <ClCompile Include="layers_datalink_unittest.cpp" />
     <ClCompile Include="pcie_capability_structure_unittest.cpp" />
     <ClCompile Include="test.cpp" />

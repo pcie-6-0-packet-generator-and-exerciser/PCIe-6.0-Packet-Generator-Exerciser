@@ -32,12 +32,7 @@ void set_bits(boost::dynamic_bitset<>& bit_set, std::size_t start, std::size_t l
 	bit_set |= (temp & mask);
 }
 
-/**
- * @brief testing the function to an empty InitFC1 Dllp bitset with P credit type
- * @param dllpGetObjRep test suite that contain test for the Dllp::getObjRep function
- * @param emptyDllpTest
-*/
-TEST(dllpGetObjRep, emptyFC1PDllpTest) {
+TEST(DllpGetObjRep, emptyFC1PDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
 	boost::dynamic_bitset<> dllpBitRep(32);
 
@@ -57,12 +52,7 @@ TEST(dllpGetObjRep, emptyFC1PDllpTest) {
 	EXPECT_EQ(dllpTestObjRep->m_creditType, Dllp::CreditType::P);
 }
 
-/**
- * @brief testing the function to an empty InitFC1 Dllp bitset with NP credit type
- * @param dllpGetObjRep test suite that contain test for the Dllp::getObjRep function
- * @param emptyDllpTest
-*/
-TEST(dllpGetObjRep, emptyFC1NPDllpTest) {
+TEST(DllpGetObjRep, emptyFC1NPDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
 	boost::dynamic_bitset<> dllpBitRep(32);
 
@@ -82,12 +72,7 @@ TEST(dllpGetObjRep, emptyFC1NPDllpTest) {
 	EXPECT_EQ(dllpTestObjRep->m_creditType, Dllp::CreditType::NP);
 }
 
-/**
- * @brief testing the function to an empty InitFC1 Dllp bitset with Cpl credit type
- * @param dllpGetObjRep test suite that contain test for the Dllp::getObjRep function
- * @param emptyDllpTest
-*/
-TEST(dllpGetObjRep, emptyFC1CPLDllpTest) {
+TEST(DllpGetObjRep, emptyFC1CPLDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
 	boost::dynamic_bitset<> dllpBitRep(32);
 
@@ -107,12 +92,7 @@ TEST(dllpGetObjRep, emptyFC1CPLDllpTest) {
 	EXPECT_EQ(dllpTestObjRep->m_creditType, Dllp::CreditType::Cpl);
 }
 
-/**
- * @brief testing the function to an empty InitFC2 Dllp bitset with P credit type
- * @param dllpGetObjRep test suite that contain test for the Dllp::getObjRep function
- * @param emptyDllpTest
-*/
-TEST(dllpGetObjRep, emptyFC2PDllpTest) {
+TEST(DllpGetObjRep, emptyFC2PDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
 	boost::dynamic_bitset<> dllpBitRep(32);
 
@@ -132,12 +112,7 @@ TEST(dllpGetObjRep, emptyFC2PDllpTest) {
 	EXPECT_EQ(dllpTestObjRep->m_creditType, Dllp::CreditType::P);
 }
 
-/**
- * @brief testing the function to an empty InitFC2 Dllp bitset with NP credit type
- * @param dllpGetObjRep test suite that contain test for the Dllp::getObjRep function
- * @param emptyDllpTest
-*/
-TEST(dllpGetObjRep, emptyFC2CNPLDllpTest) {
+TEST(DllpGetObjRep, emptyFC2CNPLDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
 	boost::dynamic_bitset<> dllpBitRep(32);
 
@@ -157,12 +132,7 @@ TEST(dllpGetObjRep, emptyFC2CNPLDllpTest) {
 	EXPECT_EQ(dllpTestObjRep->m_creditType, Dllp::CreditType::NP);
 }
 
-/**
- * @brief testing the function to an empty InitFC2 Dllp bitset with Cpl credit type
- * @param dllpGetObjRep test suite that contain test for the Dllp::getObjRep function
- * @param emptyDllpTest
-*/
-TEST(dllpGetObjRep, emptyFC2CPLDllpTest) {
+TEST(DllpGetObjRep, emptyFC2CPLDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
 	boost::dynamic_bitset<> dllpBitRep(32);
 
@@ -182,7 +152,7 @@ TEST(dllpGetObjRep, emptyFC2CPLDllpTest) {
 	EXPECT_EQ(dllpTestObjRep->m_creditType, Dllp::CreditType::Cpl);
 }
 
-TEST(DllpObjRepTest, sharedInitFC1PDllpTest) {
+TEST(DllpGetObjRep, sharedInitFC1PDllpTest) {
 	// Dllp size is 32 bit, initialized with 0s
 	boost::dynamic_bitset<> dllpBitRep(32);
 
@@ -195,12 +165,82 @@ TEST(DllpObjRepTest, sharedInitFC1PDllpTest) {
 	// get the Dllp object representation
 	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
 
-	EXPECT_EQ(dllpTestObjRep->DataScale, 0); // the data scaling always should be 0
-	EXPECT_EQ(dllpTestObjRep->HdrScale, 0); // the header scaling always should be 0
-	EXPECT_EQ(dllpTestObjRep->DataFc, 0); // there's should be no data 
+	EXPECT_EQ(dllpTestObjRep->DataScale, 0);
+	EXPECT_EQ(dllpTestObjRep->HdrScale, 0);
+	EXPECT_EQ(dllpTestObjRep->DataFc, 0);
 	EXPECT_EQ(dllpTestObjRep->HdrFC, 0);
 	EXPECT_EQ(dllpTestObjRep->VC, 0);
-	EXPECT_EQ(dllpTestObjRep->shared, true); // it should be dedicated
+	EXPECT_EQ(dllpTestObjRep->shared, true);
+	EXPECT_EQ(dllpTestObjRep->m_type, Dllp::DllpType::initFC1);
+	EXPECT_EQ(dllpTestObjRep->m_creditType, Dllp::CreditType::P);
+}
+
+TEST(DllpGetObjRep, DllpWithDataFC) {
+	// Dllp size is 32 bit, initialized with 0s
+	boost::dynamic_bitset<> dllpBitRep(32);
+
+	// set the Dllp type to initFC1 and the credit type to P
+	set_bits(dllpBitRep, 31, 4, INITFC1_P);
+
+	// set the Dllp type to initFC2 and the credit type to Cpl
+	set_bits(dllpBitRep, 11, 12, 0b111111111111);
+
+	// get the Dllp object representation
+	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
+
+	EXPECT_EQ(dllpTestObjRep->DataScale, 0);
+	EXPECT_EQ(dllpTestObjRep->HdrScale, 0);
+	EXPECT_EQ(dllpTestObjRep->DataFc, 0b111111111111);
+	EXPECT_EQ(dllpTestObjRep->HdrFC, 0);
+	EXPECT_EQ(dllpTestObjRep->VC, 0);
+	EXPECT_EQ(dllpTestObjRep->shared, false);
+	EXPECT_EQ(dllpTestObjRep->m_type, Dllp::DllpType::initFC1);
+	EXPECT_EQ(dllpTestObjRep->m_creditType, Dllp::CreditType::P);
+}
+
+
+TEST(DllpGetObjRep, DllpWithHeaderFC) {
+	// Dllp size is 32 bit, initialized with 0s
+	boost::dynamic_bitset<> dllpBitRep(32);
+
+	// set the Dllp type to initFC1 and the credit type to P
+	set_bits(dllpBitRep, 31, 4, INITFC1_P);
+
+	// set the Dllp type to initFC2 and the credit type to Cpl
+	set_bits(dllpBitRep, 21, 8, 0b11111111);
+
+	// get the Dllp object representation
+	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
+
+	EXPECT_EQ(dllpTestObjRep->DataScale, 0);
+	EXPECT_EQ(dllpTestObjRep->HdrScale, 0);
+	EXPECT_EQ(dllpTestObjRep->DataFc, 0);
+	EXPECT_EQ(dllpTestObjRep->HdrFC, 0b11111111);
+	EXPECT_EQ(dllpTestObjRep->VC, 0);
+	EXPECT_EQ(dllpTestObjRep->shared, false);
+	EXPECT_EQ(dllpTestObjRep->m_type, Dllp::DllpType::initFC1);
+	EXPECT_EQ(dllpTestObjRep->m_creditType, Dllp::CreditType::P);
+}
+
+TEST(DllpGetObjRep, DllpWithVC) {
+	// Dllp size is 32 bit, initialized with 0s
+	boost::dynamic_bitset<> dllpBitRep(32);
+
+	// set the Dllp type to initFC1 and the credit type to P
+	set_bits(dllpBitRep, 31, 4, INITFC1_P);
+
+	// set the Dllp type to initFC2 and the credit type to Cpl
+	set_bits(dllpBitRep, 26, 3, 0b111);
+
+	// get the Dllp object representation
+	Dllp* dllpTestObjRep = &Dllp::DllpObjRep(dllpBitRep);
+
+	EXPECT_EQ(dllpTestObjRep->DataScale, 0);
+	EXPECT_EQ(dllpTestObjRep->HdrScale, 0);
+	EXPECT_EQ(dllpTestObjRep->DataFc, 0);
+	EXPECT_EQ(dllpTestObjRep->HdrFC, 0);
+	EXPECT_EQ(dllpTestObjRep->VC, 0b111);
+	EXPECT_EQ(dllpTestObjRep->shared, false);
 	EXPECT_EQ(dllpTestObjRep->m_type, Dllp::DllpType::initFC1);
 	EXPECT_EQ(dllpTestObjRep->m_creditType, Dllp::CreditType::P);
 }
