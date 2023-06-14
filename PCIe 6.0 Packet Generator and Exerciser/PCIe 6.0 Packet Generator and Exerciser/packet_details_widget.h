@@ -22,6 +22,8 @@ namespace Ui
         void createHeader();
         void createMem32bCommon();
         void createMem64bCommon();
+        void createConfigCommon();
+        void createCongigOHCvector();
         void createMemOHCvector(int row);
         void createDataPayload(int row);
 
@@ -32,13 +34,13 @@ namespace Ui
         void viewMemWrite32();
         void viewMemWrite64();
         void viewConfigRead0();
-        void viewConfigWriteWrite();
+        void viewConfigWrite0();
         void viewVendorMsg();
        
         void saveMemCommon32();
         void saveMemCommon64();
         void saveDataPayload();
-
+        void saveConfigCommon();
             
         long long combineAddresses(std::string upperAddress, std::string lowerAddress);
         int binaryToInteger(const std::string& binary);
@@ -50,7 +52,6 @@ namespace Ui
         QGridLayout* detailsLayout_;
         QPushButton* saveButton;
         TLP* currentTLP;
-        std::vector<CustomLineEdit*> currentLineEdits;
         std::unordered_map<std::string, CustomLineEdit*> lineEditsMap;
 
     public slots:
