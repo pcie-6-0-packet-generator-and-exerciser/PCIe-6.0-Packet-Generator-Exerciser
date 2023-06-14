@@ -2,9 +2,8 @@
 #include <cmath>
 #include "../layers/globals.h"
 #include "../utils/tlp.h"
-#define CREDIT_HEADER_FIELD_SIZE 8
-#define CREDIT_DATA_FIELD_SIZE 12
-
+#define TWO_POW_CREDIT_DATA_FIELD_SIZE 4096
+#define TWO_POW_CREDIT_HEADER_FIELD_SIZE 256
 /**
  * @brief Represents the TransactionLayer class which implements the functionality of a transaction layer in PCIe Gen 6.
  * The transaction layer manages the flow of data and transactions across the PCIe bus, ensuring reliable and efficient communication between devices.

@@ -39,4 +39,32 @@ QLabel{
 
 QScrollArea{
 	background-color: transparent;
+	border: 1px solid #dcdcdc;
+	border-radius: 10px;
 }
+
+QPushButton:hover:!pressed[unselectedTab = true]{
+	background-color: #45a0f8 ;
+}
+
+QPushButton:hover:!pressed[selectedTab = true]{
+	background-color: #ecf6fe;
+}
+QPushButton[submitButton = true] {
+	background-color: #45aff8;
+	color: white;
+	font-size: 15px;
+}
+
+QPushButton[selectedTab = true] {
+	background-color: white;
+	color: #45aff8;
+	font-size: 15px;
+}
+
+QPushButton[unselectedTab = true] {
+	background-color: #45aff8;
+	color:white;
+	font-size: 15px;
+}
+

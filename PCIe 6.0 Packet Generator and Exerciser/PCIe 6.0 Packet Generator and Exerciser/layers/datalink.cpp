@@ -1,10 +1,8 @@
 #include "datalink.h"
 
-void DatalinkLayer::updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], int P_DEDICATED_CREDIT_LIMIT[], int NP_DEDICATED_CREDIT_LIMIT[], int CPL_DEDICATED_CREDIT_LIMIT[], bool& FI1, bool& FI2) {
+void DatalinkLayer::updateCreditLimit(Flit* flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], int P_DEDICATED_CREDIT_LIMIT[], int NP_DEDICATED_CREDIT_LIMIT[], int CPL_DEDICATED_CREDIT_LIMIT[], bool& FI1, bool& FI2) {
 
-	// The flit contains a DLLP, with size of 32 bit from 14th byte
-	auto dllpPayload = boost::dynamic_bitset(32, (flit.DLLPPayload.to_ulong() >> (14 * 8)) & 0xffffffff);
-	auto dllpObj = Dllp::DllpObjRep(dllpPayload);
+	auto dllpObj = Dllp::DllpObjRep(flit->DLLPPayload);
 
 	// State FC_INIT1: if FI1 flag is not set
 	// Wait for *all* credit limit type to be updated then set FI1 to true
@@ -76,7 +74,9 @@ boost::dynamic_bitset<> concatDynamicBitset(const boost::dynamic_bitset<>& bs1, 
 	boost::dynamic_bitset<> bs2Copy(bs2);
 	size_t totalSize = bs1.size() + bs2.size();
 	bs1Copy.resize(totalSize);
+	bs2Copy.resize(totalSize);
 	bs1Copy <<= bs2.size();
+	bs2Copy.resize(totalSize);
 	bs1Copy |= bs2Copy;
 	return bs1Copy;
 }
