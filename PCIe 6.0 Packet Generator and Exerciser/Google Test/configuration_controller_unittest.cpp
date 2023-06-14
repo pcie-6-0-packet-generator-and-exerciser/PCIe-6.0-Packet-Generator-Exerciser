@@ -105,7 +105,7 @@ TEST(HandlingConfigurationRequests, ValidConfigurationRead)
 	TLP* cplD = controler->handleConfigurationRequest(tlp);
 
 	OHCA5* ohcA5 = dynamic_cast<OHCA5*>(cplD->header->OHCVector[0]);
-	boost::dynamic_bitset<> data(5, 0b10001);
+	boost::dynamic_bitset<> data(16, 0b0000000000010001);
 
 	EXPECT_EQ(cplD->dataPayload, data);
 	EXPECT_EQ(ohcA5->CPLStatusEnum, OHCA5::CPLStatus::True);
@@ -122,7 +122,7 @@ TEST(HandlingConfigurationRequests, ValidCapabilityRead)
 
 	OHCA5* ohcA5 = dynamic_cast<OHCA5*>(cplD->header->OHCVector[0]);
 	OHCA5* ohcA52 = dynamic_cast<OHCA5*>(cplD2->header->OHCVector[0]);
-	boost::dynamic_bitset<> data(1, 0b1);
+	boost::dynamic_bitset<> data(8, 0b00000001);
 	boost::dynamic_bitset<> data2(8, 0b10000000);
 
 	EXPECT_EQ(cplD->dataPayload, data);

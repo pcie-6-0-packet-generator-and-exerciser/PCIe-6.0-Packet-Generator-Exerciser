@@ -12,6 +12,8 @@ class CompleterConstructor
 
         void setRegisterLength(int registerLength);
 
+        int getRegisterLength();
+
         void setTLP(TLP* tlp);
 
         void setDeviceID(unsigned int deviceID);

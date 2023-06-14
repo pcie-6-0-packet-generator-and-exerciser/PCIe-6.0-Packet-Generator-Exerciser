@@ -11,7 +11,7 @@ Type1Config* Type1Config::t1 = nullptr;
 */
 Type1Config::Type1Config()
 {
-    pushRegister(0, Vendor_ID, HARDWARE_INITIALIZED, 2, 0, 0); // Vendor ID is set to zero till we get another value from Siemens
+    pushRegister(12, Vendor_ID, HARDWARE_INITIALIZED, 2, 0, 0); // Vendor ID is set to zero till we get another value from Siemens
 
     pushRegister(0, Device_ID, HARDWARE_INITIALIZED, 2, 0, 0); // Device ID is set to zero till we get another value from Siemens
 
@@ -53,7 +53,7 @@ Type1Config::Type1Config()
 
     pushRegister(0, Capabilities_Pointer, READ_ONLY, 1, 0, 0);
 
-    pushRegister(0, Expansion_ROM_Base_Address, READ_WRITE, 4, 0, 0x000007FE);
+    pushRegister(269, Expansion_ROM_Base_Address, READ_WRITE, 4, 0, 0); // mask = 0x000007FE
 }
 
 /**
@@ -133,7 +133,11 @@ boost::dynamic_bitset<> Type1Config::readType1Reg(int registerNumber)
 
     unsigned int readData = current->getRegisterValue();
 
-    return convertToBitSet(readData);
+    boost::dynamic_bitset<> readBits = convertToBitSet(readData);
+
+    readBits.resize(current->getRegisterLengthInBytes() * 8);
+
+    return readBits;
 }
 
 int Type1Config::writeType1Reg(int registerNumber, boost::dynamic_bitset<> data)
@@ -142,7 +146,6 @@ int Type1Config::writeType1Reg(int registerNumber, boost::dynamic_bitset<> data)
     if (registerNumber < 0 || registerNumber > 21)
         return 0;
 
-    unsigned int writtenData = convertToUnsignedInt(data);
     Register* current = t1->getHead();
 
     for (int i = 0; i < registerNumber; i++)
@@ -152,7 +155,10 @@ int Type1Config::writeType1Reg(int registerNumber, boost::dynamic_bitset<> data)
     if (current->getRegisterType() == 0 || current->getRegisterType() == 1)
         return 0;
 
-    current->setRegisterValue(writtenData);
+    data.resize(current->getRegisterLengthInBytes() * 8);
+    unsigned int writtenData = convertToUnsignedInt(data);
+
+    current->setRegisterValue((current->getRegisterValue() & (current->getRegisterMask())) | (writtenData & ~(current->getRegisterMask())));
 
     return 1;
 }
