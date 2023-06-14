@@ -36,6 +36,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="checkGateEquation_unittest.cpp" />
     <ClCompile Include="completion_construction_algorithms.cpp" />
     <ClCompile Include="configuration_controller_unittest.cpp" />
     <ClCompile Include="configuration_space_unittest.cpp" />
