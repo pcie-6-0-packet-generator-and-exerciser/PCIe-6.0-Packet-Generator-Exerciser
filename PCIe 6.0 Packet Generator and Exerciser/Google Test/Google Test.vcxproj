@@ -42,6 +42,7 @@
     <ClCompile Include="configuration_space_unittest.cpp" />
     <ClCompile Include="dllp_unittest.cpp" />
     <ClCompile Include="layers_datalink_unittest.cpp" />
+    <ClCompile Include="layers_sendPayloadFlit_unitests.cpp" />
     <ClCompile Include="pcie_capability_structure_unittest.cpp" />
     <ClCompile Include="receiveNOPFlit_unittest.cpp" />
     <ClCompile Include="layers_tlp_unittest.cpp" />
