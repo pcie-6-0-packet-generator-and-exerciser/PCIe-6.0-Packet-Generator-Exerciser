@@ -10,12 +10,12 @@
 using namespace Ui;
 
 ConfigSpaceWidget::ConfigSpaceWidget(QWidget* parent)
-	: QFrame(parent)
+    : QFrame(parent)
 {
 	QGridLayout* layout = new QGridLayout;
-	int width = 200;
-	int height = 50;
-	
+    int width = 200;
+    int height = 50;
+    
 	layout->addWidget(new QLabel("000h"), 0, 0,1,1,Qt::AlignRight);
 	layout->addWidget(new CustomLineEdit("Device ID", 2*width, height, "0x10EE", this), 0, 1,1,2);
 	layout->addWidget(new CustomLineEdit("Vendor ID", 2*width, height, "0x10EE", this),0,3,1,2);
@@ -84,7 +84,13 @@ ConfigSpaceWidget::ConfigSpaceWidget(QWidget* parent)
 	layout->setSpacing(0);
 
 	setLayout(layout);
-	
+
+    for (int i = 0; i < layout->count(); i++) {
+        QHBoxLayout* row = dynamic_cast<QHBoxLayout*>(layout->itemAt(i)->layout());
+        if (row) {
+            row->setSpacing(0);
+        }
+    }
 }
 
 
