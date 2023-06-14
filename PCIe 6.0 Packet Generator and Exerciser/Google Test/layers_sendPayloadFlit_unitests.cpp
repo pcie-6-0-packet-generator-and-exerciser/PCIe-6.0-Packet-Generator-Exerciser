@@ -2,8 +2,8 @@
 #include "../PCIe 6.0 Packet Generator and Exerciser/layers/layers_wrapper.h"
 
 // macro instead of leaving it global to avoid change from other test cases
-#define DEFAULT_CREDIT_PARAMS int pSharedCredit[] = {1, 2};\
-int npSharedCredit[] = { 10, 10 };\
+#define DEFAULT_CREDIT_PARAMS int pSharedCredit[] = {10, 10};\
+int npSharedCredit[] = { 10, 10};\
 int cplSharedCredit[] = { 10, 10 };\
 int pDedicatedCredit[] = { 10, 10 };\
 int npDedicatedCredit[] = { 10, 10 };\
@@ -22,55 +22,32 @@ int cplDedicatedCredit[] = { 10, 10 }
 static LayersWrapper layersWrapper;
 
 // Test Case: PassGateEquation
-// Description: Pass a queue of one TLP, which shouldn't pass the gate equation. Which will make the function return without sending any flits
+// Description: Pass a queue of one TLP, which should pass the gate equation. Which will make the function return with sending only 1 flit
 // Input: one TLP object in a queue
-// Expected Output: sendOnQueue should conatin one std::queue<Flit*> object, which should contain 1 tlp
+// Expected Output: sendOnQueue should have a queue of flits, which should contain 1 flit contating only 1 tlp
 TEST(SendPayloadFlitTestSuite, PassGateEquation) {
 	DEFAULT_CREDIT_PARAMS;
-
 	// sendPayloadFlit() params
 	std::queue<TLP*> tlpPackets;
 	Globals globals(DEFAULT_CREDIT_VALUES);
 	QueueWrapper<Flit*> sendOnQueue;
 
 	TLP* tlp = TLP::createMemRead32Tlp(DEFAULT_MEM_READ32_TLP_PARAMS);
-	tlp->dataConsumption = 0; // change tlp data consumption to Pass the gate equation
-	tlpPackets.push(tlp);
-
-	layersWrapper.sendPayloadFlit(globals, tlpPackets, sendOnQueue);
-
-	// sendOnQueue should conatin one std::queue<Flit*> object, which should contain 1 tlp
-	EXPECT_EQ(sendOnQueue.size(), 1);
-	EXPECT_EQ(sendOnQueue.pop()->firstHalfTLPCount, 1);
-}
-
-
-// Test Case: AddOneTlpToFlit
-// Description: Pass a queue of one TLP, which its size is one. Which will make the function send 1 flit with firstHalfTLPCount = 1
-// Input: one TLP object in a queue
-// Expected Output: sendOnQueue should conatin one std::queue<Flit*> object, which should contain one tlp with firstHalfTLPCount = 1
-TEST(SendPayloadFlitTestSuite, AddOneTlpToFlit) {
-	DEFAULT_CREDIT_PARAMS;
-
-	// sendPayloadFlit() params
-	std::queue<TLP*> tlpPackets;
-	Globals globals(DEFAULT_CREDIT_VALUES);
-	QueueWrapper<Flit*> sendOnQueue;
-
-	TLP* tlp = TLP::createMemWrite32Tlp(DEFAULT_MEM_WRITE32_TLP_PARAMS);
-
-	// making a tlp payload of zero size, so Tlp::getTotalLength() -> 1
-	tlp->header->OHCVector.resize(0);
-	tlp->header->lengthInDoubleWord = 0;
-	tlp->header->nonBase->headerSizeInBytes = 1;
+	// Change the values of the globals, and tlp data consumption to pass the gate equation
+	tlp->dataConsumption = 0;
+	globals.NP_SHARED_CREDIT_LIMIT[0] = 0;
+	globals.NP_SHARED_CREDIT_LIMIT[1] = 0;
 
 	tlpPackets.push(tlp);
 	layersWrapper.sendPayloadFlit(globals, tlpPackets, sendOnQueue);
 
-	// sendOnQueue should conatin one std::queue<Flit*> object, which should contain one tlp with firstHalfTLPCount = 1
+	// sendOnQueue should conatin only one queue of flits, which should contain 1 tlp
 	EXPECT_EQ(sendOnQueue.size(), 1);
-	EXPECT_EQ(sendOnQueue.pop()->firstHalfTLPCount, 1);
+	
+	Flit* flit = sendOnQueue.pop();
+	EXPECT_EQ(flit->firstHalfTLPCount + flit->secondHalfTLPCount, 1);
 }
+
 
 // Test Case: AddNineTlpToFlit
 // Description: Adding 9 Tlps to the flit, which will make the function send 1 flit with firstHalfTLPCount = 8 and secondHalfTLPCount = 1
@@ -86,21 +63,16 @@ TEST(SendPayloadFlitTestSuite, AddNineTlpToFlit) {
 
 	TLP* tlp = TLP::createMemWrite32Tlp(DEFAULT_MEM_WRITE32_TLP_PARAMS);
 
-	// making a tlp payload of zero size, so Tlp::getTotalLength() -> 0, and not exceeding the flit size
-	tlp->header->OHCVector.resize(0);
-	tlp->header->lengthInDoubleWord = 0;
-	tlp->header->nonBase->headerSizeInBytes = 0;
-
 	for (int i = 0; i < 9; ++i) tlpPackets.push(tlp);
 
 	layersWrapper.sendPayloadFlit(globals, tlpPackets, sendOnQueue);
 
-	// sendOnQueue should conatin one std::queue<Flit*> object, which should contain 9 tlps with firstHalfTLPCount = 8, and secondHalfTLPCount = 1
+	// sendOnQueue should conatin queue of flits contating only one flit, which should contain 9 tlps with firstHalfTLPCount = 8, and secondHalfTLPCount = 1
 	EXPECT_EQ(sendOnQueue.size(), 1);
 
-	Flit* sentFlit = sendOnQueue.pop();
-	EXPECT_EQ(sentFlit->firstHalfTLPCount, 8);
-	EXPECT_EQ(sentFlit->firstHalfTLPCount, 1);
+	Flit* flit = sendOnQueue.pop();
+	EXPECT_EQ(flit->firstHalfTLPCount, 8);
+	EXPECT_EQ(flit->secondHalfTLPCount, 1);
 }
 
 // Test Case: BigTlpToFlit
@@ -117,23 +89,20 @@ TEST(SendPayloadFlitTestSuite, BigTlpToFlit) {
 
 	TLP* tlp = TLP::createMemWrite32Tlp(DEFAULT_MEM_WRITE32_TLP_PARAMS);
 
-	// making a tlp payload of maximum size possible, so Tlp::getTotalLength() -> INT_MAX, and exceed the size of a tlp to be sent in one flit
-	tlp->header->OHCVector.resize(0);
-	tlp->header->lengthInDoubleWord = 0;
-	tlp->header->nonBase->headerSizeInBytes = INT_MAX;
-
+	// making a tlp payload of Huge size possible, so Tlp::getTotalLength() -> +10000, and exceed the size of a tlp to be sent in one flit
+	tlp->header->lengthInDoubleWord = 10000;
 	tlpPackets.push(tlp);
 
 	layersWrapper.sendPayloadFlit(globals, tlpPackets, sendOnQueue);
 
 	// sendOnQueue should conatin multiple Flits
-	EXPECT_NE(sendOnQueue.size(), 1);
+	EXPECT_GT(sendOnQueue.size(), 1);
 }
 
 // Test Case: FailGateEquation
 // Description: Pass a queue of one TLP, which shouldn't pass the gate equation. Which will make the function return without sending any flits
 // Input: one TLP object in a queue
-// Expected Output: sendOnQueue should conatin one std::queue<Flit*> object, which should be empty
+// Expected Output: sendOnQueue should conatin one queue of flits, containig 1 flit which should be empty
 TEST(SendPayloadFlitTestSuite, FailGateEquation) {
 	DEFAULT_CREDIT_PARAMS;
 
@@ -143,31 +112,11 @@ TEST(SendPayloadFlitTestSuite, FailGateEquation) {
 	QueueWrapper<Flit*> sendOnQueue;
 
 	TLP* tlp = TLP::createMemRead32Tlp(DEFAULT_MEM_READ32_TLP_PARAMS);
-	tlp->dataConsumption = INT_MAX; // change tlp data consumption to fail the gate equation
-	tlpPackets.push(tlp);
+	// change values to fail the gate equation
+	globals.NP_SHARED_CREDIT_LIMIT[0] = 2000;
+	globals.NP_SHARED_CREDIT_LIMIT[1] = 2000;
+	tlp->dataConsumption = 0;
 
-	layersWrapper.sendPayloadFlit(globals, tlpPackets, sendOnQueue);
-
-	// sendOnQueue should conatin one std::queue<Flit*> object, which should be empty
-	EXPECT_EQ(sendOnQueue.size(), 1);
-	EXPECT_EQ(sendOnQueue.pop()->firstHalfTLPCount, 0);
-}
-
-
-// Test Case: FailToFitInOneFlit
-// Description: Pass a queue of one TLP, which its size is bigger than the max size of a flit. Which will make the function return without sending any flits
-// Input: one TLP object in a queue
-// Expected Output: sendOnQueue should conatin one std::queue<Flit*> object, which should be empty
-TEST(SendPayloadFlitTestSuite, FailToFitInOneFlit) {
-	DEFAULT_CREDIT_PARAMS;
-
-	// sendPayloadFlit() params
-	std::queue<TLP*> tlpPackets;
-	Globals globals(DEFAULT_CREDIT_VALUES);
-	QueueWrapper<Flit*> sendOnQueue;
-
-	TLP* tlp = TLP::createMemWrite32Tlp(DEFAULT_MEM_WRITE32_TLP_PARAMS);
-	tlp->header->lengthInDoubleWord = INT_MAX; // make the tlp can't fit in one flit
 	tlpPackets.push(tlp);
 
 	layersWrapper.sendPayloadFlit(globals, tlpPackets, sendOnQueue);
@@ -178,7 +127,7 @@ TEST(SendPayloadFlitTestSuite, FailToFitInOneFlit) {
 }
 
 // Test Case: SharedCreditsUpdate
-// Description: Pass a queue of one Mem32Write TLP, and then check if the shared credits consmed in decrimented or not
+// Description: Pass a queue of one Mem32Write TLP, and then check if the shared credits consmed is incremented 
 // Input: one TLP object in a queue
 // Expected Output: the PSharedCredits should be decremented by the header consumption of the TLP
 TEST(SendPayloadFlitTestSuite, SharedCreditsUpdate) {
@@ -189,13 +138,37 @@ TEST(SendPayloadFlitTestSuite, SharedCreditsUpdate) {
 	Globals globals(DEFAULT_CREDIT_VALUES);
 	QueueWrapper<Flit*> sendOnQueue;
 
-	TLP* tlp = TLP::createMemWrite32Tlp(DEFAULT_MEM_WRITE32_TLP_PARAMS);
+	int oldPsharedCreditLimitConsumedHeader = globals.P_SHARED_CREDITS_CONSUMED[0];
+	int oldPsharedCreditLimitConsumedData = globals.P_SHARED_CREDITS_CONSUMED[1];
 
-	// making a tlp that consumes only one credit
-	tlp->headerConsumption = 1;
+	TLP* tlp = TLP::createMemWrite32Tlp(DEFAULT_MEM_WRITE32_TLP_PARAMS);
 
 	tlpPackets.push(tlp);
 	layersWrapper.sendPayloadFlit(globals, tlpPackets, sendOnQueue);
 
-	EXPECT_EQ(globals.P_SHARED_CREDIT[0], pSharedCredit[0] - tlp->headerConsumption);
+	EXPECT_EQ(globals.P_SHARED_CREDITS_CONSUMED[0], oldPsharedCreditLimitConsumedHeader + tlp->headerConsumption);
+	EXPECT_EQ(globals.P_SHARED_CREDITS_CONSUMED[1], oldPsharedCreditLimitConsumedHeader + tlp->dataConsumption);
 }
+
+// Test Case: Add17TlpToFlit
+// Description: Adding 17 Tlps to the flit, which will make the function send 2 flits 
+// Input: 17 TLPs objects in a queue
+// Expected Output: 2 flits in the queue
+TEST(SendPayloadFlitTestSuite, Add17TlpToFlit) {
+	DEFAULT_CREDIT_PARAMS;
+
+	// sendPayloadFlit() params
+	std::queue<TLP*> tlpPackets;
+	Globals globals(DEFAULT_CREDIT_VALUES);
+	QueueWrapper<Flit*> sendOnQueue;
+
+	TLP* tlp = TLP::createMemWrite32Tlp(DEFAULT_MEM_WRITE32_TLP_PARAMS);
+
+	for (int i = 0; i < 17; ++i) tlpPackets.push(tlp);
+
+	layersWrapper.sendPayloadFlit(globals, tlpPackets, sendOnQueue);
+
+	// sendOnQueue should conatin queue of flits contating only two flits
+	EXPECT_EQ(sendOnQueue.size(), 2);
+}
+
