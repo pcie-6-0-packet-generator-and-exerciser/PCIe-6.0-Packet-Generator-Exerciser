@@ -18,3 +18,11 @@ void normalFlowSender(Transmitter& transmitter, QueueWrapper<TLP*>& listenOn);
  * @param queueSendOn The QueueWrapper that the layers will send on to layers of the other side
 */
 void initilizationSender(Globals& globals, QueueWrapper<TLP*>& queueListenOn, QueueWrapper<Flit*>& queueSendOn);
+
+/**
+ * @brief Creates a receiver, waits until Fl1, Fl2 flags are set then starts the normal flow receiver thread.
+ * @param globals used to create the receiver object, and to check the Fl1, Fl2 flags
+ * @param listenOn used to listen on the queue
+ * @param sendTo used to create the receiver object
+*/
+void initializationReceiver(Globals& globals, QueueWrapper<TLP*>& listenOn, QueueWrapper<Flit*>& sendTo);

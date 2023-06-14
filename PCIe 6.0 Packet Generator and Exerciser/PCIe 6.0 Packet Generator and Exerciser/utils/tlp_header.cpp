@@ -3,20 +3,23 @@
 
 boost::dynamic_bitset<> TLPHeader::getBitRep() const {
     int OHCLength = OHCVector.size() * 32;
-    boost::dynamic_bitset<> result(nonBase->headerSizeInBytes * 8 + OHCLength);
-
-    result |= ((boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8, (static_cast<int>(TLPtype) << ((nonBase->headerSizeInBytes * 8) - 8))))));
-    result |= ((boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8, TC)) << (nonBase->headerSizeInBytes * 8) - 11));
-    result |= ((boost::dynamic_bitset<>((nonBase->headerSizeInBytes * 8, OHC)) << ((nonBase->headerSizeInBytes * 8) - 16)));
+    int totalLength = nonBase->headerSizeInBytes * 8 + OHCLength;
+    boost::dynamic_bitset<> result (totalLength) ;
+    
+    result |= (boost::dynamic_bitset<>(totalLength, static_cast<int>(TLPtype))  << (totalLength - 8));
+    result |= (boost::dynamic_bitset<>(totalLength, TC) << (totalLength - 11));
+    result |= (boost::dynamic_bitset<>(totalLength, OHC) << (totalLength - 16));
     if (lengthInDoubleWord != 1024)
     {
-        result |= ((boost::dynamic_bitset<>(nonBase->headerSizeInBytes * 8, lengthInDoubleWord) << ((nonBase->headerSizeInBytes * 8) - 32)));
+        result |= ((boost::dynamic_bitset<>(totalLength, lengthInDoubleWord) << (totalLength - 32)));
     }
     boost::dynamic_bitset<> nonBaseHeader = nonBase->getBitRep();
-    result |= ((nonBaseHeader) << OHCLength);
+    nonBaseHeader.resize(totalLength);
+    result |= (nonBaseHeader << OHCLength);
     for (int i = 0; i < OHCVector.size(); i++) {
         boost::dynamic_bitset<> OHC_header = OHCVector[i]->getBitRep();
-        result |= (OHC_header << (OHCLength - i * 32));
+        OHC_header.resize(totalLength);
+        result |= (OHC_header << (OHCLength - 32 - i * 32));
     }
     return result;
 

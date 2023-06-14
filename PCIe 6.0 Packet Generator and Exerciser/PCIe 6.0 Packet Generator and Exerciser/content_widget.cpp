@@ -9,6 +9,7 @@
 #include "sequence_browser.h"
 #include "type_browser.h"
 #include "result_browser.h"
+#include"packet_details_widget.h"
 
 namespace {
 	constexpr char sequenceExplorerLabel[] = "Sequence Explorer";
@@ -74,6 +75,7 @@ void ContentWidget::createBody()
 	QHBoxLayout* bodyLayout = new QHBoxLayout;
 	bodyLayout->setContentsMargins(20, 20, 20, 20);
 	bodyLayout->setSpacing(3);	
+
 	
 	//type browser
 	QVBoxLayout* typeLayout = new QVBoxLayout;
@@ -171,6 +173,20 @@ void ContentWidget::createBody()
 	bodyLayout->addWidget(resultFrame_);
 	bodyLayout->setStretchFactor(resultFrame_, 1);
 	resultFrame_->setVisible(false);
+
+
+	//packet details widget
+	PacketDetails* packetDetails = new PacketDetails(body_);
+	sequenceBrowser_->packetDetails = packetDetails;
+	bodyLayout->addWidget(packetDetails);
+	bodyLayout->setStretchFactor(packetDetails, 2);
+
+
+	
+
+
+	
+	bodyLayout->setStretchFactor(packetDetails, 2);
 
 	body_->setLayout(bodyLayout);
 

@@ -1,4 +1,5 @@
 #include "sequence_browser.h"
+#include "packet_details_widget.h"
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QBoxLayout>
@@ -8,6 +9,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QMimeData>
+
 
 namespace {
 	constexpr char transparentBackgroundProperty[] = "transparentBackground";
@@ -50,11 +52,12 @@ void SequenceBrowser::dropEvent(QDropEvent* event)
 	cards_.push_back(card);
 	card->setParent(this);
 	cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
-		
-	event->acceptProposedAction();
-	
-}
+	//connect(card, &TLPCard::cardPressed, this->packetDetails, &PacketDetails::updateDetails);	
+	connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
 
+	event->acceptProposedAction();
+
+}
 void SequenceBrowser::createCardsSequence() {
 	//place holder
 	/*TLPCard* card = new TLPCard(this, "Card ");
