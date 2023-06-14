@@ -5,7 +5,7 @@
 
 boost::dynamic_bitset<> AddressRouting32Bit::getBitRep() const {
     boost::dynamic_bitset<> result ((headerSizeInBytes * 8) - 32) ;
-    result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, address));
+    result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, address) << 2);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, tag) << 32);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, requestID) << 48);
     return result;
@@ -29,7 +29,8 @@ NonHeaderBase* AddressRouting32Bit::getObjRep(boost::dynamic_bitset<> bitset){
 
 boost::dynamic_bitset<> AddressRouting64Bit::getBitRep() const {
     boost::dynamic_bitset<> result ((headerSizeInBytes * 8) - 32) ;
-    result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, address));
+    result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, address) << 2);
+    result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, address >> 32) << 32);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, tag) << 64);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, requestID) << 80);
     return result;
@@ -108,22 +109,18 @@ NonHeaderBase* ConfigNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset) {
 boost::dynamic_bitset<> CompletionNonHeaderBase::getBitRep() const {
     boost::dynamic_bitset<> result((headerSizeInBytes * 8) - 32);
 
-    std::bitset<6> myBitset(lowerAddress);  // convert integer to bitset
-    std::bitset<1> lastBit;  // bitset to hold last 1 bits
+    std::bitset<5> myBitset(lowerAddress);  // convert integer to bitset
 
-    lastBit[0] = myBitset[5];
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, byteCount));
     //Add the lowerAddress
-    int y = 2;
     for (int i = 0; i < 4; i++) {
-        result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, myBitset[y] << (12 + i)));
-        y++;
+        result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, myBitset[i] << (12 + i)));
     }
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, functionNumber) << 16);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, deviceNumber) << 19);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, busNumber) << 24);
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, tag) << 32);
-    result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, lastBit[0]) << 46);
+    result[46] = myBitset[4];
     result |= (boost::dynamic_bitset<>((headerSizeInBytes * 8) - 32, completerID) << 48);
 
     return result;
@@ -161,3 +158,49 @@ NonHeaderBase* CompletionNonHeaderBase::getObjRep(boost::dynamic_bitset<> bitset
     NonHeaderBase* recievedCompletionNonHeaderBase = new CompletionNonHeaderBase(0, tagValue, completerIDValue, byteCountValue, busNumberValue, deviceNumberValue, functionNumberValue, lowerAddressValues);
     return recievedCompletionNonHeaderBase;
 }
+
+//implement getTag for all classes that implemented setTag
+
+int AddressRouting32Bit::getTag() const {
+	return tag;
+}
+
+int AddressRouting64Bit::getTag() const {
+	return tag;
+}
+
+int ConfigNonHeaderBase::getTag() const {
+	return tag;
+}
+
+
+int MessageNonHeaderBase::getTag() const {
+	return -1;
+}
+
+int CompletionNonHeaderBase::getTag() const {
+	return tag;
+}
+
+//implement setTag for all classes
+void AddressRouting32Bit::setTag(int tag) {
+	this->tag = tag;
+}
+
+void AddressRouting64Bit::setTag(int tag) {
+	this->tag = tag;
+}
+
+void ConfigNonHeaderBase::setTag(int tag) {
+	this->tag = tag;
+}
+
+void MessageNonHeaderBase::setTag(int tag) {
+}
+
+void CompletionNonHeaderBase::setTag(int tag) {
+	this->tag = tag;
+}
+
+
+

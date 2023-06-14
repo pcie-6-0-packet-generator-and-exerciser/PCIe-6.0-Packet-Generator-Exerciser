@@ -32,7 +32,6 @@ private:
 	 * @param flit 
 	 * @return true if they are the same / false if they are not the same
 	*/
-	bool checkCRC(Flit* flit);
 
 
 public:
@@ -56,7 +55,7 @@ public:
 	 * @param FI1 First indication (FI1) flag for credit update
 	 * @param FI2 Second indication (FI2) flag for credit update
 	*/
-	void updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], int P_DEDICATED_CREDIT_LIMIT[], int NP_DEDICATED_CREDIT_LIMIT[], int CPL_DEDICATED_CREDIT_LIMIT[], bool& FI1, bool& FI2);
+	void updateCreditLimit(Flit* flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], int P_DEDICATED_CREDIT_LIMIT[], int NP_DEDICATED_CREDIT_LIMIT[], int CPL_DEDICATED_CREDIT_LIMIT[], bool& FI1, bool& FI2);
 
 	/**
 	 * @brief Calculates the CRC for a given Flit object.
@@ -64,4 +63,8 @@ public:
 	 * @return A dynamic_bitset object representing the calculated CRC.
 	*/
 	boost::dynamic_bitset<> calculateCRC(Flit* flit);
+
+
+	bool checkCRC(Flit* flit);
+
 };
