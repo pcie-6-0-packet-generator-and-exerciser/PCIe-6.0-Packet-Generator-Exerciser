@@ -109,6 +109,7 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 							flit->TLPPayload.operator|=(bitRep.operator<<((236 - flitIndexInBytes - (packet->getTotalLength() - packetIndexInBytes)) * 8));
 							flitIndexInBytes += packet->getTotalLength() - packetIndexInBytes;
 							nextTLP = true;
+							isPartialTLP = false;
 							updateConsumedCredits(globals, packet->creditConsumedType, packet->headerConsumption, packet->dataConsumption);
 						}
 						// If it doesn't, add what can fit, send the current flit, and return to the beginning of the loop without taking the next TLP
@@ -118,6 +119,7 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 							bitRep.resize((packet->getTotalLength() - packetIndexInBytes) * 8);
 							bitRep.resize(236 * 8, false);
 							nextTLP = false;
+							isPartialTLP = true;
 							pushReadyFlit(globals, flit, flitsToSend);
 							flit = new Flit();
 							flitIndexInBytes = 0;
