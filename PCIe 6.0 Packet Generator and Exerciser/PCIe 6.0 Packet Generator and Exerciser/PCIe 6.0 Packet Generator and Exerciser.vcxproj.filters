@@ -118,6 +118,18 @@
     <ClCompile Include="Endpoint\controller_class\configuration_controller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="packet_details_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_line_edit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Endpoint\endpoint_app\endpoint_app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="custom_line_edit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Endpoint\endpoint_app\endpoint_app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -142,10 +154,16 @@
     <ClCompile Include="layers\transmitter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="layers\receiver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="utils\bitset_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="type1_config_space\type1_config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="layers\thread_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -240,10 +258,16 @@
     <ClInclude Include="layers\transmitter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="layers\receiver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="utils\bitset_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="type1_config_space\type1_config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\thread_functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -258,6 +282,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="type_browser.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="packet_details_widget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="custom_line_edit.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="result_browser.h">

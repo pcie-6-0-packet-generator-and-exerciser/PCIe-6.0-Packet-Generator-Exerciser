@@ -3,6 +3,8 @@
 #include "tlp_card.h"
 #include <list>
 #include <QVBoxLayout>
+#include <queue>
+
 namespace Ui
 {
     class ResultBrowser : public QFrame
@@ -13,7 +15,7 @@ namespace Ui
         explicit ResultBrowser(QWidget* parent = nullptr);
         ~ResultBrowser();
     private:
-        void createCardsSequence();
+        void createCardsSequence(std::queue<TLP*> incomingPackets);
         void manageLayout();
         
     private:
