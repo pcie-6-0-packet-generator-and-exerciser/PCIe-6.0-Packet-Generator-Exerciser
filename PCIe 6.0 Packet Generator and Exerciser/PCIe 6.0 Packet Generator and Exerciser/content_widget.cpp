@@ -10,6 +10,7 @@
 #include "type_browser.h"
 #include "result_browser.h"
 #include"packet_details_widget.h"
+#include"config_space_widget.h"
 
 namespace {
 	constexpr char sequenceExplorerLabel[] = "Sequence Explorer";
@@ -198,14 +199,28 @@ void ContentWidget::createFooter()
 {
 	footer_ = new QFrame(this);
 	createSubmitButton();
+	createConfigSpaceButton();
 	QVBoxLayout* footerLayout = new QVBoxLayout;
 	footerLayout->setContentsMargins(100, 10, 100, 20);
 	footerLayout->setSpacing(0);
 	footerLayout->addWidget(submitButton_);
 	footerLayout->setAlignment(submitButton_, Qt::AlignRight);
+
+	footerLayout->addWidget(configSpaceButton_);
+	footerLayout->setAlignment(configSpaceButton_, Qt::AlignLeft);
 	footer_->setLayout(footerLayout);
 }
+void ContentWidget::createConfigSpaceButton()
+{
+	configSpaceButton_ = new QPushButton("Config Space", this);
+	configSpaceButton_->setMinimumWidth(200);
+	configSpaceButton_->setMinimumHeight(30);
+	configSpaceButton_->setMaximumWidth(400);
+	configSpaceButton_->setMaximumHeight(50);
+	configSpaceButton_->setContentsMargins(100, 50, 100, 100);
 
+	connect(configSpaceButton_, SIGNAL(clicked()), this, SLOT(onConfigSpaceButtonClick()));
+}
 void ContentWidget::createSubmitButton()
 {
 	submitButton_ = new QPushButton("Submit", this);
@@ -286,4 +301,9 @@ void ContentWidget::onResultExplorerTabClick() {
 	resultExplorerTab_->setStyleSheet(::selectedTabStyleString);
 	sequenceBrowser_->setCurrentTab(currentTab::resultExplorer);
 	sequenceBrowser_->setAcceptDrops(false);
+}
+
+void ContentWidget::onConfigSpaceButtonClick() {
+	ConfigSpaceWidget* configSpaceWidget = new ConfigSpaceWidget();
+	configSpaceWidget->show();
 }

@@ -27,10 +27,12 @@ namespace Ui
         void createResultExplorerTab();
         void createSubmitButton();
         void manageLayout();
+        void createConfigSpaceButton();
     public Q_SLOTS:
         void onSubmitButtonClick();
         void onSequenceExplorerTabClick();
         void onResultExplorerTabClick();
+        void onConfigSpaceButtonClick();
     private:
         QueueWrapper<TLP*>* rootComplexToLayers_;
         QueueWrapper<TLP*>* layersToRootComplex_;
@@ -44,5 +46,6 @@ namespace Ui
         QPushButton* submitButton_;
         QPushButton* sequenceExplorerTab_;
         QPushButton* resultExplorerTab_;
+        QPushButton* configSpaceButton_;
     };
 }
