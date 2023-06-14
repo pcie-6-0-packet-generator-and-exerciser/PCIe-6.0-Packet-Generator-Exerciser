@@ -74,6 +74,7 @@ boost::dynamic_bitset<> concatDynamicBitset(const boost::dynamic_bitset<>& bs1, 
 	boost::dynamic_bitset<> bs2Copy(bs2);
 	size_t totalSize = bs1.size() + bs2.size();
 	bs1Copy.resize(totalSize);
+	bs2Copy.resize(totalSize);
 	bs1Copy <<= bs2.size();
 	bs1Copy |= bs2Copy;
 	return bs1Copy;
