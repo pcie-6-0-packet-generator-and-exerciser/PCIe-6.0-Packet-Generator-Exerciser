@@ -49,10 +49,13 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 	int flitIndexInBytes = 0;
 	int packetIndexInBytes = 0;
 	bool nextTLP = true;
+	bool isPartialTLP = false;
 	TLP* packet;
 	boost::dynamic_bitset<> bitRep;
+
+	
 	// For each packet, call checkGateEquation to see if it can be sent
-	while (!packets.empty()) {
+	while (!packets.empty() or isPartialTLP) {
 		if (nextTLP) {
 			packet = packets.front();
 			bitRep = packet->getBitRep();
@@ -77,15 +80,17 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 					flit->TLPPayload.operator|=(bitRep.operator<<((236 - flitIndexInBytes - (packet->getTotalLength() - packetIndexInBytes)) * 8));
 					flitIndexInBytes += packet->getTotalLength() - packetIndexInBytes;
 					nextTLP = true;
+					isPartialTLP = false;
 					updateConsumedCredits(globals, packet->creditConsumedType, packet->headerConsumption, packet->dataConsumption);
 				}
 				// If it doesn't, add what can fit, send the current flit, and return to the beginning of the loop without taking the next TLP
 				else {
 					flit->TLPPayload.operator|=(bitRep.operator>>((236 - flitIndexInBytes - (packet->getTotalLength() - packetIndexInBytes)) * -8));
 					packetIndexInBytes += 236 - flitIndexInBytes;
-					bitRep.resize((packet->getTotalLength() - packetIndexInBytes)*8);
-					bitRep.resize(236*8, false);
+					bitRep.resize((packet->getTotalLength() - packetIndexInBytes) * 8);
+					bitRep.resize(236 * 8, false);
 					nextTLP = false;
+					isPartialTLP = true;
 					pushReadyFlit(globals, flit, flitsToSend);
 					flit = new Flit();
 					flitIndexInBytes = 0;
@@ -110,8 +115,8 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 						else {
 							flit->TLPPayload.operator|=(bitRep.operator>>((236 - flitIndexInBytes - (packet->getTotalLength() - packetIndexInBytes)) * -8));
 							packetIndexInBytes += 236 - flitIndexInBytes;
-							bitRep.resize((packet->getTotalLength() - packetIndexInBytes)*8);
-							bitRep.resize(236*8, false);
+							bitRep.resize((packet->getTotalLength() - packetIndexInBytes) * 8);
+							bitRep.resize(236 * 8, false);
 							nextTLP = false;
 							pushReadyFlit(globals, flit, flitsToSend);
 							flit = new Flit();
@@ -134,7 +139,7 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 					flitIndexInBytes = 0;
 				}
 			}
-				
+
 		}
 		else {
 			// If it can't be sent, then send the current flit, and return to the beginning of the loop without taking the next TLP
@@ -144,6 +149,7 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 			flitIndexInBytes = 0;
 		}
 	}
+	if (nextTLP) pushReadyFlit(globals, flit, flitsToSend);
 	sendOnQueue.push(flitsToSend);
 }
 
@@ -193,19 +199,19 @@ void LayersWrapper::pushReadyFlit(Globals globals, Flit* flit, queue<Flit*>& que
 }
 
 void LayersWrapper::updateConsumedCredits(Globals& globals, Dllp::CreditType creditType, int headerConsumption, int dataConsumption) {
-	int *creditConsumed;
+	int* creditConsumed;
 	const int headerFieldSize = 8;
 	const int dataFieldSize = 12;
 	switch (creditType) {
-		case Dllp::CreditType::P:
-			creditConsumed = globals.P_SHARED_CREDITS_CONSUMED;
-			break;
-		case Dllp::CreditType::NP:
-			creditConsumed = globals.NP_SHARED_CREDITS_CONSUMED;
-			break;
-		case Dllp::CreditType::Cpl:
-			creditConsumed = globals.CPL_SHARED_CREDITS_CONSUMED;
-			break;
+	case Dllp::CreditType::P:
+		creditConsumed = globals.P_SHARED_CREDITS_CONSUMED;
+		break;
+	case Dllp::CreditType::NP:
+		creditConsumed = globals.NP_SHARED_CREDITS_CONSUMED;
+		break;
+	case Dllp::CreditType::Cpl:
+		creditConsumed = globals.CPL_SHARED_CREDITS_CONSUMED;
+		break;
 	}
 	creditConsumed[0] = (creditConsumed[0] + headerConsumption) % (int)pow(2, headerFieldSize);
 	creditConsumed[1] = (creditConsumed[1] + dataConsumption) % (int)pow(2, dataFieldSize);
@@ -282,7 +288,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			datalink->updateCreditLimit(flit, globals.P_SHARED_CREDIT_LIMIT, globals.NP_SHARED_CREDIT_LIMIT, globals.CPL_SHARED_CREDIT_LIMIT, globals.P_DEDICATED_CREDIT_LIMIT, globals.NP_DEDICATED_CREDIT_LIMIT, globals.CPL_DEDICATED_CREDIT_LIMIT, globals.Fl1, globals.Fl2);
 			payload = flit->TLPPayload;
 		}
-		boost::dynamic_bitset<> tlpCommonHeader(4*8);
+		boost::dynamic_bitset<> tlpCommonHeader(4 * 8);
 		int type;
 		// Try to extract TLP type. Keep on iterating on bytes until type is not 0
 		do {
@@ -297,7 +303,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			continue;
 		}
 		// Put type at beginning of TLP
-		tlpCommonHeader |= (boost::dynamic_bitset(4*8, type)).operator<<((4 - 1) * 8);
+		tlpCommonHeader |= (boost::dynamic_bitset(4 * 8, type)).operator<<((4 - 1) * 8);
 		payload.resize((236 - flitIndexinBytes) * 8);
 		payload.resize(236 * 8);
 		// Add rest of common header to tlpCommonHeader
