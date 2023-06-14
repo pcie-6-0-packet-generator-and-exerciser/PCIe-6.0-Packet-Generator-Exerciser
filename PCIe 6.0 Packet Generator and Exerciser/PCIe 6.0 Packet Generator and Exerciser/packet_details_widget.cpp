@@ -106,7 +106,7 @@ void PacketDetails::createMem64bCommon() {
 
 
 }
-void PacketDetails::createCongigOHCvector() {
+void PacketDetails::createConfigOHCvector() {
 	//OHC
 	OHC* ohcElement = currentTLP->header->OHCVector[0];
 	OHCA3* ohca3 = dynamic_cast<OHCA3*>(ohcElement);
@@ -232,14 +232,14 @@ void PacketDetails::createConfigCommon() {
 void PacketDetails::viewConfigRead0() {
 	createHeader();
 	createConfigCommon();
-	createCongigOHCvector();
+	createConfigOHCvector();
 
 
 }
 void PacketDetails::viewConfigWrite0() {
 	createHeader();
 	createConfigCommon();
-	createCongigOHCvector();
+	createConfigOHCvector();
 	createDataPayload(4);
 }
 
