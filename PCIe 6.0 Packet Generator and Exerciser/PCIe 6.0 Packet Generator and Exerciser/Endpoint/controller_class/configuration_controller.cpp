@@ -23,7 +23,6 @@ ConfigurationController::ConfigurationController()
 {
     configuration = ConfigurationSpace::constructConfigurationSpace();
     capability =  PCIECapability::constructPCIECapability();
-    t1 = Type1Config::constructType1ConfigSpace();
 
     handler = make_shared<ConfigurationRequestHandler>(configuration, capability);
     completerConstructor = make_shared<CompleterConstructor>();
