@@ -25,37 +25,59 @@ Type1Config::Type1Config()
 
     pushRegister(557056, Class_Code, READ_ONLY, 3, 524416, 0);
 
+    pushRegister(0, Cache_Line_Size, READ_ONLY, 1, 0, 0);
+
+    pushRegister(0, Primary_Latency_Timer, READ_ONLY, 1, 0, 0);
+
     pushRegister(0, Header_Type, READ_ONLY, 1, 0, 0);
+
+    pushRegister(0, BIST, READ_WRITE, 1, 0, 0);
 
     pushRegister(0, BAR0, READ_ONLY_READ_WRITE, 4, 0, 0);
 
     pushRegister(0, BAR1, READ_ONLY_READ_WRITE, 4, 0, 0);
 
-    pushRegister(0, IO_BASE, READ_WRITE, 1, 0, 0);
+    pushRegister(0, Primary_Bus_Number, READ_WRITE, 1, 0, 0xFF);
 
-    pushRegister(0, IO_LIMIT, READ_WRITE, 1, 0, 0);
+    pushRegister(0, Secondary_Bus_Number, READ_WRITE, 1, 0, 0xFF);
 
-    pushRegister(0, SECONDARY_STATUS, READ_WRITE, 2, 0, 0);
+    pushRegister(0, Subordinate_BUS_Number, READ_WRITE, 1, 0, 0xFF);
 
-    pushRegister(0, MEMORY_BASE, READ_WRITE, 2, 0, 0);
+    pushRegister(0, Secondary_Latency_Timer, READ_ONLY, 1, 0, 0);
 
-    pushRegister(0, MEMORY_LIMIT, READ_WRITE, 2, 0, 0);
+    pushRegister(0, IO_Base, READ_WRITE, 1, 0, 0);
 
-    pushRegister(0, PREFETCHABLE_MEMORY_BASE, READ_WRITE, 2, 0, 0);
+    pushRegister(0, IO_Limit, READ_WRITE, 1, 0, 0);
 
-    pushRegister(0, PREFETCHABLE_MEMORY_LIMIT, READ_WRITE, 2, 0, 0);
+    pushRegister(0, Secondary_Status, READ_WRITE, 2, 0, 0);
 
-    pushRegister(0, PREFETCHABLE_BASE_UPPER32, READ_WRITE, 4, 0, 0);
+    pushRegister(0, Memory_Base, READ_WRITE, 2, 0, 0);
 
-    pushRegister(0, PREFETCHABLE_LIMIT_UPPER32, READ_WRITE, 4, 0, 0);
+    pushRegister(0, Memory_Limit, READ_WRITE, 2, 0, 0);
 
-    pushRegister(0, IO_BASE_UPPER16, READ_WRITE, 2, 0, 0);
+    pushRegister(0, Prefetchable_Memory_Base, READ_WRITE, 2, 0, 0);
 
-    pushRegister(0, IO_LIMIT_UPPER16, READ_WRITE, 2, 0, 0);
+    pushRegister(0, Prefetchable_Memory_Limit, READ_WRITE, 2, 0, 0);
+
+    pushRegister(0, Prefetchable_Base_Upper32, READ_WRITE, 4, 0, 0);
+
+    pushRegister(0, Prefetchable_Limit_Upper32, READ_WRITE, 4, 0, 0);
+
+    pushRegister(0, IO_Base_Upper16, READ_WRITE, 2, 0, 0);
+
+    pushRegister(0, IO_Limit_Upper16, READ_WRITE, 2, 0, 0);
 
     pushRegister(0, Capabilities_Pointer, READ_ONLY, 1, 0, 0);
 
+    pushRegister(0, Empty, HARDWARE_INITIALIZED, 3, 0, 0); // This is for the Reserved Part in the Configuration Space
+
     pushRegister(269, Expansion_ROM_Base_Address, READ_WRITE, 4, 0, 0); // mask = 0x000007FE
+
+    pushRegister(0, Interrupt_Line, HARDWARE_INITIALIZED, 1, 0, 0);
+
+    pushRegister(0, Interrupt_Pin, HARDWARE_INITIALIZED, 1, 0, 0);
+
+    pushRegister(0, Bridge_Control, READ_WRITE, 2, 0, 0);
 }
 
 /**
@@ -122,7 +144,7 @@ unsigned int Type1Config::convertToUnsignedInt(boost::dynamic_bitset<> data)
 boost::dynamic_bitset<> Type1Config::readType1Reg(int registerNumber)
 {
     /* In case of invalid register number */
-    if (registerNumber < 0 || registerNumber > 21)
+    if (registerNumber < 0 || registerNumber > 32)
     {
         boost::dynamic_bitset<> data;
         return data;
@@ -145,7 +167,7 @@ boost::dynamic_bitset<> Type1Config::readType1Reg(int registerNumber)
 int Type1Config::writeType1Reg(int registerNumber, boost::dynamic_bitset<> data)
 {
     /* In case of invalid register number */
-    if (registerNumber < 0 || registerNumber > 21)
+    if (registerNumber < 0 || registerNumber > 32)
         return 0;
   
     Register* current = t1->getHead();
