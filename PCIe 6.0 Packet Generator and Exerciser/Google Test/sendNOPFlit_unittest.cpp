@@ -27,7 +27,6 @@ TEST(sendNOPFlitsuite, test_six_values) {
 		Flit* flit = outputqueue.front();
 		outputqueue.pop();
 		Dllp dllp = Dllp::DllpObjRep(flit->DLLPPayload);
-		dllp.m_creditType;
 		if (dllp.m_creditType == Dllp::CreditType::P) {
 			if (dllp.shared) {
 				flagSharedP = true;
