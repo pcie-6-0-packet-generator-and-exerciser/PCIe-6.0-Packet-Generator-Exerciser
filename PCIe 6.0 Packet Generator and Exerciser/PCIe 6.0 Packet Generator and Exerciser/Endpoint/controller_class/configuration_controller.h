@@ -15,15 +15,14 @@ class ConfigurationController
         ConfigurationController(); // Making a private constructor to avoid the new operators
 
         shared_ptr<CompleterConstructor> completerConstructor;
-        shared_ptr<ConfigurationRequestHandler> handler;
-        
-        ConfigurationSpace * configuration;
-        PCIECapability * capability;
-        
+        shared_ptr<ConfigurationRequestHandler> handler; 
         shared_ptr<CompletionWithData> cplD;
         shared_ptr<CompletionWithoutData> cpl;
         shared_ptr<CompletionWithUR> cplUR;
 
+public:
+        ConfigurationSpace* configuration;
+        PCIECapability* capability;
         /* Any function that needs to perform something on the TLP should take a pointer to it */
 
         int getRegisterNumber(TLP * tlp);
@@ -38,10 +37,9 @@ class ConfigurationController
 
         boost::dynamic_bitset<> convertToBitSet(unsigned int uintValue);
     
-    public:
         static ConfigurationController* constructConfigurationController();
 
-        TLP handleConfigurationRequest(TLP * tlp);
+        TLP* handleConfigurationRequest(TLP * tlp);
 
         int IsMemorySpaceEnabled();
 

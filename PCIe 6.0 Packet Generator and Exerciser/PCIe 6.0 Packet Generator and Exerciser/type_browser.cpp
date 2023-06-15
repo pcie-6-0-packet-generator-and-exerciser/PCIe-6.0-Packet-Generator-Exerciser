@@ -51,17 +51,12 @@ void TypeBrowser::dragEnterEvent(QDragEnterEvent* event)
 void TypeBrowser::createCardsSequence() {
 
 
-	/*for (int i = 0; i < 40; ++i) {
-		TLPCard* card = new TLPCard(this, "Card " + QString::number(i));
-		card->setFixedSize(50, 100);
+	constexpr std::array<TLPType, 9> tlpTypes = { TLPType::MemRead32, TLPType::MemRead64,TLPType::MemWrite32,TLPType::MemWrite64,TLPType::VendorMsg,
+											TLPType::ConfigRead0,TLPType::ConfigWrite0, TLPType::ConfigRead1,TLPType::ConfigWrite1 };
+	for (TLPType value : tlpTypes) {
+		TLPCard* card = new TLPCard(value, this);
 		cards_.push_back(card);
-
-	}*/
-	TLPCard* card = new TLPCard(this, "mem read 32b");
-	cards_.push_back(card);
-
-	TLPCard* card2 = new TLPCard(this, "mem read 64b");
-	cards_.push_back(card2);
+	}
 }
 
 

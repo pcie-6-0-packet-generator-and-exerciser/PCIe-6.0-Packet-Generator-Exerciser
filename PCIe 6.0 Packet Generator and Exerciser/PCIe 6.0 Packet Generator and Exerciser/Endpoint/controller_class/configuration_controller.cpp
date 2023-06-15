@@ -55,7 +55,9 @@ int ConfigurationController::getRegisterNumber(TLP * tlp)
  */
 int ConfigurationController::isValidRegisterNumber(int registerNumber)
 {
-    /* This number will be changed when the PCIE Capability Structure ends */
+    if (registerNumber < 0)
+        return 0;
+
     if(registerNumber <= 22)
         return 1;
     
@@ -113,9 +115,18 @@ unsigned int ConfigurationController::convertToUnsignedInt(boost::dynamic_bitset
  */
 boost::dynamic_bitset<> ConfigurationController::convertToBitSet(unsigned int uintValue)
 {
-    boost::dynamic_bitset<> bits(uintValue);
+    boost::dynamic_bitset<> bitset; // 32 bits in an unsigned int
 
-    return bits;
+    if (uintValue == 0)
+        bitset.push_back(0);
+
+    while (uintValue != 0)
+    {
+        bitset.push_back(uintValue & 1);
+        uintValue >>= 1;
+    }
+
+    return bitset;
 }
 
 /**
@@ -136,8 +147,9 @@ boost::dynamic_bitset<> ConfigurationController::convertToBitSet(unsigned int ui
  * @param tlp -> TLP to be handled
  * @return TLP -> the resultant TLP
  */
-TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
+TLP* ConfigurationController::handleConfigurationRequest(TLP * tlp)
 {
+    TLP* urTlp, * cplTlp, * cplDTlp;
     int Registernumber, validWriteOperation = 0;
     TLPType configType;
 
@@ -151,27 +163,36 @@ TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
     if(!isValidRegisterNumber(Registernumber))
     {
         completerConstructor->setAlgorithm(cplUR);
-        return *completerConstructor->performAlgorithm();
+        completerConstructor->setTLP(tlp);
+
+        return completerConstructor->performAlgorithm();
     }
     
     configType = getTLPType(tlp); // Get the TLP type
 
-    /* 1st, getting the register length (in bytes), 2nd setting this length to be used while constructing the TLP */
-    completerConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));
-    completerConstructor->setTLP(tlp);
-    completerConstructor->setDeviceID(configuration->getDeviceID());
-
     switch (configType)
     {
     case TLPType::ConfigRead0:
-        dataToBeReadUint = handler->handleConfigurationRead(Registernumber);
+        /* Setting the construction algorithm to be used, getting the register length (in bytes), and setting this length to be used while constructing the TLP */
+        completerConstructor->setAlgorithm(cplD);
+        completerConstructor->setTLP(tlp);
+        completerConstructor->setDeviceID(configuration->getDeviceID());
 
+        if (Registernumber <= 16)
+            completerConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));    
+        else
+            completerConstructor->setRegisterLength(capability->getRegisterLengthInBytes(Registernumber - 17));
+
+        dataToBeReadUint = handler->handleConfigurationRead(Registernumber);
         dataToBeReadBits = convertToBitSet(dataToBeReadUint);
 
+        dataToBeReadBits.resize(completerConstructor->getRegisterLength() * 8);
+
         completerConstructor->setData(dataToBeReadBits);
-        completerConstructor->setAlgorithm(cplD);
         
-        return *completerConstructor->performAlgorithm();
+        cplDTlp = completerConstructor->performAlgorithm();
+
+        return cplDTlp;
 
     case TLPType::ConfigWrite0:
         dataToBeWrittenUint = getTLPData(tlp);
@@ -182,15 +203,33 @@ TLP ConfigurationController::handleConfigurationRequest(TLP * tlp)
         if (validWriteOperation)
         {
             completerConstructor->setAlgorithm(cpl);
-            return *completerConstructor->performAlgorithm();
+            completerConstructor->setTLP(tlp);
+            completerConstructor->setDeviceID(configuration->getDeviceID());
+
+            if(Registernumber <= 16)
+                completerConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));
+            else
+                completerConstructor->setRegisterLength(capability->getRegisterLengthInBytes(Registernumber - 17));
+
+            return completerConstructor->performAlgorithm();
         }
         
         completerConstructor->setAlgorithm(cplUR);
-        return *completerConstructor->performAlgorithm();
+        completerConstructor->setTLP(tlp);
+        completerConstructor->setDeviceID(configuration->getDeviceID());
+
+        if(Registernumber <= 16)
+            completerConstructor->setRegisterLength(configuration->getRegisterLengthInBytes(Registernumber));
+        else
+            completerConstructor->setRegisterLength(capability->getRegisterLengthInBytes(Registernumber - 17));
+
+        return completerConstructor->performAlgorithm();
 
     default:
         completerConstructor->setAlgorithm(cplUR);
-        return *completerConstructor->performAlgorithm();
+        completerConstructor->setTLP(tlp);
+
+        return completerConstructor->performAlgorithm();
     }
 }
 

@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{e1882641-fc04-466f-8127-ebe4ec106b2c}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -37,6 +37,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="layers_dllp_unittest.cpp" />
+    <ClCompile Include="checkGateEquation_unittest.cpp" />
+    <ClCompile Include="completion_construction_algorithms.cpp" />
+    <ClCompile Include="configuration_controller_unittest.cpp" />
+    <ClCompile Include="configuration_space_unittest.cpp" />
+    <ClCompile Include="dllp_unittest.cpp" />
+    <ClCompile Include="layers_datalink_unittest.cpp" />
+    <ClCompile Include="layers_sendPayloadFlit_unitests.cpp" />
+    <ClCompile Include="pcie_capability_structure_unittest.cpp" />
+    <ClCompile Include="receiveNOPFlit_unittest.cpp" />
+    <ClCompile Include="layers_tlp_unittest.cpp" />
+    <ClCompile Include="sendNOPFlit_unittest.cpp" />
+
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -44,6 +56,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="type1_config_unittest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PCIe 6.0 Packet Generator and Exerciser\PCIe 6.0 Packet Generator and Exerciser.vcxproj">

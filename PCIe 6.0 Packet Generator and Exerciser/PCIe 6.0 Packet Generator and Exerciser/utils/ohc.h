@@ -1,13 +1,15 @@
 // Abstract class OHC
+#ifndef OHC_H
+#define OHC_H
 #include <bitset>
 #include "boost/dynamic_bitset.hpp"
+
 
 class OHC {
 public:
 
     int sizeInBytes = 4;
     virtual boost::dynamic_bitset<> getBitRep() const = 0; // pure virtual function, making this an abstract class
-
 };
 
 
@@ -26,6 +28,7 @@ public:
         }
     }
     boost::dynamic_bitset<> getBitRep() const override;
+    static OHC* getObjRep(boost::dynamic_bitset<> dllpBits);
 
 };
 
@@ -46,6 +49,9 @@ public:
         destinationSegment = destinationSeg;
     }
     boost::dynamic_bitset<> getBitRep() const override;
+
+    static OHC* getObjRep(boost::dynamic_bitset<> dllpBits);
+
 };
 
 
@@ -61,6 +67,8 @@ public:
 
     }
     boost::dynamic_bitset<> getBitRep() const override;
+
+    static OHC* getObjRep(boost::dynamic_bitset<> dllpBits);
 
 };
 
@@ -87,4 +95,8 @@ public:
     }
     boost::dynamic_bitset<> getBitRep() const override;
 
+    static OHC* getObjRep(boost::dynamic_bitset<> dllpBits);
+
 };
+
+#endif // OHC_H

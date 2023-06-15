@@ -22,11 +22,10 @@ public:
 	DllpType m_type;
 	CreditType m_creditType;
 
-
 	Dllp(int hdrScale, int dataScale, int dataFc, int hdrFC, int vc, bool share, DllpType type, CreditType creditType);
 	Dllp();
 	~Dllp();
 
 	static Dllp DllpObjRep(boost::dynamic_bitset<> dllpBits);
-  boost::dynamic_bitset<> getBitRep() const;
+	boost::dynamic_bitset<> getBitRep() const;
 };

@@ -10,7 +10,7 @@ CompletionConstructionAlgorithms::CompletionConstructionAlgorithms(): dataToBeRe
 
 TLP* CompletionWithData::constructTLP()
 {
-    TLP tlpHolder; // This will be the return value 
+    TLP* tlpHolder; // This will be the return value 
 
     double registerLengthInDW = (double)(registerLengthInBytes / 4);
 
@@ -40,7 +40,7 @@ TLP* CompletionWithData::constructTLP()
 
     tlpHolder = TLP::createCplDTlp(registerLengthInDW, dataToBeReadBits, configNonHeader->requestID, configNonHeader->tag, deviceID, registerLengthInBytes, configNonHeader->busNumber, configNonHeader->deviceNumber, 0, destinationSegment, completerSegment, lowerAddress, cplStatus);
 
-    return &tlpHolder;
+    return tlpHolder;
 }
 
 /**
@@ -50,7 +50,7 @@ TLP* CompletionWithData::constructTLP()
  */
 TLP* CompletionWithoutData::constructTLP()
 {
-    TLP tlpHolder; // This will be the return value
+    TLP* tlpHolder; // This will be the return value
 
     int destinationSegment, completerSegment;
     /* Explicit casting to change the nonBase pointer to a ConfigNonHeaderBase pointer */
@@ -69,7 +69,7 @@ TLP* CompletionWithoutData::constructTLP()
 
     tlpHolder = TLP::createCplTlp(configNonHeader->requestID, configNonHeader->tag, deviceID, 0, configNonHeader->busNumber, configNonHeader->deviceNumber, 0, destinationSegment, completerSegment, lowerAddress, cplStatus);
 
-    return &tlpHolder;
+    return tlpHolder;
 }
 
 /**
@@ -79,7 +79,7 @@ TLP* CompletionWithoutData::constructTLP()
  */
 TLP* CompletionWithUR::constructTLP()
 {
-    TLP tlpHolder; // This will be the return value
+    TLP* tlpHolder; // This will be the return value
 
     int destinationSegment, completerSegment;
 
@@ -99,6 +99,6 @@ TLP* CompletionWithUR::constructTLP()
 
     tlpHolder = TLP::createCplTlp(configNonHeader->requestID, configNonHeader->tag, deviceID, 0, configNonHeader->busNumber, configNonHeader->deviceNumber, 0, destinationSegment, completerSegment, lowerAddress, cplStatus);
 
-    return &tlpHolder;
+    return tlpHolder;
 }
 

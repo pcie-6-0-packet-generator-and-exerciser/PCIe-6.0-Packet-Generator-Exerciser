@@ -4,7 +4,7 @@ Configuration::Configuration():head_(nullptr), tail_(nullptr), size_(0) {}
 
 Register* Configuration::getHead()
 {
-    return nullptr;
+    return head_;
 }
 
 void Configuration::pushRegister(unsigned int value, Register_Name name, Register_Type type, int registerLengthInBytes, unsigned int initialValue, unsigned int mask)
@@ -59,5 +59,5 @@ int Configuration::getRegisterLengthInBytes(int registerNumber)
 */
 unsigned int Configuration::getDeviceID()
 {
-    return head_->getRegisterNext()->getRegisterNext()->getRegisterValue();
+    return head_->getRegisterNext()->getRegisterValue();
 }
