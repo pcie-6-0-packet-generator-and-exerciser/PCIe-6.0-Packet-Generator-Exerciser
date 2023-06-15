@@ -1,16 +1,16 @@
 #include "transaction_layer.h"
 
-bool  TransactionLayer::checkGateEquation(const Globals globals, const TLP* tlp) {
 
+bool  TransactionLayer::checkGateEquation(const Globals globals, const TLP* tlp) {
 	// shared credit limit and shared credit consumed for header and data
 	int dataSharedCreditLimit, dataSharedCreditConsumed, headerSharedCreditLimit, headerSharedCreditConsumed;
 
 	// Tlp data and header consumption
-	int tlpDataConsumption = tlp->dataConsumption;
-	int tlpHeaderConsumption = tlp->headerConsumption;
+	int tlpDataConsumption = tlp.dataConsumption;
+	int tlpHeaderConsumption = tlp.headerConsumption;
 
 	// getting the shared credit limit and shared credit consumed based on the Tlp credit consumption type
-	switch (tlp->creditConsumedType)
+	switch (tlp.creditConsumedType)
 	{
 	case Dllp::CreditType::Cpl:
 		headerSharedCreditLimit = globals.CPL_SHARED_CREDIT_LIMIT[0];
