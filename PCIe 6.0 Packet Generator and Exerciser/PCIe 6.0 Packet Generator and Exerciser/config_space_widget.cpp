@@ -10,7 +10,7 @@
 using namespace Ui;
 
 ConfigSpaceWidget::ConfigSpaceWidget(QWidget* parent)
-    : QFrame(parent)
+	: QFrame(parent)
 {
 	QGridLayout* layout = new QGridLayout;
     int width = 200;
@@ -92,7 +92,6 @@ ConfigSpaceWidget::ConfigSpaceWidget(QWidget* parent)
         }
     }
 }
-
 
 
 ConfigSpaceWidget::~ConfigSpaceWidget()
