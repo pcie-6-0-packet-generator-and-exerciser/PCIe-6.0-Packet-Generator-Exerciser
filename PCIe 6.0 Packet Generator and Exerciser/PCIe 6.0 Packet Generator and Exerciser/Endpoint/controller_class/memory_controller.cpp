@@ -1,41 +1,48 @@
 #include "memory_controller.h"
 #include "../memory_mapper/memory_mapper.h"
-#include "../memory_handlers/memory_read_handler.cpp"
-#include "../memory_handlers/memory_write_handler.cpp"
 
-MemoryController::MemoryController(std::unique_ptr<MemoryMap> memoryMap)
-    : memoryMap_(std::move(memoryMap)), packetHandler_(nullptr)
+MemoryController* MemoryController::memoryController = nullptr;
+
+/**
+ * @brief Construct a new Memory Controller object
+ * * 
+ * * @return MemoryController* 
+ * */
+MemoryController* MemoryController::constructMemoryController()
 {
+    if (memoryController == nullptr)
+        memoryController = new MemoryController();
+
+    return memoryController;
 }
 
-void MemoryController::setPacketHandler(std::unique_ptr<MemoryRequestHandler> handler)
+/**
+ * @brief Construct a new Configuration Controller and initializing some needed pointers to be used inside it
+ */
+MemoryController::MemoryController()
 {
-    packetHandler_ = std::move(handler);
+    memoryMap_ = MemoryMap::constructMemoryMap();
+    handler = make_shared<MemoryRequestHandler>(memoryMap_);
 }
 
-TLP* MemoryController::handleMemoryReadRequests(TLP* packet)
-{
-    if (packet->header->TLPtype == TLPType::MemRead32 || packet->header->TLPtype == TLPType::MemRead64)
-    {
-        auto readHandler = std::make_unique<MemoryReadHandler>();
-        readHandler->setMemoryMap(memoryMap_.get());
-        packetHandler_ = std::move(readHandler);
-        return packetHandler_->handleMemoryRead(packet, packet->header->TLPtype);
+
+TLP* MemoryController::handleMemoryReadRequest(TLP* tlp) {
+
+    if (tlp->header->TLPtype == TLPType::MemRead32 || tlp->header->TLPtype == TLPType::MemRead64) {
+
+        return handler->handleMemoryRead(tlp, tlp->header->TLPtype);
     }
-    else
-    {
+    else {
         // Handle unsupported TLP types
-        return 0;
+        return nullptr;
     }
 }
 
-void MemoryController::handleMemoryWriteRequests(TLP* packet) {
-    if (packet->header->TLPtype == TLPType::MemWrite32 || packet->header->TLPtype == TLPType::MemWrite64)
-    {
-        auto writeHandler = std::make_unique<MemoryWriteHandler>();
-        writeHandler->setMemoryMap(memoryMap_.get());
-        packetHandler_ = std::move(writeHandler);
-        return packetHandler_->handleMemoryWrite(packet, packet->header->TLPtype);
-    }
-
+void MemoryController::handleMemoryWriteRequest(TLP* tlp) {
+    if (tlp->header->TLPtype == TLPType::MemWrite32 || tlp->header->TLPtype == TLPType::MemWrite64) {
+		handler->handleMemoryWrite(tlp, tlp->header->TLPtype);
+	}
+    else {
+		// Handle unsupported TLP types
+	}
 }
