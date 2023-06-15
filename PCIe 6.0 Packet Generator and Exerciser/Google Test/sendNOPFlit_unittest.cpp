@@ -3,12 +3,12 @@
 #include "../PCIe 6.0 Packet Generator and Exerciser/layers/flit.h"
 
 #define globalsParameters P_SHARED_CREDIT, NP_SHARED_CREDIT, CPL_SHARED_CREDIT, P_DEDICATED_CREDIT, NP_DEDICATED_CREDIT, CPL_DEDICATED_CREDIT
-int P_SHARED_CREDIT[2]; //HEADER DATA
-int NP_SHARED_CREDIT[2];
-int CPL_SHARED_CREDIT[2];
-int P_DEDICATED_CREDIT[2];
-int NP_DEDICATED_CREDIT[2];
-int CPL_DEDICATED_CREDIT[2];
+int P_SHARED_CREDIT[2] = {0 , 0}; //HEADER DATA
+int NP_SHARED_CREDIT[2] = { 0 , 0 };
+int CPL_SHARED_CREDIT[2] = { 0 , 0 };
+int P_DEDICATED_CREDIT[2] = { 0 , 0 };
+int NP_DEDICATED_CREDIT[2] = { 0 , 0 };
+int CPL_DEDICATED_CREDIT[2] = { 0 , 0 };
 bool Fl1 = false;
 bool Fl2 = false;
 int P_SHARED_CREDIT_LIMIT[2] = { -1,-1 };
