@@ -142,7 +142,7 @@ unsigned int Type1Config::convertToUnsignedInt(boost::dynamic_bitset<> data)
 boost::dynamic_bitset<> Type1Config::readType1Reg(int registerNumber)
 {
     /* In case of invalid register number */
-    if (registerNumber < 0 || registerNumber > 21)
+    if (registerNumber < 0 || registerNumber > 32)
     {
         boost::dynamic_bitset<> data;
         return data;
@@ -165,7 +165,7 @@ boost::dynamic_bitset<> Type1Config::readType1Reg(int registerNumber)
 int Type1Config::writeType1Reg(int registerNumber, boost::dynamic_bitset<> data)
 {
     /* In case of invalid register number */
-    if (registerNumber < 0 || registerNumber > 21)
+    if (registerNumber < 0 || registerNumber > 32)
         return 0;
 
     Register* current = t1->getHead();
