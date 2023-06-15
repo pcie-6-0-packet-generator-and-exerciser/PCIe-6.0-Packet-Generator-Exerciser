@@ -11,7 +11,7 @@ public:
 	void receivePackets(std::queue<TLP*> receievedTLPs);
 	std::queue<TLP*> sendCompletions();
     void clearCompletionsQueue();
-    void run(QueueWrapper<TLP*> sendOn, QueueWrapper<TLP*> listenOn);
+    void run(QueueWrapper<TLP*>& sendOn, QueueWrapper<TLP*>& listenOn);
 
 private:
     // Add BAR variables

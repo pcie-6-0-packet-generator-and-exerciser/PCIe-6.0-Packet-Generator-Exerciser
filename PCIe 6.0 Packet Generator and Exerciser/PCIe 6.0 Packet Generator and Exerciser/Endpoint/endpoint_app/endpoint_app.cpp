@@ -13,7 +13,7 @@ EndpointApp::EndpointApp()
 // function takes two queue wrappers as an input and pop alls the TLP and send it to the receivePackets function
 // sendOn and ListenOn Queue Wrappers
 
-void EndpointApp::run(QueueWrapper<TLP*> sendOn, QueueWrapper<TLP*> listenOn) {
+void EndpointApp::run(QueueWrapper<TLP*>& sendOn, QueueWrapper<TLP*>& listenOn) {
     std::queue<TLP*> packetsToBeProcessed = listenOn.popAll();
     receivePackets(packetsToBeProcessed);
     std::queue<TLP*> completionsToSend = sendCompletions();
