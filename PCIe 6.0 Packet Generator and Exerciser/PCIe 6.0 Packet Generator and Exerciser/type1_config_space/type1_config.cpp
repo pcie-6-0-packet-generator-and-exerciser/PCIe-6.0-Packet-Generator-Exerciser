@@ -3,6 +3,7 @@
 class ConfigurationVisitor;
 
 /* Making out Configuration Space pointer = nullptr initially */
+
 Type1Config* Type1Config::t1 = nullptr;
 
 /**
@@ -15,13 +16,13 @@ Type1Config::Type1Config()
 
     pushRegister(0, Device_ID, HARDWARE_INITIALIZED, 2, 0, 0); // Device ID is set to zero till we get another value from Siemens
 
-    pushRegister(0, Command, READ_WRITE, 2, 0, 0xFFFFFABC);
+    pushRegister(0, Command, READ_WRITE, 2, 3, 0xFFFFFABC);
 
-    pushRegister(0, Status, READ_WRITE, 2, 0, 0xFFFF5EFF);
+    pushRegister(17, Status, READ_WRITE, 2, 17, 0xFFFF5EFF);
 
     pushRegister(0, Revision_ID, HARDWARE_INITIALIZED, 1, 0, 0);
 
-    pushRegister(0, Class_Code, READ_ONLY, 3, 0, 0);
+    pushRegister(557056, Class_Code, READ_ONLY, 3, 524416, 0);
 
     pushRegister(0, Header_Type, READ_ONLY, 1, 0, 0);
 
