@@ -19,18 +19,11 @@ int main(int argc, char *argv[])
 		return -1;
     QString style(styleFile.readAll());
     app.setStyleSheet(style);
-    int arr[] = { 511, 4095 };
-    int arr2[] = { 511, 4095};
-    int arr3[] = { 511, 4095};
-    int arr4[] = { 511, 4095};
-    int arr5[] = { 511, 4095};
-    int arr6[] = { 511, 4095};
-    int arr7[] = { 511, 4095};
-    int arr8[] = { 511, 4095};
-    int arr9[] = { 511, 4095};
-    int arr10[] = { 511, 4095};
-    int arr11[] = { 511, 4095};
-    int arr12[] = { 511, 4095};
+    int credit[12][2];
+    for (int i = 0; i < 12; i++) {
+        credit[i][0] = 511;
+        credit[i][1] = 4095;
+    }
     
     QueueWrapper<TLP*> rootComplexToRootComplexLayers;
     QueueWrapper<TLP*> rootComplexLayersToRootComplex;
@@ -39,8 +32,8 @@ int main(int argc, char *argv[])
     QueueWrapper<TLP*> endpointLayersToEndpoint;
     QueueWrapper<TLP*> endpointToEndpointLayers;
   
-    Globals rootComplexGlobal(arr, arr2, arr3, arr4, arr5, arr6);
-    Globals endpointGlobal(arr7, arr8, arr9, arr10, arr11, arr12);
+    Globals rootComplexGlobal(credit[0], credit[1], credit[2], credit[3], credit[4], credit[5]);
+    Globals endpointGlobal(credit[6], credit[7], credit[8], credit[9], credit[10], credit[11]);
 
     std::thread t1(initilizationSender, std::ref(rootComplexGlobal), std::ref(rootComplexToRootComplexLayers), std::ref(rootComplexLayersToEndpointLayers));
     std::thread t2(initilizationSender, std::ref(endpointGlobal), std::ref(endpointToEndpointLayers), std::ref(endpointLayersToRootComplexLayers));
