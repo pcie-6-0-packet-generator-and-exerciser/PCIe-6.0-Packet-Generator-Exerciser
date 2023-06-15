@@ -160,10 +160,10 @@
     <ClCompile Include="utils\bitset_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="type1_config_space\type1_config.cpp">
+    <ClCompile Include="layers\thread_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="layers\thread_functions.cpp">
+    <ClCompile Include="type1_config_space\type1_config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -264,10 +264,10 @@
     <ClInclude Include="utils\bitset_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="type1_config_space\type1_config.h">
+    <ClInclude Include="layers\thread_functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="layers\thread_functions.h">
+    <ClInclude Include="type1_config_space\type1_config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
