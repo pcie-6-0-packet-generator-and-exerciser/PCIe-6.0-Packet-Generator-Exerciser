@@ -11,6 +11,7 @@
 #include "result_browser.h"
 #include"packet_details_widget.h"
 #include"config_space_widget.h"
+#include "type1_config_space/type1_config.h"
 
 namespace {
 	constexpr char sequenceExplorerLabel[] = "Sequence Explorer";
@@ -34,6 +35,7 @@ ContentWidget::ContentWidget(QWidget* parent,
 	rootComplexToLayers_(rootComplexToLayers),
 	layersToRootComplex_(layersToRootComplex)
 {
+	type1Config_ = Type1Config::constructType1ConfigSpace();
 	createHeader();
 	createBody();
 	createFooter();
@@ -43,6 +45,9 @@ ContentWidget::ContentWidget(QWidget* parent,
 ContentWidget::~ContentWidget()
 {
 
+}
+Type1Config*  ContentWidget::getType1Config() {
+	return type1Config_;
 }
 
 void ContentWidget::createHeader() 
@@ -304,6 +309,6 @@ void ContentWidget::onResultExplorerTabClick() {
 }
 
 void ContentWidget::onConfigSpaceButtonClick() {
-	ConfigSpaceWidget* configSpaceWidget = new ConfigSpaceWidget();
+	ConfigSpaceWidget* configSpaceWidget = new ConfigSpaceWidget(this, nullptr);
 	configSpaceWidget->show();
 }
