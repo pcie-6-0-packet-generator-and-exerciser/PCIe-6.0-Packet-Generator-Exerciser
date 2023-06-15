@@ -18,7 +18,7 @@
  */
 class Transmitter {
 public:
-	Globals globals;
+	Globals& globals;
 	LayersWrapper* layers;
 	QueueWrapper<Flit*>* sendOn;
 
