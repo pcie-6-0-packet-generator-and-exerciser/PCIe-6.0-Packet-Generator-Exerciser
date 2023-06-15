@@ -108,6 +108,7 @@
     <ClCompile Include="layers\datalink.cpp" />
     <ClCompile Include="layers\flit.cpp" />
     <ClCompile Include="layers\transmitter.cpp" />
+    <ClCompile Include="layers\utils.cpp" />
     <ClCompile Include="packet_details_widget.cpp" />
     <ClCompile Include="result_browser.cpp" />
     <ClCompile Include="sequence_browser.cpp" />
@@ -162,6 +163,7 @@
     <QtMoc Include="result_browser.h" />
     <ClInclude Include="layers\thread_functions.h" />
     <ClInclude Include="layers\transmitter.h" />
+    <ClInclude Include="layers\utils.h" />
     <ClInclude Include="type1_config_space\type1_config.h" />
     <ClInclude Include="utils\bitset_utils.h" />
     <ClInclude Include="utils\non_header_base.h" />

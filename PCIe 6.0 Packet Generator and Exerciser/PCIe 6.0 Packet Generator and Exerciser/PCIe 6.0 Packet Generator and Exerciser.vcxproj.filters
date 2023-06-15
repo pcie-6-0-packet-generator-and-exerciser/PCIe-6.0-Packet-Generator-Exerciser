@@ -169,6 +169,9 @@
     <ClCompile Include="type1_config_space\type1_config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="layers\utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils\ohc.h">
@@ -271,6 +274,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="type1_config_space\type1_config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="layers\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

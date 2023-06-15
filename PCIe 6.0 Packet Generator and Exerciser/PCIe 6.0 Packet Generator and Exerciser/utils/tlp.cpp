@@ -1,6 +1,6 @@
 #include "tlp.h"
 #include "bitset_utils.h"
-#include "../layers/layers_wrapper.cpp"
+#include "../layers/utils.h"
 
 int TLP::getTotalLength() {
 	int OHCLength = header->OHCVector.size() * 4;
