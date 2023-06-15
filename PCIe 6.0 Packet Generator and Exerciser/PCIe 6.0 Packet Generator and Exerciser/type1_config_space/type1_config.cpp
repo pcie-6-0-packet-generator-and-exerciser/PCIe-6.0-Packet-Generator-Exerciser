@@ -3,7 +3,8 @@
 class ConfigurationVisitor;
 
 /* Making out Configuration Space pointer = nullptr initially */
-Type1Config* Type1Config::type1Config = nullptr;
+
+Type1Config* Type1Config::t1 = nullptr;
 
 /**
  * @brief Type1ConfigSpace Constructor for initializing all of the type 1 configuration space registers
@@ -83,13 +84,76 @@ Type1Config::~Type1Config()
  */
 Type1Config* Type1Config::constructType1ConfigSpace()
 {
-    if (type1Config == nullptr)
-        type1Config = new Type1Config();
+    if (t1 == nullptr)
+        t1 = new Type1Config();
 
-    return type1Config;
+    return t1;
 }
 
 unsigned int Type1Config::accept(shared_ptr<ConfigurationVisitor> visitor)
 {
-    return 0;
+    return visitor->visitType1ConfigSpace(this);
+}
+
+boost::dynamic_bitset<> Type1Config::convertToBitSet(unsigned int uintValue)
+{
+    boost::dynamic_bitset<> bitset; // 32 bits in an unsigned int
+
+    if (uintValue == 0)
+        bitset.push_back(0);
+
+    while (uintValue != 0)
+    {
+        bitset.push_back(uintValue & 1);
+        uintValue >>= 1;
+    }
+
+    return bitset;
+}
+
+unsigned int Type1Config::convertToUnsignedInt(boost::dynamic_bitset<> data)
+{
+    unsigned int uintValue = static_cast<unsigned int>(data.to_ulong());
+
+    return uintValue;
+}
+
+boost::dynamic_bitset<> Type1Config::readType1Reg(int registerNumber)
+{
+    /* In case of invalid register number */
+    if (registerNumber < 0 || registerNumber > 21)
+    {
+        boost::dynamic_bitset<> data;
+        return data;
+    }
+
+    Register* current = t1->getHead();
+
+    for (int i = 0; i < registerNumber; i++)
+        current = current->getRegisterNext();
+
+    unsigned int readData = current->getRegisterValue();
+
+    return convertToBitSet(readData);
+}
+
+int Type1Config::writeType1Reg(int registerNumber, boost::dynamic_bitset<> data)
+{
+    /* In case of invalid register number */
+    if (registerNumber < 0 || registerNumber > 21)
+        return 0;
+
+    unsigned int writtenData = convertToUnsignedInt(data);
+    Register* current = t1->getHead();
+
+    for (int i = 0; i < registerNumber; i++)
+        current = current->getRegisterNext();
+
+    /* In case of writting in a Read only or Hardware Initialized Registers */
+    if (current->getRegisterType() == 0 || current->getRegisterType() == 1)
+        return 0;
+
+    current->setRegisterValue(writtenData);
+
+    return 1;
 }
