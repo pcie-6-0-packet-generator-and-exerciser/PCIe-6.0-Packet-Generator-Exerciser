@@ -7,7 +7,7 @@
 
 class Receiver {
 public:
-	Globals globals;
+	Globals& globals;
 	LayersWrapper layers;
 	QueueWrapper<TLP*>& sendOn;
 
