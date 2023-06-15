@@ -54,7 +54,7 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 	TLP* packet;
 	boost::dynamic_bitset<> bitRep;
 
-	
+
 	// For each packet, call checkGateEquation to see if it can be sent
 	while (!packets.empty() or isPartialTLP) {
 		if (nextTLP) {
@@ -253,46 +253,68 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 		}
 		boost::dynamic_bitset<> tlpCommonHeader(4 * 8);
 		int type;
-		// Try to extract TLP type. Keep on iterating on bytes until type is not 0
 		do {
+			// Extract the TLP type from the payload by shifting the payload to the right by a certain number of bits
+			// and then converting the resulting bitset to an unsigned long.
 			type = (payload.operator>>((236 - flitIndexinBytes - 1) * 8)).to_ulong();
+			// Increment the byte index.
 			flitIndexinBytes++;
+			// Resize the payload bitset to ensure that only the relevant bits are processed in the next iteration.
 			payload.resize((236 - flitIndexinBytes) * 8);
 			payload.resize(236 * 8);
 		} while (type == 0 && flitIndexinBytes < 236);
+
 		// Get next flit if reached end of flit. TODO: refactor
+		// if the current flit has reached the end of the TLP payload and if the TLP type is 0.
+		// Then this must be an empty flit
 		if (type == 0 && flitIndexinBytes == 236) {
 			nextFlit = true;
 			continue;
 		}
+
+		// We found a TLP type that is not 0. This is the first Tlp to find in the Flit
 		// Put type at beginning of TLP
 		tlpCommonHeader |= (boost::dynamic_bitset(4 * 8, type)).operator<<((4 - 1) * 8);
+
+		// Truncate the payload to remove the type
 		payload.resize((236 - flitIndexinBytes) * 8);
 		payload.resize(236 * 8);
-		// Add rest of common header to tlpCommonHeader
+
+		// Check whether the next three bytes in the payload can be added to the tlpCommonHeader bitset. which indicates that it's a partial TLP.
+		// If it's a partial TLP, add what can fit to the tlpCommonHeader bitset,
+		// get the next Flit object from the flits queue, and continue processing the payload. (the other part remaining in the TLP is in the next flit)
+		// If it's not a partial TLP, add them to the tlpCommonHeader bitset and continue processing the payload.
 		if (flitIndexinBytes + 3 > 236) {
+			// Calculate the number of bytes that can be added to the tlpCommonHeader bitset.
 			int bytesToAdd = 236 - flitIndexinBytes;
-			// Add what can fit
+			// Add what can fit to the tlpCommonHeader bitset by shifting the payload bitset to the right by a certain number of bits
+			// and then ORing it with the tlpCommonHeader bitset.
 			tlpCommonHeader.resize(236 * 8);
 			tlpCommonHeader.operator=((tlpCommonHeader.operator>>((4 - 1 - bytesToAdd) * 8).operator|=(payload)).operator<<((4 - 1 - bytesToAdd) * 8));
-			// Get next flit
+			// Get the next Flit object from the flits queue.
 			flit = flits.front();
 			flits.pop();
+			// Reset the byte index.
 			flitIndexinBytes = 0;
+			// Check the CRC of the Flit object.
 			if (!datalink->checkCRC(flit)) {
-				// malformed
+				// Handle malformed Flit object.
 			}
+			// Update the credit limit.
 			datalink->updateCreditLimit(flit, globals.P_SHARED_CREDIT_LIMIT, globals.NP_SHARED_CREDIT_LIMIT, globals.CPL_SHARED_CREDIT_LIMIT, globals.P_DEDICATED_CREDIT_LIMIT, globals.NP_DEDICATED_CREDIT_LIMIT, globals.CPL_DEDICATED_CREDIT_LIMIT, globals.Fl1, globals.Fl2);
+			// Update the payload bitset with the remaining bytes in the Flit object's payload.
 			payload = flit->TLPPayload;
-			// Add the rest
+			// Add the rest of the bytes to the tlpCommonHeader bitset.
 			bytesToAdd = 3 - bytesToAdd;
 			tlpCommonHeader.operator|=(payload.operator>>((236 - bytesToAdd) * 8));
 			tlpCommonHeader.resize(4 * 8);
+			// Update the byte index and the payload bitset.
 			flitIndexinBytes += bytesToAdd;
 			payload.resize((236 - flitIndexinBytes) * 8);
 			payload.resize(236 * 8);
 		}
 		else {
+			// next three bytes in the payload can be added to the tlpCommonHeader bitset without exceeding the 236-byte limit of a Tlp Payload. 
 			tlpCommonHeader.resize(236 * 8);
 			tlpCommonHeader.operator|=(payload.operator>>((236 - flitIndexinBytes - 3) * 8));
 			tlpCommonHeader.resize(4 * 8);
@@ -300,7 +322,17 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			payload.resize((236 - flitIndexinBytes) * 8);
 			payload.resize(236 * 8);
 		}
-		// Extract length
+
+		// Extract the length of the TLP from the TLP header and store it in payloadLength.
+		// Determine the length of the TLP header based on the TLP type and store it in headerLength.
+		// Create a dynamic bitset tlpWholeHeader with size equal to headerLength * 8.
+		// Add the common header to tlpWholeHeader and shift it to the left by (headerLength - 4) * 8 bits.
+		// If the rest of the header and payload cannot fit in one flit: (Partial TLP)
+		//     Resize tlpWholeHeader to 236 bytes and add what can fit.
+		//     Get the next flit and update credit limit.
+		//     Add the rest of the header and payload.
+		// Otherwise:
+		//     Resize tlpWholeHeader to 236 bytes and add the rest of the header and payload.
 		boost::dynamic_bitset<> length(4 * 8);
 		length.operator=(tlpCommonHeader);
 		length.resize(10);
@@ -341,6 +373,21 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			payload.resize((236 - flitIndexinBytes - (headerLength - 4)) * 8);
 			payload.resize(236 * 8);
 		}
+
+		// Extract the payload from the flits and store it in tlpPayload.
+		// If the TLP type is MemWrite32, MemWrite64, CplD, ConfigWrite0, or ConfigWrite1,
+		// resize tlpPayload to the appropriate size and add the payload to it.
+		// If the payload cannot fit in one flit:
+		//     Resize tlpPayload to the appropriate size and add what can fit.
+		//     Get the next flit and update credit limit.
+		//     Add the rest of the payload.
+		// Otherwise:
+		//     Add the payload to tlpPayload.
+		// Create a dynamic bitset tlpWhole with size equal to tlpWholeHeader.size() + tlpPayload.size().
+		// Add tlpWholeHeader and tlpPayload to tlpWhole.
+		// Create a TLP object from tlpWhole and push it to extractedTLPs.
+		// Update the allocated credits based on the TLP's credit consumption.
+
 		// Extract payload
 		boost::dynamic_bitset<> tlpPayload(0);
 		if (auto tlpType = static_cast<TLPType>(type); tlpType == TLPType::MemWrite32 || tlpType == TLPType::MemWrite64 || tlpType == TLPType::CplD || tlpType == TLPType::ConfigWrite0 || tlpType == TLPType::ConfigWrite1) {
@@ -350,7 +397,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			int addedBytes = 0;
 			int bytesRemaining = payloadLength;
 			while (bytesRemaining > 0) {
-				if (flitIndexinBytes + bytesRemaining > 236) {
+				if (flitIndexinBytes + bytesRemaining > 236) { // Partial TLP
 					int bytesToAdd = 236 - flitIndexinBytes;
 					// Add what can fit
 					payload.resize(payloadLength * 8);
@@ -379,6 +426,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			}
 			tlpPayload.resize(payloadLength * 8);
 		}
+		// Create TLP
 		boost::dynamic_bitset<> tlpWhole(tlpWholeHeader.size() + tlpPayload.size());
 		tlpWholeHeader.resize(tlpWhole.size());
 		tlpWhole.operator|=(tlpWholeHeader);
