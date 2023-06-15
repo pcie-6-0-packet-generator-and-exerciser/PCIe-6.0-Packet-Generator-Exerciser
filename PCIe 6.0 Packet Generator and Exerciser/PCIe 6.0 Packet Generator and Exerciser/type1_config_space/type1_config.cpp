@@ -11,6 +11,7 @@ Type1Config* Type1Config::t1 = nullptr;
 */
 Type1Config::Type1Config()
 {
+
     pushRegister(12, Vendor_ID, HARDWARE_INITIALIZED, 2, 0, 0); // Vendor ID is set to zero till we get another value from Siemens
 
     pushRegister(0, Device_ID, HARDWARE_INITIALIZED, 2, 0, 0); // Device ID is set to zero till we get another value from Siemens
@@ -145,7 +146,7 @@ int Type1Config::writeType1Reg(int registerNumber, boost::dynamic_bitset<> data)
     /* In case of invalid register number */
     if (registerNumber < 0 || registerNumber > 21)
         return 0;
-
+  
     Register* current = t1->getHead();
 
     for (int i = 0; i < registerNumber; i++)
@@ -159,6 +160,6 @@ int Type1Config::writeType1Reg(int registerNumber, boost::dynamic_bitset<> data)
     unsigned int writtenData = convertToUnsignedInt(data);
 
     current->setRegisterValue((current->getRegisterValue() & (current->getRegisterMask())) | (writtenData & ~(current->getRegisterMask())));
-
+  
     return 1;
 }
