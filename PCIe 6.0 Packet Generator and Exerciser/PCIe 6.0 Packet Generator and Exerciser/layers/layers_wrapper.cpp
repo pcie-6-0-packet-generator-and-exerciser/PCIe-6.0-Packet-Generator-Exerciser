@@ -12,18 +12,18 @@ void LayersWrapper::sendNOPFlit(Globals globals, Dllp::DllpType dllpType, QueueW
 	{
 		// P credits
 	case 0:
-		credits[0] = sharedturn ? globals.P_SHARED_CREDIT_LIMIT[0] : globals.P_DEDICATED_CREDIT_LIMIT[0];
-		credits[1] = sharedturn ? globals.P_SHARED_CREDIT_LIMIT[0] : globals.P_DEDICATED_CREDIT_LIMIT[0];
+		credits[0] = sharedturn ? globals.P_SHARED_CREDIT[0] : globals.P_DEDICATED_CREDIT[0];
+		credits[1] = sharedturn ? globals.P_SHARED_CREDIT[1] : globals.P_DEDICATED_CREDIT[1];
 		break;
 		// NP credits
 	case 1:
-		credits[0] = sharedturn ? globals.NP_SHARED_CREDIT_LIMIT[0] : globals.NP_DEDICATED_CREDIT_LIMIT[0];
-		credits[1] = sharedturn ? globals.NP_SHARED_CREDIT_LIMIT[0] : globals.NP_DEDICATED_CREDIT_LIMIT[0];
+		credits[0] = sharedturn ? globals.NP_SHARED_CREDIT[0] : globals.NP_DEDICATED_CREDIT[0];
+		credits[1] = sharedturn ? globals.NP_SHARED_CREDIT[1] : globals.NP_DEDICATED_CREDIT[1];
 		break;
 		// CPL credits
 	case 2:
-		credits[0] = sharedturn ? globals.CPL_SHARED_CREDIT_LIMIT[0] : globals.CPL_DEDICATED_CREDIT_LIMIT[0];
-		credits[1] = sharedturn ? globals.CPL_SHARED_CREDIT_LIMIT[0] : globals.CPL_DEDICATED_CREDIT_LIMIT[0];
+		credits[0] = sharedturn ? globals.CPL_SHARED_CREDIT[0] : globals.CPL_DEDICATED_CREDIT[0];
+		credits[1] = sharedturn ? globals.CPL_SHARED_CREDIT[1] : globals.CPL_DEDICATED_CREDIT[1];
 		break;
 	}
 
