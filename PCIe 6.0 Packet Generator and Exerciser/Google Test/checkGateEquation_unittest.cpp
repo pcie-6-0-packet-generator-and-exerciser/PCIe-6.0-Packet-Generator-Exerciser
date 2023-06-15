@@ -3,35 +3,22 @@
 #include "../PCIe 6.0 Packet Generator and Exerciser/layers/globals.h"
 #define globalsParameters P_SHARED_CREDIT, NP_SHARED_CREDIT, CPL_SHARED_CREDIT, P_DEDICATED_CREDIT, NP_DEDICATED_CREDIT, CPL_DEDICATED_CREDIT
 
-int P_SHARED_CREDIT[2];
-int NP_SHARED_CREDIT[2];
-int CPL_SHARED_CREDIT[2];
-int P_DEDICATED_CREDIT[2];
-int NP_DEDICATED_CREDIT[2];
-int CPL_DEDICATED_CREDIT[2];
-bool Fl1 = false;
-bool Fl2 = false;
-int P_SHARED_CREDIT_LIMIT[2] = { -1 };
-int NP_SHARED_CREDIT_LIMIT[2] = { -1 };
-int CPL_SHARED_CREDIT_LIMIT[2] = { -1 };
-int P_DEDICATED_CREDIT_LIMIT[2] = { -1 };
-int NP_DEDICATED_CREDIT_LIMIT[2] = { -1 };
-int CPL_DEDICATED_CREDIT_LIMIT[2] = { -1 };
-int P_SHARED_CREDITS_CONSUMED[2] = { 0 };
-int NP_SHARED_CREDITS_CONSUMED[2] = { 0 };
-int CPL_SHARED_CREDITS_CONSUMED[2] = { 0 };
-int P_DEDICATED_CREDITS_CONSUMED[2] = { 0 };
-int NP_DEDICATED_CREDITS_CONSUMED[2] = { 0 };
-int CPL_DEDICATED_CREDITS_CONSUMED[2] = { 0 };
 
 //CPL
 // 
 //bool  TransactionLayer::checkGateEquation(const Globals globals, const TLP* tlp)
 TEST(checkEquationsuite, CPL_passed_values) {
+	int P_SHARED_CREDIT[2] = {0,0};
+	int NP_SHARED_CREDIT[2] = { 0,0 };
+	int CPL_SHARED_CREDIT[2] = { 0,0 };
+	int P_DEDICATED_CREDIT[2] = { 0,0 };
+	int NP_DEDICATED_CREDIT[2] = { 0,0 };
+	int CPL_DEDICATED_CREDIT[2] = { 0,0 };
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
 	tlp->creditConsumedType = Dllp::CreditType::Cpl;
+
 	globals->CPL_SHARED_CREDIT_LIMIT[0] = 0;
 	globals->CPL_SHARED_CREDIT_LIMIT[1] = 0;
 	globals->CPL_SHARED_CREDITS_CONSUMED[0] = 0;
@@ -43,6 +30,12 @@ TEST(checkEquationsuite, CPL_passed_values) {
 }
 
 TEST(checkEquationsuite, CPL_fail_values_due_dataSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -58,6 +51,12 @@ TEST(checkEquationsuite, CPL_fail_values_due_dataSharedCreditConsumed) {
 }
 
 TEST(checkEquationsuite, CPL_fail_values_due_dataConsumption) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -73,6 +72,12 @@ TEST(checkEquationsuite, CPL_fail_values_due_dataConsumption) {
 }
 
 TEST(checkEquationsuite, CPL_fail_values_due_dataConsumptionAnddataSharedCredit) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -88,6 +93,12 @@ TEST(checkEquationsuite, CPL_fail_values_due_dataConsumptionAnddataSharedCredit)
 }
 
 TEST(checkEquationsuite, CPL_fail_values_due_dataConsumptionAnddataSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -103,6 +114,12 @@ TEST(checkEquationsuite, CPL_fail_values_due_dataConsumptionAnddataSharedCreditC
 }
 
 TEST(checkEquationsuite, CPL_passed_values_due_dataConsumptionAnddataSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -118,6 +135,12 @@ TEST(checkEquationsuite, CPL_passed_values_due_dataConsumptionAnddataSharedCredi
 }
 
 TEST(checkEquationsuite, CPL_passed_values_due_dataConsumption) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -133,6 +156,12 @@ TEST(checkEquationsuite, CPL_passed_values_due_dataConsumption) {
 }
 
 TEST(checkEquationsuite, CPL_passed_values_due_dataSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -148,6 +177,12 @@ TEST(checkEquationsuite, CPL_passed_values_due_dataSharedCreditConsumed) {
 }
 
 TEST(checkEquationsuite, CPL_fail_values_2049) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -162,6 +197,12 @@ TEST(checkEquationsuite, CPL_fail_values_2049) {
 	EXPECT_TRUE(!(transcationLayer->checkGateEquation(*globals, tlp)));
 }
 TEST(checkEquationsuite, CPL_passed_values_2047) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -178,6 +219,12 @@ TEST(checkEquationsuite, CPL_passed_values_2047) {
 //********************************
 
 TEST(checkEquationsuite, CPL_fail_values_due_headerSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -193,6 +240,12 @@ TEST(checkEquationsuite, CPL_fail_values_due_headerSharedCreditConsumed) {
 }
 
 TEST(checkEquationsuite, CPL_fail_values_due_headerConsumption) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -208,6 +261,12 @@ TEST(checkEquationsuite, CPL_fail_values_due_headerConsumption) {
 }
 
 TEST(checkEquationsuite, CPL_fail_values_due_headerConsumptionAnddheaderSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -223,6 +282,12 @@ TEST(checkEquationsuite, CPL_fail_values_due_headerConsumptionAnddheaderSharedCr
 }
 
 TEST(checkEquationsuite, CPL_fail_values_due_headerConsumptionAndheaderSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -238,6 +303,12 @@ TEST(checkEquationsuite, CPL_fail_values_due_headerConsumptionAndheaderSharedCre
 }
 
 TEST(checkEquationsuite, CPL_passed_values_due_headerConsumptionAnddheaderSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -253,6 +324,12 @@ TEST(checkEquationsuite, CPL_passed_values_due_headerConsumptionAnddheaderShared
 }
 
 TEST(checkEquationsuite, CPL_passed_values_due_dheaderConsumption) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -268,6 +345,12 @@ TEST(checkEquationsuite, CPL_passed_values_due_dheaderConsumption) {
 }
 
 TEST(checkEquationsuite, CPL_passed_values_due_headerSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -283,6 +366,12 @@ TEST(checkEquationsuite, CPL_passed_values_due_headerSharedCreditConsumed) {
 }
 
 TEST(checkEquationsuite, CPL_fail_values_2049_header) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -297,6 +386,12 @@ TEST(checkEquationsuite, CPL_fail_values_2049_header) {
 	EXPECT_TRUE(!(transcationLayer->checkGateEquation(*globals, tlp)));
 }
 TEST(checkEquationsuite, CPL_passed_values_127_header) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -312,6 +407,12 @@ TEST(checkEquationsuite, CPL_passed_values_127_header) {
 }
 
 TEST(checkEquationsuite, CPL_fail_values_INT_MAX) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -327,6 +428,12 @@ TEST(checkEquationsuite, CPL_fail_values_INT_MAX) {
 }
 
 TEST(checkEquationsuite, CPL_fail_values_INT_MAX_data) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -341,6 +448,12 @@ TEST(checkEquationsuite, CPL_fail_values_INT_MAX_data) {
 	EXPECT_TRUE(!(transcationLayer->checkGateEquation(*globals, tlp)));
 }
 TEST(checkEquationsuite, CPL_fail_values_INT_MAX_dataandheader) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -357,6 +470,13 @@ TEST(checkEquationsuite, CPL_fail_values_INT_MAX_dataandheader) {
 
 //P
 TEST(checkEquationsuite, P_passed_values) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
+
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -372,6 +492,12 @@ TEST(checkEquationsuite, P_passed_values) {
 }
 //*****************
 TEST(checkEquationsuite, P_fail_values_due_dataSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -387,6 +513,12 @@ TEST(checkEquationsuite, P_fail_values_due_dataSharedCreditConsumed) {
 }
 
 TEST(checkEquationsuite, P_fail_values_due_dataConsumption) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -402,6 +534,12 @@ TEST(checkEquationsuite, P_fail_values_due_dataConsumption) {
 }
 
 TEST(checkEquationsuite, P_fail_values_due_dataConsumptionAnddataSharedCredit) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -417,6 +555,12 @@ TEST(checkEquationsuite, P_fail_values_due_dataConsumptionAnddataSharedCredit) {
 }
 
 TEST(checkEquationsuite, P_fail_values_due_dataConsumptionAnddataSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -432,6 +576,12 @@ TEST(checkEquationsuite, P_fail_values_due_dataConsumptionAnddataSharedCreditCon
 }
 
 TEST(checkEquationsuite, P_passed_values_due_dataConsumptionAnddataSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -447,6 +597,12 @@ TEST(checkEquationsuite, P_passed_values_due_dataConsumptionAnddataSharedCreditC
 }
 
 TEST(checkEquationsuite, P_passed_values_due_dataConsumption) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -462,6 +618,12 @@ TEST(checkEquationsuite, P_passed_values_due_dataConsumption) {
 }
 
 TEST(checkEquationsuite, P_passed_values_due_dataSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -477,6 +639,12 @@ TEST(checkEquationsuite, P_passed_values_due_dataSharedCreditConsumed) {
 }
 
 TEST(checkEquationsuite, P_fail_values_2049) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -491,6 +659,12 @@ TEST(checkEquationsuite, P_fail_values_2049) {
 	EXPECT_TRUE(!(transcationLayer->checkGateEquation(*globals, tlp)));
 }
 TEST(checkEquationsuite, P_passed_values_2047) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -507,6 +681,12 @@ TEST(checkEquationsuite, P_passed_values_2047) {
 //********************************
 
 TEST(checkEquationsuite, P_fail_values_due_headerSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -522,6 +702,12 @@ TEST(checkEquationsuite, P_fail_values_due_headerSharedCreditConsumed) {
 }
 
 TEST(checkEquationsuite, P_fail_values_due_headerConsumption) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -537,6 +723,12 @@ TEST(checkEquationsuite, P_fail_values_due_headerConsumption) {
 }
 
 TEST(checkEquationsuite, P_fail_values_due_headerConsumptionAnddheaderSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -552,6 +744,12 @@ TEST(checkEquationsuite, P_fail_values_due_headerConsumptionAnddheaderSharedCred
 }
 
 TEST(checkEquationsuite, P_fail_values_due_headerConsumptionAndheaderSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -567,6 +765,12 @@ TEST(checkEquationsuite, P_fail_values_due_headerConsumptionAndheaderSharedCredi
 }
 
 TEST(checkEquationsuite, P_passed_values_due_headerConsumptionAnddheaderSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -582,6 +786,12 @@ TEST(checkEquationsuite, P_passed_values_due_headerConsumptionAnddheaderSharedCr
 }
 
 TEST(checkEquationsuite, P_passed_values_due_dheaderConsumption) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -597,6 +807,12 @@ TEST(checkEquationsuite, P_passed_values_due_dheaderConsumption) {
 }
 
 TEST(checkEquationsuite, P_passed_values_due_headerSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -612,6 +828,12 @@ TEST(checkEquationsuite, P_passed_values_due_headerSharedCreditConsumed) {
 }
 
 TEST(checkEquationsuite, P_fail_values_2049_header) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -626,6 +848,12 @@ TEST(checkEquationsuite, P_fail_values_2049_header) {
 	EXPECT_TRUE(!(transcationLayer->checkGateEquation(*globals, tlp)));
 }
 TEST(checkEquationsuite, P_passed_values_127_header) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -641,6 +869,12 @@ TEST(checkEquationsuite, P_passed_values_127_header) {
 }
 
 TEST(checkEquationsuite, P_fail_values_INT_MAX) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -656,6 +890,12 @@ TEST(checkEquationsuite, P_fail_values_INT_MAX) {
 }
 
 TEST(checkEquationsuite, P_fail_values_INT_MAX_data) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -670,6 +910,12 @@ TEST(checkEquationsuite, P_fail_values_INT_MAX_data) {
 	EXPECT_TRUE(!(transcationLayer->checkGateEquation(*globals, tlp)));
 }
 TEST(checkEquationsuite, P_fail_values_INT_MAX_dataandheader) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -686,6 +932,12 @@ TEST(checkEquationsuite, P_fail_values_INT_MAX_dataandheader) {
 
 //NP
 TEST(checkEquationsuite, NP_passed_values) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -701,6 +953,12 @@ TEST(checkEquationsuite, NP_passed_values) {
 }
 
 TEST(checkEquationsuite, NP_fail_values_due_dataSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -716,6 +974,12 @@ TEST(checkEquationsuite, NP_fail_values_due_dataSharedCreditConsumed) {
 }
 
 TEST(checkEquationsuite, NP_fail_values_due_dataConsumption) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -731,6 +995,12 @@ TEST(checkEquationsuite, NP_fail_values_due_dataConsumption) {
 }
 
 TEST(checkEquationsuite, NP_fail_values_due_dataConsumptionAnddataSharedCredit) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -746,6 +1016,12 @@ TEST(checkEquationsuite, NP_fail_values_due_dataConsumptionAnddataSharedCredit) 
 }
 
 TEST(checkEquationsuite, NP_fail_values_due_dataConsumptionAnddataSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -761,6 +1037,12 @@ TEST(checkEquationsuite, NP_fail_values_due_dataConsumptionAnddataSharedCreditCo
 }
 
 TEST(checkEquationsuite, NP_passed_values_due_dataConsumptionAnddataSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -776,6 +1058,12 @@ TEST(checkEquationsuite, NP_passed_values_due_dataConsumptionAnddataSharedCredit
 }
 
 TEST(checkEquationsuite, NP_passed_values_due_dataConsumption) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -791,6 +1079,12 @@ TEST(checkEquationsuite, NP_passed_values_due_dataConsumption) {
 }
 
 TEST(checkEquationsuite, NP_passed_values_due_dataSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -806,6 +1100,12 @@ TEST(checkEquationsuite, NP_passed_values_due_dataSharedCreditConsumed) {
 }
 
 TEST(checkEquationsuite, NP_fail_values_2049) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -820,6 +1120,12 @@ TEST(checkEquationsuite, NP_fail_values_2049) {
 	EXPECT_TRUE(!(transcationLayer->checkGateEquation(*globals, tlp)));
 }
 TEST(checkEquationsuite, NP_passed_values_2047) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -836,6 +1142,12 @@ TEST(checkEquationsuite, NP_passed_values_2047) {
 //********************************
 
 TEST(checkEquationsuite, NP_fail_values_due_headerSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -851,6 +1163,12 @@ TEST(checkEquationsuite, NP_fail_values_due_headerSharedCreditConsumed) {
 }
 
 TEST(checkEquationsuite, NP_fail_values_due_headerConsumption) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -866,6 +1184,12 @@ TEST(checkEquationsuite, NP_fail_values_due_headerConsumption) {
 }
 
 TEST(checkEquationsuite, NP_fail_values_due_headerConsumptionAnddheaderSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -881,6 +1205,12 @@ TEST(checkEquationsuite, NP_fail_values_due_headerConsumptionAnddheaderSharedCre
 }
 
 TEST(checkEquationsuite, NP_fail_values_due_headerConsumptionAndheaderSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -896,6 +1226,12 @@ TEST(checkEquationsuite, NP_fail_values_due_headerConsumptionAndheaderSharedCred
 }
 
 TEST(checkEquationsuite, NP_passed_values_due_headerConsumptionAnddheaderSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -911,6 +1247,12 @@ TEST(checkEquationsuite, NP_passed_values_due_headerConsumptionAnddheaderSharedC
 }
 
 TEST(checkEquationsuite, NP_passed_values_due_dheaderConsumption) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -926,6 +1268,12 @@ TEST(checkEquationsuite, NP_passed_values_due_dheaderConsumption) {
 }
 
 TEST(checkEquationsuite, NP_passed_values_due_headerSharedCreditConsumed) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -941,6 +1289,12 @@ TEST(checkEquationsuite, NP_passed_values_due_headerSharedCreditConsumed) {
 }
 
 TEST(checkEquationsuite, NP_fail_values_2049_header) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -955,6 +1309,12 @@ TEST(checkEquationsuite, NP_fail_values_2049_header) {
 	EXPECT_TRUE(!(transcationLayer->checkGateEquation(*globals, tlp)));
 }
 TEST(checkEquationsuite, NP_passed_values_127_header) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -970,6 +1330,12 @@ TEST(checkEquationsuite, NP_passed_values_127_header) {
 }
 
 TEST(checkEquationsuite, NP_fail_values_INT_MAX) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -985,6 +1351,12 @@ TEST(checkEquationsuite, NP_fail_values_INT_MAX) {
 }
 
 TEST(checkEquationsuite, NP_fail_values_INT_MAX_data) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();
@@ -999,6 +1371,12 @@ TEST(checkEquationsuite, NP_fail_values_INT_MAX_data) {
 	EXPECT_TRUE(!(transcationLayer->checkGateEquation(*globals, tlp)));
 }
 TEST(checkEquationsuite, NP_fail_values_INT_MAX_dataandheader) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	//Globals(int pSharedCredit[2], int npSharedCredit[2], int cplSharedCredit[2], int pDedicatedCredit[2], int npDedicatedCredit[2], int cplDedicatedCredit[2]);
 	Globals* globals = new Globals(globalsParameters);
 	TLP* tlp = new TLP();

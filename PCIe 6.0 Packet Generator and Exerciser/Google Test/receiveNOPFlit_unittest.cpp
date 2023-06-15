@@ -5,29 +5,21 @@
 #include "../PCIe 6.0 Packet Generator and Exerciser/utils/dllp.h"
 #define globalsParameters P_SHARED_CREDIT, NP_SHARED_CREDIT, CPL_SHARED_CREDIT, P_DEDICATED_CREDIT, NP_DEDICATED_CREDIT, CPL_DEDICATED_CREDIT
 
-int P_SHARED_CREDIT[2];
-int NP_SHARED_CREDIT[2];
-int CPL_SHARED_CREDIT[2];
-int P_DEDICATED_CREDIT[2];
-int NP_DEDICATED_CREDIT[2];
-int CPL_DEDICATED_CREDIT[2];
-bool Fl1 = false;
-bool Fl2 = false;
-int P_SHARED_CREDIT_LIMIT[2] = { -1 };
-int NP_SHARED_CREDIT_LIMIT[2] = { -1 };
-int CPL_SHARED_CREDIT_LIMIT[2] = { -1 };
-int P_DEDICATED_CREDIT_LIMIT[2] = { -1 };
-int NP_DEDICATED_CREDIT_LIMIT[2] = { -1 };
-int CPL_DEDICATED_CREDIT_LIMIT[2] = { -1 };
-int P_SHARED_CREDITS_CONSUMED[2] = { 0 };
-int NP_SHARED_CREDITS_CONSUMED[2] = { 0 };
-int CPL_SHARED_CREDITS_CONSUMED[2] = { 0 };
-int P_DEDICATED_CREDITS_CONSUMED[2] = { 0 };
-int NP_DEDICATED_CREDITS_CONSUMED[2] = { 0 };
-int CPL_DEDICATED_CREDITS_CONSUMED[2] = { 0 };
-
-
 TEST(receiveNOPFlitsuite, checkingupdatecreditlimit_getting_called) {
+	bool Fl1 = false;
+	bool Fl2 = false;
+	int P_SHARED_CREDIT_LIMIT[2] = { -1,-1 };
+	int NP_SHARED_CREDIT_LIMIT[2] = { -1 ,-1 };
+	int CPL_SHARED_CREDIT_LIMIT[2] = { -1 ,-1};
+	int P_DEDICATED_CREDIT_LIMIT[2] = { -1 ,-1};
+	int NP_DEDICATED_CREDIT_LIMIT[2] = { -1 ,-1};
+	int CPL_DEDICATED_CREDIT_LIMIT[2] = { -1 ,-1};
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	LayersWrapper layerwrapper;
 	const int PSharedCredit[2] = { 8, 5 };
 	Globals* globals = new Globals(globalsParameters);
@@ -54,6 +46,12 @@ TEST(receiveNOPFlitsuite, checkingupdatecreditlimit_getting_called) {
 
 
 TEST(receiveNOPFlitsuite, checkingupdatecreditlimit_getting_called_randomvalues) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	LayersWrapper layerwrapper;
 	Globals* globals = new Globals(globalsParameters);
 	const int PSharedCredit[2] = { 8, 5 };
@@ -93,6 +91,12 @@ TEST(receiveNOPFlitsuite, checkingupdatecreditlimit_getting_called_randomvalues)
 }
 
 TEST(receiveNOPFlitsuite, checkingupdatecreditlimit_getting_called_randomvalues2) {
+	int P_SHARED_CREDIT[2];
+	int NP_SHARED_CREDIT[2];
+	int CPL_SHARED_CREDIT[2];
+	int P_DEDICATED_CREDIT[2];
+	int NP_DEDICATED_CREDIT[2];
+	int CPL_DEDICATED_CREDIT[2];
 	LayersWrapper layerwrapper;
 	Globals* globals = new Globals(globalsParameters);
 	const int CplSharedCredit[2] = { 8, 5 };
