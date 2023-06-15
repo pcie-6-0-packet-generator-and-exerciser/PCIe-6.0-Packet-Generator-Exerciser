@@ -23,7 +23,7 @@ namespace Ui
         void createMem32bCommon();
         void createMem64bCommon();
         void createConfigCommon();
-        void createCongigOHCvector();
+        void createConfigOHCvector();
         void createMemOHCvector(int row);
         void createDataPayload(int row);
 

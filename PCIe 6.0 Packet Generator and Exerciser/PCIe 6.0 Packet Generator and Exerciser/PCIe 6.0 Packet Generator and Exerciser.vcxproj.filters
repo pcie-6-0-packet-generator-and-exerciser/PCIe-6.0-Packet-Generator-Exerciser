@@ -163,6 +163,9 @@
     <ClCompile Include="layers\thread_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="config_space_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="type1_config_space\type1_config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -291,6 +294,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="result_browser.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="config_space_widget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
