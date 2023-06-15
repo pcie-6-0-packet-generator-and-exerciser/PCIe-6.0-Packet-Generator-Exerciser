@@ -57,12 +57,12 @@ TEST(ReceivePayloadFlitTestSuite, SingleFlitTLPPayload) {
 	// Set up parameters for sendPayloadFlit
 	QueueWrapper<Flit*> sendOnQueueFlits;
 	std::queue<TLP*> tlps;
-
+	
 	TLP* tlp = TLP::createMemRead32Tlp(DEFAULT_MEM_READ32_TLP_PARAMS);
 	tlps.push(tlp);
-
+	
 	layersWrapper.sendPayloadFlit(globals, tlps, sendOnQueueFlits);
-
+	
 	// Set up parameters for receivePayloadFlit
 	QueueWrapper<TLP*> sendOnQueueTlps;
 	std::queue<Flit*> flits;
@@ -71,5 +71,5 @@ TEST(ReceivePayloadFlitTestSuite, SingleFlitTLPPayload) {
 	flits.push(flit);
 
 	layersWrapper.receivePayloadFlit(globals, flits, sendOnQueueTlps);
-
+	
 }
