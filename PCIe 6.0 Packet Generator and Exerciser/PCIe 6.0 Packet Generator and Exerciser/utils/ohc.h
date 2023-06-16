@@ -10,8 +10,6 @@ public:
 
     int sizeInBytes = 4;
     virtual boost::dynamic_bitset<> getBitRep() const = 0; // pure virtual function, making this an abstract class
-    virtual OHC* getObjRep(boost::dynamic_bitset<> dllpBits) const = 0;
-
 };
 
 
@@ -30,7 +28,7 @@ public:
         }
     }
     boost::dynamic_bitset<> getBitRep() const override;
-    OHC* getObjRep(boost::dynamic_bitset<> dllpBits) const  override;
+    static OHC* getObjRep(boost::dynamic_bitset<> dllpBits);
 
 };
 
@@ -52,7 +50,7 @@ public:
     }
     boost::dynamic_bitset<> getBitRep() const override;
 
-    OHC* getObjRep(boost::dynamic_bitset<> dllpBits) const  override;
+    static OHC* getObjRep(boost::dynamic_bitset<> dllpBits);
 
 };
 
@@ -70,7 +68,7 @@ public:
     }
     boost::dynamic_bitset<> getBitRep() const override;
 
-    OHC* getObjRep(boost::dynamic_bitset<> dllpBits) const  override;
+    static OHC* getObjRep(boost::dynamic_bitset<> dllpBits);
 
 };
 
@@ -97,7 +95,7 @@ public:
     }
     boost::dynamic_bitset<> getBitRep() const override;
 
-    OHC* getObjRep(boost::dynamic_bitset<> dllpBits) const  override;
+    static OHC* getObjRep(boost::dynamic_bitset<> dllpBits);
 
 };
 

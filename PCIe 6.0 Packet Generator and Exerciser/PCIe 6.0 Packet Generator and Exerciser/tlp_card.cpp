@@ -46,6 +46,15 @@ QString TLPenumToString(TLPType value)
 	}
 };
 
+TLPCard::TLPCard(QWidget* parent) {
+	//this function is called when a new tlp card is created
+	//it sets the tlp type and creates a new tlp object based on the tlp type
+	textLabel_ = new QLabel("", this);
+	textLabel_->setAlignment(Qt::AlignHCenter);
+	setProperty(tlpCardProperty, true);
+	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+	manageLayout();
+}
 
 TLPCard::TLPCard( TLPType tlpType, QWidget* parent)
 	: QFrame(parent), textLabel_(new QLabel(TLPenumToString(tlpType), this))
@@ -53,7 +62,7 @@ TLPCard::TLPCard( TLPType tlpType, QWidget* parent)
 	//this function is called when a new tlp card is created
 	//it sets the tlp type and creates a new tlp object based on the tlp type
 
-	boost::dynamic_bitset<> zeroPayload(0);
+	boost::dynamic_bitset<> zeroPayload(32);
 	
 
 	this->tlpType = tlpType;
@@ -65,27 +74,37 @@ TLPCard::TLPCard( TLPType tlpType, QWidget* parent)
 		tlp = TLP::createMemRead64Tlp(0, 0, 0, 0, 0);
 		break;
 	case TLPType::MemWrite32:
-		tlp = TLP::createMemWrite32Tlp(0, zeroPayload, 0, 0, 0, 0, 0);
+		tlp = TLP::createMemWrite32Tlp(1, zeroPayload, 0, 0, 0, 0, 0);
 		break;
 	case TLPType::MemWrite64:
-		tlp = TLP::createMemWrite64Tlp(0, zeroPayload, 0, 0, 0, 0, 0);
+		tlp = TLP::createMemWrite64Tlp(1, zeroPayload, 0, 0, 0, 0, 0);
 		break;
 	case TLPType::VendorMsg:
-		tlp = TLP::createVendorMsgTlp(0, zeroPayload, 0, 0, 0);
+		tlp = TLP::createVendorMsgTlp(1, zeroPayload, 0, 0, 0);
 		break;
 	case TLPType::ConfigRead0:
 		tlp = TLP::createConfigRead0Tlp(0, 0, 0, 0, 0, 0, 0, 0, 0);
 		break;
 	case TLPType::ConfigWrite0:
-		tlp = TLP::createConfigWrite0Tlp(0, zeroPayload, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+		tlp = TLP::createConfigWrite0Tlp(1, zeroPayload, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
 		break;
 	case TLPType::ConfigRead1:
 		tlp = TLP::createConfigRead1Tlp(0, 0, 0, 0, 0, 0, 0, 0, 0);
 		break;
 	case TLPType::ConfigWrite1:
-		tlp = TLP::createConfigWrite1Tlp(0, zeroPayload, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		tlp = TLP::createConfigWrite1Tlp(1, zeroPayload, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		break;
 	}
+	textLabel_->setAlignment(Qt::AlignHCenter);
+	setProperty(tlpCardProperty, true);
+	setMinimumSize(200, 100);
+	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	manageLayout();
+}
+
+TLPCard::TLPCard(TLP* tlp, QWidget* parent) {
+	textLabel_ = new QLabel(TLPenumToString(tlp->header->TLPtype), this);
+	this->tlp = tlp;
 	textLabel_->setAlignment(Qt::AlignHCenter);
 	setProperty(tlpCardProperty, true);
 	setMinimumSize(200, 100);
@@ -97,12 +116,28 @@ TLPCard::~TLPCard()
 {
 	//delete tlp;
 	delete textLabel_;
+
+}
+
+void TLPCard::mousePressEvent(QMouseEvent* event) {
+	if (event->button() == Qt::LeftButton) {
+		emit cardPressed(this);
+	}
+}
+
+void TLPCard::setCurrentTab(currentTab tab) {
+	currentTab_ = tab;
 }
 
 
+
+
+
 void TLPCard::mouseMoveEvent(QMouseEvent* event) {
-
-
+	//if the currentTab is resultExplorer, return
+	if (currentTab_ == currentTab::resultExplorer) {
+		return;
+	}
 	QDrag* drag = new QDrag(this);
 	QMimeData* mimeData = new QMimeData;
 	QByteArray data;

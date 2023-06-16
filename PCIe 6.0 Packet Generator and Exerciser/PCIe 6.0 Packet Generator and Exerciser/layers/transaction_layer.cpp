@@ -1,7 +1,7 @@
 #include "transaction_layer.h"
 
-bool  TransactionLayer::checkGateEquation(const Globals globals, const TLP* tlp) {
 
+bool  TransactionLayer::checkGateEquation(const Globals globals, const TLP* tlp) {
 	// shared credit limit and shared credit consumed for header and data
 	int dataSharedCreditLimit, dataSharedCreditConsumed, headerSharedCreditLimit, headerSharedCreditConsumed;
 
@@ -32,16 +32,10 @@ bool  TransactionLayer::checkGateEquation(const Globals globals, const TLP* tlp)
 		break;
 	}
 
-	// checking for the Data gate equation
-	int twoPowCreditDataFieldSize = pow(2, CREDIT_DATA_FIELD_SIZE);
-
-	if ((dataSharedCreditLimit - (dataSharedCreditConsumed + tlpDataConsumption) % twoPowCreditDataFieldSize) % twoPowCreditDataFieldSize > twoPowCreditDataFieldSize / 2)
+	if ((dataSharedCreditLimit - (dataSharedCreditConsumed + tlpDataConsumption) % TWO_POW_CREDIT_DATA_FIELD_SIZE) % TWO_POW_CREDIT_DATA_FIELD_SIZE > TWO_POW_CREDIT_DATA_FIELD_SIZE / 2)
 		return false;
 
-	// checking for the Header gate equation
-	int twoPowCreditHeaderFieldSize = pow(2, CREDIT_HEADER_FIELD_SIZE);
-
-	if ((headerSharedCreditLimit - (headerSharedCreditConsumed + tlpHeaderConsumption) % twoPowCreditHeaderFieldSize) % twoPowCreditHeaderFieldSize > twoPowCreditHeaderFieldSize / 2)
+	if ((headerSharedCreditLimit - (headerSharedCreditConsumed + tlpHeaderConsumption) % TWO_POW_CREDIT_HEADER_FIELD_SIZE) % TWO_POW_CREDIT_HEADER_FIELD_SIZE > TWO_POW_CREDIT_HEADER_FIELD_SIZE / 2)
 		return false;
 
 	return true;

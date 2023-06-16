@@ -37,6 +37,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="handle_memory_read_unit_test.cpp" />
+    <ClCompile Include="layers_dllp_unittest.cpp" />
+    <ClCompile Include="checkGateEquation_unittest.cpp" />
+    <ClCompile Include="completion_construction_algorithms.cpp" />
+    <ClCompile Include="configuration_controller_unittest.cpp" />
+    <ClCompile Include="configuration_space_unittest.cpp" />
+    <ClCompile Include="dllp_unittest.cpp" />
+    <ClCompile Include="layers_datalink_unittest.cpp" />
+    <ClCompile Include="layers_sendPayloadFlit_unitests.cpp" />
+    <ClCompile Include="pcie_capability_structure_unittest.cpp" />
+    <ClCompile Include="prepareFlit_unittest.cpp" />
+    <ClCompile Include="receiveNOPFlit_unittest.cpp" />
+    <ClCompile Include="layers_tlp_unittest.cpp" />
+    <ClCompile Include="sendNOPFlit_unittest.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -44,6 +57,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="type1_config_unittest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PCIe 6.0 Packet Generator and Exerciser\PCIe 6.0 Packet Generator and Exerciser.vcxproj">

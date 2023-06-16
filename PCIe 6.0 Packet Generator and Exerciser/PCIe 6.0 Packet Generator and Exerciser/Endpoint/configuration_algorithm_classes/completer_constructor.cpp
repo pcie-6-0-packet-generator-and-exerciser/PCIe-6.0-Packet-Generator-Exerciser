@@ -35,6 +35,11 @@ void CompleterConstructor::setRegisterLength(int registerLength)
     completion->registerLengthInBytes = registerLength;
 }
 
+int CompleterConstructor::getRegisterLength()
+{
+    return completion->registerLengthInBytes;
+}
+
 void CompleterConstructor::setTLP(TLP* tlp)
 {
     completion->tlp = tlp;

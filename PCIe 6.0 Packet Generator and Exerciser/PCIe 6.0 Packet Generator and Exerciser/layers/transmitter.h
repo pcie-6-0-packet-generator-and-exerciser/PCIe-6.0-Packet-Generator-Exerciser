@@ -18,9 +18,11 @@
  */
 class Transmitter {
 public:
-	Globals globals;
+	Globals& globals;
 	LayersWrapper* layers;
 	QueueWrapper<Flit*>* sendOn;
+
+	Transmitter(Globals& globals, QueueWrapper<Flit*>* sendOn);
 
 	/**
 	 * @brief Sends an InitFC1 message to the receiver.

@@ -68,11 +68,22 @@ boost::dynamic_bitset<> Dllp::getBitRep() const {
 Dllp Dllp::DllpObjRep(boost::dynamic_bitset<> dllpPayloadBits) {
 	unsigned long dllpBitsValue = dllpPayloadBits.to_ulong();
 
-	// Take a subset of the left-most 4bits for the credit type
-	boost::dynamic_bitset<> dllpCreditType(4, dllpBitsValue >> 28);
+	boost::dynamic_bitset<> dllpType(2, dllpBitsValue >> 30);
+
+	// Take a subset of the left-most 2bits for the credit type
+	boost::dynamic_bitset<> dllpCreditType(2, dllpBitsValue >> 28);
+
+	// Take a subset of bits from the 24th to 26th bit from left for the VC
+	boost::dynamic_bitset<> dllpVC(3, (dllpBitsValue >> 24) & 0x7);
+
+	// Take a subset of bits from the 22nd to 23rd bit from left for the header scale
+	boost::dynamic_bitset<> dllpHdrScale(2, (dllpBitsValue >> 22) & 0x3);
 
 	// Take a subset of bits from the 10th to 17th bit from left for the header fc
 	boost::dynamic_bitset<> dllpHdrFc(8, (dllpBitsValue >> 14) & 0xff);
+
+	// Take a subset of bits from the 12th to 13th bit from left for the data scale
+	boost::dynamic_bitset<> dllpDataScale(2, (dllpBitsValue >> 12) & 0x3);
 
 	// Take a subset of bits from the right-most 12 bits for the data fc
 	boost::dynamic_bitset<> dllpDataFc(12, dllpBitsValue & 0xfff);
@@ -87,33 +98,46 @@ Dllp Dllp::DllpObjRep(boost::dynamic_bitset<> dllpPayloadBits) {
 	recievedDllp.shared = dllpShared.to_ulong();
 
 	// credit type and dllp type
-	switch (dllpCreditType.to_ulong())
+	switch (dllpType.to_ulong())
 	{
-	case 0b0100:
-		recievedDllp.m_creditType = Dllp::CreditType::P;
+	case 0b01:
 		recievedDllp.m_type = Dllp::DllpType::initFC1;
 		break;
-	case 0b0101:
-		recievedDllp.m_creditType = Dllp::CreditType::NP;
-		recievedDllp.m_type = Dllp::DllpType::initFC1;
-		break;
-	case 0b0110:
-		recievedDllp.m_creditType = Dllp::CreditType::Cpl;
-		recievedDllp.m_type = Dllp::DllpType::initFC1;
-		break;
-	case 0b1100:
-		recievedDllp.m_creditType = Dllp::CreditType::P;
+	case 0b11:
 		recievedDllp.m_type = Dllp::DllpType::initFC2;
 		break;
-	case 0b1101:
-		recievedDllp.m_creditType = Dllp::CreditType::NP;
-		recievedDllp.m_type = Dllp::DllpType::initFC2;
-		break;
-	case 0b1110:
-		recievedDllp.m_creditType = Dllp::CreditType::Cpl;
-		recievedDllp.m_type = Dllp::DllpType::initFC2;
+	case 0b10:
+		recievedDllp.m_type = Dllp::DllpType::updateFC;
 		break;
 	}
+
+	switch (dllpCreditType.to_ulong())
+	{
+	case 0b00:
+		recievedDllp.m_creditType = Dllp::CreditType::P;
+		break;
+	case 0b01:
+		recievedDllp.m_creditType = Dllp::CreditType::NP;
+		break;
+	case 0b10:
+		recievedDllp.m_creditType = Dllp::CreditType::Cpl;
+		break;
+	}
+
+	// VC
+	recievedDllp.VC = dllpVC.to_ulong();
+
+	// header scale
+	recievedDllp.HdrScale = dllpHdrScale.to_ulong();
+
+	// header fc
+	recievedDllp.HdrFC = dllpHdrFc.to_ulong();
+
+	// data scale
+	recievedDllp.DataScale = dllpDataScale.to_ulong();
+
+	// data fc
+	recievedDllp.DataFc = dllpDataFc.to_ulong();
 
 	return recievedDllp;
 }

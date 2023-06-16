@@ -23,6 +23,19 @@ unsigned int ConfigurationReadVisitor::visitPcieCapabilityStructure(PCIECapabili
     // traverse the linked list to find the node at the specified index
     Register * current = capability->getHead();
 
+    for (int i = 0; i < (registerNumber - 17); i++)
+    {
+        current = current->getRegisterNext();
+    }
+
+    return current->getRegisterValue();
+}
+
+unsigned int ConfigurationReadVisitor::visitType1ConfigSpace(Type1Config* t1)
+{
+    // traverse the linked list to find the node at the specified index
+    Register* current = t1->getHead();
+
     for (int i = 0; i < registerNumber; i++)
     {
         current = current->getRegisterNext();
