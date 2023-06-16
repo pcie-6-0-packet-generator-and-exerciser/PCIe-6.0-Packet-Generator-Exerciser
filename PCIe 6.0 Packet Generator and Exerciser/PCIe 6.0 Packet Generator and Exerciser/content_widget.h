@@ -3,6 +3,7 @@
 #include <QtWidgets/QFrame>
 #include "utils/queue_wrapper.h"
 class TLP;
+class Type1Config;
 class QPushButton;
 class QVBoxLayout;
 
@@ -47,5 +48,6 @@ namespace Ui
         QPushButton* sequenceExplorerTab_;
         QPushButton* resultExplorerTab_;
         QPushButton* configSpaceButton_;
+        Type1Config* type1Config_;
     };
 }
