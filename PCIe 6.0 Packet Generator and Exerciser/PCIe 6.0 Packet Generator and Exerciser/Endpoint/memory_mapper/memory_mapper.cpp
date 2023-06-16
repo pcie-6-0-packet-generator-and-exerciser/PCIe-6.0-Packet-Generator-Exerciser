@@ -1,38 +1,65 @@
 #include "memory_mapper.h"
+#include <boost/dynamic_bitset/dynamic_bitset.hpp>
+#include <bitset>
 
-MemoryMap::MemoryMap(uint64_t prefetchableBar0, uint32_t nonPrefetchableBar2, uint16_t ioBar3)
-	: prefetchableBar0_(prefetchableBar0 / sizeof(uint32_t)), nonPrefetchableBar2_(nonPrefetchableBar2 / sizeof(uint32_t)),
-	ioBar3_(ioBar3 / sizeof(uint32_t)) {
-	// Constructor implementation
+
+MemoryMap* MemoryMap::memoryMap = nullptr;
+
+MemoryMap* MemoryMap::constructMemoryMap() {
+	if (memoryMap == nullptr)
+		memoryMap = new MemoryMap();
+	return memoryMap;
 }
 
-uint32_t* MemoryMap::read(uint64_t address, uint32_t* data) {
-	if (address < prefetchableBar0_.size()) {
-		*data = prefetchableBar0_[address];
-		return data;
-	}
-	else if (address >= nonPrefetchableBar2_.size() && address < nonPrefetchableBar2_.size() + prefetchableBar0_.size()) {
-		*data = nonPrefetchableBar2_[address - nonPrefetchableBar2_.size()];
-		return data;
-	}
-	else if (address >= ioBar3_.size() && address < ioBar3_.size() + prefetchableBar0_.size() + nonPrefetchableBar2_.size()) {
-		// Handle I/O reads
-		return data;
-	}
+MemoryMap::MemoryMap()
+{
+	// Initialize the memory map
+	// 1 GB of memory
+	memory = boost::dynamic_bitset<>(1024 * 1024 * 1024);
+    // Set all the bits to 0 
+    memory.clear();
 }
 
-bool MemoryMap::write(uint64_t address, uint32_t data) {
-	if (address < prefetchableBar0_.size()) {
-		prefetchableBar0_[address] = data;
-		return true;
-	}
-	else if (address >= nonPrefetchableBar2_.size() && address < nonPrefetchableBar2_.size() + prefetchableBar0_.size()) {
-		nonPrefetchableBar2_[address - nonPrefetchableBar2_.size()] = data;
-		return true;
-	}
-	else if (address >= ioBar3_.size() && address < ioBar3_.size() + prefetchableBar0_.size() + nonPrefetchableBar2_.size()) {
-		// Handle I/O writes (not supported in our scope)
-		return false;
-	}
-	return false;
+boost::dynamic_bitset<> MemoryMap::read(uint64_t address, boost::dynamic_bitset<> requiredToRead) {
+	
+
+    // we can shift the memory map to the right by the address
+	// and then perform AND operation with the requiredToRead bitset
+	// to extract the data payload
+
+	boost::dynamic_bitset<> dataPayload = memory >> address * 32;
+	dataPayload.resize(requiredToRead.size());
+    // Use requiredToReadBitset to perform OR operation with the memory map
+	dataPayload |= requiredToRead;
+
+    return dataPayload;
+
 }
+
+
+bool MemoryMap::write(uint64_t address, boost::dynamic_bitset<> requiredBytesToWriteAt, boost::dynamic_bitset<> dataToBeWritten) {
+    size_t startBit = address * 32;
+    size_t endBit = startBit + (requiredBytesToWriteAt.size());
+
+    boost::dynamic_bitset<> dataPayload = memory;
+
+    // Preserve the existing memory data outside the write range
+    for (size_t i = startBit; i < endBit; i++) {
+        if (requiredBytesToWriteAt[i] == 0) {
+            dataPayload[i] = memory[i];
+        }
+    }
+
+    // Update the dataPayload with the new values to be written
+    size_t dataIndex = 0;
+    for (size_t i = startBit; i < endBit; i++) {
+        if (requiredBytesToWriteAt[dataIndex] == 1) {
+            dataPayload[i] = dataToBeWritten[dataIndex];
+            dataIndex++;
+        }
+    }
+
+    memory = dataPayload;
+    return true;
+}
+

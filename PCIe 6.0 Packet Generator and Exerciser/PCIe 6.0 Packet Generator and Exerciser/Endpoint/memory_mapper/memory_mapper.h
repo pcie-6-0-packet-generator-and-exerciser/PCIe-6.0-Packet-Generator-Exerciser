@@ -1,15 +1,18 @@
 #pragma once
 #include <cstdint>
 #include <vector>
+#include <boost/dynamic_bitset/dynamic_bitset.hpp>
+
 
 class MemoryMap {
 public:
-    MemoryMap(uint64_t prefetchableBar0, uint32_t nonPrefetchableBar2, uint16_t ioBar3);
-    uint32_t* read(uint64_t address, uint32_t* data);
-    bool write(uint64_t address, uint32_t data);
+    static MemoryMap* constructMemoryMap();
+    boost::dynamic_bitset<> read(uint64_t address, boost::dynamic_bitset<> numberOfBytes);
+    bool write(uint64_t address, boost::dynamic_bitset<> numberOfBytes, boost::dynamic_bitset<> data);
 
     private:
-        std::vector<uint32_t> prefetchableBar0_;
-        std::vector<uint32_t> nonPrefetchableBar2_;
-        std::vector<uint32_t> ioBar3_;
+        static MemoryMap* memoryMap;
+        MemoryMap();          
+        boost::dynamic_bitset<> memory;
+
 };

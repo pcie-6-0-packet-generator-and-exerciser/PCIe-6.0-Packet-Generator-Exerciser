@@ -12,16 +12,12 @@ public:
 	std::queue<TLP*> sendCompletions();
     void clearCompletionsQueue();
     void run(QueueWrapper<TLP*>& sendOn, QueueWrapper<TLP*>& listenOn);
+    std::queue<TLP*> getCompletionQueue();
+    ConfigurationController* getConfigurationController();
+    MemoryController* getMemoryController();
 
 private:
-    // Add BAR variables
-    uint64_t prefetchableBar0_;
-    uint32_t nonPrefetchableBar2_;
-    uint16_t ioBar3_;
-    std::unique_ptr<MemoryController> memoryController_;
+    MemoryController*  memoryController_;
     ConfigurationController*  configurationController_;
-    std::unique_ptr<MemoryMap> memoryMap_;
-
-    // Add queue wrapper for completions sent to root complex
     std::queue<TLP*> completionQueue_;
 };
