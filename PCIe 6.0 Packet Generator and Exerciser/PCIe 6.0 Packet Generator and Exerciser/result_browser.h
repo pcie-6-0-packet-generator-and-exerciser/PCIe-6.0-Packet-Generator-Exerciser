@@ -14,8 +14,8 @@ namespace Ui
     public:
         explicit ResultBrowser(QWidget* parent = nullptr);
         ~ResultBrowser();
-    private:
         void createCardsSequence(std::queue<TLP*> incomingPackets);
+    private:
         void manageLayout();
         
     private:
