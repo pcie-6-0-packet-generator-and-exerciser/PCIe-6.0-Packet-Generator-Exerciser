@@ -9,8 +9,9 @@
 #include "sequence_browser.h"
 #include "type_browser.h"
 #include "result_browser.h"
-#include"packet_details_widget.h"
-#include"config_space_widget.h"
+#include "packet_details_widget.h"
+#include "config_space_widget.h"
+#include "type1_config_space/type1_config.h"
 
 namespace {
 	constexpr char sequenceExplorerLabel[] = "Sequence Explorer";
@@ -34,6 +35,7 @@ ContentWidget::ContentWidget(QWidget* parent,
 	rootComplexToLayers_(rootComplexToLayers),
 	layersToRootComplex_(layersToRootComplex)
 {
+	type1Config_ = Type1Config::constructType1ConfigSpace();
 	createHeader();
 	createBody();
 	createFooter();
@@ -271,10 +273,71 @@ void ContentWidget::manageLayout()
 }
 
 void ContentWidget::onSubmitButtonClick() {
-	rootComplexToLayers_->push(sequenceBrowser_->getTLPCards());
+	/*
+	1- Make 2 queues
+		a- one for the read write configuration
+		b- one for the rest
+	2- Separate data
+	3- handle the configuration and make the resulting completions
+	4- handle the rest by sending them and make the resulting completions
+	5- merge the 2 resulting queues
+
+	*/
+	std::queue<TLP*> allPackets = sequenceBrowser_->getTLPCards(); //this numbers tags incrementaly from 0 to n
+	
+	std::queue<TLP*> configPackets; //queue for the configuration packets
+	std::queue<TLP*> restPackets; //queue for the rest of the packets
+
+	
+	//separate the data		
+	for (size_t i = 0; i < allPackets.size(); ++i) {
+		TLP* tlp = allPackets.front();
+		if (tlp->header->TLPtype == TLPType::ConfigRead1 || tlp->header->TLPtype == TLPType::ConfigWrite1) {
+			configPackets.push(tlp);
+		}
+		else {
+			restPackets.push(tlp);
+		}
+	}
+	
+	std::queue<TLP*> resultingConfigCompletions;
+	for (size_t i = 0; i < configPackets.size(); ++i) {
+		TLP* tlp = configPackets.front();
+		if (tlp->header->TLPtype == TLPType::ConfigRead1) {
+			//make the completion and add it to resultingConfigCompletions
+		}
+		else {
+			//make the completion and add it to resultingConfigCompletions
+		}
+	}
+	rootComplexToLayers_->push(restPackets);
 
 	//****Uncomment this to see the result when the layers are connected to the root complex****
-	//std::queue<TLP*> resultPackets = layersToRootComplex_->popAll();
+	std::queue<TLP*> resultingRestCompletions= layersToRootComplex_->popAll();
+	std::queue<TLP*> resultingCompletions;
+
+	//Merge queues according to the tags
+	//Do message completions if any need to be handled?
+	while (!resultingRestCompletions.empty() || !resultingConfigCompletions.empty()) {
+		if (resultingRestCompletions.front()->header->nonBase->getTag() < resultingConfigCompletions.front()->header->nonBase->getTag()) {
+			resultingCompletions.push(resultingRestCompletions.front());
+			resultingRestCompletions.pop();
+		}
+		else {
+			resultingCompletions.push(resultingConfigCompletions.front());
+			resultingConfigCompletions.pop();
+		}
+	}
+	while (!resultingRestCompletions.empty()) {
+		resultingCompletions.push(resultingRestCompletions.front());
+		resultingRestCompletions.pop();
+	}
+	while (!resultingConfigCompletions.empty()) {
+		resultingCompletions.push(resultingConfigCompletions.front());
+		resultingConfigCompletions.pop();
+	}
+
+	resultBrowser_->createCardsSequence(resultingCompletions);
 
 	typeFrame_->setVisible(false);
 	resultFrame_->setVisible(true);
