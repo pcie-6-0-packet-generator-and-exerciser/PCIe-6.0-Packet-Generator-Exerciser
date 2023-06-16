@@ -20,7 +20,6 @@ namespace Ui
             QueueWrapper<TLP*>* rootComplexToLayers,
             QueueWrapper<TLP*>* layersToRootComplex);
         ~ContentWidget();
-        Type1Config*  getType1Config();
     private:
         void createHeader();
         void createBody();

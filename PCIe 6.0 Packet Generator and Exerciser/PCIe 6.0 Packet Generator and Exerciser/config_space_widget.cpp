@@ -11,13 +11,12 @@
 
 using namespace Ui;
 
-ConfigSpaceWidget::ConfigSpaceWidget(ContentWidget* content , QWidget* parent)
+ConfigSpaceWidget::ConfigSpaceWidget(Type1Config* type1space , QWidget* parent)
 	: QFrame(parent)
 {
 	QGridLayout* layout = new QGridLayout;
     int width = 200;
     int height = 50;
-	Type1Config* type1space = content->getType1Config();
 	string currentReg;
 	int regNum = 0;
 	layout->addWidget(new QLabel("000h"), 0, 0,1,1,Qt::AlignRight);

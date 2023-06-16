@@ -9,7 +9,7 @@ namespace Ui {
 	{
 		Q_OBJECT
 		public:
-			explicit ConfigSpaceWidget(ContentWidget* content, QWidget* parent = nullptr);
+			explicit ConfigSpaceWidget(Type1Config* type1space, QWidget* parent = nullptr);
 			~ConfigSpaceWidget();
 		
 

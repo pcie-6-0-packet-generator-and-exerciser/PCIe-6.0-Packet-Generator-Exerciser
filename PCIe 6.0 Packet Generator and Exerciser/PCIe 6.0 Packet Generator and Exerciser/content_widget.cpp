@@ -46,9 +46,7 @@ ContentWidget::~ContentWidget()
 {
 
 }
-Type1Config*  ContentWidget::getType1Config() {
-	return type1Config_;
-}
+
 
 void ContentWidget::createHeader() 
 {
@@ -309,6 +307,6 @@ void ContentWidget::onResultExplorerTabClick() {
 }
 
 void ContentWidget::onConfigSpaceButtonClick() {
-	ConfigSpaceWidget* configSpaceWidget = new ConfigSpaceWidget(this, nullptr);
+	ConfigSpaceWidget* configSpaceWidget = new ConfigSpaceWidget(type1Config_, nullptr);
 	configSpaceWidget->show();
 }
