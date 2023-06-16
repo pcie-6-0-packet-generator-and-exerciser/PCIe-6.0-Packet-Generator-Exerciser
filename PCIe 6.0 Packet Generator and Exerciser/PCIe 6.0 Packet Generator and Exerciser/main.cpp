@@ -46,8 +46,8 @@ int main(int argc, char *argv[])
     std::thread t1(initilizationSender, std::ref(rootComplexGlobal), std::ref(rootComplexToRootComplexLayers), std::ref(rootComplexLayersToEndpointLayers));
     std::thread t2(initilizationSender, std::ref(endpointGlobal), std::ref(endpointToEndpointLayers), std::ref(endpointLayersToRootComplexLayers));
 
-    std::thread t3(initializationReceiver, std::ref(rootComplexGlobal), std::ref(endpointLayersToRootComplexLayers), std::ref(rootComplexLayersToRootComplex));
-    std::thread t4(initializationReceiver, std::ref(endpointGlobal), std::ref(rootComplexLayersToEndpointLayers), std::ref(endpointLayersToEndpoint));
+    std::thread t3(initializationReceiver, std::ref(rootComplexGlobal), std::ref(endpointLayersToRootComplexLayers), std::ref(rootComplexLayersToRootComplex), std::ref(rootComplexLayersToEndpointLayers));
+    //std::thread t4(initializationReceiver, std::ref(endpointGlobal), std::ref(rootComplexLayersToEndpointLayers), std::ref(endpointLayersToEndpoint), std::ref(endpointLayersToRootComplexLayers));
     
     
 
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
     t1.join();
     t2.join();
     t3.join();
-    t4.join();
+    //t4.join();
     t5.join();
     return 0;
 }

@@ -30,11 +30,16 @@ void normalFlowReceiver(Receiver& receiver, QueueWrapper<Flit*>& listenOn) {
 	}
 }
 
-void initializationReceiver(Globals& globals, QueueWrapper<Flit*>& listenOn, QueueWrapper<TLP*>& sendOn) {
+void initializationReceiver(Globals& globals, QueueWrapper<Flit*>& listenOn, QueueWrapper<TLP*>& sendOn, QueueWrapper<Flit*>& transmitterSendOn) {
 	Receiver* receiever = new Receiver(globals, LayersWrapper(), sendOn);
 	while (!globals.Fl1 or !globals.Fl2) {
 		// pop() waits if the queue is empty
 		receiever->receiveInit(listenOn.pop(), globals);
+		if (globals.Fl1) {
+			auto* transmitter = new Transmitter(globals, &transmitterSendOn);
+			transmitter->sendInitFC2();
+			delete transmitter;
+		}
 	}
 	std::thread normalFlowReceiverThread(normalFlowReceiver, std::ref(*receiever), std::ref(listenOn));
 	normalFlowReceiverThread.join();

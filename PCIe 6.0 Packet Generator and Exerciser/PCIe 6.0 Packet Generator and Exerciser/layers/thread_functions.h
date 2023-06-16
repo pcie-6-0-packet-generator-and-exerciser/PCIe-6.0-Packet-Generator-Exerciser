@@ -25,4 +25,4 @@ void initilizationSender(Globals& globals, QueueWrapper<TLP*>& queueListenOn, Qu
  * @param listenOn used to listen on the queue
  * @param sendTo used to create the receiver object
 */
-void initializationReceiver(Globals& globals, QueueWrapper<Flit*>& listenOn, QueueWrapper<TLP*>& sendTo);
+void initializationReceiver(Globals& globals, QueueWrapper<Flit*>& listenOn, QueueWrapper<TLP*>& sendTo, QueueWrapper<Flit*>& transmitterSendOn);
