@@ -7,7 +7,6 @@
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QScrollBar>
 #include "type1_config_space/type1_config.h"
-#include "content_widget.h"
 
 using namespace Ui;
 
@@ -133,4 +132,4 @@ ConfigSpaceWidget::ConfigSpaceWidget(Type1Config* type1space , QWidget* parent)
 
 ConfigSpaceWidget::~ConfigSpaceWidget()
 {
-}
+} 

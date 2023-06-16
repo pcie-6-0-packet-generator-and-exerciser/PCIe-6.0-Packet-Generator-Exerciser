@@ -307,6 +307,10 @@ void ContentWidget::onResultExplorerTabClick() {
 }
 
 void ContentWidget::onConfigSpaceButtonClick() {
-	ConfigSpaceWidget* configSpaceWidget = new ConfigSpaceWidget(type1Config_, nullptr);
-	configSpaceWidget->show();
+	if (configSpaceWidget_ != nullptr) {
+		configSpaceWidget_->close();
+		delete configSpaceWidget_;
+	}
+	configSpaceWidget_ = new ConfigSpaceWidget(type1Config_, nullptr);
+	configSpaceWidget_->show();
 }

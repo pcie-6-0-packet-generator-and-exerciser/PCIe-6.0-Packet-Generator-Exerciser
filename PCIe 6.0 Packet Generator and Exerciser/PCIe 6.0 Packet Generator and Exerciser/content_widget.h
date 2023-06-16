@@ -9,6 +9,7 @@ class QVBoxLayout;
 
 namespace Ui
 {
+    class ConfigSpaceWidget;
     class SequenceBrowser;
     class ResultBrowser;
     class ContentWidget: public QFrame
@@ -49,5 +50,6 @@ namespace Ui
         QPushButton* resultExplorerTab_;
         QPushButton* configSpaceButton_;
         Type1Config* type1Config_;
+        ConfigSpaceWidget* configSpaceWidget_ = nullptr;
     };
 }
