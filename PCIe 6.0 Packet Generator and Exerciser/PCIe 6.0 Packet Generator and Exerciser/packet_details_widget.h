@@ -35,12 +35,15 @@ namespace Ui
         void viewMemWrite64();
         void viewConfigRead0();
         void viewConfigWrite0();
-        void viewVendorMsg();
+
+        //void viewVendorMsg();
        
         void saveMemCommon32();
         void saveMemCommon64();
+        void saveLengthMemRead();
         void saveDataPayload();
         void saveConfigCommon();
+        
             
         long long combineAddresses(std::string upperAddress, std::string lowerAddress);
         int binaryToInteger(const std::string& binary);
