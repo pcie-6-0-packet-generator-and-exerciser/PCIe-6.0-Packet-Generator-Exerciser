@@ -24,11 +24,11 @@ TEST(MemoryReadRequests, memoryReadRequest32) {
 
     // the createMemRead32TLP method takes (int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE) and returns the TLP 
 
-    TLP request = tlpRequest->createMemRead32Tlp(0, 0, 3, std::bitset<4>(0b1111), std::bitset<4>(0b1111));
-    request.header->lengthInDoubleWord = 3;
+    TLP* request = tlpRequest->createMemRead32Tlp(0, 0, 3, std::bitset<4>(0b1111), std::bitset<4>(0b1111));
+    request->header->lengthInDoubleWord = 3;
 
     // adding the TLP to the queue
-    receivedQueue.push(&request);
+    receivedQueue.push(request);
     // exception is thrown in case we are constructing UR request for any reason
     // calling the receivePackets function to receive the packet 
     endpointApp->receivePackets(receivedQueue);
@@ -40,7 +40,7 @@ TEST(MemoryReadRequests, memoryReadRequest32) {
 
     // this is the exptected completion
     TLP* expectedCompletion = new TLP();
-    int completerSegment = dynamic_cast<OHCA3*>(request.header->OHCVector[0])->destinationSegment;
+    int completerSegment = dynamic_cast<OHCA3*>(request->header->OHCVector[0])->destinationSegment;
     int destinationSegment = 0;
     std::bitset<2> lowerAddress = std::bitset<2>(0b00);
     // createCplDTlp() takes as parameters: int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddress, OHCA5::CPLStatus cplStatus)
@@ -78,10 +78,10 @@ TEST(MemoryReadRequests, memoryReadRequest64) {
 
     // the createMemRead64TLP method takes (int requesterId, int tag, long long address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE) and returns the TLP 
 
-    TLP request = tlpRequest->createMemRead64Tlp(0, 0, 3, std::bitset<4>(0b1111), std::bitset<4>(0b1111));
-    request.header->lengthInDoubleWord = 3;
+    TLP* request = tlpRequest->createMemRead64Tlp(0, 0, 3, std::bitset<4>(0b1111), std::bitset<4>(0b1111));
+    request->header->lengthInDoubleWord = 3;
     // adding the TLP to the queue
-    receivedQueue.push(&request);
+    receivedQueue.push(request);
 
     // calling the receivePackets function to receive the packet 
     endpointApp->receivePackets(receivedQueue);
@@ -94,7 +94,7 @@ TEST(MemoryReadRequests, memoryReadRequest64) {
 
     // this is the exptected completion
     TLP* expectedCompletion = new TLP();
-    int completerSegment = dynamic_cast<OHCA3*>(request.header->OHCVector[0])->destinationSegment;
+    int completerSegment = dynamic_cast<OHCA3*>(request->header->OHCVector[0])->destinationSegment;
     int destinationSegment = 0;
     std::bitset<2> lowerAddress = std::bitset<2>(0b00);
     // createCplDTlp() takes as parameters: int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddress, OHCA5::CPLStatus cplStatus)

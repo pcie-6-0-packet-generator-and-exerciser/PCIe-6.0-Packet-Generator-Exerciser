@@ -81,7 +81,7 @@ TLP* MemoryRequestHandler::handleMemoryRead(TLP* packet, TLPType packetType) {
 
     TLP* completion = new TLP();
     // createCplDTlp() takes as parameters: int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddress, OHCA5::CPLStatus cplStatus)
-    TLP completion_packet = completion->createCplDTlp(
+    TLP* completion_packet = completion->createCplDTlp(
         dataPayloadLengthInDw, // dataPayloadLengthInDW
         data, // dataPayload
         requesterId, // requesterId
@@ -96,7 +96,7 @@ TLP* MemoryRequestHandler::handleMemoryRead(TLP* packet, TLPType packetType) {
         lowerAddress, // lowerAddress
 		OHCA5::CPLStatus::True // cplStatus
     );
-    return &completion_packet;
+    return completion_packet;
 }
 
 
