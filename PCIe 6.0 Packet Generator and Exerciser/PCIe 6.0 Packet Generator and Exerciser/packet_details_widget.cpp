@@ -45,8 +45,16 @@ void PacketDetails::createHeader() {
 	detailsLayout_->addWidget(ts,0,3);
 	CustomLineEdit* attr = new CustomLineEdit("Attr", 100, 50, "000", this);
 	detailsLayout_->addWidget(attr,0,4);
-	CustomLineEdit* length = new CustomLineEdit("Length", 100, 50, QString::number(static_cast<int>(currentTLP->header->lengthInDoubleWord), 2).rightJustified(10, '0'), this);
-	detailsLayout_->addWidget(length,0,5);
+	if(currentTLP->header->TLPtype == TLPType::MemRead32|| currentTLP->header->TLPtype == TLPType::MemRead64 ) {
+		CustomLineEdit* length = new CustomLineEdit("Length", 100, 50, QString::number(static_cast<int>(currentTLP->header->lengthInDoubleWord), 2).rightJustified(10, '0'), this, false);
+		detailsLayout_->addWidget(length, 0, 5);
+		lineEditsMap["length"] = length;
+	}
+	else{
+		CustomLineEdit* length = new CustomLineEdit("Length", 100, 50, QString::number(static_cast<int>(currentTLP->header->lengthInDoubleWord), 2).rightJustified(10, '0'), this);
+		detailsLayout_->addWidget(length, 0, 5);
+	}
+	
 }
 void PacketDetails::createMem32bCommon() {
 	//creates the second dw in memory requests 32bit
@@ -347,13 +355,20 @@ void PacketDetails::saveConfigCommon() {
 	ohca3->destinationSegment = binaryToInteger(lineEditsMap["destinationSegment"]->lineEdit->text().toStdString());
 }
 
+void PacketDetails::saveLengthMemRead() {
+	//adjust tlp length
+	currentTLP->header->lengthInDoubleWord = binaryToInteger(lineEditsMap["length"]->lineEdit->text().toStdString());;
+}
+
 
 void PacketDetails::saveValues() {
 	
 	if (currentTLP->header->TLPtype == TLPType::MemRead32) {
+		saveLengthMemRead();
 		saveMemCommon32();
 	}
 	else if (currentTLP->header->TLPtype == TLPType::MemRead64) {
+		saveLengthMemRead();
 		saveMemCommon64();
 	}
 	else if (currentTLP->header->TLPtype == TLPType::MemWrite32) {
