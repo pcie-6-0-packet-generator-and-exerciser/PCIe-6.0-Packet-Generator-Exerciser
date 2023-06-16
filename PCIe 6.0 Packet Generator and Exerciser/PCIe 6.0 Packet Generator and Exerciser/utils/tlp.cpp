@@ -55,6 +55,8 @@ TLP* TLP::getObjRep(boost::dynamic_bitset<> bitset) {
 /**
  * @brief Creates a MemRead32 TLP* with the given parameters.
  *
+ * @param dataPayloadLengthInDW The length of the data payload in bytes.
+ * @param dataPayload The data payload as a string of bits.
  * @param requesterId The requester ID of the TLP.
  * @param tag The tag field of the TLP* header.
  * @param address The 32-bit address to read from.
@@ -62,17 +64,17 @@ TLP* TLP::getObjRep(boost::dynamic_bitset<> bitset) {
  * @param lastDWBE An array of four integers indicating which bytes are enabled in the last DW.
  * @return A TLP* object representing the MemRead32 TLP.
  */
-TLP* TLP::createMemRead32Tlp(int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE) {
+TLP* TLP::createMemRead32Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE) {
 	TLP* memRead32Tlp = new TLP;
 	memRead32Tlp->header->OHCVector.push_back(new OHCA1(firstDWBE, lastDWBE));
 	memRead32Tlp->header->TLPtype = TLPType::MemRead32;
-	memRead32Tlp->header->lengthInDoubleWord = 0;
+	memRead32Tlp->header->lengthInDoubleWord = dataPayloadLengthInDW;
 
 
 	memRead32Tlp->header->nonBase = new AddressRouting32Bit(requesterId, tag, address);
 
 	// clears out the data payload
-	memRead32Tlp->dataPayload.reset();
+	memRead32Tlp->dataPayload = dataPayload;
 	memRead32Tlp->creditConsumedType = Dllp::CreditType::NP;
 	memRead32Tlp->headerConsumption = 1;
 	memRead32Tlp->dataConsumption = 0;
@@ -109,6 +111,8 @@ TLP* TLP::createMemWrite32Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<>
 /**
  * @brief Creates a MemRead64 TLP* with the given parameters.
  *
+ * @param dataPayloadLengthInDW The length of the data payload in bytes.
+ * @param dataPayload The data payload as a string of bits.
  * @param requesterId The requester ID of the TLP.
  * @param tag The tag field of the TLP* header.
  * @param address The 64-bit address to read from.
@@ -116,14 +120,14 @@ TLP* TLP::createMemWrite32Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<>
  * @param lastDWBE An array of four integers indicating which bytes are enabled in the last DW.
  * @return A TLP* object representing the MemRead64 TLP.
  */
-TLP* TLP::createMemRead64Tlp(int requesterId, int tag, long long address, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE) {
+TLP* TLP::createMemRead64Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE) {
 	TLP* memRead64Tlp = new TLP;
 	memRead64Tlp->header->OHCVector.push_back(new OHCA1(firstDWBE, lastDWBE));
 	memRead64Tlp->header->TLPtype = TLPType::MemRead64;
-	memRead64Tlp->header->lengthInDoubleWord = 0;
+	memRead64Tlp->header->lengthInDoubleWord = dataPayloadLengthInDW;
 	memRead64Tlp->header->nonBase = new AddressRouting64Bit(requesterId, tag, address);;
 
-	memRead64Tlp->dataPayload.reset();
+	memRead64Tlp->dataPayload = dataPayload;
 	memRead64Tlp->creditConsumedType = Dllp::CreditType::NP;
 	memRead64Tlp->headerConsumption = 1;
 	memRead64Tlp->dataConsumption = 0;
@@ -278,26 +282,25 @@ TLP* TLP::createConfigWrite1Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset
 /**
  * @brief Creates a Cpl TLP* with the given parameters
  *
- * @param requesterId The requester ID of the original TLP
  * @param tag The tag field of the original TLP
  * @param completerId The completer ID of the Cpl TLP
  * @param byteCount The number of bytes transferred by the Cpl TLP
  * @param busNumber The bus number of the destination device
  * @param deviceNumber The device number of the destination device
  * @param functionNumber The function number of the destination device
- * @param lowerAddress The lower address field of the Cpl TLP
  * @param destinationSegment The destination segment field of the OHCA5 extension header
  * @param completerSegment The completer segment field of the OHCA5 extension header
- * @param lowerAddressArr An array of two integers representing the lower address fields of the OHCA5 extension header
+ * @param lowerAddressOHC 2 bits representing the lower address fields of the OHCA5 extension header
+ * @param lowerAddressNonHeaderBase 5 bits representing the lower address fields of the Completion Header extension header
  * @param cplStatus The completion status field of the OHCA5 extension header
  * @return A TLP* object representing the Cpl TLP
  */
-TLP* TLP::createCplTlp(int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddress, OHCA5::CPLStatus cplStatus) {
+TLP* TLP::createCplTlp(int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddressOHC, std::bitset<5> lowerAddressHeaderBase ,OHCA5::CPLStatus cplStatus) {
 	TLP* cplTlp = new TLP;
-	cplTlp->header->OHCVector.push_back(new OHCA5(destinationSegment, completerSegment, lowerAddress, cplStatus));
+	cplTlp->header->OHCVector.push_back(new OHCA5(destinationSegment, completerSegment, lowerAddressOHC, cplStatus));
 	cplTlp->header->TLPtype = TLPType::Cpl;
 	cplTlp->header->lengthInDoubleWord = 0;
-	cplTlp->header->nonBase = new CompletionNonHeaderBase(requesterId, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddress.to_ulong());
+	cplTlp->header->nonBase = new CompletionNonHeaderBase(0, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddressHeaderBase.to_ulong());
 
 	cplTlp->dataPayload.reset();
 	cplTlp->creditConsumedType = Dllp::CreditType::Cpl;
@@ -313,25 +316,26 @@ TLP* TLP::createCplTlp(int requesterId, int tag, int completerId, long byteCount
  * @param dataPayload The data payload as a string of bits
  * @param requesterId The requester ID of the original TLP
  * @param tag The tag field of the original TLP
- * @param completerId The completer ID of the CplD TLP
- * @param byteCount The number of bytes transferred by the CplD TLP
+ * @param completerId The completer ID of the Cpl TLP
+ * @param byteCount The number of bytes transferred by the Cpl TLP
  * @param busNumber The bus number of the destination device
  * @param deviceNumber The device number of the destination device
  * @param functionNumber The function number of the destination device
- * @param lowerAddress The lower address field of the CplD TLP
+ * @param lowerAddress The lower address field of the Cpl TLP
  * @param destinationSegment The destination segment field of the OHCA5 extension header
  * @param completerSegment The completer segment field of the OHCA5 extension header
- * @param lowerAddressArr An array of two integers representing the lower address fields of the OHCA5 extension header
+ * @param lowerAddressOHC 2 bits representing the lower address fields of the OHCA5 extension header
+ * @param lowerAddressNonHeaderBase 5 bits representing the lower address fields of the Completion Header extension header
  * @param cplStatus The completion status field of the OHCA5 extension header
- * @return A TLP* object representing the CplD TLP* with the specified parameters and fields
+ * @return A TLP* object representing the Cpl TLP
  */
 
-TLP* TLP::createCplDTlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddress, OHCA5::CPLStatus cplStatus) {
+TLP* TLP::createCplDTlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddressOHC, std::bitset<5> lowerAddressHeaderBase, OHCA5::CPLStatus cplStatus) {
 	TLP* cplDTlp = new TLP;
-	cplDTlp->header->OHCVector.push_back(new OHCA5(destinationSegment, completerSegment, lowerAddress, cplStatus));
+	cplDTlp->header->OHCVector.push_back(new OHCA5(destinationSegment, completerSegment, lowerAddressOHC, cplStatus));
 	cplDTlp->header->TLPtype = TLPType::CplD;
 	cplDTlp->header->lengthInDoubleWord = dataPayloadLengthInDW;
-	cplDTlp->header->nonBase = new CompletionNonHeaderBase(requesterId, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddress.to_ulong());
+	cplDTlp->header->nonBase = new CompletionNonHeaderBase(0, tag, completerId, byteCount, busNumber, deviceNumber, functionNumber, lowerAddressHeaderBase.to_ulong());
 
 	cplDTlp->dataPayload = dataPayload;
 	cplDTlp->creditConsumedType = Dllp::CreditType::Cpl;
