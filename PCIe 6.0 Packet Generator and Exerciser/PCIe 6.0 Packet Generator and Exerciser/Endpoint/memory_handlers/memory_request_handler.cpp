@@ -20,7 +20,7 @@ TLP* MemoryRequestHandler::handleMemoryRead(TLP* packet, TLPType packetType) {
     }
     int requesterId = packet->header->nonBase->requestID;
     int completerId = 0;
-    int dataPayloadLengthInDw = packet->header->lengthInDoubleWord == 0 ? 1024 : packet->header->lengthInDoubleWord;
+    long long dataPayloadLengthInDw = packet->header->lengthInDoubleWord == 0 ? 1024 : packet->header->lengthInDoubleWord;
     boost::dynamic_bitset<> dataPayloadLengthInDwBitset(dataPayloadLengthInDw);
     // Set all bits in dataPayloadLengthInDwBitset to 1
     dataPayloadLengthInDwBitset.set();

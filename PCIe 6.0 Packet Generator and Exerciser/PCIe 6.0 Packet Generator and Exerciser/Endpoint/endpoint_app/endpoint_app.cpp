@@ -77,3 +77,12 @@ void EndpointApp::clearCompletionsQueue() {
 std::queue<TLP*> EndpointApp::getCompletionQueue() {
 	return completionQueue_;
 }
+
+ConfigurationController* EndpointApp::getConfigurationController() {
+	return configurationController_;
+};
+
+MemoryController* EndpointApp::getMemoryController() {
+	return memoryController_;
+};
+

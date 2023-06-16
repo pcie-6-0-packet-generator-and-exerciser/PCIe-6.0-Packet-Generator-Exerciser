@@ -16,6 +16,8 @@ MemoryMap::MemoryMap()
 	// Initialize the memory map
 	// 1 GB of memory
 	memory = boost::dynamic_bitset<>(1024 * 1024 * 1024);
+    // Set all the bits to 0 
+    memory.clear();
 }
 
 boost::dynamic_bitset<> MemoryMap::read(uint64_t address, boost::dynamic_bitset<> requiredToRead) {

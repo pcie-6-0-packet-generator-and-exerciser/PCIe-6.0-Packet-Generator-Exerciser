@@ -13,6 +13,8 @@ public:
     void clearCompletionsQueue();
     void run(QueueWrapper<TLP*>& sendOn, QueueWrapper<TLP*>& listenOn);
     std::queue<TLP*> getCompletionQueue();
+    ConfigurationController* getConfigurationController();
+    MemoryController* getMemoryController();
 
 private:
     MemoryController*  memoryController_;
