@@ -342,7 +342,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 		// Add common header to tlpWholeHeader
 		tlpCommonHeader.resize(tlpWholeHeader.size());
 		tlpWholeHeader.operator|=(tlpCommonHeader);
-		tlpWholeHeader.operator<<((headerLength - 4) * 8);
+		tlpWholeHeader.operator<<=((headerLength - 4) * 8);
 		// Add rest of header to tlpWholeHeader
 		if (flitIndexinBytes + (headerLength - 4) > 236) {
 			int bytesToAdd = 236 - flitIndexinBytes;
@@ -373,6 +373,42 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			payload.resize((236 - flitIndexinBytes - (headerLength - 4)) * 8);
 			payload.resize(236 * 8);
 		}
+		tlpWholeHeader.resize(headerLength * 8);
+
+		// Extract OHC
+		boost::dynamic_bitset<> tlpWholeHeaderWithOHC(tlpWholeHeader);
+		tlpWholeHeaderWithOHC.resize(tlpWholeHeader.size() + 32);
+		tlpWholeHeaderWithOHC.operator<<=(32);
+		if (flitIndexinBytes + 4 > 236) {
+			int bytesToAdd = 236 - flitIndexinBytes;
+			// Add what can fit
+			tlpWholeHeaderWithOHC.resize(236 * 8);
+			tlpWholeHeaderWithOHC.operator=((tlpWholeHeaderWithOHC.operator>>((4 - bytesToAdd) * 8).operator|=(payload)).operator<<((4 - bytesToAdd) * 8));
+			// Get next flit
+			flit = flits.front();
+			flits.pop();
+			flitIndexinBytes = 0;
+			if (datalink->checkCRC(flit)) {
+				// malformed
+			}
+			datalink->updateCreditLimit(flit, globals.P_SHARED_CREDIT_LIMIT, globals.NP_SHARED_CREDIT_LIMIT, globals.CPL_SHARED_CREDIT_LIMIT, globals.P_DEDICATED_CREDIT_LIMIT, globals.NP_DEDICATED_CREDIT_LIMIT, globals.CPL_DEDICATED_CREDIT_LIMIT, globals.Fl1, globals.Fl2);
+			payload = flit->TLPPayload;
+			// Add the rest
+			bytesToAdd = 4 - bytesToAdd;
+			tlpWholeHeaderWithOHC.operator|=(payload.operator>>((236 - bytesToAdd) * 8));
+			tlpWholeHeaderWithOHC.resize(tlpWholeHeaderWithOHC.size());
+			flitIndexinBytes += bytesToAdd;
+			payload.resize((236 - flitIndexinBytes) * 8);
+			payload.resize(236 * 8);
+		}
+		else {
+			tlpWholeHeaderWithOHC.resize(236 * 8);
+			tlpWholeHeaderWithOHC.operator|=(payload.operator>>((236 - flitIndexinBytes - 4) * 8));
+			flitIndexinBytes += 4;
+			payload.resize((236 - flitIndexinBytes - 4) * 8);
+			payload.resize(236 * 8);
+		}
+		tlpWholeHeaderWithOHC.resize((headerLength + 4) * 8);
 
 		// Extract the payload from the flits and store it in tlpPayload.
 		// If the TLP type is MemWrite32, MemWrite64, CplD, ConfigWrite0, or ConfigWrite1,
@@ -427,10 +463,10 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			tlpPayload.resize(payloadLength * 8);
 		}
 		// Create TLP
-		boost::dynamic_bitset<> tlpWhole(tlpWholeHeader.size() + tlpPayload.size());
-		tlpWholeHeader.resize(tlpWhole.size());
-		tlpWhole.operator|=(tlpWholeHeader);
-		tlpWhole.operator<<(tlpWhole.size() - tlpWholeHeader.size());
+		boost::dynamic_bitset<> tlpWhole(tlpWholeHeaderWithOHC.size() + tlpPayload.size());
+		tlpWholeHeaderWithOHC.resize(tlpWhole.size());
+		tlpWhole.operator|=(tlpWholeHeaderWithOHC);
+		tlpWhole.operator<<=(tlpWhole.size() - tlpWholeHeaderWithOHC.size());
 		tlpPayload.resize(tlpWhole.size());
 		tlpWhole.operator|=(tlpPayload);
 		TLP* tlp = TLP::getObjRep(tlpWhole);
