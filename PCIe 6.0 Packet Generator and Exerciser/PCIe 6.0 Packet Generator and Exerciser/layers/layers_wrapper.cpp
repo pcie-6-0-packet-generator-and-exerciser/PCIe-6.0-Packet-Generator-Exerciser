@@ -2,12 +2,14 @@
 #include "../utils/dllp.h"
 #include "../utils/tlp.h"
 #include "utils.h"
+#include "../logging.h"
 
 void LayersWrapper::sendNOPFlit(Globals globals, Dllp::DllpType dllpType, QueueWrapper<Flit*>* sendOn) {
 	static bool sharedturn = true;
 	static int intCreditType = 0; // P credit type
 	int credits[2] = { -1 };
-
+	src::severity_logger_mt<boost::log::trivial::severity_level>& my_logger = my_logger::get();
+	BOOST_LOG_SEV(my_logger, logging::trivial::trace) << "Sending NOP Flit";
 	switch (intCreditType)
 	{
 		// P credits
@@ -233,6 +235,8 @@ void LayersWrapper::updateConsumedCredits(Globals& globals, Dllp::CreditType cre
 }
 
 void LayersWrapper::receiveNOPFlit(Flit* flit, Globals& globals) {
+	src::severity_logger_mt<boost::log::trivial::severity_level>& my_logger = my_logger::get();
+	BOOST_LOG_SEV(my_logger, logging::trivial::trace) << "Received NOP Flit";
 	//First passes the FLIT to checkCRC()
 	if (datalink->checkCRC(flit)) {
 		//updateCreditLimit(Flit flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], int P_DEDICATED_CREDIT_LIMIT[], int NP_DEDICATED_CREDIT_LIMIT[], int CPL_DEDICATED_CREDIT_LIMIT[], bool& FI1, bool& FI2) {
