@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "../PCIe 6.0 Packet Generator and Exerciser/layers/layers_wrapper.h"
 #include "../PCIe 6.0 Packet Generator and Exerciser/utils/queue_wrapper.h"
+#include "../PCIe 6.0 Packet Generator and Exerciser/utils/non_header_base.h"
 
 // macro instead of leaving it global to avoid change from other test cases
 #define DEFAULT_CREDIT_PARAMS int pSharedCredit[] = {10, 10};\
@@ -57,12 +58,12 @@ TEST(ReceivePayloadFlitTestSuite, SingleFlitTLPPayload) {
 	// Set up parameters for sendPayloadFlit
 	QueueWrapper<Flit*> sendOnQueueFlits;
 	std::queue<TLP*> tlps;
-	
+
 	TLP* tlp = TLP::createMemRead32Tlp(DEFAULT_MEM_READ32_TLP_PARAMS);
 	tlps.push(tlp);
-	
+
 	layersWrapper.sendPayloadFlit(globals, tlps, sendOnQueueFlits);
-	
+
 	// Set up parameters for receivePayloadFlit
 	QueueWrapper<TLP*> sendOnQueueTlps;
 	std::queue<Flit*> flits;
@@ -71,5 +72,22 @@ TEST(ReceivePayloadFlitTestSuite, SingleFlitTLPPayload) {
 	flits.push(flit);
 
 	layersWrapper.receivePayloadFlit(globals, flits, sendOnQueueTlps);
+
+	// Check that the TLP was sent
+	EXPECT_EQ(sendOnQueueTlps.size(), 1);
+
+	TLP* receivedTlp = sendOnQueueTlps.pop();
+	EXPECT_EQ(receivedTlp->header->TLPtype, TLPType::MemRead32);
+	EXPECT_EQ(receivedTlp->header->lengthInDoubleWord, 0);
+	EXPECT_EQ(receivedTlp->header->nonBase->requestID, 0);
+	EXPECT_EQ(receivedTlp->header->nonBase->getTag(), 0);
+	EXPECT_EQ(dynamic_cast<AddressRouting32Bit*>(receivedTlp->header->nonBase)->address, 0);
+	EXPECT_EQ(receivedTlp->header->OHCVector.size(), 1);
+	auto ohca1 = dynamic_cast<OHCA1*>(receivedTlp->header->OHCVector[0]);
+	EXPECT_EQ(ohca1->firstDWBE.to_ulong(), 0);
+	EXPECT_EQ(ohca1->lastDWBE.to_ulong(), 0);
 	
+	EXPECT_EQ(receivedTlp->creditConsumedType, Dllp::CreditType::NP);
+	EXPECT_EQ(receivedTlp->headerConsumption, 1);
+	EXPECT_EQ(receivedTlp->dataConsumption, 0);
 }
