@@ -64,7 +64,11 @@ public:
 	*/
 	boost::dynamic_bitset<> calculateCRC(Flit* flit);
 
-
+	/**
+	 * @brief Check the CRC for a given Flit object.
+	 * @param flit pointer to the Flit object to calculate the CRC for.
+	 * @return bool representing if it is correct or not.
+	*/
 	bool checkCRC(Flit* flit);
 
 };
