@@ -21,6 +21,8 @@ int main(int argc, char *argv[])
     QFile styleFile(":/PCIe6PacketGeneratorandExerciser/style.qss");
     styleFile.open(QFile::ReadOnly);
 
+    initLogging();
+
     if(styleFile.isOpen() == false)
 		return -1;
     QString style(styleFile.readAll());

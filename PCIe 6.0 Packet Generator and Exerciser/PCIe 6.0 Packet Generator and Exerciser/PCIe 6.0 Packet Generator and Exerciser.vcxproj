@@ -109,6 +109,7 @@
     <ClCompile Include="layers\flit.cpp" />
     <ClCompile Include="layers\transmitter.cpp" />
     <ClCompile Include="layers\utils.cpp" />
+    <ClCompile Include="logging.cpp" />
     <ClCompile Include="packet_details_widget.cpp" />
     <ClCompile Include="result_browser.cpp" />
     <ClCompile Include="sequence_browser.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="layers\thread_functions.h" />
     <ClInclude Include="layers\transmitter.h" />
     <ClInclude Include="layers\utils.h" />
+    <ClInclude Include="logging.h" />
     <ClInclude Include="type1_config_space\type1_config.h" />
     <ClInclude Include="utils\bitset_utils.h" />
     <ClInclude Include="utils\non_header_base.h" />
@@ -183,11 +185,27 @@
   </ImportGroup>
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\boost.1.81.0\build\boost.targets" Condition="Exists('..\packages\boost.1.81.0\build\boost.targets')" />
+    <Import Project="..\packages\boost_date_time-vc143.1.81.0\build\boost_date_time-vc143.targets" Condition="Exists('..\packages\boost_date_time-vc143.1.81.0\build\boost_date_time-vc143.targets')" />
+    <Import Project="..\packages\boost_filesystem-vc143.1.81.0\build\boost_filesystem-vc143.targets" Condition="Exists('..\packages\boost_filesystem-vc143.1.81.0\build\boost_filesystem-vc143.targets')" />
+    <Import Project="..\packages\boost_log-vc143.1.81.0\build\boost_log-vc143.targets" Condition="Exists('..\packages\boost_log-vc143.1.81.0\build\boost_log-vc143.targets')" />
+    <Import Project="..\packages\boost_log_setup-vc143.1.81.0\build\boost_log_setup-vc143.targets" Condition="Exists('..\packages\boost_log_setup-vc143.1.81.0\build\boost_log_setup-vc143.targets')" />
+    <Import Project="..\packages\boost_system-vc143.1.81.0\build\boost_system-vc143.targets" Condition="Exists('..\packages\boost_system-vc143.1.81.0\build\boost_system-vc143.targets')" />
+    <Import Project="..\packages\boost_thread-vc143.1.81.0\build\boost_thread-vc143.targets" Condition="Exists('..\packages\boost_thread-vc143.1.81.0\build\boost_thread-vc143.targets')" />
+    <Import Project="..\packages\boost_chrono-vc143.1.81.0\build\boost_chrono-vc143.targets" Condition="Exists('..\packages\boost_chrono-vc143.1.81.0\build\boost_chrono-vc143.targets')" />
+    <Import Project="..\packages\boost_atomic-vc143.1.81.0\build\boost_atomic-vc143.targets" Condition="Exists('..\packages\boost_atomic-vc143.1.81.0\build\boost_atomic-vc143.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\boost.1.81.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.81.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_date_time-vc143.1.81.0\build\boost_date_time-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_date_time-vc143.1.81.0\build\boost_date_time-vc143.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_filesystem-vc143.1.81.0\build\boost_filesystem-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_filesystem-vc143.1.81.0\build\boost_filesystem-vc143.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_log-vc143.1.81.0\build\boost_log-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_log-vc143.1.81.0\build\boost_log-vc143.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_log_setup-vc143.1.81.0\build\boost_log_setup-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_log_setup-vc143.1.81.0\build\boost_log_setup-vc143.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_system-vc143.1.81.0\build\boost_system-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_system-vc143.1.81.0\build\boost_system-vc143.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_thread-vc143.1.81.0\build\boost_thread-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_thread-vc143.1.81.0\build\boost_thread-vc143.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_chrono-vc143.1.81.0\build\boost_chrono-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_chrono-vc143.1.81.0\build\boost_chrono-vc143.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_atomic-vc143.1.81.0\build\boost_atomic-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_atomic-vc143.1.81.0\build\boost_atomic-vc143.targets'))" />
   </Target>
 </Project>

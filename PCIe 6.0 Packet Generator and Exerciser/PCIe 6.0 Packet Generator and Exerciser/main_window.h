@@ -1,6 +1,7 @@
 #pragma once
 #include <QtWidgets/QMainWindow>
 #include "utils/queue_wrapper.h"
+#include "logging.h"
 
 class QToolBar;
 class TLP;
