@@ -10,11 +10,13 @@ TEST(MemoryReadRequests, memoryReadRequest32) {
 
     // this constructor to initialize the memory map and memory controller with the memory map
     EndpointApp* endpointApp = new EndpointApp();
-    // enabling the memory space
+    MemoryController* memoryController = endpointApp->getMemoryController();
+    memoryController->constructMemoryController();
+    // construct the configuration controller and enabling the memoryenabled bit
     ConfigurationController* controller = endpointApp->getConfigurationController();
     controller->constructConfigurationController();
     controller->configuration->getHead()->getRegisterNext()->getRegisterNext()->setRegisterValue(2);
-     
+
     // I want to create the queue and add a TLP to it before sending it to the receivePackets function
     std::queue<TLP*> receivedQueue;
     // constructing the TLP request
