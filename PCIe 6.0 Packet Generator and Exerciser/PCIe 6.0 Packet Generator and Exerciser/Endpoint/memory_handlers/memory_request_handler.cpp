@@ -54,38 +54,38 @@ TLP* MemoryRequestHandler::handleMemoryRead(TLP* packet, TLPType packetType) {
     int destinationSegment = 0;
     int completerSegment = dynamic_cast<OHCA3*>(packet->header->OHCVector[0])->destinationSegment;
 
-    // lowerAddress is a bitset of size 2 related to the FirstByteEnable bits
-    std::bitset<2> lowerAddress;
+    // lowerAddressOHC is a bitset of size 2 related to the FirstByteEnable bits
+    std::bitset<2> lowerAddressOHC;
+    std::bitset<5> lowerAddressHeaderBase;
 
     // Assign lower address based on firstDWenableBytes
     if (firstDWenableBytes == std::bitset<4>("0000")) {
-        lowerAddress = std::bitset<2>("00");
+        lowerAddressOHC = std::bitset<2>("00");
     }
     else if (firstDWenableBytes == std::bitset<4>("0001")) {
-        lowerAddress = std::bitset<2>("00");
+        lowerAddressOHC = std::bitset<2>("00");
     }
     else if (firstDWenableBytes == std::bitset<4>("0010")) {
-        lowerAddress = std::bitset<2>("01");
+        lowerAddressOHC = std::bitset<2>("01");
     }
     else if (firstDWenableBytes == std::bitset<4>("0100")) {
-        lowerAddress = std::bitset<2>("10");
+        lowerAddressOHC = std::bitset<2>("10");
     }
     else if (firstDWenableBytes == std::bitset<4>("1000")) {
-        lowerAddress = std::bitset<2>("11");
+        lowerAddressOHC = std::bitset<2>("11");
     }
     else {
         // Handle unsupported case
         // You can assign a default value or throw an exception, depending on your requirements
-        lowerAddress = std::bitset<2>("00");
+        lowerAddressOHC = std::bitset<2>("00");
     }
 
     TLP* completion = new TLP();
-    // createCplDTlp() takes as parameters: int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddress, OHCA5::CPLStatus cplStatus)
+    // createCplDTlp() takes as parameters: int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddressOHC, std::bitset<5> lowerAddressHeaderBase, OHCA5::CPLStatus cplStatus)
     TLP* completion_packet = completion->createCplDTlp(
         dataPayloadLengthInDw, // dataPayloadLengthInDW
-        data, // dataPayload
-        requesterId, // requesterId
-		tag, // tag
+        data,// dataPayload
+        tag, // tag
         completerId, // completerId
 		0, // byteCount
 		0, // busNumber
@@ -93,7 +93,8 @@ TLP* MemoryRequestHandler::handleMemoryRead(TLP* packet, TLPType packetType) {
 		0, // functionNumber
         destinationSegment, // destinationSegment
         completerSegment, // completerSegment
-        lowerAddress, // lowerAddress
+        lowerAddressOHC,
+        lowerAddressHeaderBase,
 		OHCA5::CPLStatus::True // cplStatus
     );
     return completion_packet;
