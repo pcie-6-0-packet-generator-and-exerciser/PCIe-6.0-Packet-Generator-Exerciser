@@ -60,7 +60,7 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 		if (nextTLP) {
 			packet = packets.front();
 			bitRep = packet->getBitRep();
-			bitRep.resize(236 * 8, false);
+			bitRep.resize(236 * 8);
 			packets.pop();
 			packetIndexInBytes = 0;
 		}
@@ -89,7 +89,7 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 					flit->TLPPayload.operator|=(bitRep.operator>>((236 - flitIndexInBytes - (packet->getTotalLength() - packetIndexInBytes)) * -8));
 					packetIndexInBytes += 236 - flitIndexInBytes;
 					bitRep.resize((packet->getTotalLength() - packetIndexInBytes) * 8);
-					bitRep.resize(236 * 8, false);
+					bitRep.resize(236 * 8);
 					nextTLP = false;
 					isPartialTLP = true;
 					pushReadyFlit(globals, flit, flitsToSend);
@@ -118,7 +118,7 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 							flit->TLPPayload.operator|=(bitRep.operator>>((236 - flitIndexInBytes - (packet->getTotalLength() - packetIndexInBytes)) * -8));
 							packetIndexInBytes += 236 - flitIndexInBytes;
 							bitRep.resize((packet->getTotalLength() - packetIndexInBytes) * 8);
-							bitRep.resize(236 * 8, false);
+							bitRep.resize(236 * 8);
 							nextTLP = false;
 							isPartialTLP = true;
 							pushReadyFlit(globals, flit, flitsToSend);
@@ -150,6 +150,7 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 			pushReadyFlit(globals, flit, flitsToSend);
 			flit = new Flit();
 			flitIndexInBytes = 0;
+			isPartialTLP = true;
 		}
 	}
 	if (nextTLP) pushReadyFlit(globals, flit, flitsToSend);
@@ -238,7 +239,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 	bool nextFlit = true;
 	int flitIndexinBytes = 0;
 	boost::dynamic_bitset<> payload;
-	while (!flits.empty())
+	while (!flits.empty() || flitIndexinBytes < 236)
 	{
 		if (nextFlit)
 		{
@@ -456,6 +457,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 					payloadCopy.resize(tlpPayload.size());
 					tlpPayload.operator|=(payloadCopy);
 					flitIndexinBytes += bytesRemaining;
+					bytesRemaining = 0;
 					payload.resize((236 - flitIndexinBytes) * 8);
 					payload.resize(236 * 8);
 				}
@@ -463,14 +465,16 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			tlpPayload.resize(payloadLength * 8);
 		}
 		// Create TLP
-		boost::dynamic_bitset<> tlpWhole(tlpWholeHeaderWithOHC.size() + tlpPayload.size());
+		int headerwithOHCSize = tlpWholeHeaderWithOHC.size();
+		boost::dynamic_bitset<> tlpWhole(headerwithOHCSize + tlpPayload.size());
 		tlpWholeHeaderWithOHC.resize(tlpWhole.size());
 		tlpWhole.operator|=(tlpWholeHeaderWithOHC);
-		tlpWhole.operator<<=(tlpWhole.size() - tlpWholeHeaderWithOHC.size());
+		tlpWhole.operator<<=(tlpWhole.size() - headerwithOHCSize);
 		tlpPayload.resize(tlpWhole.size());
 		tlpWhole.operator|=(tlpPayload);
 		TLP* tlp = TLP::getObjRep(tlpWhole);
 		extractedTLPs.push(tlp);
+		nextFlit = false;
 		updateAllocatedCredits(globals, tlp->creditConsumedType, tlp->headerConsumption, tlp->dataConsumption);
 	}
 	sendOn.push(extractedTLPs);
