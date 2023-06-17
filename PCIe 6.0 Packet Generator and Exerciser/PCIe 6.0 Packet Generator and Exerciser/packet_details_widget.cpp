@@ -166,12 +166,12 @@ void PacketDetails::createMemOHCvector(int row) {
 }
 
 
-void PacketDetails::createDataPayload(int row) {
+void PacketDetails::createDataPayload(int row, bool readOnly) {
 	
 	
 	string dataString;
 	boost::to_string(currentTLP->dataPayload, dataString);
-	CustomLineEdit* data = new CustomLineEdit("Data", 100, 50, QString::fromStdString(dataString), this, false);
+	CustomLineEdit* data = new CustomLineEdit("Data", 100, 50, QString::fromStdString(dataString), this, readOnly);
 	detailsLayout_->addWidget(data,row,0);
 
 	//saving to current LineEdits map 
@@ -210,6 +210,66 @@ void PacketDetails::viewMemWrite64() {
 	createMemOHCvector(4);
 	createDataPayload(5);
 }
+void PacketDetails::viewCpl() {
+	createHeader();
+	createCplCommon();
+}
+void PacketDetails::viewCpld() {
+	createHeader();
+	createCplCommon();
+	createDataPayload(4, true);
+}
+void PacketDetails::createCplCommon(){
+
+	NonHeaderBase* nonbase = currentTLP->header->nonBase;
+	CompletionNonHeaderBase* cplNonBase = dynamic_cast<CompletionNonHeaderBase*>(nonbase);
+
+	CustomLineEdit* completerId = new CustomLineEdit("Completer ID", 100, 50, QString::number(cplNonBase->completerID), this);
+	detailsLayout_->addWidget(completerId, 1, 0);
+	detailsLayout_->addWidget(new CustomLineEdit("EP", 100, 50, "0", this), 1, 1);
+
+	
+	string laString;
+	int n = static_cast<int>(cplNonBase->lowerAddress);
+	for (int i = 0; n > 0; i++)
+	{
+		laString.push_back(( n % 2) + '0'); ;
+		n = n / 2;
+	}
+	CustomLineEdit* LA6 = new CustomLineEdit("LA[6]", 100, 50, QString::fromStdString(laString.substr(4,1)), this);
+	detailsLayout_->addWidget(LA6, 1, 2);
+	CustomLineEdit* tag = new CustomLineEdit("Tag[13:0]", 100, 50, QString::number(static_cast<int>(cplNonBase->tag), 2), this);
+	detailsLayout_->addWidget(tag, 1, 3);
+
+	//bdf and byte count
+
+	CustomLineEdit* busNumber = new CustomLineEdit("Bus Number", 100, 50, QString::number(static_cast<int>(cplNonBase->busNumber), 2), this);
+	detailsLayout_->addWidget(busNumber, 2, 0);
+	CustomLineEdit* deviceNumber = new CustomLineEdit("Device Number", 100, 50, QString::number(static_cast<int>(cplNonBase->deviceNumber), 2), this);
+	detailsLayout_->addWidget(deviceNumber, 2, 1);
+	CustomLineEdit* functionNumber = new CustomLineEdit("Function Number", 100, 50, QString::number(static_cast<int>(cplNonBase->functionNumber), 2), this);
+	detailsLayout_->addWidget(functionNumber, 2, 2);
+	CustomLineEdit* LA5_2 = new CustomLineEdit("LA[5:2]", 100, 50, QString::fromStdString(laString.substr(0, 4)), this);  
+	detailsLayout_->addWidget(LA5_2, 2, 3);
+	CustomLineEdit* byteCount = new CustomLineEdit("Byte Count", 100, 50, QString::number(static_cast<int>(cplNonBase->byteCount), 2), this);
+	detailsLayout_->addWidget(byteCount, 2, 4);
+
+
+	//OHC A5
+	OHC* ohcElement = currentTLP->header->OHCVector[0];
+	OHCA5* ohca5 = dynamic_cast<OHCA5*>(ohcElement);
+	CustomLineEdit* destination = new CustomLineEdit("Destination Segment", 100, 50, QString::number(ohca5->destinationSegment, 2), this);
+	detailsLayout_->addWidget(destination, 3, 0);
+	CustomLineEdit* completerSegment = new CustomLineEdit("Completer Segment", 100, 50, QString::number(ohca5->completerSegment, 2), this);
+	detailsLayout_->addWidget(completerSegment, 3, 1);
+	detailsLayout_->addWidget(new CustomLineEdit("DSV", 100, 50, "0", this) , 3, 2);
+	detailsLayout_->addWidget(new CustomLineEdit("Reserved", 100, 50, "", this), 3, 3);
+    CustomLineEdit* LA4_0 = new CustomLineEdit("LA[1:0]", 100, 50, QString::fromStdString(ohca5->lowerAddress.to_string()), this);  
+	detailsLayout_->addWidget(LA4_0, 3, 4);
+	CustomLineEdit* cplStatus = new CustomLineEdit("Cpl Status", 100, 50, QString::number(static_cast<int>(ohca5->CPLStatusEnum), 2), this);
+	detailsLayout_->addWidget(cplStatus, 3, 5);
+
+}
 void PacketDetails::createConfigCommon() {
 	CustomLineEdit* requesterId = new CustomLineEdit("Requester ID", 100, 50, "0000000000000", this);
 	detailsLayout_->addWidget(requesterId, 1, 0);
@@ -237,14 +297,14 @@ void PacketDetails::createConfigCommon() {
 
 	lineEditsMap["registerNumber"] = registerNumber;
 }
-void PacketDetails::viewConfigRead0() {
+void PacketDetails::viewConfigRead() {
 	createHeader();
 	createConfigCommon();
 	createConfigOHCvector();
 
 
 }
-void PacketDetails::viewConfigWrite0() {
+void PacketDetails::viewConfigWrite() {
 	createHeader();
 	createConfigCommon();
 	createConfigOHCvector();
@@ -280,11 +340,19 @@ void PacketDetails::updateView(TLP* tlp) {
 
 	}
 	else if (tlp->header->TLPtype == TLPType::ConfigRead0 || tlp->header->TLPtype == TLPType::ConfigRead1) {
-		viewConfigRead0();
+		viewConfigRead();
 		contentLayout_->addLayout(detailsLayout_);
 	}
 	else if (tlp->header->TLPtype == TLPType::ConfigWrite0 || tlp->header->TLPtype == TLPType::ConfigWrite1) {
-		viewConfigWrite0();
+		viewConfigWrite();
+		contentLayout_->addLayout(detailsLayout_);
+	}
+	else if(tlp->header->TLPtype == TLPType::Cpl) {
+		viewCpl();
+		contentLayout_->addLayout(detailsLayout_);
+	}
+	else if (tlp->header->TLPtype == TLPType::CplD) {
+		viewCpld();
 		contentLayout_->addLayout(detailsLayout_);
 	}
 	else {
@@ -297,6 +365,7 @@ void PacketDetails::updateView(TLP* tlp) {
 	
 }
 
+
 void PacketDetails::clearView() {
 	// Removes any existing content from the details view 
 	
@@ -307,11 +376,7 @@ void PacketDetails::clearView() {
 			delete child->widget();
 			delete child;
 		}
-		
 	}
-	
-
-	
 }
 
 void PacketDetails::saveMemCommon32() {

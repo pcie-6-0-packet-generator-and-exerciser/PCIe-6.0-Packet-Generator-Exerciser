@@ -25,7 +25,8 @@ namespace Ui
         void createConfigCommon();
         void createConfigOHCvector();
         void createMemOHCvector(int row);
-        void createDataPayload(int row);
+        void createDataPayload(int row, bool readOnly = false);
+        void createCplCommon();
 
 
 
@@ -33,8 +34,10 @@ namespace Ui
         void viewMemRead64();
         void viewMemWrite32();
         void viewMemWrite64();
-        void viewConfigRead0();
-        void viewConfigWrite0();
+        void viewConfigRead();
+        void viewConfigWrite();
+        void viewCpl();
+        void viewCpld();
 
         //void viewVendorMsg();
        
