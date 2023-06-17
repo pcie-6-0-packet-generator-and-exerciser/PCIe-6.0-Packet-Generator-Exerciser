@@ -345,6 +345,7 @@ void ContentWidget::onSubmitButtonClick() {
 	resultExplorerTab_->setStyleSheet(::selectedTabStyleString);
 	sequenceBrowser_->setCurrentTab(currentTab::resultExplorer);
 	sequenceBrowser_->setAcceptDrops(false);
+	submitButton_->setVisible(false);
 
 }
 
@@ -355,6 +356,7 @@ void ContentWidget::onSequenceExplorerTabClick() {
 	resultExplorerTab_->setStyleSheet(::unselectedTabStyleString);
 	sequenceBrowser_->setCurrentTab(currentTab::sequenceExplorer);
 	sequenceBrowser_->setAcceptDrops(true);
+	submitButton_->setVisible(true);
 }
 
 void ContentWidget::onResultExplorerTabClick() {
@@ -364,6 +366,8 @@ void ContentWidget::onResultExplorerTabClick() {
 	resultExplorerTab_->setStyleSheet(::selectedTabStyleString);
 	sequenceBrowser_->setCurrentTab(currentTab::resultExplorer);
 	sequenceBrowser_->setAcceptDrops(false);
+	submitButton_->setVisible(false);
+
 }
 
 void ContentWidget::onConfigSpaceButtonClick() {
