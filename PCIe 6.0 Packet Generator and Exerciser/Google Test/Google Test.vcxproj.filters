@@ -17,6 +17,8 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="type1_config_unittest.cpp" />
     <ClCompile Include="layers_receivePayloadFlit_unittests.cpp" />
+    <ClCompile Include="handle_memory_read_unit_test.cpp" />
+    <ClCompile Include="prepareFlit_unittest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
