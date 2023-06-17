@@ -68,10 +68,10 @@ TLPCard::TLPCard( TLPType tlpType, QWidget* parent)
 	this->tlpType = tlpType;
 	switch (tlpType) {
 	case TLPType::MemRead32:
-		tlp = TLP::createMemRead32Tlp(0, zeroPayload, 0, 0, 0, 0, 0);
+		tlp = TLP::createMemRead32Tlp(0,  0, 0, 0, 0, 0);
 		break;
 	case TLPType::MemRead64:
-		tlp = TLP::createMemRead64Tlp(0, zeroPayload, 0, 0, 0, 0, 0);
+		tlp = TLP::createMemRead64Tlp(0,  0, 0, 0, 0, 0);
 		break;
 	case TLPType::MemWrite32:
 		tlp = TLP::createMemWrite32Tlp(1, zeroPayload, 0, 0, 0, 0, 0);

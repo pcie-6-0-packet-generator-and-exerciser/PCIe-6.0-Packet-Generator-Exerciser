@@ -25,9 +25,9 @@ public:
 		this->headerConsumption = 0;
 		this->dataConsumption = 0;
 	}
-	static TLP* createMemRead32Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE);
+	static TLP* createMemRead32Tlp(int dataPayloadLengthInDW, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE);
 	static TLP* createMemWrite32Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4>lastDWBE);
-	static TLP* createMemRead64Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE);
+	static TLP* createMemRead64Tlp(int dataPayloadLengthInDW,int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE);
 	static TLP* createMemWrite64Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, long long address, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE);
 	static TLP* createConfigRead0Tlp(int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE, int destinationSegment);
 	static TLP* createConfigWrite0Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int registerNumber, int deviceNumber, int busNumber, int functionNumber, std::bitset<4> firstDWBE, std::bitset<4> lastDWBE, int destinationSegment);

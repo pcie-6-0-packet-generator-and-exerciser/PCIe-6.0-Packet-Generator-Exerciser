@@ -11,7 +11,7 @@ int cplDedicatedCredit[] = { 10, 10 }
 
 #define DEFAULT_CREDIT_VALUES pSharedCredit, npSharedCredit, cplSharedCredit, pDedicatedCredit, npDedicatedCredit, cplDedicatedCredit
 
-#define DEFAULT_MEM_READ32_TLP_PARAMS 0, boost::dynamic_bitset<>(), 0, 0, 0, 0, 0
+#define DEFAULT_MEM_READ32_TLP_PARAMS 0,  0, 0, 0, 0, 0
 #define DEFAULT_MEM_WRITE32_TLP_PARAMS 0, boost::dynamic_bitset<>(), 0, 0, 0, 0, 0
 
 // Test Suite: SendPayloadFlitTestSuite

@@ -64,7 +64,7 @@ TLP* TLP::getObjRep(boost::dynamic_bitset<> bitset) {
  * @param lastDWBE An array of four integers indicating which bytes are enabled in the last DW.
  * @return A TLP* object representing the MemRead32 TLP.
  */
-TLP* TLP::createMemRead32Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE) {
+TLP* TLP::createMemRead32Tlp(int dataPayloadLengthInDW, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE) {
 	TLP* memRead32Tlp = new TLP;
 	memRead32Tlp->header->OHCVector.push_back(new OHCA1(firstDWBE, lastDWBE));
 	memRead32Tlp->header->TLPtype = TLPType::MemRead32;
@@ -74,7 +74,7 @@ TLP* TLP::createMemRead32Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> 
 	memRead32Tlp->header->nonBase = new AddressRouting32Bit(requesterId, tag, address);
 
 	// clears out the data payload
-	memRead32Tlp->dataPayload = dataPayload;
+	memRead32Tlp->dataPayload.reset();
 	memRead32Tlp->creditConsumedType = Dllp::CreditType::NP;
 	memRead32Tlp->headerConsumption = 1;
 	memRead32Tlp->dataConsumption = 0;
@@ -120,14 +120,14 @@ TLP* TLP::createMemWrite32Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<>
  * @param lastDWBE An array of four integers indicating which bytes are enabled in the last DW.
  * @return A TLP* object representing the MemRead64 TLP.
  */
-TLP* TLP::createMemRead64Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE) {
+TLP* TLP::createMemRead64Tlp(int dataPayloadLengthInDW, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE) {
 	TLP* memRead64Tlp = new TLP;
 	memRead64Tlp->header->OHCVector.push_back(new OHCA1(firstDWBE, lastDWBE));
 	memRead64Tlp->header->TLPtype = TLPType::MemRead64;
 	memRead64Tlp->header->lengthInDoubleWord = dataPayloadLengthInDW;
 	memRead64Tlp->header->nonBase = new AddressRouting64Bit(requesterId, tag, address);;
 
-	memRead64Tlp->dataPayload = dataPayload;
+	memRead64Tlp->dataPayload.reset();
 	memRead64Tlp->creditConsumedType = Dllp::CreditType::NP;
 	memRead64Tlp->headerConsumption = 1;
 	memRead64Tlp->dataConsumption = 0;

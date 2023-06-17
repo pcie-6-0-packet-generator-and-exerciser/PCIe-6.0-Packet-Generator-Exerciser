@@ -23,7 +23,7 @@ TEST(MemoryReadRequests, memoryReadRequest32) {
     TLP* tlpRequest = new TLP();
 
     // the createMemRead32TLP method takes int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE 
-    TLP* request = tlpRequest->createMemRead32Tlp(3, boost::dynamic_bitset<>(96,0), 0, 0, 3 , std::bitset<4>(0b1111), std::bitset<4>(0b1111));
+    TLP* request = tlpRequest->createMemRead32Tlp(3, 0, 0, 3 , std::bitset<4>(0b1111), std::bitset<4>(0b1111));
     request->header->lengthInDoubleWord = 3;
 
     // adding the TLP to the queue
@@ -78,7 +78,7 @@ TEST(MemoryReadRequests, memoryReadRequest64) {
     TLP* tlpRequest = new TLP();
 
     // the createMemRead64TLP method takes int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4> lastDWBE 
-    TLP* request = tlpRequest->createMemRead64Tlp(3, boost::dynamic_bitset<>(96, 0), 0, 0, 3, std::bitset<4>(0b1111), std::bitset<4>(0b1111));
+    TLP* request = tlpRequest->createMemRead64Tlp(3,  0, 0, 3, std::bitset<4>(0b1111), std::bitset<4>(0b1111));
     request->header->lengthInDoubleWord = 3;
     // adding the TLP to the queue
     receivedQueue.push(request);
