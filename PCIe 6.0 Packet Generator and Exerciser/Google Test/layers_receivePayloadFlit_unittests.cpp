@@ -102,7 +102,7 @@ TEST(ReceivePayloadFlitTestSuite, SingleTlpWithDataPayload) {
 	std::queue<TLP*> tlps;
 
 	boost::dynamic_bitset<> dynamicBitsetPayload = boost::dynamic_bitset<>(32, 0xffffffff);
-	
+
 	TLP* tlp = TLP::createMemWrite32Tlp(DEFAULT_MEM_WRITE32_TLP_PARAMS);
 	tlps.push(tlp);
 
@@ -137,3 +137,49 @@ TEST(ReceivePayloadFlitTestSuite, SingleTlpWithDataPayload) {
 	EXPECT_EQ(receivedTlp->headerConsumption, 1);
 	EXPECT_EQ(receivedTlp->dataConsumption, ceil(tlp->header->lengthInDoubleWord / FC_UNIT_SIZE));
 }
+
+TEST(ReceivePayloadFlitTestSuite, MultipleTlpsWithoutDataPayload) {
+	DEFAULT_CREDIT_PARAMS;
+	Globals globals(DEFAULT_CREDIT_VALUES);
+
+	// Set up parameters for sendPayloadFlit
+	QueueWrapper<Flit*> sendOnQueueFlits;
+	std::queue<TLP*> tlps;
+
+	TLP* tlp = TLP::createMemRead32Tlp(DEFAULT_MEM_READ32_TLP_PARAMS);
+
+	for (int i = 0; i < 5; ++i) tlps.push(tlp);
+
+	layersWrapper.sendPayloadFlit(globals, tlps, sendOnQueueFlits);
+
+	// Set up parameters for receivePayloadFlit
+	QueueWrapper<TLP*> sendOnQueueTlps;
+	std::queue<Flit*> flits;
+
+	auto flitsToSend = sendOnQueueFlits.popAll();
+
+
+	layersWrapper.receivePayloadFlit(globals, flits, sendOnQueueTlps);
+
+	// Check that the TLPs were sent
+	EXPECT_EQ(sendOnQueueTlps.size(), 5);
+
+	while (sendOnQueueTlps.size() > 0) {
+		TLP* receivedTlp = sendOnQueueTlps.pop();
+		EXPECT_EQ(receivedTlp->header->TLPtype, TLPType::MemRead32);
+		EXPECT_EQ(receivedTlp->header->lengthInDoubleWord, 0);
+		EXPECT_EQ(receivedTlp->header->nonBase->requestID, 0);
+		EXPECT_EQ(receivedTlp->header->nonBase->getTag(), 0);
+		EXPECT_EQ(dynamic_cast<AddressRouting32Bit*>(receivedTlp->header->nonBase)->address, 0);
+		EXPECT_EQ(receivedTlp->header->OHCVector.size(), 1);
+
+		auto ohca1 = dynamic_cast<OHCA1*>(receivedTlp->header->OHCVector[0]);
+		EXPECT_EQ(ohca1->firstDWBE.to_ulong(), 0);
+		EXPECT_EQ(ohca1->lastDWBE.to_ulong(), 0);
+
+		EXPECT_EQ(receivedTlp->creditConsumedType, Dllp::CreditType::NP);
+		EXPECT_EQ(receivedTlp->headerConsumption, 1);
+		EXPECT_EQ(receivedTlp->dataConsumption, 0);
+	}
+}
+
