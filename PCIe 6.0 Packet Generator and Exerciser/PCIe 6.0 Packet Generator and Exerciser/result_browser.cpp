@@ -44,6 +44,9 @@ void ResultBrowser::createCardsSequence(std::queue<TLP*> incomingPackets) {
 			TLPCard* emptyCard = new TLPCard();
 			emptyCard->setCurrentTab(currentTab::resultExplorer);
 			emptyCard->setStyleSheet("background: transparent;");
+			emptyCard->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+			emptyCard->setMinimumSize(200, 100);
+			
 			cards_.push_back(emptyCard);
 		}
 		expectedTag++;

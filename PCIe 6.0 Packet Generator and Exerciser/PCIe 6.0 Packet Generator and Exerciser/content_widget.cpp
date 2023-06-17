@@ -327,8 +327,9 @@ void ContentWidget::onSubmitButtonClick() {
 	}
 
 	std::queue<TLP*> resultingConfigCompletions;
-	for (size_t i = 0; i < configPackets.size(); ++i) {
+	while (!configPackets.empty()) {
 		TLP* currentTLP = configPackets.front();
+		configPackets.pop();
 		if (currentTLP->header->TLPtype == TLPType::ConfigRead1) {
 
 			NonHeaderBase* nonbase = currentTLP->header->nonBase;
