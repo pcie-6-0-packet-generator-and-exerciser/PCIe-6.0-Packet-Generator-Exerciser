@@ -28,13 +28,13 @@ boost::dynamic_bitset<> MemoryMap::read(uint64_t address, long long requiredToRe
 	// to extract the data payload
     // requiredToRead = 1DW == 32 Bites
 	boost::dynamic_bitset<> dataPayload = get_bits(memory, address * 32, ((address + requiredToRead) * 32) - 1);
-    boost::dynamic_bitset<> newPayload, temp;
+    boost::dynamic_bitset<> middlePayload, lastDoubleWord , updatedLastDoubleWord, temp;
 
     if (requiredToRead > 2) {
-        newPayload = get_bits(dataPayload, 1 * 32, requiredToRead * 32 - 1 * 32);
-        boost::dynamic_bitset lastDoubleWord = get_bits(dataPayload, (requiredToRead - 1 ) * 32 , requiredToRead * 32);
+        middlePayload = get_bits(dataPayload, 1 * 32, requiredToRead * 32 - 1 * 32);
+        lastDoubleWord = get_bits(dataPayload, (requiredToRead - 1 ) * 32 , requiredToRead * 32);
         int onesCounter2 = 0;
-        boost::dynamic_bitset updatedLastDoubleWord = lastDoubleWord;
+        updatedLastDoubleWord = lastDoubleWord;
 
         for (int i = 0; i < 4; i++) {
             if (lastByteEnable[i] == 1) {
@@ -42,13 +42,13 @@ boost::dynamic_bitset<> MemoryMap::read(uint64_t address, long long requiredToRe
             }
         }
         updatedLastDoubleWord.resize(onesCounter2 * 8);
-        temp.resize(onesCounter2 * 8);
+        //temp.resize(onesCounter2 * 8);
         for (size_t i = 0; i < 4; i++) {
 			// for each bit in the last byte enable
             if (lastByteEnable[i] == 1) {
-				temp = get_bits(lastDoubleWord, i * 8, (i * 8) + 7);
-				temp = temp << (i * 8);
-				newPayload = newPayload | temp;
+                updatedLastDoubleWord |= ((get_bits(lastDoubleWord, i * 8, (i * 8) + 7)) << (i*8));
+				//temp = temp << (i * 8);
+				//newPayload = newPayload | temp;
 			}
 		}
     }
@@ -62,46 +62,82 @@ boost::dynamic_bitset<> MemoryMap::read(uint64_t address, long long requiredToRe
 			onesCounter++;
 		}
 	}
+    // 1101 // 24 bits
 
-    updatedFirstDoubleWord.resize(onesCounter * 8);
-    temp.resize(onesCounter * 8);
+    updatedFirstDoubleWord.resize(onesCounter * 8); // 24 bits
+    //temp.resize(onesCounter * 8); // 24bits
 
     for (size_t i = 0; i < firstByteEnable.size(); i++) {
         // for each bit in the first byte enable
         if (firstByteEnable[i] == 1) {
             temp = get_bits(firstDoubleWord, i * 8, (i * 8) + 7);
-            temp = temp << (i * 8);
-            updatedFirstDoubleWord = updatedFirstDoubleWord | temp;
+            temp.resize(updatedFirstDoubleWord.size());
+            updatedFirstDoubleWord |= (temp << (i * 8));
+            //temp = temp << (8);   //          11110000
+            //updatedFirstDoubleWord = updatedFirstDoubleWord | temp;
         }
     }
 
-    return dataPayload;
+    int totalSize = updatedFirstDoubleWord.size() + middlePayload.size() + updatedLastDoubleWord.size();
+
+    boost::dynamic_bitset<> resultPayload(totalSize);
+    updatedFirstDoubleWord.resize(totalSize);
+    middlePayload.resize(totalSize);
+    updatedLastDoubleWord.resize(totalSize);
+
+    resultPayload |= (updatedLastDoubleWord << (totalSize - updatedLastDoubleWord.size())) ;
+    resultPayload |= (middlePayload << (updatedFirstDoubleWord.size()));
+    resultPayload |= updatedFirstDoubleWord;
+
+    return resultPayload;
 }
 
 
-bool MemoryMap::write(uint64_t address, boost::dynamic_bitset<> requiredBytesToWriteAt, boost::dynamic_bitset<> dataToBeWritten) {
-    size_t startBit = address * 32;
-    size_t endBit = startBit + (requiredBytesToWriteAt.size());
 
-    boost::dynamic_bitset<> dataPayload = memory;
 
-    // Preserve the existing memory data outside the write range
-    for (size_t i = startBit; i < endBit; i++) {
-        if (requiredBytesToWriteAt[i] == 0) {
-            dataPayload[i] = memory[i];
+// int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4>lastDWBE
+void MemoryMap::write(uint64_t address, long long requiredDataLengthToWrite, boost::dynamic_bitset<> payload, std::bitset<4> firstByteEnable, std::bitset<4> lastByteEnable) 
+{ 
+    
+    int writeIndex = address * 32;
+    int dataTobeWrittenIndex = 0;
+    // determine exactly the data to be written according to the byte enables 
+    boost::dynamic_bitset<> dataToBeWritten = payload;
+
+    // first byte enable
+    for (size_t i = 0; i < firstByteEnable.size(); i++) {
+		// for each bit in the first byte enable
+        if (firstByteEnable[i] == 1) {
+
+            for (int j = 0; j < 8; j++) {
+				memory[writeIndex] = dataToBeWritten[i * 8 + j];
+				writeIndex++;
+                dataTobeWrittenIndex++;
+			}
         }
-    }
-
-    // Update the dataPayload with the new values to be written
-    size_t dataIndex = 0;
-    for (size_t i = startBit; i < endBit; i++) {
-        if (requiredBytesToWriteAt[dataIndex] == 1) {
-            dataPayload[i] = dataToBeWritten[dataIndex];
-            dataIndex++;
+        else {
+            dataTobeWrittenIndex += 8;
         }
+	}
+    while (writeIndex < ((address + requiredDataLengthToWrite) * 32) - 32 ) {
+        memory[writeIndex + address * 32] = dataToBeWritten[dataTobeWrittenIndex];
     }
+	// last byte enable
+    for (size_t i = 0; i < lastByteEnable.size(); i++) {
+        if(dataTobeWrittenIndex >= dataToBeWritten.size())
+			break;
+		// for each bit in the last byte enable
+        if (lastByteEnable[i] == 1) {
+            for (int j = 0; j < 8; j++) {
+                memory[writeIndex] = dataToBeWritten[i * 8 + j + dataTobeWrittenIndex];
+                writeIndex++;
+                dataTobeWrittenIndex++;
+            }
+        }
+        else {
+            dataTobeWrittenIndex += 8;
+        }
+	}
 
-    memory = dataPayload;
-    return true;
 }
 

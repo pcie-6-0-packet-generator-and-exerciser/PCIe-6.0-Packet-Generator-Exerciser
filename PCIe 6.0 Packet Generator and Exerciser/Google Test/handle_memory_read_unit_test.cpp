@@ -44,9 +44,9 @@ TEST(MemoryReadRequests, memoryReadRequest32) {
     std::bitset<5> lowerAddressHeaderBase = std::bitset<5>(0b00000);
 
     // createCplDTlp() takes as parameters: int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddressOHC, std::bitset<5> lowerAddressHeaderBase, OHCA5::CPLStatus cplStatus)
-    expectedCompletion->createCplDTlp(
-        3, // dataPayloadLengthInDW
-        boost::dynamic_bitset<>(96,0),// dataPayload
+    expectedCompletion =  expectedCompletion->createCplDTlp(
+        1, // dataPayloadLengthInDW
+        boost::dynamic_bitset<>(32,0),// dataPayload
         0, // tag
         0, // completerId
         0, // byteCount

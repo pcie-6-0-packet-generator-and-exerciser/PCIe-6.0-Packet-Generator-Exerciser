@@ -9,7 +9,7 @@ class MemoryMap {
 public:
     static MemoryMap* constructMemoryMap();
     boost::dynamic_bitset<> read(uint64_t address, long long requiredToRead, std::bitset<4> firstByteEnable, std::bitset<4> lastByteEnable);
-    bool write(uint64_t address, boost::dynamic_bitset<> numberOfBytes, boost::dynamic_bitset<> data);
+    void write(uint64_t address, long long requiredDataLengthToWrite, boost::dynamic_bitset<> payload, std::bitset<4> firstByteEnable, std::bitset<4> lastByteEnable);
 
     private:
         static MemoryMap* memoryMap;
