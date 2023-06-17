@@ -37,7 +37,8 @@ TLP* TLP::getObjRep(boost::dynamic_bitset<> bitset) {
 	int lengthValue = (length_bitset.to_ulong() == 0 ? 1024 : length_bitset.to_ulong());
 	int OHCVectorLength = 1;
 	boost::dynamic_bitset<> TLPType_bitset = get_bits(bitset, size - 8, size - 1);
-	int headerLength = getHeaderLengthByType((TLPType)TLPType_bitset.to_ulong());
+	TLPType tlpType = (TLPType)TLPType_bitset.to_ulong();
+	int headerLength = getHeaderLengthByType(tlpType);
 	if (TLPType_bitset.to_ulong() == 64
 		|| TLPType_bitset.to_ulong() == 96
 		|| TLPType_bitset.to_ulong() == 68
@@ -48,6 +49,36 @@ TLP* TLP::getObjRep(boost::dynamic_bitset<> bitset) {
 	}
 	boost::dynamic_bitset<> tlpHeader_sub_bits = get_bits(bitset, size - (headerLength * 8) - OHCVectorLength * 32, size - 1);
 	tlp->header = TLPHeader::getObjRep(tlpHeader_sub_bits);
+
+	switch (tlpType)
+	{
+	case TLPType::MemRead32:
+		break;
+	case TLPType::MemWrite32:
+		break;
+	case TLPType::MemRead64:
+		break;
+	case TLPType::MemWrite64:
+		break;
+	case TLPType::Cpl:
+		break;
+	case TLPType::CplD:
+		break;
+	case TLPType::VendorMsg:
+		break;
+	case TLPType::ConfigRead0:
+		break;
+	case TLPType::ConfigWrite0:
+		break;
+	case TLPType::ConfigRead1:
+		break;
+	case TLPType::ConfigWrite1:
+		break;
+	default:
+		break;
+	}
+
+
 
 	return tlp;
 }
