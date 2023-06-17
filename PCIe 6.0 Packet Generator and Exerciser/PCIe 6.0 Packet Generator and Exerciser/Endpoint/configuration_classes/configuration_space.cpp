@@ -16,7 +16,7 @@ ConfigurationSpace::ConfigurationSpace()
 
     pushRegister(0, Device_ID, HARDWARE_INITIALIZED, 2, 0, 0); // Device ID is set to zero till we get another value from Siemens
 
-    pushRegister(0, Command, READ_WRITE, 2, 3, 0xFFFFFABC);
+    pushRegister(6, Command, READ_WRITE, 2, 3, 0xFFFFFABC);
 
     pushRegister(17, Status, READ_WRITE, 2, 17, 0xFFFF5EFF);
 
