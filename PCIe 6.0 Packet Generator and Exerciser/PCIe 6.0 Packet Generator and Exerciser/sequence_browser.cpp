@@ -90,7 +90,7 @@ void SequenceBrowser::manageLayout()
 
 std::queue<TLP*> SequenceBrowser::getTLPCards() {
 	std::queue<TLP*> tlpCards;
-	int tag = 1;
+	int tag = 0;
 	for (auto card : cards_) {
 		card->tlp->header->nonBase->setTag(tag++);
 		tlpCards.push(card->tlp);

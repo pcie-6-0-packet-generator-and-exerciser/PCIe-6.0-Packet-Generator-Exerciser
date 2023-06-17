@@ -7,18 +7,20 @@
 
 namespace Ui
 {
+    class PacketDetails;
     class ResultBrowser : public QFrame
     {
         Q_OBJECT
 
     public:
-        explicit ResultBrowser(QWidget* parent = nullptr);
+        explicit ResultBrowser(QWidget* parent, PacketDetails* packetDetails);
         ~ResultBrowser();
-    private:
         void createCardsSequence(std::queue<TLP*> incomingPackets);
+    private:
         void manageLayout();
         
     private:
+        PacketDetails* packetDetails_;
         QVBoxLayout* cardLayout_;
         std::list<TLPCard*> cards_;
     };
