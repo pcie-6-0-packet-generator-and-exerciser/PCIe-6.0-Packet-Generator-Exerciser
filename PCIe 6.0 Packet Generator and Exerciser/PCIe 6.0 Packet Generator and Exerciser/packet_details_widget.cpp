@@ -227,7 +227,16 @@ void PacketDetails::createCplCommon(){
 	CustomLineEdit* completerId = new CustomLineEdit("Completer ID", 100, 50, "0000000000000", this);
 	detailsLayout_->addWidget(completerId, 1, 0);
 	detailsLayout_->addWidget(new CustomLineEdit("EP", 100, 50, "0", this), 1, 1);
-	CustomLineEdit* LA6 = new CustomLineEdit("LA[6]", 100, 50, "00", this); /////////////to be changed //////////////////////////
+
+	
+	string laString;
+	int n = static_cast<int>(cplNonBase->lowerAddress);
+	for (int i = 0; n > 0; i++)
+	{
+		laString.push_back(( n % 2) + '0'); ;
+		n = n / 2;
+	}
+	CustomLineEdit* LA6 = new CustomLineEdit("LA[6]", 100, 50, QString::fromStdString(laString.substr(4,1)), this);
 	detailsLayout_->addWidget(LA6, 1, 2);
 	CustomLineEdit* tag = new CustomLineEdit("Tag[13:0]", 100, 50, QString::number(static_cast<int>(cplNonBase->tag), 2), this);
 	detailsLayout_->addWidget(tag, 1, 3);
@@ -240,7 +249,7 @@ void PacketDetails::createCplCommon(){
 	detailsLayout_->addWidget(deviceNumber, 2, 1);
 	CustomLineEdit* functionNumber = new CustomLineEdit("Function Number", 100, 50, QString::number(static_cast<int>(cplNonBase->functionNumber), 2), this);
 	detailsLayout_->addWidget(functionNumber, 2, 2);
-	CustomLineEdit* LA5_2 = new CustomLineEdit("LA[5:2]", 100, 50, " ", this);  /////////////to be changed //////////////////////////
+	CustomLineEdit* LA5_2 = new CustomLineEdit("LA[5:2]", 100, 50, QString::fromStdString(laString.substr(0, 4)), this);  
 	detailsLayout_->addWidget(LA5_2, 2, 3);
 	CustomLineEdit* byteCount = new CustomLineEdit("Byte Count", 100, 50, QString::number(static_cast<int>(cplNonBase->byteCount), 2), this);
 	detailsLayout_->addWidget(byteCount, 2, 4);
