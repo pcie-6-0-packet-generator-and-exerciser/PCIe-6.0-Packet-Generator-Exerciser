@@ -224,7 +224,7 @@ void PacketDetails::createCplCommon(){
 	NonHeaderBase* nonbase = currentTLP->header->nonBase;
 	CompletionNonHeaderBase* cplNonBase = dynamic_cast<CompletionNonHeaderBase*>(nonbase);
 
-	CustomLineEdit* completerId = new CustomLineEdit("Completer ID", 100, 50, "0000000000000", this);
+	CustomLineEdit* completerId = new CustomLineEdit("Completer ID", 100, 50, QString::number(cplNonBase->completerID), this);
 	detailsLayout_->addWidget(completerId, 1, 0);
 	detailsLayout_->addWidget(new CustomLineEdit("EP", 100, 50, "0", this), 1, 1);
 
