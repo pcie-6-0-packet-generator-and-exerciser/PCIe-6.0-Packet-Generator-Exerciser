@@ -126,11 +126,6 @@ TLPHeader* TLPHeader::getObjRep(boost::dynamic_bitset<> bitset) {
     //Length
     boost::dynamic_bitset<> length_bitset = get_bits(bitset, size - 32, size - 23);
     int lengthValue = length_bitset.to_ulong();
-    if (lengthValue == 0) {
-        tlpHeader->lengthInDoubleWord = 1024;
-    }
-    else {
-        tlpHeader->lengthInDoubleWord = lengthValue;
-    }
+    tlpHeader->lengthInDoubleWord = lengthValue;
     return tlpHeader;
 }
