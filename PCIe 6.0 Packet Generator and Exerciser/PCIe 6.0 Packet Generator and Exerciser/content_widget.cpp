@@ -10,8 +10,9 @@
 #include "type_browser.h"
 #include "result_browser.h"
 #include"packet_details_widget.h"
-#include"config_space_widget.h"
+#include "config_space_widget.h"
 #include "type1_config_space/type1_config.h"
+#include "utils/ohc.h"
 
 namespace {
 	constexpr char sequenceExplorerLabel[] = "Sequence Explorer";
@@ -158,7 +159,9 @@ void ContentWidget::createBody()
 	resultBrowserLayout->addWidget(resultLabel, 1, Qt::AlignHCenter);
 	resultBrowserLayout->setStretchFactor(resultLabel, 1);
 
-	resultBrowser_ = new ResultBrowser(body_);
+	PacketDetails* packetDetails = new PacketDetails(body_);
+
+	resultBrowser_ = new ResultBrowser(body_, packetDetails);
 	QScrollBar* resultSideBar = new QScrollBar(Qt::Vertical, nullptr);
 	QScrollArea* resultScrollArea = new QScrollArea;
 	resultScrollArea->setWidget(resultBrowser_);
@@ -179,7 +182,6 @@ void ContentWidget::createBody()
 
 
 	//packet details widget
-	PacketDetails* packetDetails = new PacketDetails(body_);
 	sequenceBrowser_->packetDetails = packetDetails;
 	bodyLayout->addWidget(packetDetails);
 	bodyLayout->setStretchFactor(packetDetails, 2);
@@ -272,6 +274,29 @@ void ContentWidget::manageLayout()
 	setLayout(contentLayout);
 }
 
+std::bitset<2> getLowerAddressOHC(std::bitset<4> firstDWenableBytes) {
+	if (firstDWenableBytes == std::bitset<4>("0000")) {
+		return std::bitset<2>("00");
+	}
+	else if (firstDWenableBytes == std::bitset<4>("0001")) {
+		return std::bitset<2>("00");
+	}
+	else if (firstDWenableBytes == std::bitset<4>("0010")) {
+		return std::bitset<2>("01");
+	}
+	else if (firstDWenableBytes == std::bitset<4>("0100")) {
+		return std::bitset<2>("10");
+	}
+	else if (firstDWenableBytes == std::bitset<4>("1000")) {
+		return std::bitset<2>("11");
+	}
+	else {
+		// Handle unsupported case
+		// You can assign a default value or throw an exception, depending on your requirements
+		return std::bitset<2Ui64>("00");
+	}
+}
+
 void ContentWidget::onSubmitButtonClick() {
 	/*
 	1- Make 2 queues
@@ -284,14 +309,15 @@ void ContentWidget::onSubmitButtonClick() {
 
 	*/
 	std::queue<TLP*> allPackets = sequenceBrowser_->getTLPCards(); //this numbers tags incrementaly from 0 to n
-	
+
 	std::queue<TLP*> configPackets; //queue for the configuration packets
 	std::queue<TLP*> restPackets; //queue for the rest of the packets
 
-	
+
 	//separate the data		
-	for (size_t i = 0; i < allPackets.size(); ++i) {
+	while (!allPackets.empty()) {
 		TLP* tlp = allPackets.front();
+		allPackets.pop();
 		if (tlp->header->TLPtype == TLPType::ConfigRead1 || tlp->header->TLPtype == TLPType::ConfigWrite1) {
 			configPackets.push(tlp);
 		}
@@ -299,26 +325,71 @@ void ContentWidget::onSubmitButtonClick() {
 			restPackets.push(tlp);
 		}
 	}
-	
+
 	std::queue<TLP*> resultingConfigCompletions;
 	for (size_t i = 0; i < configPackets.size(); ++i) {
-		TLP* tlp = configPackets.front();
-		if (tlp->header->TLPtype == TLPType::ConfigRead1) {
+		TLP* currentTLP = configPackets.front();
+		if (currentTLP->header->TLPtype == TLPType::ConfigRead1) {
+
+			NonHeaderBase* nonbase = currentTLP->header->nonBase;
+			ConfigNonHeaderBase* configNonBase = static_cast<ConfigNonHeaderBase*>(nonbase);
+
+			int dataPayloadLengthInDW = currentTLP->header->lengthInDoubleWord;
+			boost::dynamic_bitset<> dataPayload = type1Config_->readType1Reg(configNonBase->registerNumber);
+			int tag = configNonBase->getTag();
+			std::bitset<2> lowerAddress = getLowerAddressOHC(dynamic_cast<OHCA3*>(currentTLP->header->OHCVector[0])->firstDWBE);
 			//make the completion and add it to resultingConfigCompletions
+			TLP* completion = TLP::createCplDTlp(dataPayloadLengthInDW,
+				dataPayload,
+				tag,
+				0,
+				0,
+				configNonBase->busNumber,
+				configNonBase->deviceNumber,
+				configNonBase->functionNumber,
+				0,
+				0,
+				lowerAddress,
+				std::bitset<5>(0),
+				OHCA5::CPLStatus::True);
+			//completion->header->nonBase->setTag()
+			resultingConfigCompletions.push(completion);
 		}
-		else {
+		else if (currentTLP->header->TLPtype == TLPType::ConfigWrite1){
+			NonHeaderBase* nonbase = currentTLP->header->nonBase;
+			ConfigNonHeaderBase* configNonBase = dynamic_cast<ConfigNonHeaderBase*>(nonbase);
+
 			//make the completion and add it to resultingConfigCompletions
+			TLP* completion = TLP::createCplTlp(configNonBase->getTag(),
+				0,
+				0,
+				configNonBase->busNumber,
+				configNonBase->deviceNumber,
+				configNonBase->functionNumber,
+				0,
+				0, 
+				getLowerAddressOHC(dynamic_cast<OHCA3*>(currentTLP->header->OHCVector[0])->firstDWBE),
+				std::bitset<5>(0),
+				OHCA5::CPLStatus::True);
+
+				type1Config_->writeType1Reg(configNonBase->registerNumber, currentTLP->dataPayload);
+
+			resultingConfigCompletions.push(completion);
 		}
 	}
-	rootComplexToLayers_->push(restPackets);
+	std::queue<TLP*> resultingRestCompletions;
+	if(restPackets.size() > 0){
+		rootComplexToLayers_->push(restPackets);
+		//****Uncomment this to see the result when the layers are connected to the root complex****
+		//Handle all memory writes no popAll
+		resultingRestCompletions = layersToRootComplex_->popAll();
 
-	//****Uncomment this to see the result when the layers are connected to the root complex****
-	std::queue<TLP*> resultingRestCompletions= layersToRootComplex_->popAll();
+	}
 	std::queue<TLP*> resultingCompletions;
 
 	//Merge queues according to the tags
 	//Do message completions if any need to be handled?
-	while (!resultingRestCompletions.empty() || !resultingConfigCompletions.empty()) {
+	while (!resultingRestCompletions.empty() && !resultingConfigCompletions.empty()) {
 		if (resultingRestCompletions.front()->header->nonBase->getTag() < resultingConfigCompletions.front()->header->nonBase->getTag()) {
 			resultingCompletions.push(resultingRestCompletions.front());
 			resultingRestCompletions.pop();
@@ -336,9 +407,7 @@ void ContentWidget::onSubmitButtonClick() {
 		resultingCompletions.push(resultingConfigCompletions.front());
 		resultingConfigCompletions.pop();
 	}
-
 	resultBrowser_->createCardsSequence(resultingCompletions);
-
 	typeFrame_->setVisible(false);
 	resultFrame_->setVisible(true);
 	sequenceExplorerTab_->setStyleSheet(::unselectedTabStyleString);
@@ -346,8 +415,9 @@ void ContentWidget::onSubmitButtonClick() {
 	sequenceBrowser_->setCurrentTab(currentTab::resultExplorer);
 	sequenceBrowser_->setAcceptDrops(false);
 	submitButton_->setVisible(false);
-
 }
+
+
 
 void ContentWidget::onSequenceExplorerTabClick() {
 	typeFrame_->setVisible(true);
