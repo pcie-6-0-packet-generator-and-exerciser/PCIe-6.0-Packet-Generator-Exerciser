@@ -21,38 +21,17 @@ TLP* MemoryRequestHandler::handleMemoryRead(TLP* packet, TLPType packetType) {
     int requesterId = packet->header->nonBase->requestID;
     int completerId = 0;
     long long dataPayloadLengthInDw = packet->header->lengthInDoubleWord == 0 ? 1024 : packet->header->lengthInDoubleWord;
-    boost::dynamic_bitset<> dataPayloadLengthInDwBitset(dataPayloadLengthInDw);
-    // Set all bits in dataPayloadLengthInDwBitset to 1
-    dataPayloadLengthInDwBitset.set();
 
     bitset<4> firstDWenableBytes = dynamic_cast<OHCA1*>(packet->header->OHCVector[0])->firstDWBE;
-    boost::dynamic_bitset<> firstDWenableBytes32(dataPayloadLengthInDw * 32, firstDWenableBytes.to_ulong());
     bitset<4> lastDWenableBytes = dynamic_cast<OHCA1*>(packet->header->OHCVector[0])->lastDWBE;
-    boost::dynamic_bitset<> lastDWenableBytes32(dataPayloadLengthInDw * 32, lastDWenableBytes.to_ulong());
-
-    for (long long i = 0; i < dataPayloadLengthInDw; i++) {
-        if (firstDWenableBytes[i] == 0) {
-            for (int j = 0; j < 8; j++) {
-                dataPayloadLengthInDwBitset[i * 32 + j] = 0;
-            }
-        }
-    }
-
-    for (long long i = dataPayloadLengthInDw - 1; i >= 0; i--) {
-        if (lastDWenableBytes[i] == 0) {
-            for (int j = 0; j < 8; j++) {
-                dataPayloadLengthInDwBitset[i * 32 + 31 - j] = 0;
-            }
-        }
-    }
 
     // Extract the data payload from the memory map
-    boost::dynamic_bitset<> data = memoryMap->read(address, dataPayloadLengthInDwBitset);
+    boost::dynamic_bitset<> data = memoryMap->read(address, dataPayloadLengthInDw, firstDWenableBytes, lastDWenableBytes);
 
     
     // Extract the destination and completer segments
     int destinationSegment = 0;
-    int completerSegment = dynamic_cast<OHCA3*>(packet->header->OHCVector[0])->destinationSegment;
+    int completerSegment = 0;
 
     // lowerAddressOHC is a bitset of size 2 related to the FirstByteEnable bits
     std::bitset<2> lowerAddressOHC;
@@ -103,38 +82,17 @@ TLP* MemoryRequestHandler::handleMemoryRead(TLP* packet, TLPType packetType) {
 
 
 
+// int dataPayloadLengthInDW, boost::dynamic_bitset<> dataPayload, int requesterId, int tag, int address, std::bitset<4>  firstDWBE, std::bitset<4>lastDWBE
 
 void MemoryRequestHandler::handleMemoryWrite(TLP* packet, TLPType packetType) {
 
+
     long long address = 0;
-
     long long dataPayloadLengthInDw = packet->header->lengthInDoubleWord == 0 ? 1024 : packet->header->lengthInDoubleWord;
-    boost::dynamic_bitset<> dataPayloadLengthInDwBitset(dataPayloadLengthInDw * 32);
-    dataPayloadLengthInDwBitset.set();
-
-    bitset<4> firstDWenableBytes = dynamic_cast<OHCA1*>(packet->header->OHCVector[0])->firstDWBE;
-    boost::dynamic_bitset<> firstDWenableBytes32(dataPayloadLengthInDw * 32, firstDWenableBytes.to_ulong());
-    bitset<4> lastDWenableBytes = dynamic_cast<OHCA1*>(packet->header->OHCVector[0])->lastDWBE;
-    boost::dynamic_bitset<> lastDWenableBytes32(dataPayloadLengthInDw * 32, lastDWenableBytes.to_ulong());
-
-    for (long long i = 0; i < dataPayloadLengthInDw; i++) {
-        if (firstDWenableBytes[i] == 0) {
-            for (int j = 0; j < 8; j++) {
-                dataPayloadLengthInDwBitset[i * 32 + j] = 0;
-            }
-        }
-    }
-
-    for (long long i = dataPayloadLengthInDw - 1; i >= 0; i--) {
-        if (lastDWenableBytes[i] == 0) {
-            for (int j = 0; j < 8; j++) {
-                dataPayloadLengthInDwBitset[i * 32 + 31 - j] = 0;
-            }
-        }
-    }
-
-    // Extract the data payload from the packet based on the start and end indices
     boost::dynamic_bitset<> data = packet->dataPayload;
+    bitset<4> firstDWenableBytes = dynamic_cast<OHCA1*>(packet->header->OHCVector[0])->firstDWBE;
+    bitset<4> lastDWenableBytes = dynamic_cast<OHCA1*>(packet->header->OHCVector[0])->lastDWBE;
+
 
     // Extract the memory address from the packet header
     if (packetType == TLPType::MemWrite32) {
@@ -148,6 +106,5 @@ void MemoryRequestHandler::handleMemoryWrite(TLP* packet, TLPType packetType) {
 		// You can assign a default value or throw an exception, depending on your requirements
 		address = 0;
 	}
-
-    memoryMap->write(address, dataPayloadLengthInDwBitset, data);
+    memoryMap->write(address, dataPayloadLengthInDw, data , firstDWenableBytes, lastDWenableBytes);
 }

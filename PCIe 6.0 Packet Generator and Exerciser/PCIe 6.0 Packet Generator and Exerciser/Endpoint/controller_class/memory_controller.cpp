@@ -46,3 +46,9 @@ void MemoryController::handleMemoryWriteRequest(TLP* tlp) {
 		// Handle unsupported TLP types
 	}
 }
+
+
+MemoryMap* MemoryController::getMemoryMap() {
+	return memoryMap_;
+}
+
