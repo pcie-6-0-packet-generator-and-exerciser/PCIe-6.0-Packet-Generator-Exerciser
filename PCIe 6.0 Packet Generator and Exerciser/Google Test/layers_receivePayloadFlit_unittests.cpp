@@ -83,10 +83,11 @@ TEST(ReceivePayloadFlitTestSuite, SingleFlitTLPPayload) {
 	EXPECT_EQ(receivedTlp->header->nonBase->getTag(), 0);
 	EXPECT_EQ(dynamic_cast<AddressRouting32Bit*>(receivedTlp->header->nonBase)->address, 0);
 	EXPECT_EQ(receivedTlp->header->OHCVector.size(), 1);
+	
 	auto ohca1 = dynamic_cast<OHCA1*>(receivedTlp->header->OHCVector[0]);
 	EXPECT_EQ(ohca1->firstDWBE.to_ulong(), 0);
 	EXPECT_EQ(ohca1->lastDWBE.to_ulong(), 0);
-	
+
 	EXPECT_EQ(receivedTlp->creditConsumedType, Dllp::CreditType::NP);
 	EXPECT_EQ(receivedTlp->headerConsumption, 1);
 	EXPECT_EQ(receivedTlp->dataConsumption, 0);
