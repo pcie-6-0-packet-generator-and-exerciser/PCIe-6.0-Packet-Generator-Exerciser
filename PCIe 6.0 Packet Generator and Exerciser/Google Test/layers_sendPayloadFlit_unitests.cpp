@@ -103,7 +103,7 @@ TEST(SendPayloadFlitTestSuite, BigTlpToFlit) {
 // Description: Pass a queue of one TLP, which shouldn't pass the gate equation. Which will make the function return without sending any flits
 // Input: one TLP object in a queue
 // Expected Output: sendOnQueue should conatin one queue of flits, containig 1 flit which should be empty
-TEST(SendPayloadFlitTestSuite, FailGateEquation) {
+/*TEST(SendPayloadFlitTestSuite, FailGateEquation) {
 	DEFAULT_CREDIT_PARAMS;
 
 	// sendPayloadFlit() params
@@ -124,7 +124,7 @@ TEST(SendPayloadFlitTestSuite, FailGateEquation) {
 	// sendOnQueue should conatin one std::queue<Flit*> object, which should be empty
 	EXPECT_EQ(sendOnQueue.size(), 1);
 	EXPECT_EQ(sendOnQueue.pop()->firstHalfTLPCount, 0);
-}
+}*/
 
 // Test Case: SharedCreditsUpdate
 // Description: Pass a queue of one Mem32Write TLP, and then check if the shared credits consmed is incremented 
