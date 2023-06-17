@@ -123,7 +123,7 @@ TEST(ReceivePayloadFlitTestSuite, SingleTlpWithDataPayload) {
 	TLP* receivedTlp = sendOnQueueTlps.pop();
 
 	EXPECT_EQ(receivedTlp->header->TLPtype, TLPType::MemWrite32);
-	EXPECT_EQ(receivedTlp->header->lengthInDoubleWord, 0);
+	EXPECT_EQ(receivedTlp->header->lengthInDoubleWord, 1);
 	EXPECT_EQ(receivedTlp->header->nonBase->requestID, 0);
 	EXPECT_EQ(receivedTlp->header->nonBase->getTag(), 0);
 	EXPECT_EQ(dynamic_cast<AddressRouting32Bit*>(receivedTlp->header->nonBase)->address, 0);

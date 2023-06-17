@@ -370,7 +370,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 		else {
 			tlpWholeHeader.resize(236 * 8);
 			tlpWholeHeader.operator|=(payload.operator>>((236 - flitIndexinBytes - (headerLength - 4)) * 8));
-			flitIndexinBytes += 3;
+			flitIndexinBytes += headerLength - 4;
 			payload.resize((236 - flitIndexinBytes - (headerLength - 4)) * 8);
 			payload.resize(236 * 8);
 		}
