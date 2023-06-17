@@ -21,6 +21,8 @@ namespace Ui
         void manageLayout();
         void dropEvent(QDropEvent* event);
         void dragEnterEvent(QDragEnterEvent* event);
+        void generateTLPContextMenu(TLPCard* cardToDelete);
+        void contextMenuEvent(QContextMenuEvent* event) override;
     public:
         PacketDetails* packetDetails;
     private:

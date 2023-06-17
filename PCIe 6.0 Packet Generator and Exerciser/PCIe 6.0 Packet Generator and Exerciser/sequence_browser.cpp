@@ -9,7 +9,8 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QMimeData>
-
+#include <QMenu>
+#include <QAction>
 
 namespace {
 	constexpr char transparentBackgroundProperty[] = "transparentBackground";
@@ -24,6 +25,8 @@ SequenceBrowser::SequenceBrowser(QWidget* parent)
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);	
 	createCardsSequence();
 	manageLayout();
+
+	setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 SequenceBrowser::~SequenceBrowser() 
@@ -63,6 +66,50 @@ void SequenceBrowser::createCardsSequence() {
 	/*TLPCard* card = new TLPCard(this, "Card ");
 	cards_.push_back(card);*/
 	
+}
+//void SequenceBrowser::generateTLPContextMenu(TLPCard* cardToDelete) {
+//	QMenu menu;
+//	QAction* deleteAction = new QAction(QString("Delete"), this);
+//	QObject::connect(deleteAction, &QAction::triggered, [this, cardToDelete]() {
+//		// Remove the card from the cards list and the layout, and destroy it
+//		const auto cardIt = std::find(cards_.begin(), cards_.end(), cardToDelete);
+//		if (cardIt != cards_.end()) {
+//			auto* removedCard = *cardIt;
+//			cardLayout_->removeWidget(removedCard);
+//			cards_.erase(cardIt);
+//			delete removedCard;
+//		}
+//	});
+//	menu.addAction(deleteAction);
+//	menu.popup(QCursor::pos());
+}
+//void SequenceBrowser::contextMenuEvent(QContextMenuEvent * event) {
+//	TLPCard* cardToDelete = nullptr; for (auto* card : cards_) { if (card->geometry().contains(event->pos())) { cardToDelete = card; break; } }
+//	if (cardToDelete != nullptr) {
+//		generateTLPContextMenu(cardToDelete);
+//	}
+//	else {
+//		QFrame::contextMenuEvent(event);
+//	}
+//}
+void SequenceBrowser::contextMenuEvent(QContextMenuEvent* event)
+{
+	if (event->reason() == QContextMenuEvent::Reason::Mouse) {
+		TLPCard* cardToDelete = nullptr;
+		for (auto* card : cards_) {
+			if (card->geometry().contains(event->pos())) {
+				cardToDelete = card;
+				break;
+			}
+		}
+
+		if (cardToDelete != nullptr) {
+			generateTLPContextMenu(cardToDelete);
+		}
+		else {
+			QFrame::contextMenuEvent(event);
+		}
+	}
 }
 
 
