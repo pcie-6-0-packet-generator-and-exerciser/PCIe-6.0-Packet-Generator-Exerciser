@@ -16,6 +16,7 @@ MainWindow::MainWindow(QueueWrapper<TLP*>* rootComplexToLayers, QueueWrapper<TLP
     createContentWidget();
     createToolBar();
     manageLayout();
+    show();
 }
 
 MainWindow::~MainWindow()

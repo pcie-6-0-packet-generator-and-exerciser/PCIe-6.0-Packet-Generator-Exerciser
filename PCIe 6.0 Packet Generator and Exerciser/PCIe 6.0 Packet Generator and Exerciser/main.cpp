@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     QThread::msleep(randomGenerator->bounded(1500, 3000));
     enumerationDialog->setMessage("Enumeration of the PCIe is currently running...<br><br>One Endpoint Detected<br><br>Fetching Memory Ranges<br><br>Memory Ranges Fetched");
     QApplication::processEvents();
-    QTimer::singleShot(randomGenerator->bounded(2, 3), enumerationDialog, SLOT(close()));
+    QTimer::singleShot(randomGenerator->bounded(4, 5), enumerationDialog, SLOT(close()));
     app.exec();
     t1.join();
     t2.join();
