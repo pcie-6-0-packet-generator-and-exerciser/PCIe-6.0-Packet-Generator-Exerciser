@@ -154,12 +154,10 @@ TEST(ReceivePayloadFlitTestSuite, MultipleTlpsWithoutDataPayload) {
 
 	// Set up parameters for receivePayloadFlit
 	QueueWrapper<TLP*> sendOnQueueTlps;
-	std::queue<Flit*> flits;
-
 	auto flitsToSend = sendOnQueueFlits.popAll();
 
 
-	layersWrapper.receivePayloadFlit(globals, flits, sendOnQueueTlps);
+	layersWrapper.receivePayloadFlit(globals, flitsToSend, sendOnQueueTlps);
 
 	// Check that the TLPs were sent
 	EXPECT_EQ(sendOnQueueTlps.size(), 5);

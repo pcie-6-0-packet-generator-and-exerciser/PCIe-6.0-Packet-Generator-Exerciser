@@ -371,7 +371,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			tlpWholeHeader.resize(236 * 8);
 			tlpWholeHeader.operator|=(payload.operator>>((236 - flitIndexinBytes - (headerLength - 4)) * 8));
 			flitIndexinBytes += headerLength - 4;
-			payload.resize((236 - flitIndexinBytes - (headerLength - 4)) * 8);
+			payload.resize((236 - flitIndexinBytes) * 8);
 			payload.resize(236 * 8);
 		}
 		tlpWholeHeader.resize(headerLength * 8);
@@ -406,7 +406,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			tlpWholeHeaderWithOHC.resize(236 * 8);
 			tlpWholeHeaderWithOHC.operator|=(payload.operator>>((236 - flitIndexinBytes - 4) * 8));
 			flitIndexinBytes += 4;
-			payload.resize((236 - flitIndexinBytes - 4) * 8);
+			payload.resize((236 - flitIndexinBytes) * 8);
 			payload.resize(236 * 8);
 		}
 		tlpWholeHeaderWithOHC.resize((headerLength + 4) * 8);
