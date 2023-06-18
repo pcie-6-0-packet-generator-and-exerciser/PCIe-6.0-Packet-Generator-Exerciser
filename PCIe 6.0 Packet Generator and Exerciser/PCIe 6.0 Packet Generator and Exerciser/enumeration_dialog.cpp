@@ -6,10 +6,15 @@ PcieEnumerationDialog::PcieEnumerationDialog(QWidget* parent)
     : QDialog(parent)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowCloseButtonHint);
+    this->resize(200,150);
     QVBoxLayout* layout = new QVBoxLayout(this);
-    m_messageLabel = new QLabel("Enumeration of the PCIe is currently running...", this);
-    layout->addWidget(m_messageLabel);
-    //close the dialog after 5 seconds
-    QTimer::singleShot(5000, this, SLOT(close()));
+    messageLabel_ = new QLabel("Enumeration of the PCIe is currently running...", this);
+    messageLabel_->setWordWrap(true);
 
+    layout->addWidget(messageLabel_);
+    setLayout(layout);
+}
+
+void PcieEnumerationDialog::setMessage(QString message) {
+	messageLabel_->setText(message);
 }

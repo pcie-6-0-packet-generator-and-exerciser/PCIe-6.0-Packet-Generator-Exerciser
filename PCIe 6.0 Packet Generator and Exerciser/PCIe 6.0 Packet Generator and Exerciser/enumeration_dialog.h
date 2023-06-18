@@ -10,7 +10,9 @@ class PcieEnumerationDialog : public QDialog
 
 public:
     explicit PcieEnumerationDialog(QWidget* parent = nullptr);
-
+    void setMessage(QString message);
+public Q_SLOTS:
+    
 private:
-    QLabel* m_messageLabel;
+    QLabel* messageLabel_;
 };

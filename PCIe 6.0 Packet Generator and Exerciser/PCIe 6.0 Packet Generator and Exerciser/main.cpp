@@ -8,6 +8,12 @@
 #include "layers/globals.h"
 #include "layers/thread_functions.h"
 #include <thread>
+#include <QRandomGenerator>
+#include <QTime>
+#include "enumeration_dialog.h"
+#include <QThread>
+#include <QTimer>
+#include <QApplication>
 
 int main(int argc, char *argv[])
 {
@@ -47,7 +53,30 @@ int main(int argc, char *argv[])
     std::thread t5(&EndpointApp::run, endpointApp, std::ref(endpointToEndpointLayers), std::ref(endpointLayersToEndpoint));
 
     Ui::MainWindow* mainWindow = new Ui::MainWindow(&rootComplexToRootComplexLayers, &rootComplexLayersToRootComplex);
-    mainWindow->show();
+    
+    PcieEnumerationDialog* enumerationDialog = new PcieEnumerationDialog(nullptr);
+    enumerationDialog->setModal(true);
+    enumerationDialog->show();
+    enumerationDialog->setMessage("Initialization in Progress...");
+    QApplication::processEvents();
+    QThread::sleep(1.5);
+    while (!endpointGlobal.Fl2 || !rootComplexGlobal.Fl2) {
+        QThread::sleep(1);
+    }
+    QTime* time = new QTime();
+    QRandomGenerator* randomGenerator = new QRandomGenerator(time->msecsSinceStartOfDay());
+    enumerationDialog->setMessage("Enumeration of the PCIe is <br> currently running...");
+    QApplication::processEvents();
+    QThread::msleep(randomGenerator->bounded(1500,3000));
+    enumerationDialog->setMessage("Enumeration of the PCIe is currently running...<br><br>One Device Detected");
+    QApplication::processEvents();
+    QThread::msleep(randomGenerator->bounded(1500, 3000));
+    enumerationDialog->setMessage("Enumeration of the PCIe is currently running...<br><br>One Endpoint Detected<br><br>Fetching Memory Ranges");
+    QApplication::processEvents();
+    QThread::msleep(randomGenerator->bounded(1500, 3000));
+    enumerationDialog->setMessage("Enumeration of the PCIe is currently running...<br><br>One Endpoint Detected<br><br>Fetching Memory Ranges<br><br>Memory Ranges Fetched");
+    QApplication::processEvents();
+    QTimer::singleShot(randomGenerator->bounded(2, 3), enumerationDialog, SLOT(close()));
     app.exec();
     t1.join();
     t2.join();
