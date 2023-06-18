@@ -67,16 +67,16 @@ void SequenceBrowser::createCardsSequence() {
 	
 }
 
-void SequenceBrowser::contextMenuEvent(QContextMenuEvent* event)
-{
-	QMenu* menu = new QMenu(this);
-	QAction* deleteAction = new QAction("Delete", this);
-	connect(deleteAction, &QAction::triggered, this, &SequenceBrowser::deleteTLP);
-	menu->addAction(deleteAction);
-	menu->exec(event->globalPos());
-}
-void SequenceBrowser::deleteTLP() {
 
+void SequenceBrowser::deleteTLP(TLPCard* card) {
+	//delete card from tlp cards and remove its widget from the layout
+	cards_.remove(card);
+	//cardLayout_->removeWidget(card);
+	if (card != nullptr) {
+		card->hide();
+		cardLayout_->removeWidget(card);
+		//delete card;
+	}
 }
 
 void SequenceBrowser::manageLayout() 

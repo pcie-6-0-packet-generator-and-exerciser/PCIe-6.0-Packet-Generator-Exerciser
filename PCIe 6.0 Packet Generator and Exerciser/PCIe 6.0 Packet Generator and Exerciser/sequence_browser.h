@@ -21,7 +21,7 @@ namespace Ui
         void manageLayout();
         void dropEvent(QDropEvent* event);
         void dragEnterEvent(QDragEnterEvent* event);
-        void contextMenuEvent(QContextMenuEvent* event) override;
+        //void contextMenuEvent(QContextMenuEvent* event) override;
     public:
         PacketDetails* packetDetails;
     private:
@@ -29,7 +29,7 @@ namespace Ui
         std::list<TLPCard*> cards_;
         currentTab currentTab_ = currentTab::sequenceExplorer;
     public slots: 
-        void deleteTLP();
+        void deleteTLP(TLPCard* card);
     };
 
 }
