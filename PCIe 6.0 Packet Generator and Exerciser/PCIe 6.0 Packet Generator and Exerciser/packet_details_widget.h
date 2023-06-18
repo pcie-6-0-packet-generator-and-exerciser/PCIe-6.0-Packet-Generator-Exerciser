@@ -58,7 +58,9 @@ namespace Ui
         QGridLayout* detailsLayout_;
         QPushButton* saveButton;
         TLP* currentTLP;
+        int height = 50,width = 25;
         std::unordered_map<std::string, CustomLineEdit*> lineEditsMap;
+
 
     public slots:
         void updateView(TLP* tlp);
