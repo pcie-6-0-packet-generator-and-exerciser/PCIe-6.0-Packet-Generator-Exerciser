@@ -18,9 +18,7 @@ MainWindow::MainWindow(QueueWrapper<TLP*>* rootComplexToLayers, QueueWrapper<TLP
     createContentWidget();
     createToolBar();
     manageLayout();
-    PcieEnumerationDialog* enumerationDialog = new PcieEnumerationDialog(this);
-    enumerationDialog->setModal(true);
-    enumerationDialog->show();
+    show();
 }
 
 MainWindow::~MainWindow()
