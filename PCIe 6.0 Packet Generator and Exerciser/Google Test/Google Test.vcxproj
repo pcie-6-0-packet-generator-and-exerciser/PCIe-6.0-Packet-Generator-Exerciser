@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="handle_memory_read_unit_test.cpp" />
+    <ClCompile Include="handle_memory_write_unit_test.cpp" />
     <ClCompile Include="layers_dllp_unittest.cpp" />
     <ClCompile Include="checkGateEquation_unittest.cpp" />
     <ClCompile Include="completion_construction_algorithms.cpp" />
@@ -44,6 +45,7 @@
     <ClCompile Include="configuration_space_unittest.cpp" />
     <ClCompile Include="dllp_unittest.cpp" />
     <ClCompile Include="layers_datalink_unittest.cpp" />
+    <ClCompile Include="layers_receivePayloadFlit_unittests.cpp" />
     <ClCompile Include="layers_sendPayloadFlit_unitests.cpp" />
     <ClCompile Include="pcie_capability_structure_unittest.cpp" />
     <ClCompile Include="prepareFlit_unittest.cpp" />

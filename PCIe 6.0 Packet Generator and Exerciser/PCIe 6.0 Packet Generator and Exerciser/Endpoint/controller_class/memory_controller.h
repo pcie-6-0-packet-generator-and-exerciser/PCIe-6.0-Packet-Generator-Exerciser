@@ -18,6 +18,7 @@ public:
     static MemoryController* constructMemoryController();
     TLP* handleMemoryReadRequest(TLP* tlp);
     void handleMemoryWriteRequest(TLP* tlp);
+    MemoryMap* getMemoryMap();
 };
 
 

@@ -236,6 +236,11 @@ void PacketDetails::createCplCommon(){
 		laString.push_back(( n % 2) + '0'); ;
 		n = n / 2;
 	}
+	for (int i = 0; i < 5; i++)
+	{
+		laString.push_back('0');
+	}
+	
 	CustomLineEdit* LA6 = new CustomLineEdit("LA[6]", 100, 50, QString::fromStdString(laString.substr(4,1)), this);
 	detailsLayout_->addWidget(LA6, 1, 2);
 	CustomLineEdit* tag = new CustomLineEdit("Tag[13:0]", 100, 50, QString::number(static_cast<int>(cplNonBase->tag), 2), this);

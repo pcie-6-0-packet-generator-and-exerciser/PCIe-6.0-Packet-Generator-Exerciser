@@ -37,7 +37,8 @@ TLP* TLP::getObjRep(boost::dynamic_bitset<> bitset) {
 	int lengthValue = (length_bitset.to_ulong() == 0 ? 1024 : length_bitset.to_ulong());
 	int OHCVectorLength = 1;
 	boost::dynamic_bitset<> TLPType_bitset = get_bits(bitset, size - 8, size - 1);
-	int headerLength = getHeaderLengthByType((TLPType)TLPType_bitset.to_ulong());
+	TLPType tlpType = (TLPType)TLPType_bitset.to_ulong();
+	int headerLength = getHeaderLengthByType(tlpType);
 	if (TLPType_bitset.to_ulong() == 64
 		|| TLPType_bitset.to_ulong() == 96
 		|| TLPType_bitset.to_ulong() == 68
@@ -48,6 +49,72 @@ TLP* TLP::getObjRep(boost::dynamic_bitset<> bitset) {
 	}
 	boost::dynamic_bitset<> tlpHeader_sub_bits = get_bits(bitset, size - (headerLength * 8) - OHCVectorLength * 32, size - 1);
 	tlp->header = TLPHeader::getObjRep(tlpHeader_sub_bits);
+
+	switch (tlpType)
+	{
+	case TLPType::MemRead32:
+		tlp->dataPayload.reset();
+		tlp->creditConsumedType = Dllp::CreditType::NP;
+		tlp->headerConsumption = 1;
+		tlp->dataConsumption = 0;
+		break;
+	case TLPType::MemWrite32:
+		tlp->creditConsumedType = Dllp::CreditType::P;
+		tlp->headerConsumption = 1;
+		tlp->dataConsumption = ceil(tlp->header->lengthInDoubleWord / FC_UNIT_SIZE);
+		break;
+	case TLPType::MemRead64:
+		tlp->dataPayload.reset();
+		tlp->creditConsumedType = Dllp::CreditType::NP;
+		tlp->headerConsumption = 1;
+		tlp->dataConsumption = 0;
+		break;
+	case TLPType::MemWrite64:
+		tlp->creditConsumedType = Dllp::CreditType::P;
+		tlp->headerConsumption = 1;
+		tlp->dataConsumption = ceil(tlp->header->lengthInDoubleWord / FC_UNIT_SIZE);
+		break;
+	case TLPType::Cpl:
+		tlp->dataPayload.reset();
+		tlp->creditConsumedType = Dllp::CreditType::Cpl;
+		tlp->headerConsumption = 1;
+		tlp->dataConsumption = 0;
+		break;
+	case TLPType::CplD:
+		tlp->creditConsumedType = Dllp::CreditType::Cpl;
+		tlp->headerConsumption = 1;
+		tlp->dataConsumption = ceil(tlp->header->lengthInDoubleWord / FC_UNIT_SIZE);
+		break;
+	case TLPType::VendorMsg:
+		tlp->creditConsumedType = Dllp::CreditType::P;
+		tlp->headerConsumption = 1;
+		tlp->dataConsumption = ceil(tlp->header->lengthInDoubleWord / FC_UNIT_SIZE);
+		break;
+	case TLPType::ConfigRead0:
+		tlp->dataPayload.reset();
+		tlp->creditConsumedType = Dllp::CreditType::NP;
+		tlp->headerConsumption = 1;
+		tlp->dataConsumption = 0;
+		break;
+	case TLPType::ConfigWrite0:
+		tlp->creditConsumedType = Dllp::CreditType::NP;
+		tlp->headerConsumption = 1;
+		tlp->dataConsumption = ceil(tlp->header->lengthInDoubleWord / FC_UNIT_SIZE);
+		break;
+	case TLPType::ConfigRead1:
+		tlp->dataPayload.reset();
+		tlp->creditConsumedType = Dllp::CreditType::NP;
+		tlp->headerConsumption = 1;
+		tlp->dataConsumption = 0;
+		break;
+	case TLPType::ConfigWrite1:
+		tlp->creditConsumedType = Dllp::CreditType::NP;
+		tlp->headerConsumption = 1;
+		tlp->dataConsumption = ceil(tlp->header->lengthInDoubleWord / FC_UNIT_SIZE);
+		break;
+	default:
+		break;
+	}
 
 	return tlp;
 }
@@ -295,7 +362,7 @@ TLP* TLP::createConfigWrite1Tlp(int dataPayloadLengthInDW, boost::dynamic_bitset
  * @param cplStatus The completion status field of the OHCA5 extension header
  * @return A TLP* object representing the Cpl TLP
  */
-TLP* TLP::createCplTlp(int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddressOHC, std::bitset<5> lowerAddressHeaderBase ,OHCA5::CPLStatus cplStatus) {
+TLP* TLP::createCplTlp(int tag, int completerId, long byteCount, int busNumber, int deviceNumber, int functionNumber, int destinationSegment, int completerSegment, std::bitset<2> lowerAddressOHC, std::bitset<5> lowerAddressHeaderBase, OHCA5::CPLStatus cplStatus) {
 	TLP* cplTlp = new TLP;
 	cplTlp->header->OHCVector.push_back(new OHCA5(destinationSegment, completerSegment, lowerAddressOHC, cplStatus));
 	cplTlp->header->TLPtype = TLPType::Cpl;

@@ -21,8 +21,8 @@ int main(int argc, char *argv[])
     app.setStyleSheet(style);
     int credit[12][2];
     for (int i = 0; i < 12; i++) {
-        credit[i][0] = 511;
-        credit[i][1] = 4095;
+        credit[i][0] = 100;
+        credit[i][1] = 2000;
     }
     
     QueueWrapper<TLP*> rootComplexToRootComplexLayers;
