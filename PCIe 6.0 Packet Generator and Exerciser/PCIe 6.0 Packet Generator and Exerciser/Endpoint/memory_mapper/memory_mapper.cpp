@@ -32,7 +32,7 @@ boost::dynamic_bitset<> MemoryMap::read(uint64_t address, long long requiredToRe
 
     if (requiredToRead > 2) {
         middlePayload = get_bits(dataPayload, 1 * 32, requiredToRead * 32 - 1 * 32);
-        lastDoubleWord = get_bits(dataPayload, (requiredToRead - 1 ) * 32 , requiredToRead * 32);
+        lastDoubleWord = get_bits(dataPayload, (requiredToRead - 1 ) * 32 , requiredToRead * 32 - 1);
         int onesCounter2 = 0;
         updatedLastDoubleWord = lastDoubleWord;
 
