@@ -26,7 +26,6 @@ SequenceBrowser::SequenceBrowser(QWidget* parent)
 	createCardsSequence();
 	manageLayout();
 
-	setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 SequenceBrowser::~SequenceBrowser() 
@@ -67,51 +66,18 @@ void SequenceBrowser::createCardsSequence() {
 	cards_.push_back(card);*/
 	
 }
-//void SequenceBrowser::generateTLPContextMenu(TLPCard* cardToDelete) {
-//	QMenu menu;
-//	QAction* deleteAction = new QAction(QString("Delete"), this);
-//	QObject::connect(deleteAction, &QAction::triggered, [this, cardToDelete]() {
-//		// Remove the card from the cards list and the layout, and destroy it
-//		const auto cardIt = std::find(cards_.begin(), cards_.end(), cardToDelete);
-//		if (cardIt != cards_.end()) {
-//			auto* removedCard = *cardIt;
-//			cardLayout_->removeWidget(removedCard);
-//			cards_.erase(cardIt);
-//			delete removedCard;
-//		}
-//	});
-//	menu.addAction(deleteAction);
-//	menu.popup(QCursor::pos());
-}
-//void SequenceBrowser::contextMenuEvent(QContextMenuEvent * event) {
-//	TLPCard* cardToDelete = nullptr; for (auto* card : cards_) { if (card->geometry().contains(event->pos())) { cardToDelete = card; break; } }
-//	if (cardToDelete != nullptr) {
-//		generateTLPContextMenu(cardToDelete);
-//	}
-//	else {
-//		QFrame::contextMenuEvent(event);
-//	}
-//}
+
 void SequenceBrowser::contextMenuEvent(QContextMenuEvent* event)
 {
-	if (event->reason() == QContextMenuEvent::Reason::Mouse) {
-		TLPCard* cardToDelete = nullptr;
-		for (auto* card : cards_) {
-			if (card->geometry().contains(event->pos())) {
-				cardToDelete = card;
-				break;
-			}
-		}
-
-		if (cardToDelete != nullptr) {
-			generateTLPContextMenu(cardToDelete);
-		}
-		else {
-			QFrame::contextMenuEvent(event);
-		}
-	}
+	QMenu* menu = new QMenu(this);
+	QAction* deleteAction = new QAction("Delete", this);
+	connect(deleteAction, &QAction::triggered, this, &SequenceBrowser::deleteTLP);
+	menu->addAction(deleteAction);
+	menu->exec(event->globalPos());
 }
+void SequenceBrowser::deleteTLP() {
 
+}
 
 void SequenceBrowser::manageLayout() 
 {

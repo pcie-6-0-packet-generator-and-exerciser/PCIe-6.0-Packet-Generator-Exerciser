@@ -21,7 +21,6 @@ namespace Ui
         void manageLayout();
         void dropEvent(QDropEvent* event);
         void dragEnterEvent(QDragEnterEvent* event);
-        void generateTLPContextMenu(TLPCard* cardToDelete);
         void contextMenuEvent(QContextMenuEvent* event) override;
     public:
         PacketDetails* packetDetails;
@@ -29,6 +28,8 @@ namespace Ui
         QVBoxLayout* cardLayout_;
         std::list<TLPCard*> cards_;
         currentTab currentTab_ = currentTab::sequenceExplorer;
+    public slots: 
+        void deleteTLP();
     };
 
 }
