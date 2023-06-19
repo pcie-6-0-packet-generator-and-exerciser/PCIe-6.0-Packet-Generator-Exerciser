@@ -5,7 +5,7 @@
 int TLP::getTotalLength() {
 	int OHCLength = header->OHCVector.size() * 4;
 	int header_length = header->nonBase->headerSizeInBytes;
-	int payload_length = header->lengthInDoubleWord * 4;
+	int payload_length = dataPayload.size() / 8;
 	return (OHCLength + header_length + payload_length);
 }
 
