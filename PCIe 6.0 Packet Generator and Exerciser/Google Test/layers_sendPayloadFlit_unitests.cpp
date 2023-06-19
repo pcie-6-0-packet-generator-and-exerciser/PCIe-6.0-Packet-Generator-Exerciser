@@ -87,10 +87,10 @@ TEST(SendPayloadFlitTestSuite, BigTlpToFlit) {
 	Globals globals(DEFAULT_CREDIT_VALUES);
 	QueueWrapper<Flit*> sendOnQueue;
 
-	TLP* tlp = TLP::createMemWrite32Tlp(DEFAULT_MEM_WRITE32_TLP_PARAMS);
+	TLP* tlp = TLP::createMemWrite32Tlp(0, boost::dynamic_bitset<>(1024 * 32), 0, 0, 0, 0, 0);
 
 	// making a tlp payload of Huge size possible, so Tlp::getTotalLength() -> +10000, and exceed the size of a tlp to be sent in one flit
-	tlp->header->lengthInDoubleWord = 10000;
+	tlp->header->lengthInDoubleWord = 0;
 	tlpPackets.push(tlp);
 
 	layersWrapper.sendPayloadFlit(globals, tlpPackets, sendOnQueue);

@@ -27,8 +27,8 @@ boost::dynamic_bitset<> MemoryMap::read(uint64_t address, long long requiredToRe
         boost::dynamic_bitset<> middlePayload, lastDoubleWord, updatedLastDoubleWord, temp;
 
         if (requiredToRead > 2) {
-            middlePayload = get_bits(dataPayload, 1 * 32, requiredToRead * 32 - 1 * 32);
-            lastDoubleWord = get_bits(dataPayload, (requiredToRead - 1) * 32, requiredToRead * 32);
+            middlePayload = get_bits(dataPayload, 1 * 32, (requiredToRead - 1) * 32 - 1);
+            lastDoubleWord = get_bits(dataPayload, (requiredToRead - 1) * 32, requiredToRead * 32 - 1);
             int onesCounter2 = 0;
             updatedLastDoubleWord = lastDoubleWord;
 
@@ -65,7 +65,7 @@ boost::dynamic_bitset<> MemoryMap::read(uint64_t address, long long requiredToRe
             }
         }
 
-        int totalSize = updatedFirstDoubleWord.size() + middlePayload.size() + updatedLastDoubleWord.size();
+        int totalSize = requiredToRead * 32;
 
         boost::dynamic_bitset<> resultPayload(totalSize);
         updatedFirstDoubleWord.resize(totalSize);
