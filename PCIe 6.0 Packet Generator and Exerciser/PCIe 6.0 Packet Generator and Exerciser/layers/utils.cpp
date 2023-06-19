@@ -18,10 +18,10 @@ int getHeaderLengthByType(TLPType type) {
 		return 12;
 		break;
 	case TLPType::CplD:
-		return 16;
+		return 12;
 		break;
 	case TLPType::VendorMsg:
-		return 12;
+		return 16;
 		break;
 	case TLPType::ConfigRead0:
 		return 12;
@@ -30,10 +30,10 @@ int getHeaderLengthByType(TLPType type) {
 		return 12;
 		break;
 	case TLPType::ConfigRead1:
-		return 16;
+		return 12;
 		break;
 	case TLPType::ConfigWrite1:
-		return 16;
+		return 12;
 		break;
 	default:
 		break;
