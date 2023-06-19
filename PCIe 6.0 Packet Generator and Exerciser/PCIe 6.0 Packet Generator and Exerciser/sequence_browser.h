@@ -15,6 +15,8 @@ namespace Ui
         explicit SequenceBrowser(QWidget* parent = nullptr);
         std::queue<TLP*> getTLPCards();
         void setCurrentTab(currentTab tab);
+        void setEditable(bool editable);
+        bool isEditable() const { return editable_; }
         ~SequenceBrowser();
     private:
         void createCardsSequence();
@@ -28,6 +30,7 @@ namespace Ui
         QVBoxLayout* cardLayout_;
         std::list<TLPCard*> cards_;
         currentTab currentTab_ = currentTab::sequenceExplorer;
+        bool editable_ = true;
     public slots: 
         void deleteTLP(TLPCard* card);
     };

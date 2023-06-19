@@ -57,21 +57,7 @@ TLPCard::TLPCard(QWidget* parent) {
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 	manageLayout();
 }
-void TLPCard::contextMenuEvent(QContextMenuEvent* event)
-{	
-	if (dynamic_cast<SequenceBrowser*>(parent()) && currentTab_ == currentTab::sequenceExplorer ) {
-		// parent is a SequenceBrowser
-		SequenceBrowser* parent = dynamic_cast<SequenceBrowser*>(this->parent());
-		QMenu* menu = new QMenu(this);
-		QAction* deleteAction = new QAction("Delete", this);
-		//connect(deleteAction, &QAction::triggered, parent, &SequenceBrowser::deleteTLP);
-		////for ref//connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
-		connect(deleteAction, &QAction::triggered, parent, [parent,this] {parent->deleteTLP(this); });
-		menu->addAction(deleteAction);
-		menu->exec(event->globalPos());
-	}
-	
-}
+
 
 TLPCard::TLPCard( TLPType tlpType, QWidget* parent)
 	: QFrame(parent), textLabel_(new QLabel(TLPenumToString(tlpType), this))
@@ -147,7 +133,21 @@ void TLPCard::setCurrentTab(currentTab tab) {
 }
 
 
+void TLPCard::contextMenuEvent(QContextMenuEvent* event)
+{
+	if (dynamic_cast<SequenceBrowser*>(parent()) && currentTab_ == currentTab::sequenceExplorer) {
+		// parent is a SequenceBrowser
+		SequenceBrowser* parent = dynamic_cast<SequenceBrowser*>(this->parent());
+		if (parent->isEditable()) {
+			QMenu* menu = new QMenu(this);
+			QAction* deleteAction = new QAction("Delete", this);
+			connect(deleteAction, &QAction::triggered, parent, [parent, this] {parent->deleteTLP(this); });
+			menu->addAction(deleteAction);
+			menu->exec(event->globalPos());
+		}
+	}
 
+}
 
 
 void TLPCard::mouseMoveEvent(QMouseEvent* event) {

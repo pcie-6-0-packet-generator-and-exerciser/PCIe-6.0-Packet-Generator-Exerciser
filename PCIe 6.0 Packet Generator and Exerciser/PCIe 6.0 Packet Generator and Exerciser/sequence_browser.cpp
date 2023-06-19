@@ -32,6 +32,9 @@ SequenceBrowser::~SequenceBrowser()
 {
 
 }
+void SequenceBrowser::setEditable(bool editable) {
+	editable_ = editable;
+}
 
 void SequenceBrowser::setCurrentTab(currentTab tab) {
 	currentTab_ = tab;
