@@ -75,7 +75,7 @@ void SequenceBrowser::deleteTLP(TLPCard* card) {
 	if (card != nullptr) {
 		card->hide();
 		cardLayout_->removeWidget(card);
-		//delete card;
+		card->deleteLater();
 	}
 }
 

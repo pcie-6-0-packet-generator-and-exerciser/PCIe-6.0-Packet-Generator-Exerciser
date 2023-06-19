@@ -131,7 +131,7 @@ TLPCard::TLPCard(TLP* tlp, QWidget* parent) {
 
 TLPCard::~TLPCard()
 {
-	//delete tlp;
+	delete tlp;
 	delete textLabel_;
 
 }
