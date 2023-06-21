@@ -54,7 +54,8 @@ TLPCard::TLPCard(QWidget* parent) {
 	textLabel_ = new QLabel("", this);
 	textLabel_->setAlignment(Qt::AlignHCenter);
 	setProperty(tlpCardProperty, true);
-	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+	setMinimumSize(200, 100);
+	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	manageLayout();
 }
 
