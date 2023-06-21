@@ -40,7 +40,7 @@ void ResultBrowser::createCardsSequence(std::queue<TLP*> incomingPackets) {
 		int currentTag = incomingTlp->header->nonBase->getTag();
 		
 		//add empty cards in case of no completion. The -1 is for MessageNonHeaderBase getTag method in non_header_base.h
-		if (expectedTag < currentTag|| currentTag == -1) {
+		while (expectedTag < currentTag|| currentTag == -1) {
 			TLPCard* emptyCard = new TLPCard();
 			emptyCard->setCurrentTab(currentTab::resultExplorer);
 			emptyCard->setStyleSheet("background: transparent;");
