@@ -9,7 +9,8 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QMimeData>
-
+#include <QMenu>
+#include <QAction>
 
 namespace {
 	constexpr char transparentBackgroundProperty[] = "transparentBackground";
@@ -24,11 +25,15 @@ SequenceBrowser::SequenceBrowser(QWidget* parent)
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);	
 	createCardsSequence();
 	manageLayout();
+
 }
 
 SequenceBrowser::~SequenceBrowser() 
 {
 
+}
+void SequenceBrowser::setEditable(bool editable) {
+	editable_ = editable;
 }
 
 void SequenceBrowser::setCurrentTab(currentTab tab) {
@@ -65,6 +70,17 @@ void SequenceBrowser::createCardsSequence() {
 	
 }
 
+
+void SequenceBrowser::deleteTLP(TLPCard* card) {
+	//delete card from tlp cards and remove its widget from the layout
+	cards_.remove(card);
+	//cardLayout_->removeWidget(card);
+	if (card != nullptr) {
+		card->hide();
+		cardLayout_->removeWidget(card);
+		card->deleteLater();
+	}
+}
 
 void SequenceBrowser::manageLayout() 
 {
