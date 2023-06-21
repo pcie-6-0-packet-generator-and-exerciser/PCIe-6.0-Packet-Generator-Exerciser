@@ -8,7 +8,9 @@
 #include <bitset>
 #include "utils/tlp.h"
 #include <boost/dynamic_bitset.hpp>
-
+#include <QMenu>
+#include <QAction>
+#include "sequence_browser.h"
 
 
 namespace
@@ -55,6 +57,7 @@ TLPCard::TLPCard(QWidget* parent) {
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 	manageLayout();
 }
+
 
 TLPCard::TLPCard( TLPType tlpType, QWidget* parent)
 	: QFrame(parent), textLabel_(new QLabel(TLPenumToString(tlpType), this))
@@ -114,7 +117,7 @@ TLPCard::TLPCard(TLP* tlp, QWidget* parent) {
 
 TLPCard::~TLPCard()
 {
-	//delete tlp;
+	delete tlp;
 	delete textLabel_;
 
 }
@@ -130,7 +133,21 @@ void TLPCard::setCurrentTab(currentTab tab) {
 }
 
 
+void TLPCard::contextMenuEvent(QContextMenuEvent* event)
+{
+	if (dynamic_cast<SequenceBrowser*>(parent()) && currentTab_ == currentTab::sequenceExplorer) {
+		// parent is a SequenceBrowser
+		SequenceBrowser* parent = dynamic_cast<SequenceBrowser*>(this->parent());
+		if (parent->isEditable()) {
+			QMenu* menu = new QMenu(this);
+			QAction* deleteAction = new QAction("Delete", this);
+			connect(deleteAction, &QAction::triggered, parent, [parent, this] {parent->deleteTLP(this); });
+			menu->addAction(deleteAction);
+			menu->exec(event->globalPos());
+		}
+	}
 
+}
 
 
 void TLPCard::mouseMoveEvent(QMouseEvent* event) {
