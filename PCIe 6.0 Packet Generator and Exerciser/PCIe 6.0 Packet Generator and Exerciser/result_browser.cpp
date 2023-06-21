@@ -40,7 +40,7 @@ void ResultBrowser::createCardsSequence(std::queue<TLP*> incomingPackets) {
 		int currentTag = incomingTlp->header->nonBase->getTag();
 		
 		//add empty cards in case of no completion. The -1 is for MessageNonHeaderBase getTag method in non_header_base.h
-		if (currentTag != expectedTag || currentTag == -1) {
+		if (expectedTag < currentTag|| currentTag == -1) {
 			TLPCard* emptyCard = new TLPCard();
 			emptyCard->setCurrentTab(currentTab::resultExplorer);
 			emptyCard->setStyleSheet("background: transparent;");
@@ -48,10 +48,11 @@ void ResultBrowser::createCardsSequence(std::queue<TLP*> incomingPackets) {
 			emptyCard->setMinimumSize(200, 100);
 			
 			cards_.push_back(emptyCard);
+			expectedTag++;
 		}
 		expectedTag++;
 		TLPCard* card = new TLPCard(incomingTlp, this);
-		//connect(card, &TLPCard::cardPressed, this->packetDetails_, [this, card] { this->packetDetails_->updateView(card->tlp); });
+		connect(card, &TLPCard::cardPressed, this->packetDetails_, [this, card] { this->packetDetails_->updateView(card->tlp); });
 
 		//card->setCurrentTab(currentTab::resultExplorer);
 		cards_.push_back(card);
@@ -63,7 +64,6 @@ void ResultBrowser::manageLayout() {
 	
 	for (auto card : cards_) {
 		cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
-		connect(card, &TLPCard::cardPressed, this->packetDetails_, [this, card] { this->packetDetails_->updateView(card->tlp); });
 	}
 	setLayout(cardLayout_);
 }
