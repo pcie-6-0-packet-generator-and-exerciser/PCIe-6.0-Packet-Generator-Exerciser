@@ -43,7 +43,7 @@ void ResultBrowser::createCardsSequence(std::queue<TLP*> incomingPackets) {
 		while (expectedTag < currentTag|| currentTag == -1) {
 			TLPCard* emptyCard = new TLPCard();
 			emptyCard->setCurrentTab(currentTab::resultExplorer);
-			emptyCard->setStyleSheet("background: transparent;");
+			emptyCard->setStyleSheet("background: transparent; border:none; ");
 			emptyCard->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 			emptyCard->setMinimumSize(200, 100);
 			
@@ -61,11 +61,21 @@ void ResultBrowser::createCardsSequence(std::queue<TLP*> incomingPackets) {
 }
 
 void ResultBrowser::manageLayout() {
-	
+	cardLayout_->setContentsMargins(5, 5, 5, 5);
+	cardLayout_->setSpacing(10);
+	cardLayout_->setSizeConstraint(QLayout::SetMinimumSize);
+
 	for (auto card : cards_) {
 		cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
 	}
 	setLayout(cardLayout_);
+
+	QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect;
+	effect->setBlurRadius(30);
+	effect->setOffset(0, 0);
+	effect->setColor(Qt::black);
+
+	setGraphicsEffect(effect);
 }
 
 

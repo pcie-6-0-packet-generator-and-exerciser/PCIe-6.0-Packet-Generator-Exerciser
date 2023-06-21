@@ -6,7 +6,7 @@ class TLP;
 class Type1Config;
 class QPushButton;
 class QVBoxLayout;
-
+class QScrollArea;
 namespace Ui
 {
     class ConfigSpaceWidget;
@@ -35,6 +35,7 @@ namespace Ui
         void onSequenceExplorerTabClick();
         void onResultExplorerTabClick();
         void onConfigSpaceButtonClick();
+        void syncScrollAreas(int);
     private:
         QueueWrapper<TLP*>* rootComplexToLayers_;
         QueueWrapper<TLP*>* layersToRootComplex_;
@@ -51,5 +52,7 @@ namespace Ui
         QPushButton* configSpaceButton_;
         Type1Config* type1Config_;
         ConfigSpaceWidget* configSpaceWidget_ = nullptr;
+        QScrollArea* sequenceScrollArea_;
+        QScrollArea* resultScrollArea_;
     };
 }
