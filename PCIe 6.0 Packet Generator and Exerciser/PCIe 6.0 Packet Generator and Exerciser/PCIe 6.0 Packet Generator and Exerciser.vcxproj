@@ -35,23 +35,6 @@
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
-
-    
-          
-            
-    
-
-          
-          Expand Down
-          
-            
-    
-
-          
-          Expand Up
-    
-    @@ -100,6 +100,7 @@
-  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.4.2_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
@@ -120,23 +103,6 @@
     <ClCompile Include="layers\layers_wrapper.cpp" />
     <ClCompile Include="layers\receiver.cpp" />
     <ClCompile Include="layers\thread_functions.cpp" />
-
-    
-          
-            
-    
-
-          
-          Expand Down
-          
-            
-    
-
-          
-          Expand Up
-    
-    @@ -150,6 +151,7 @@
-  
     <ClCompile Include="layers\transaction_layer.cpp" />
     <ClCompile Include="layers\datalink.cpp" />
     <ClCompile Include="layers\flit.cpp" />
@@ -187,17 +153,6 @@
     <ClInclude Include="layers\datalink.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\layers_wrapper.h" />
-
-    
-          
-            
-    
-
-          
-          Expand Down
-    
-    
-  
     <ClInclude Include="layers\receiver.h" />
     <ClInclude Include="layers\sequence.h" />
     <QtMoc Include="sequence_browser.h" />
