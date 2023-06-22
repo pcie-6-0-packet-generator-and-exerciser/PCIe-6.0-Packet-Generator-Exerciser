@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -31,10 +31,27 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.4.3_msvc2019_64</QtInstall>
+    <QtInstall>6.4.2_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
+
+    
+          
+            
+    
+
+          
+          Expand Down
+          
+            
+    
+
+          
+          Expand Up
+    
+    @@ -100,6 +100,7 @@
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.4.2_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
@@ -100,10 +117,26 @@
     <ClCompile Include="Endpoint\memory_handlers\memory_request_handler.cpp" />
     <ClCompile Include="Endpoint\memory_mapper\memory_mapper.cpp" />
     <ClCompile Include="Endpoint\register_class\register.cpp" />
-    <ClCompile Include="enumeration_dialog.cpp" />
     <ClCompile Include="layers\layers_wrapper.cpp" />
     <ClCompile Include="layers\receiver.cpp" />
     <ClCompile Include="layers\thread_functions.cpp" />
+
+    
+          
+            
+    
+
+          
+          Expand Down
+          
+            
+    
+
+          
+          Expand Up
+    
+    @@ -150,6 +151,7 @@
+  
     <ClCompile Include="layers\transaction_layer.cpp" />
     <ClCompile Include="layers\datalink.cpp" />
     <ClCompile Include="layers\flit.cpp" />
@@ -151,10 +184,20 @@
     <ClInclude Include="Endpoint\endpoint_app\memory_request_handler.h" />
     <ClInclude Include="Endpoint\memory_mapper\memory_mapper.h" />
     <ClInclude Include="Endpoint\register_class\register.h" />
-    <QtMoc Include="enumeration_dialog.h" />
     <ClInclude Include="layers\datalink.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\layers_wrapper.h" />
+
+    
+          
+            
+    
+
+          
+          Expand Down
+    
+    
+  
     <ClInclude Include="layers\receiver.h" />
     <ClInclude Include="layers\sequence.h" />
     <QtMoc Include="sequence_browser.h" />
