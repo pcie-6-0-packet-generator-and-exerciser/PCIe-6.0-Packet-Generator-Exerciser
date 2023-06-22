@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -100,6 +100,7 @@
     <ClCompile Include="Endpoint\memory_handlers\memory_request_handler.cpp" />
     <ClCompile Include="Endpoint\memory_mapper\memory_mapper.cpp" />
     <ClCompile Include="Endpoint\register_class\register.cpp" />
+    <ClCompile Include="enumeration_dialog.cpp" />
     <ClCompile Include="layers\layers_wrapper.cpp" />
     <ClCompile Include="layers\receiver.cpp" />
     <ClCompile Include="layers\thread_functions.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Endpoint\endpoint_app\memory_request_handler.h" />
     <ClInclude Include="Endpoint\memory_mapper\memory_mapper.h" />
     <ClInclude Include="Endpoint\register_class\register.h" />
+    <QtMoc Include="enumeration_dialog.h" />
     <ClInclude Include="layers\datalink.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\layers_wrapper.h" />

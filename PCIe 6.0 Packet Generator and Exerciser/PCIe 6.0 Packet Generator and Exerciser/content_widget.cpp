@@ -125,6 +125,7 @@ void ContentWidget::createBody()
 	sequenceBrowser_ = new SequenceBrowser(body_);
 	QScrollBar* sequenceSideBar = new QScrollBar(Qt::Vertical, nullptr);
 	QScrollArea* sequenceScrollArea = new QScrollArea;
+	sequenceScrollArea_ = sequenceScrollArea;
 	sequenceScrollArea->setWidget(sequenceBrowser_);
 	sequenceScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	
@@ -164,6 +165,7 @@ void ContentWidget::createBody()
 	resultBrowser_ = new ResultBrowser(body_, packetDetails);
 	QScrollBar* resultSideBar = new QScrollBar(Qt::Vertical, nullptr);
 	QScrollArea* resultScrollArea = new QScrollArea;
+	resultScrollArea_ = resultScrollArea;
 	resultScrollArea->setWidget(resultBrowser_);
 	resultScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -173,6 +175,9 @@ void ContentWidget::createBody()
 
 	resultBrowserLayout->addWidget(resultScrollArea);
 	resultBrowserLayout->setStretchFactor(resultScrollArea, 10);
+
+	connect(sequenceScrollArea->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(syncScrollAreas(int)));
+	connect(resultScrollArea->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(syncScrollAreas(int)));
 
 	resultFrame_ = new QFrame(this);
 	resultFrame_->setLayout(resultBrowserLayout);
@@ -415,6 +420,7 @@ void ContentWidget::onSubmitButtonClick() {
 	resultExplorerTab_->setStyleSheet(::selectedTabStyleString);
 	sequenceBrowser_->setCurrentTab(currentTab::resultExplorer);
 	sequenceBrowser_->setAcceptDrops(false);
+	sequenceBrowser_->setEditable(false);
 	submitButton_->setVisible(false);
 }
 
@@ -426,6 +432,7 @@ void ContentWidget::onSequenceExplorerTabClick() {
 	sequenceExplorerTab_->setStyleSheet(::selectedTabStyleString);
 	resultExplorerTab_->setStyleSheet(::unselectedTabStyleString);
 	sequenceBrowser_->setCurrentTab(currentTab::sequenceExplorer);
+	sequenceBrowser_->setEditable(true);
 	sequenceBrowser_->setAcceptDrops(true);
 	submitButton_->setVisible(true);
 }
@@ -436,6 +443,7 @@ void ContentWidget::onResultExplorerTabClick() {
 	sequenceExplorerTab_->setStyleSheet(::unselectedTabStyleString);
 	resultExplorerTab_->setStyleSheet(::selectedTabStyleString);
 	sequenceBrowser_->setCurrentTab(currentTab::resultExplorer);
+	sequenceBrowser_->setEditable(false);
 	sequenceBrowser_->setAcceptDrops(false);
 	submitButton_->setVisible(false);
 
@@ -448,4 +456,19 @@ void ContentWidget::onConfigSpaceButtonClick() {
 	}
 	configSpaceWidget_ = new ConfigSpaceWidget(type1Config_, nullptr);
 	configSpaceWidget_->show();
+}
+
+void ContentWidget::syncScrollAreas(int value){
+	QScrollBar* senderScrollBar = qobject_cast<QScrollBar*>(sender());
+
+	// Check if the sender is scrollArea1's scroll bar
+	if (senderScrollBar == sequenceScrollArea_->verticalScrollBar()) {
+		// Set the value of scrollArea2's scroll bar
+		resultScrollArea_->verticalScrollBar()->setValue(value);
+	}
+	// Check if the sender is scrollArea2's scroll bar
+	else if (senderScrollBar == resultScrollArea_->verticalScrollBar()) {
+		// Set the value of scrollArea1's scroll bar
+		sequenceScrollArea_->verticalScrollBar()->setValue(value);
+	}
 }

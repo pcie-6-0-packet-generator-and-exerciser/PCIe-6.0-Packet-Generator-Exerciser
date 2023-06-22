@@ -60,16 +60,16 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 		if (nextTLP) {
 			packet = packets.front();
 			bitRep = packet->getBitRep();
-			bitRep.resize(236 * 8);
 			packets.pop();
 			packetIndexInBytes = 0;
 		}
-		if (transaction->checkGateEquation(globals, packet)) {
+		if (!nextTLP || transaction->checkGateEquation(globals, packet)) {
 			// If it can be sent, check if the current half of the flit contains less than 8 TLPs
 			if (flitIndexInBytes >= 128 ? flit->secondHalfTLPCount < 8 : flit->firstHalfTLPCount < 8) {
 				// If it does, check if what's left of the TLP can fit in what's remaining of the flit
 				if (flitIndexInBytes + (packet->getTotalLength() - packetIndexInBytes) <= 236) {
 					// If it does, then add what's left of the TLP, and return to the beginning of the loop with taking the next TLP
+					bitRep.resize(236 * 8);
 					if (flitIndexInBytes >= 128) {
 						flit->secondHalfTLPCount++;
 					}
@@ -86,10 +86,16 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 				}
 				// If it doesn't, add what can fit, send the current flit, and return to the beginning of the loop without taking the next TLP
 				else {
-					flit->TLPPayload.operator|=(bitRep.operator>>((236 - flitIndexInBytes - (packet->getTotalLength() - packetIndexInBytes)) * -8));
+					boost::dynamic_bitset<> bitRepCopy(bitRep);
+					bitRepCopy>>=(packet->getTotalLength() - packetIndexInBytes - (236 - flitIndexInBytes)) * 8;
+					bitRepCopy.resize(236 * 8);
+					flit->secondHalfTLPCount++;
+					if (flitIndexInBytes < 128)
+						flit->firstHalfTLPCount++;
+					flit->TLPPayload.operator|=(bitRepCopy);
 					packetIndexInBytes += 236 - flitIndexInBytes;
 					bitRep.resize((packet->getTotalLength() - packetIndexInBytes) * 8);
-					bitRep.resize(236 * 8);
+					bitRep.resize(packet->getTotalLength() * 8);
 					nextTLP = false;
 					isPartialTLP = true;
 					pushReadyFlit(globals, flit, flitsToSend);
@@ -106,6 +112,7 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 						// If it does, check if what's left of the TLP can fit in what's remaining of the flit
 						if (flitIndexInBytes + (packet->getTotalLength() - packetIndexInBytes) <= 236) {
 							// If it does, then add what's left of the TLP, and return to the beginning of the loop
+							bitRep.resize(236 * 8);
 							flit->secondHalfTLPCount++;
 							flit->TLPPayload.operator|=(bitRep.operator<<((236 - flitIndexInBytes - (packet->getTotalLength() - packetIndexInBytes)) * 8));
 							flitIndexInBytes += packet->getTotalLength() - packetIndexInBytes;
@@ -115,10 +122,14 @@ void LayersWrapper::sendPayloadFlit(Globals& globals, queue<TLP*>& packets, Queu
 						}
 						// If it doesn't, add what can fit, send the current flit, and return to the beginning of the loop without taking the next TLP
 						else {
-							flit->TLPPayload.operator|=(bitRep.operator>>((236 - flitIndexInBytes - (packet->getTotalLength() - packetIndexInBytes)) * -8));
+							boost::dynamic_bitset<> bitRepCopy(bitRep);
+							bitRepCopy >>= (packet->getTotalLength() - packetIndexInBytes - (236 - flitIndexInBytes)) * 8;
+							bitRepCopy.resize(236 * 8);
+							flit->secondHalfTLPCount++;
+							flit->TLPPayload.operator|=(bitRepCopy);
 							packetIndexInBytes += 236 - flitIndexInBytes;
 							bitRep.resize((packet->getTotalLength() - packetIndexInBytes) * 8);
-							bitRep.resize(236 * 8);
+							bitRep.resize(packet->getTotalLength() * 8);
 							nextTLP = false;
 							isPartialTLP = true;
 							pushReadyFlit(globals, flit, flitsToSend);
@@ -371,7 +382,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			tlpWholeHeader.resize(236 * 8);
 			tlpWholeHeader.operator|=(payload.operator>>((236 - flitIndexinBytes - (headerLength - 4)) * 8));
 			flitIndexinBytes += headerLength - 4;
-			payload.resize((236 - flitIndexinBytes - (headerLength - 4)) * 8);
+			payload.resize((236 - flitIndexinBytes) * 8);
 			payload.resize(236 * 8);
 		}
 		tlpWholeHeader.resize(headerLength * 8);
@@ -406,7 +417,7 @@ void LayersWrapper::receivePayloadFlit(Globals& globals, std::queue<Flit*> flits
 			tlpWholeHeaderWithOHC.resize(236 * 8);
 			tlpWholeHeaderWithOHC.operator|=(payload.operator>>((236 - flitIndexinBytes - 4) * 8));
 			flitIndexinBytes += 4;
-			payload.resize((236 - flitIndexinBytes - 4) * 8);
+			payload.resize((236 - flitIndexinBytes) * 8);
 			payload.resize(236 * 8);
 		}
 		tlpWholeHeaderWithOHC.resize((headerLength + 4) * 8);

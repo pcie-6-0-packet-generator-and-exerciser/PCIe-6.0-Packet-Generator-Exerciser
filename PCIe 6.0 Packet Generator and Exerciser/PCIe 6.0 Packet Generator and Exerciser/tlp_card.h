@@ -29,6 +29,7 @@ namespace Ui
         void mouseMoveEvent(QMouseEvent* event);
         void  mousePressEvent(QMouseEvent* event);
         void manageLayout();
+        void contextMenuEvent(QContextMenuEvent* event) override;
        
     private:
         QLabel* textLabel_;

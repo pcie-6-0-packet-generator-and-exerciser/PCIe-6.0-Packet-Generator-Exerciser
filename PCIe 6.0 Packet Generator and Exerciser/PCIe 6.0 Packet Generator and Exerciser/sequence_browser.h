@@ -15,18 +15,24 @@ namespace Ui
         explicit SequenceBrowser(QWidget* parent = nullptr);
         std::queue<TLP*> getTLPCards();
         void setCurrentTab(currentTab tab);
+        void setEditable(bool editable);
+        bool isEditable() const { return editable_; }
         ~SequenceBrowser();
     private:
         void createCardsSequence();
         void manageLayout();
         void dropEvent(QDropEvent* event);
         void dragEnterEvent(QDragEnterEvent* event);
+        //void contextMenuEvent(QContextMenuEvent* event) override;
     public:
         PacketDetails* packetDetails;
     private:
         QVBoxLayout* cardLayout_;
         std::list<TLPCard*> cards_;
         currentTab currentTab_ = currentTab::sequenceExplorer;
+        bool editable_ = true;
+    public slots: 
+        void deleteTLP(TLPCard* card);
     };
 
 }

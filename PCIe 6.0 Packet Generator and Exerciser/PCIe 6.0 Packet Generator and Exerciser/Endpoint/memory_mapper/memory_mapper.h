@@ -14,6 +14,7 @@ public:
     private:
         static MemoryMap* memoryMap;
         MemoryMap();          
-        boost::dynamic_bitset<> memory;
+        boost::dynamic_bitset<> prefetchableMemory;
+        boost::dynamic_bitset<> nonPrefetchableMemory;
 
 };

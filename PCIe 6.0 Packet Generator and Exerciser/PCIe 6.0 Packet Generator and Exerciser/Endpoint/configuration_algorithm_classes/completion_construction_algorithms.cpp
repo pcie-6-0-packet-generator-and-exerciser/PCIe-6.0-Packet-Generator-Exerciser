@@ -12,7 +12,7 @@ TLP* CompletionWithData::constructTLP()
 {
 	TLP* tlpHolder; // This will be the return value 
 
-	double registerLengthInDW = (double)(registerLengthInBytes / 4);
+	int registerLengthInDW = ceil(registerLengthInBytes / 4.0);
 
 	bitset<2> lowerAddressOHC = 0b00; // For any Completion for a Configuration Request
 	bitset<5> lowerAddressHeaderBase = 0b00000;
