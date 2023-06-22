@@ -413,6 +413,11 @@ void PacketDetails::saveDataPayload() {
 	}
 	//adjust tlp length
 	currentTLP->header->lengthInDoubleWord = ceil((float)currentTLP->dataPayload.size() / 32);
+	int i = currentTLP->header->lengthInDoubleWord * 32 - dataString.size();
+	for ( i ; i >0 ; i--) {
+		currentTLP->dataPayload.push_back(0);
+	}
+	
 }
 
 void PacketDetails::saveConfigCommon() {
