@@ -8,6 +8,12 @@
 #include "layers/globals.h"
 #include "layers/thread_functions.h"
 #include <thread>
+#include <QRandomGenerator>
+#include <QTime>
+#include "enumeration_dialog.h"
+#include <QThread>
+#include <QTimer>
+#include <QApplication>
 
 int main(int argc, char *argv[])
 {
@@ -47,7 +53,19 @@ int main(int argc, char *argv[])
     std::thread t5(&EndpointApp::run, endpointApp, std::ref(endpointToEndpointLayers), std::ref(endpointLayersToEndpoint));
 
     Ui::MainWindow* mainWindow = new Ui::MainWindow(&rootComplexToRootComplexLayers, &rootComplexLayersToRootComplex);
-    mainWindow->show();
+    
+    PcieEnumerationDialog* enumerationDialog = new PcieEnumerationDialog(nullptr);
+    enumerationDialog->setModal(true);
+    enumerationDialog->show();
+    QApplication::processEvents();
+    QThread::sleep(1.5);
+    while (!endpointGlobal.Fl2 || !rootComplexGlobal.Fl2) {
+        QThread::sleep(1);
+    }
+    QTime* time = new QTime();
+    QRandomGenerator* randomGenerator = new QRandomGenerator(time->msecsSinceStartOfDay());
+    enumerationDialog->setMessage("Enumeration of the PCIe is currently running...<br><br>Initialization is Done<br><br>One Endpoint Detected<br><br>Fetching Memory Ranges<br><br>Memory Ranges Fetched<br><br>Prefetchable memory assigned address range 0 -> 33554431<br><br>non-prefetchable assigned address range 33554432 -> 35651583");
+    QApplication::processEvents();
     app.exec();
     t1.join();
     t2.join();

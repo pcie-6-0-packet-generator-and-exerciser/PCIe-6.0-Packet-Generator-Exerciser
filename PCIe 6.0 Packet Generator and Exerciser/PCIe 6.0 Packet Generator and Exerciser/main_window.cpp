@@ -4,6 +4,8 @@
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QPushButton>
+#include "enumeration_dialog.h"
+
 using namespace Ui;
 
 MainWindow::MainWindow(QueueWrapper<TLP*>* rootComplexToLayers, QueueWrapper<TLP*>* layersToRootComplex)
@@ -16,6 +18,7 @@ MainWindow::MainWindow(QueueWrapper<TLP*>* rootComplexToLayers, QueueWrapper<TLP
     createContentWidget();
     createToolBar();
     manageLayout();
+    show();
 }
 
 MainWindow::~MainWindow()
