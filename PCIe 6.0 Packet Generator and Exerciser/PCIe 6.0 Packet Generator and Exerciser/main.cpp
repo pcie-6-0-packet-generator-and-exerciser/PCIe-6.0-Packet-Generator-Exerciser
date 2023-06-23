@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     }
     QTime* time = new QTime();
     QRandomGenerator* randomGenerator = new QRandomGenerator(time->msecsSinceStartOfDay());
-    enumerationDialog->setMessage("Enumeration of the PCIe is currently running...<br><br>Initialization is Done<br><br>One Endpoint Detected<br><br>Fetching Memory Ranges<br><br>Memory Ranges Fetched<br><br>Prefetchable memory assigned address range 0 -> 33554431<br><br>non-prefetchable assigned address range 33554432 -> 35651583");
+    enumerationDialog->setMessage("Enumeration of the PCIe is currently running...<br><br>One Endpoint Detected<br><br>Fetching Memory Ranges<br><br>Memory Ranges Fetched<br><br>Prefetchable memory assigned address range 0 -> 33554431<br><br>non-prefetchable assigned address range 33554432 -> 35651583<br><br>Link initialization in progress...<br><br>Initialization is Done<br>");
     QApplication::processEvents();
     app.exec();
     t1.join();
