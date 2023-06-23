@@ -40,7 +40,9 @@ boost::dynamic_bitset<> MemoryMap::read(uint64_t address, long long requiredToRe
             updatedLastDoubleWord.resize(onesCounter2 * 8);
             for (size_t i = 0; i < 4; i++) {
                 if (lastByteEnable[i] == 1) {
-                    updatedLastDoubleWord |= ((get_bits(lastDoubleWord, i * 8, (i * 8) + 7)) << (i * 8));
+                    boost::dynamic_bitset<> temp = get_bits(lastDoubleWord, i * 8, (i * 8) + 7);
+                    temp.resize(updatedLastDoubleWord.size());
+                    updatedLastDoubleWord |= (temp << (i * 8));
                 }
             }
         }
