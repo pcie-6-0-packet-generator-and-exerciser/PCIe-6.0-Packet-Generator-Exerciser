@@ -12,6 +12,8 @@ PacketDetails::PacketDetails(QWidget* parent)
 	detailsLayout_ = new QGridLayout;
 	detailsLayout_->setSpacing(0);
 	detailsLayout_->setHorizontalSpacing(0);
+	detailsLayout_->setVerticalSpacing(0);
+	detailsLayout_->setContentsMargins(0, 0, 0, 0);
 	manageLayout();
 }
 PacketDetails::~PacketDetails()
@@ -174,6 +176,7 @@ void PacketDetails::createDataPayload(int row, bool readOnly) {
 	string dataString;
 	boost::to_string(currentTLP->dataPayload, dataString);
 	CustomLineEdit* data = new CustomLineEdit("Data", 32*width, 2*height, QString::fromStdString(dataString), this, readOnly);
+	data->setScrollBarEnabled(true);
 	detailsLayout_->addWidget(data,row,0,2,32);
 
 	//saving to current LineEdits map 
@@ -388,27 +391,27 @@ void PacketDetails::clearView() {
 
 void PacketDetails::saveMemCommon32() {
 	AddressRouting32Bit* addressRouting = dynamic_cast<AddressRouting32Bit*>(currentTLP->header->nonBase);
-	addressRouting->address = binaryToInteger(lineEditsMap["address"]->lineEdit->text().toStdString());
+	addressRouting->address = binaryToInteger(lineEditsMap["address"]->lineEdit->toPlainText().toStdString());
 
 
 	OHCA1* ohca1 = dynamic_cast<OHCA1*>(currentTLP->header->OHCVector[0]);
-	ohca1->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->text().toStdString());
-	ohca1->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->text().toStdString());
+	ohca1->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->toPlainText().toStdString());
+	ohca1->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->toPlainText().toStdString());
 }
 void PacketDetails::saveMemCommon64() {
 	AddressRouting64Bit* addressRouting = dynamic_cast<AddressRouting64Bit*>(currentTLP->header->nonBase);
-	std::string upperAddress = lineEditsMap["upperAddress"]->lineEdit->text().toStdString();
-	std::string lowerAddress = lineEditsMap["lowerAddress"]->lineEdit->text().toStdString();
+	std::string upperAddress = lineEditsMap["upperAddress"]->lineEdit->toPlainText().toStdString();
+	std::string lowerAddress = lineEditsMap["lowerAddress"]->lineEdit->toPlainText().toStdString();
 	addressRouting->address = combineAddresses(upperAddress, lowerAddress);
 
 
 	OHCA1* ohca1 = dynamic_cast<OHCA1*>(currentTLP->header->OHCVector[0]);
-	ohca1->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->text().toStdString());
-	ohca1->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->text().toStdString());
+	ohca1->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->toPlainText().toStdString());
+	ohca1->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->toPlainText().toStdString());
 }
 void PacketDetails::saveDataPayload() {
 	currentTLP->dataPayload.clear();
-	std::string dataString = lineEditsMap["dataPayload"]->lineEdit->text().toStdString();
+	std::string dataString = lineEditsMap["dataPayload"]->lineEdit->toPlainText().toStdString();
 	//append each bit to the data payload
 	for (int i = dataString.size() - 1; i >= 0; i--) {
 		currentTLP->dataPayload.push_back(dataString[i] - '0');
@@ -424,17 +427,17 @@ void PacketDetails::saveDataPayload() {
 
 void PacketDetails::saveConfigCommon() {
 	ConfigNonHeaderBase* configNonBase = dynamic_cast<ConfigNonHeaderBase*>(currentTLP->header->nonBase);
-	configNonBase->registerNumber = binaryToInteger(lineEditsMap["registerNumber"]->lineEdit->text().toStdString());
-
+	//configNonBase->registerNumber = binaryToInteger(lineEditsMap["registerNumber"]->lineEdit->toPlainText().toStdString());
+	
 	OHCA3* ohca3 = dynamic_cast<OHCA3*>(currentTLP->header->OHCVector[0]);
-	ohca3->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->text().toStdString());
-	ohca3->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->text().toStdString());
-	//ohca3->destinationSegment = binaryToInteger(lineEditsMap["destinationSegment"]->lineEdit->text().toStdString());
+	ohca3->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->toPlainText().toStdString());
+	ohca3->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->toPlainText().toStdString());
+	//ohca3->destinationSegment = binaryToInteger(lineEditsMap["destinationSegment"]->lineEdit->toPlainText().toStdString());
 }
 
 void PacketDetails::saveLengthMemRead() {
 	//adjust tlp length
-	currentTLP->header->lengthInDoubleWord = binaryToInteger(lineEditsMap["length"]->lineEdit->text().toStdString());;
+	currentTLP->header->lengthInDoubleWord = binaryToInteger(lineEditsMap["length"]->lineEdit->toPlainText().toStdString());;
 }
 
 
