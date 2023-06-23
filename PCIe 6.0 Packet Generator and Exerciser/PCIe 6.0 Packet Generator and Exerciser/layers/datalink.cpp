@@ -1,4 +1,5 @@
 #include "datalink.h"
+#include "../logging.h"
 
 void DatalinkLayer::updateCreditLimit(Flit* flit, int P_SHARED_CREDIT_LIMIT[], int NP_SHARED_CREDIT_LIMIT[], int CPL_SHARED_CREDIT_LIMIT[], int P_DEDICATED_CREDIT_LIMIT[], int NP_DEDICATED_CREDIT_LIMIT[], int CPL_DEDICATED_CREDIT_LIMIT[], bool& FI1, bool& FI2) {
 
@@ -52,6 +53,8 @@ void DatalinkLayer::updateCreditLimit(Flit* flit, int P_SHARED_CREDIT_LIMIT[], i
 			CPL_SHARED_CREDIT_LIMIT[0] != -1 && P_DEDICATED_CREDIT_LIMIT[0] != -1 &&
 			NP_DEDICATED_CREDIT_LIMIT[0] != -1 && CPL_DEDICATED_CREDIT_LIMIT[0] != -1) {
 			FI1 = true;
+			src::severity_logger_mt<boost::log::trivial::severity_level>& my_logger = my_logger::get();
+			BOOST_LOG_SEV(my_logger, logging::trivial::trace) << "Flag FI1 set";
 		}
 	}
 	// STATE FC_INIT2: FI1 is set
@@ -59,6 +62,8 @@ void DatalinkLayer::updateCreditLimit(Flit* flit, int P_SHARED_CREDIT_LIMIT[], i
 	else if (!FI2 && FI1 && dllpObj.m_type == Dllp::DllpType::initFC2) {
 		// Set the FI2 flag if any expected DLLPs are received
 		FI2 = true;
+		src::severity_logger_mt<boost::log::trivial::severity_level>& my_logger = my_logger::get();
+		BOOST_LOG_SEV(my_logger, logging::trivial::trace) << "Flag FI2 set";
 	}
 }
 

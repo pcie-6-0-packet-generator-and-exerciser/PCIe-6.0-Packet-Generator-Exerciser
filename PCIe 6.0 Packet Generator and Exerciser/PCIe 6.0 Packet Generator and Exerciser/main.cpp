@@ -43,11 +43,17 @@ int main(int argc, char *argv[])
     Globals rootComplexGlobal(credit[0], credit[1], credit[2], credit[3], credit[4], credit[5]);
     Globals endpointGlobal(credit[6], credit[7], credit[8], credit[9], credit[10], credit[11]);
 
+    /*src::severity_logger_mt<boost::log::trivial::severity_level>& my_logger = my_logger::get();
+    BOOST_LOG_SEV(my_logger, logging::trivial::trace) << "Root complex globals object id: " << rootComplexGlobal;
+
+    src::severity_logger_mt<boost::log::trivial::severity_level>& my_logger = my_logger::get();
+    BOOST_LOG_SEV(my_logger, logging::trivial::trace) << "Endpoint globals object id: " << endpointGlobal;*/
+
     std::thread t1(initilizationSender, std::ref(rootComplexGlobal), std::ref(rootComplexToRootComplexLayers), std::ref(rootComplexLayersToEndpointLayers));
     std::thread t2(initilizationSender, std::ref(endpointGlobal), std::ref(endpointToEndpointLayers), std::ref(endpointLayersToRootComplexLayers));
 
     std::thread t3(initializationReceiver, std::ref(rootComplexGlobal), std::ref(endpointLayersToRootComplexLayers), std::ref(rootComplexLayersToRootComplex), std::ref(rootComplexLayersToEndpointLayers));
-    //std::thread t4(initializationReceiver, std::ref(endpointGlobal), std::ref(rootComplexLayersToEndpointLayers), std::ref(endpointLayersToEndpoint), std::ref(endpointLayersToRootComplexLayers));
+    std::thread t4(initializationReceiver, std::ref(endpointGlobal), std::ref(rootComplexLayersToEndpointLayers), std::ref(endpointLayersToEndpoint), std::ref(endpointLayersToRootComplexLayers));
     
     
 
@@ -72,7 +78,7 @@ int main(int argc, char *argv[])
     t1.join();
     t2.join();
     t3.join();
-    //t4.join();
+    t4.join();
     t5.join();
     return 0;
 }

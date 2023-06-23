@@ -13,8 +13,6 @@ MainWindow::MainWindow(QueueWrapper<TLP*>* rootComplexToLayers, QueueWrapper<TLP
     rootComplexToLayers_(rootComplexToLayers),
     layersToRootComplex_(layersToRootComplex)
 {
-    src::severity_logger_mt<boost::log::trivial::severity_level>& my_logger = my_logger::get();
-    BOOST_LOG_SEV(my_logger, logging::trivial::trace) << "MainWindow::MainWindow()";
     setMinimumSize(1200, 800);
     setWindowTitle("PCIe6 Packet Generator and Exerciser");
     createContentWidget();
