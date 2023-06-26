@@ -15,16 +15,16 @@ using namespace Ui;
     lineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     lineEdit->setEnabled(!readOnly);
     lineEdit ->setReadOnly(readOnly);
-    //lineEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //lineEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    //lineEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    lineEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    lineEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     lineEdit->setLineWrapMode(QPlainTextEdit::WidgetWidth);
     layout = new QVBoxLayout;
     layout->addWidget(label);
     layout->addWidget(lineEdit);
     setLayout(layout);
     setFixedSize(width, height);
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    
     //setStyleSheet("QFrame { background-color: rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0); }");
 	
 }
