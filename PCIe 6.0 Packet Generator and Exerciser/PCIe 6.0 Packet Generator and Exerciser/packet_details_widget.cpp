@@ -427,7 +427,7 @@ void PacketDetails::saveDataPayload() {
 
 void PacketDetails::saveConfigCommon() {
 	ConfigNonHeaderBase* configNonBase = dynamic_cast<ConfigNonHeaderBase*>(currentTLP->header->nonBase);
-	//configNonBase->registerNumber = binaryToInteger(lineEditsMap["registerNumber"]->lineEdit->toPlainText().toStdString());
+	configNonBase->registerNumber = binaryToInteger(lineEditsMap["registerNumber"]->lineEdit->toPlainText().toStdString());
 	
 	OHCA3* ohca3 = dynamic_cast<OHCA3*>(currentTLP->header->OHCVector[0]);
 	ohca3->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->toPlainText().toStdString());
