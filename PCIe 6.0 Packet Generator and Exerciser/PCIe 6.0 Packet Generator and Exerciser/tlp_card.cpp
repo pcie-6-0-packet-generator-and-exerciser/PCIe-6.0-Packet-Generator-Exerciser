@@ -67,36 +67,37 @@ TLPCard::TLPCard( TLPType tlpType, QWidget* parent)
 	//it sets the tlp type and creates a new tlp object based on the tlp type
 
 	boost::dynamic_bitset<> zeroPayload(32);
+	std::bitset<4> BE(15);
 	
 
 	this->tlpType = tlpType;
 	switch (tlpType) {
 	case TLPType::MemRead32:
-		tlp = TLP::createMemRead32Tlp(0,  0, 0, 0, 0, 0);
+		tlp = TLP::createMemRead32Tlp(1,  0, 0, 0, BE, BE);
 		break;
 	case TLPType::MemRead64:
-		tlp = TLP::createMemRead64Tlp(0,  0, 0, 0, 0, 0);
+		tlp = TLP::createMemRead64Tlp(1,  0, 0, 0, BE, BE);
 		break;
 	case TLPType::MemWrite32:
-		tlp = TLP::createMemWrite32Tlp(1, zeroPayload, 0, 0, 0, 0, 0);
+		tlp = TLP::createMemWrite32Tlp(1, zeroPayload, 0, 0, 0, BE, BE);
 		break;
 	case TLPType::MemWrite64:
-		tlp = TLP::createMemWrite64Tlp(1, zeroPayload, 0, 0, 0, 0, 0);
+		tlp = TLP::createMemWrite64Tlp(1, zeroPayload, 0, 0, 0, BE, BE);
 		break;
 	case TLPType::VendorMsg:
 		tlp = TLP::createVendorMsgTlp(1, zeroPayload, 0, 0, 0);
 		break;
 	case TLPType::ConfigRead0:
-		tlp = TLP::createConfigRead0Tlp(0, 0, 0, 0, 0, 0, 0, 0, 0);
+		tlp = TLP::createConfigRead0Tlp(0, 0, 0, 0, 0, 0, BE, BE, 0);
 		break;
 	case TLPType::ConfigWrite0:
-		tlp = TLP::createConfigWrite0Tlp(1, zeroPayload, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
+		tlp = TLP::createConfigWrite0Tlp(1, zeroPayload, 0, 0, 0, 0, 0, 0, BE, BE, 0 );
 		break;
 	case TLPType::ConfigRead1:
-		tlp = TLP::createConfigRead1Tlp(0, 0, 0, 0, 0, 0, 0, 0, 0);
+		tlp = TLP::createConfigRead1Tlp(0, 0, 0, 0, 0, 0, BE, BE, 0);
 		break;
 	case TLPType::ConfigWrite1:
-		tlp = TLP::createConfigWrite1Tlp(1, zeroPayload, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		tlp = TLP::createConfigWrite1Tlp(1, zeroPayload, 0, 0, 0, 0, 0, 0, BE, BE, 0);
 		break;
 	}
 	textLabel_->setAlignment(Qt::AlignHCenter);
