@@ -48,6 +48,14 @@ ContentWidget::~ContentWidget()
 
 }
 
+void ContentWidget::addTLPtoSequence(TLP* tlp)
+{
+	sequenceBrowser_->addTLPCard(tlp);
+}
+std::queue<TLP*> ContentWidget::getSequence()
+{
+	return sequenceBrowser_->getTLPCards();
+}
 void ContentWidget::createHeader() 
 {
 	createResultExplorerTab();

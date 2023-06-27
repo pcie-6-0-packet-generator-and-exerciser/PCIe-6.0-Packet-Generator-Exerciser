@@ -18,6 +18,7 @@ namespace Ui
         void setEditable(bool editable);
         bool isEditable() const { return editable_; }
         ~SequenceBrowser();
+        void addTLPCard(TLP* tlp);
     private:
         void createCardsSequence();
         void manageLayout();
