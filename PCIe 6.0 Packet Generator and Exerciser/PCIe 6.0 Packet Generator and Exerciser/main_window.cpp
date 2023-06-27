@@ -54,9 +54,10 @@ void MainWindow::createMenuBar() {
 }
 boost::dynamic_bitset<> fromString(const QString& str) {
 	boost::dynamic_bitset<> bitset(str.size());
-    for (int i = 0; i < str.size(); i++) {
+    int size = str.size();
+    for (int i = 0; i < size; i++) {
         if (str[i] == '1') {
-			bitset.set(i);
+			bitset.set((size -1) - i);
 		}
 	}
 	return bitset;
