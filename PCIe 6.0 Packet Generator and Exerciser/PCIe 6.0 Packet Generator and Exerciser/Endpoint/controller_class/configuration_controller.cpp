@@ -186,7 +186,9 @@ TLP* ConfigurationController::handleConfigurationRequest(TLP * tlp)
         dataToBeReadUint = handler->handleConfigurationRead(Registernumber);
         dataToBeReadBits = convertToBitSet(dataToBeReadUint);
 
-        dataToBeReadBits.resize(completerConstructor->getRegisterLength() * 8);
+        dataToBeReadBits.resize(
+            ceil((completerConstructor->getRegisterLength() * 8)/(32.0)) * 32
+        );
 
         completerConstructor->setData(dataToBeReadBits);
         

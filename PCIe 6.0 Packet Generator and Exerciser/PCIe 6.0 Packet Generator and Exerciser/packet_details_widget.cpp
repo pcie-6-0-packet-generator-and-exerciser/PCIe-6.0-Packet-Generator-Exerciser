@@ -10,6 +10,10 @@ PacketDetails::PacketDetails(QWidget* parent)
 {
 	contentLayout_ = new QVBoxLayout;
 	detailsLayout_ = new QGridLayout;
+	detailsLayout_->setSpacing(0);
+	detailsLayout_->setHorizontalSpacing(0);
+	detailsLayout_->setVerticalSpacing(0);
+	detailsLayout_->setContentsMargins(0, 0, 0, 0);
 	manageLayout();
 }
 PacketDetails::~PacketDetails()
@@ -35,46 +39,46 @@ int PacketDetails::binaryToInteger(const std::string& binary) {
 }
 void PacketDetails::createHeader() {
 	
-	CustomLineEdit* type = new CustomLineEdit("Type", 100, 50, QString::number(static_cast<int>(currentTLP->header->TLPtype), 2).rightJustified(8, '0'), this);
-	detailsLayout_->addWidget(type,0,0);
-	CustomLineEdit* tc = new CustomLineEdit("TC", 100, 50, "000", this);
-	detailsLayout_->addWidget(tc,0,1);
-	CustomLineEdit* ohc = new CustomLineEdit("OHC", 100, 50, "00001", this);
-	detailsLayout_->addWidget(ohc,0,2);
-	CustomLineEdit* ts = new CustomLineEdit("TS", 100, 50, "000", this);
-	detailsLayout_->addWidget(ts,0,3);
-	CustomLineEdit* attr = new CustomLineEdit("Attr", 100, 50, "000", this);
-	detailsLayout_->addWidget(attr,0,4);
+	CustomLineEdit* type = new CustomLineEdit("Type", 8*width, height, QString::number(static_cast<int>(currentTLP->header->TLPtype), 2).rightJustified(8, '0'), this);
+	detailsLayout_->addWidget(type,0,0,1,8);
+	CustomLineEdit* tc = new CustomLineEdit("TC", 3*width, height, "000", this);
+	detailsLayout_->addWidget(tc,0,8,1,3);
+	CustomLineEdit* ohc = new CustomLineEdit("OHC", 5*width, height, "00001", this);
+	detailsLayout_->addWidget(ohc,0,11,1,5);
+	CustomLineEdit* ts = new CustomLineEdit("TS", 3*width, height, "000", this);
+	detailsLayout_->addWidget(ts,0,16,1,3);
+	CustomLineEdit* attr = new CustomLineEdit("Attr", 3*width, height, "000", this);
+	detailsLayout_->addWidget(attr,0,19,1,3);
 	if(currentTLP->header->TLPtype == TLPType::MemRead32|| currentTLP->header->TLPtype == TLPType::MemRead64 ) {
-		CustomLineEdit* length = new CustomLineEdit("Length", 100, 50, QString::number(static_cast<int>(currentTLP->header->lengthInDoubleWord), 2).rightJustified(10, '0'), this, false);
-		detailsLayout_->addWidget(length, 0, 5);
+		CustomLineEdit* length = new CustomLineEdit("Length", 10*width, height, QString::number(static_cast<int>(currentTLP->header->lengthInDoubleWord), 2).rightJustified(10, '0'), this, false);
+		detailsLayout_->addWidget(length, 0, 22,1,10);
 		lineEditsMap["length"] = length;
 	}
 	else{
-		CustomLineEdit* length = new CustomLineEdit("Length", 100, 50, QString::number(static_cast<int>(currentTLP->header->lengthInDoubleWord), 2).rightJustified(10, '0'), this);
-		detailsLayout_->addWidget(length, 0, 5);
+		CustomLineEdit* length = new CustomLineEdit("Length", 10*width, height, QString::number(static_cast<int>(currentTLP->header->lengthInDoubleWord), 2).rightJustified(10, '0'), this);
+		detailsLayout_->addWidget(length, 0, 22,1,10);
 	}
 	
 }
 void PacketDetails::createMem32bCommon() {
 	//creates the second dw in memory requests 32bit
 	
-	CustomLineEdit* requesterId = new CustomLineEdit("Requester ID", 100, 50, "0000000000000", this);
-	detailsLayout_->addWidget(requesterId, 1,0);
-	CustomLineEdit* ep = new CustomLineEdit("EP", 100, 50, "0", this);
-	detailsLayout_->addWidget(ep,1,1);
-	CustomLineEdit* reserved = new CustomLineEdit("R", 100, 50, "", this);
-	detailsLayout_->addWidget(reserved,1,2);
+	CustomLineEdit* requesterId = new CustomLineEdit("Requester ID", 16*width, height, "0000000000000", this);
+	detailsLayout_->addWidget(requesterId, 1,0,1,16);
+	CustomLineEdit* ep = new CustomLineEdit("EP", 1.5*width, height, "0", this);
+	detailsLayout_->addWidget(ep,1,16,1,1);
+	CustomLineEdit* reserved = new CustomLineEdit("R", 1.5*width, height, "", this);
+	detailsLayout_->addWidget(reserved,1,17,1,1);
 	NonHeaderBase* nonbase = currentTLP->header->nonBase;
 	AddressRouting32Bit* addressRouting = dynamic_cast<AddressRouting32Bit*>(nonbase);
-	CustomLineEdit* tag = new CustomLineEdit("Tag", 100, 50, QString::number(static_cast<int>(addressRouting->tag), 2), this);
-	detailsLayout_->addWidget(tag,1,3);
+	CustomLineEdit* tag = new CustomLineEdit("Tag", 14*width, height, QString::number(static_cast<int>(addressRouting->tag), 2).rightJustified(14, '0'), this);
+	detailsLayout_->addWidget(tag,1,18,1,14);
 
 	//address
-	CustomLineEdit* address = new CustomLineEdit("Address", 100, 50, QString::number(static_cast<int>(addressRouting->address), 2).rightJustified(30, '0'), this, false);
-	detailsLayout_->addWidget(address,2,0);
-	CustomLineEdit* at = new CustomLineEdit("AT", 100, 50, "000", this);
-	detailsLayout_->addWidget(at,2,1);
+	CustomLineEdit* address = new CustomLineEdit("Address", 30*width, height, QString::number(static_cast<int>(addressRouting->address), 2).rightJustified(30, '0'), this, false);
+	detailsLayout_->addWidget(address,2,0,1,30);
+	CustomLineEdit* at = new CustomLineEdit("AT", 2*width, height, "00", this);
+	detailsLayout_->addWidget(at,2,30,1,2);
 
 	//saving to CurrentLineEdits
 	lineEditsMap["address"] = address;
@@ -87,26 +91,26 @@ void PacketDetails::createMem32bCommon() {
 void PacketDetails::createMem64bCommon() {
 	//creates the second dw in memory requests 64bit
 
-	CustomLineEdit* requesterId = new CustomLineEdit("Requester ID", 100, 50, "0000000000000", this);
-	detailsLayout_->addWidget(requesterId, 1, 0);
-	CustomLineEdit* ep = new CustomLineEdit("EP", 100, 50, "0", this);
-	detailsLayout_->addWidget(ep, 1, 1);
-	CustomLineEdit* reserved = new CustomLineEdit("R", 100, 50, "", this);
-	detailsLayout_->addWidget(reserved, 1, 2);
+	CustomLineEdit* requesterId = new CustomLineEdit("Requester ID", 16 * width, height, "0000000000000", this);
+	detailsLayout_->addWidget(requesterId, 1, 0, 1, 16);
+	CustomLineEdit* ep = new CustomLineEdit("EP", 1.5*width, height, "0", this);
+	detailsLayout_->addWidget(ep, 1, 16, 1, 1);
+	CustomLineEdit* reserved = new CustomLineEdit("R", 1.5*width, height, "", this);
+	detailsLayout_->addWidget(reserved, 1, 17, 1, 1);
 	NonHeaderBase* nonbase = currentTLP->header->nonBase;
 	AddressRouting64Bit* addressRouting = dynamic_cast<AddressRouting64Bit*>(nonbase);
-	CustomLineEdit* tag = new CustomLineEdit("Tag", 100, 50, QString::number(static_cast<int>(addressRouting->tag), 2), this);
-	detailsLayout_->addWidget(tag, 1, 3);
+	CustomLineEdit* tag = new CustomLineEdit("Tag", 14 * width, height, QString::number(static_cast<int>(addressRouting->tag), 2).rightJustified(14, '0'), this);
+	detailsLayout_->addWidget(tag, 1, 18, 1, 14);
 
 	//address
 	int upperAddressValue = (int)(addressRouting->address >> 32);
-	CustomLineEdit* upperAddress = new CustomLineEdit("Address[63:32]", 100, 50, QString::number(static_cast<int>(upperAddressValue), 2).rightJustified(32, '0'), this, false);
-	detailsLayout_->addWidget(upperAddress, 2, 0);
+	CustomLineEdit* upperAddress = new CustomLineEdit("Address[63:32]", 32*width, height, QString::number(static_cast<int>(upperAddressValue), 2).rightJustified(32, '0'), this, false);
+	detailsLayout_->addWidget(upperAddress, 2, 0,1,32);
 	int lowerAddressValue = (int)addressRouting->address & 0xFFFFFFFF;
-	CustomLineEdit* lowerAddress = new CustomLineEdit("Address[31:2]", 100, 50, QString::number(static_cast<long long>(lowerAddressValue), 2).rightJustified(30, '0'), this,false);
-	detailsLayout_->addWidget(lowerAddress, 3, 0);
-	CustomLineEdit* at = new CustomLineEdit("AT", 100, 50, "000", this);
-	detailsLayout_->addWidget(at, 3, 1);
+	CustomLineEdit* lowerAddress = new CustomLineEdit("Address[31:2]", 30*width, height, QString::number(static_cast<long long>(lowerAddressValue), 2).rightJustified(30, '0'), this,false);
+	detailsLayout_->addWidget(lowerAddress, 3, 0,1,30);
+	CustomLineEdit* at = new CustomLineEdit("AT", 2*width, height, "00", this);
+	detailsLayout_->addWidget(at, 3, 30,1,2);
 
 	//saving to address CurrentLineEdits
 	lineEditsMap["upperAddress"] = upperAddress;
@@ -118,18 +122,18 @@ void PacketDetails::createConfigOHCvector() {
 	//OHC
 	OHC* ohcElement = currentTLP->header->OHCVector[0];
 	OHCA3* ohca3 = dynamic_cast<OHCA3*>(ohcElement);
-	CustomLineEdit* destination = new CustomLineEdit("Destination Segment", 100, 50, QString::number(ohca3->destinationSegment,2), this,false);
-	detailsLayout_->addWidget(destination,3, 0);
+	CustomLineEdit* destination = new CustomLineEdit("Destination Segment", 8*width, height, QString::number(ohca3->destinationSegment,2).rightJustified(8,'0'), this);
+	detailsLayout_->addWidget(destination,3, 0,1,8);
 	
 
-	detailsLayout_->addWidget(new CustomLineEdit("R", 100, 50, "", this), 3, 1);
-	detailsLayout_->addWidget(new CustomLineEdit("DSV", 100, 50, "0", this), 3, 2);
-	detailsLayout_->addWidget(new CustomLineEdit("R", 100, 50, "", this), 3, 3);
+	detailsLayout_->addWidget(new CustomLineEdit("R", 8*width, height, "", this), 3, 8,1,8);
+	detailsLayout_->addWidget(new CustomLineEdit("DSV", 1.5*width, height, "0", this), 3, 16,1,1);
+	detailsLayout_->addWidget(new CustomLineEdit("R", 7*width, height, "", this), 3, 17,1,7);
 	
-	CustomLineEdit* firstDWBE = new CustomLineEdit("First DW BE", 100, 50, QString::fromStdString(ohca3->firstDWBE.to_string()), this, false);
-	detailsLayout_->addWidget(firstDWBE, 3, 4);
-	CustomLineEdit* lastDWBE = new CustomLineEdit("Last DW BE", 100, 50, QString::fromStdString(ohca3->lastDWBE.to_string()), this, false);
-	detailsLayout_->addWidget(lastDWBE, 3, 5);
+	CustomLineEdit* firstDWBE = new CustomLineEdit("First DW BE", 4*width, height, QString::fromStdString(ohca3->firstDWBE.to_string()), this, false);
+	detailsLayout_->addWidget(firstDWBE, 3, 24,1,4);
+	CustomLineEdit* lastDWBE = new CustomLineEdit("Last DW BE", 4*width, height, QString::fromStdString(ohca3->lastDWBE.to_string()), this, false);
+	detailsLayout_->addWidget(lastDWBE, 3, 28,1,4);
 
 
 	//saving to currentLineEdits
@@ -141,21 +145,21 @@ void PacketDetails::createConfigOHCvector() {
 
 void PacketDetails::createMemOHCvector(int row) {
 	//OHC
-	CustomLineEdit* nw = new CustomLineEdit("NW", 100, 50, "000", this);
-	detailsLayout_->addWidget(nw,row,0);
-	CustomLineEdit* pv = new CustomLineEdit("PV", 100, 50, "000", this);
-	detailsLayout_->addWidget(pv,row,1);
-	CustomLineEdit* pmr = new CustomLineEdit("PMR", 100, 50, "000", this);
-	detailsLayout_->addWidget(pmr,row,2);
-	CustomLineEdit* pasid = new CustomLineEdit("PASID", 100, 50, "0000000000000000", this);
-	detailsLayout_->addWidget(pasid,row,3);
+	CustomLineEdit* nw = new CustomLineEdit("NW", 1.5*width, height, "0", this);
+	detailsLayout_->addWidget(nw,row,0,1,1);
+	CustomLineEdit* pv = new CustomLineEdit("PV", 1.5*width, height, "0", this);
+	detailsLayout_->addWidget(pv,row,1,1,1);
+	CustomLineEdit* pmr = new CustomLineEdit("PMR", 1.75*width, height, "0", this);
+	detailsLayout_->addWidget(pmr,row,2,1,1);
+	CustomLineEdit* pasid = new CustomLineEdit("PASID", 20*width, height, "0000000000000000000", this);
+	detailsLayout_->addWidget(pasid,row,3,1,20);
 
 	OHC* ohcElement = currentTLP->header->OHCVector[0];
 	OHCA1* ohca1 = dynamic_cast<OHCA1*>(ohcElement);
-	CustomLineEdit* firstDWBE = new CustomLineEdit("First DW BE", 100, 50, QString::fromStdString(ohca1->firstDWBE.to_string()), this, false);
-	detailsLayout_->addWidget(firstDWBE,row,4);
-	CustomLineEdit* lastDWBE = new CustomLineEdit("Last DW BE", 100, 50, QString::fromStdString(ohca1->lastDWBE.to_string()), this, false);
-	detailsLayout_->addWidget(lastDWBE,row,5);
+	CustomLineEdit* firstDWBE = new CustomLineEdit("First DW BE", 4*width, height, QString::fromStdString(ohca1->firstDWBE.to_string()), this, false);
+	detailsLayout_->addWidget(firstDWBE,row,24,1,4);
+	CustomLineEdit* lastDWBE = new CustomLineEdit("Last DW BE", 4* width, height, QString::fromStdString(ohca1->lastDWBE.to_string()), this, false);
+	detailsLayout_->addWidget(lastDWBE,row,28,1,4);
 
 
 	//saving to currentLineEdits
@@ -171,8 +175,9 @@ void PacketDetails::createDataPayload(int row, bool readOnly) {
 	
 	string dataString;
 	boost::to_string(currentTLP->dataPayload, dataString);
-	CustomLineEdit* data = new CustomLineEdit("Data", 100, 50, QString::fromStdString(dataString), this, readOnly);
-	detailsLayout_->addWidget(data,row,0);
+	CustomLineEdit* data = new CustomLineEdit("Data", 32*width, 2*height, QString::fromStdString(dataString), this, readOnly);
+	data->setScrollBarEnabled(true);
+	detailsLayout_->addWidget(data,row,0,2,32);
 
 	//saving to current LineEdits map 
 	lineEditsMap["dataPayload"] = data;
@@ -224,9 +229,9 @@ void PacketDetails::createCplCommon(){
 	NonHeaderBase* nonbase = currentTLP->header->nonBase;
 	CompletionNonHeaderBase* cplNonBase = dynamic_cast<CompletionNonHeaderBase*>(nonbase);
 
-	CustomLineEdit* completerId = new CustomLineEdit("Completer ID", 100, 50, QString::number(cplNonBase->completerID), this);
-	detailsLayout_->addWidget(completerId, 1, 0);
-	detailsLayout_->addWidget(new CustomLineEdit("EP", 100, 50, "0", this), 1, 1);
+	CustomLineEdit* completerId = new CustomLineEdit("Completer ID", 16*width, height, QString::number(cplNonBase->completerID), this);
+	detailsLayout_->addWidget(completerId, 1, 0,1,16);
+	detailsLayout_->addWidget(new CustomLineEdit("EP", 1.5*width, height, "0", this), 1, 16,1,1);
 
 	
 	string laString;
@@ -241,64 +246,64 @@ void PacketDetails::createCplCommon(){
 		laString.push_back('0');
 	}
 	
-	CustomLineEdit* LA6 = new CustomLineEdit("LA[6]", 100, 50, QString::fromStdString(laString.substr(4,1)), this);
-	detailsLayout_->addWidget(LA6, 1, 2);
-	CustomLineEdit* tag = new CustomLineEdit("Tag[13:0]", 100, 50, QString::number(static_cast<int>(cplNonBase->tag), 2), this);
-	detailsLayout_->addWidget(tag, 1, 3);
+	CustomLineEdit* LA6 = new CustomLineEdit("LA[6]",1.5* width, height, QString::fromStdString(laString.substr(4,1)), this);
+	detailsLayout_->addWidget(LA6, 1, 17,1,1);
+	CustomLineEdit* tag = new CustomLineEdit("Tag[13:0]", 14*width, height, QString::number(static_cast<int>(cplNonBase->tag), 2).rightJustified(14,'0'), this);
+	detailsLayout_->addWidget(tag, 1, 18,1,14);
 
 	//bdf and byte count
 
-	CustomLineEdit* busNumber = new CustomLineEdit("Bus Number", 100, 50, QString::number(static_cast<int>(cplNonBase->busNumber), 2), this);
-	detailsLayout_->addWidget(busNumber, 2, 0);
-	CustomLineEdit* deviceNumber = new CustomLineEdit("Device Number", 100, 50, QString::number(static_cast<int>(cplNonBase->deviceNumber), 2), this);
-	detailsLayout_->addWidget(deviceNumber, 2, 1);
-	CustomLineEdit* functionNumber = new CustomLineEdit("Function Number", 100, 50, QString::number(static_cast<int>(cplNonBase->functionNumber), 2), this);
-	detailsLayout_->addWidget(functionNumber, 2, 2);
-	CustomLineEdit* LA5_2 = new CustomLineEdit("LA[5:2]", 100, 50, QString::fromStdString(laString.substr(0, 4)), this);  
-	detailsLayout_->addWidget(LA5_2, 2, 3);
-	CustomLineEdit* byteCount = new CustomLineEdit("Byte Count", 100, 50, QString::number(static_cast<int>(cplNonBase->byteCount), 2), this);
-	detailsLayout_->addWidget(byteCount, 2, 4);
+	CustomLineEdit* busNumber = new CustomLineEdit("Bus Number", 8*width, height, QString::number(static_cast<int>(cplNonBase->busNumber), 2).rightJustified(8,'0'), this);
+	detailsLayout_->addWidget(busNumber, 2, 0,1,8);
+	CustomLineEdit* deviceNumber = new CustomLineEdit("Device Number", 5*width, height, QString::number(static_cast<int>(cplNonBase->deviceNumber), 2).rightJustified(5,'0'), this);
+	detailsLayout_->addWidget(deviceNumber, 2, 8,1,5);
+	CustomLineEdit* functionNumber = new CustomLineEdit("Function Number", 3*width, height, QString::number(static_cast<int>(cplNonBase->functionNumber), 2).rightJustified(3,'0'), this);
+	detailsLayout_->addWidget(functionNumber, 2, 13,1,3);
+	CustomLineEdit* LA5_2 = new CustomLineEdit("LA[5:2]", 4*width, height, QString::fromStdString(laString.substr(0, 4)), this);  
+	detailsLayout_->addWidget(LA5_2, 2, 16,1,4);
+	CustomLineEdit* byteCount = new CustomLineEdit("Byte Count", 12*width, height, QString::number(static_cast<int>(cplNonBase->byteCount), 2).rightJustified(12,'0'), this);
+	detailsLayout_->addWidget(byteCount, 2, 20,1,12);
 
 
 	//OHC A5
 	OHC* ohcElement = currentTLP->header->OHCVector[0];
 	OHCA5* ohca5 = dynamic_cast<OHCA5*>(ohcElement);
-	CustomLineEdit* destination = new CustomLineEdit("Destination Segment", 100, 50, QString::number(ohca5->destinationSegment, 2), this);
-	detailsLayout_->addWidget(destination, 3, 0);
-	CustomLineEdit* completerSegment = new CustomLineEdit("Completer Segment", 100, 50, QString::number(ohca5->completerSegment, 2), this);
-	detailsLayout_->addWidget(completerSegment, 3, 1);
-	detailsLayout_->addWidget(new CustomLineEdit("DSV", 100, 50, "0", this) , 3, 2);
-	detailsLayout_->addWidget(new CustomLineEdit("Reserved", 100, 50, "", this), 3, 3);
-    CustomLineEdit* LA4_0 = new CustomLineEdit("LA[1:0]", 100, 50, QString::fromStdString(ohca5->lowerAddress.to_string()), this);  
-	detailsLayout_->addWidget(LA4_0, 3, 4);
-	CustomLineEdit* cplStatus = new CustomLineEdit("Cpl Status", 100, 50, QString::number(static_cast<int>(ohca5->CPLStatusEnum), 2), this);
-	detailsLayout_->addWidget(cplStatus, 3, 5);
+	CustomLineEdit* destination = new CustomLineEdit("Destination Segment", 8*width, height, QString::number(ohca5->destinationSegment, 2).rightJustified(8,'0'), this);
+	detailsLayout_->addWidget(destination, 3, 0, 1,8);
+	CustomLineEdit* completerSegment = new CustomLineEdit("Completer Segment", 8*width, height, QString::number(ohca5->completerSegment, 2).rightJustified(8, '0'), this);
+	detailsLayout_->addWidget(completerSegment, 3, 8,1,8);
+	detailsLayout_->addWidget(new CustomLineEdit("DSV", 1.5*width, height, "0", this) , 3, 16,1,1);
+	detailsLayout_->addWidget(new CustomLineEdit("Reserved", 10*width, height, "", this), 3, 17,1,10);
+    CustomLineEdit* LA4_0 = new CustomLineEdit("LA[1:0]", 2*width, height, QString::fromStdString(ohca5->lowerAddress.to_string()), this);  
+	detailsLayout_->addWidget(LA4_0, 3, 27,1,2);
+	CustomLineEdit* cplStatus = new CustomLineEdit("Cpl Status",3* width, height, QString::number(static_cast<int>(ohca5->CPLStatusEnum), 2).rightJustified(3,'0'), this);
+	detailsLayout_->addWidget(cplStatus, 3, 29,1,3);
 
 }
 void PacketDetails::createConfigCommon() {
-	CustomLineEdit* requesterId = new CustomLineEdit("Requester ID", 100, 50, "0000000000000", this);
-	detailsLayout_->addWidget(requesterId, 1, 0);
-	CustomLineEdit* ep = new CustomLineEdit("EP", 100, 50, "0", this);
-	detailsLayout_->addWidget(ep, 1, 1);
+	CustomLineEdit* requesterId = new CustomLineEdit("Requester ID", 16*width, height, "000000000000000", this);
+	detailsLayout_->addWidget(requesterId, 1, 0,1,16);
+	CustomLineEdit* ep = new CustomLineEdit("EP", 1.5*width, height, "0", this);
+	detailsLayout_->addWidget(ep, 1, 16,1,1);
 	
-	detailsLayout_->addWidget(new CustomLineEdit("R", 100, 50, "", this), 1, 2);
+	detailsLayout_->addWidget(new CustomLineEdit("R", 1.5*width, height, "", this), 1, 17,1,1);
 	NonHeaderBase* nonbase = currentTLP->header->nonBase;
 	ConfigNonHeaderBase* configNonBase = dynamic_cast<ConfigNonHeaderBase*>(nonbase);
-	CustomLineEdit* tag = new CustomLineEdit("Tag", 100, 50, QString::number(static_cast<int>(configNonBase->tag), 2), this);
-	detailsLayout_->addWidget(tag, 1, 3);
+	CustomLineEdit* tag = new CustomLineEdit("Tag", 14*width, height, QString::number(static_cast<int>(configNonBase->tag), 2).rightJustified(14,'0'), this);
+	detailsLayout_->addWidget(tag, 1, 18,1,14);
 
 	//bdf and register
-	CustomLineEdit* busNumber = new CustomLineEdit("Bus Number", 100, 50, QString::number(static_cast<int>(configNonBase->busNumber),2), this);
-	detailsLayout_->addWidget(busNumber, 2, 0);
-	CustomLineEdit* deviceNumber = new CustomLineEdit("Device Number", 100, 50, QString::number(static_cast<int>(configNonBase->deviceNumber), 2), this);
-	detailsLayout_->addWidget(deviceNumber, 2, 1);
-	CustomLineEdit* functionNumber = new CustomLineEdit("Function Number", 100, 50, QString::number(static_cast<int>(configNonBase->functionNumber), 2), this);
-	detailsLayout_->addWidget(functionNumber, 2, 2);
+	CustomLineEdit* busNumber = new CustomLineEdit("Bus Number", 8 * width, height, QString::number(static_cast<int>(configNonBase->busNumber), 2).rightJustified(8, '0'), this);
+	detailsLayout_->addWidget(busNumber, 2, 0, 1, 8);
+	CustomLineEdit* deviceNumber = new CustomLineEdit("Device Number", 5 * width, height, QString::number(static_cast<int>(configNonBase->deviceNumber), 2).rightJustified(5, '0'), this);
+	detailsLayout_->addWidget(deviceNumber, 2, 8, 1, 5);
+	CustomLineEdit* functionNumber = new CustomLineEdit("Function Number", 3 * width, height, QString::number(static_cast<int>(configNonBase->functionNumber), 2).rightJustified(3, '0'), this);
+	detailsLayout_->addWidget(functionNumber, 2, 13, 1, 3);
 	
-	detailsLayout_->addWidget(new CustomLineEdit("R", 100, 50, "", this), 2, 3);
-	CustomLineEdit* registerNumber = new CustomLineEdit("Register Number", 100, 50, QString::number(static_cast<int>(configNonBase->registerNumber), 2), this, false);
-	detailsLayout_->addWidget(registerNumber, 2, 4);
-	detailsLayout_->addWidget(new CustomLineEdit("R", 100, 50, "", this), 2, 5);
+	detailsLayout_->addWidget(new CustomLineEdit("R", 4*width, height, "", this), 2, 16,1,4);
+	CustomLineEdit* registerNumber = new CustomLineEdit("Register Number",10* width, height, QString::number(static_cast<int>(configNonBase->registerNumber), 2).rightJustified(10,'0'), this, false);
+	detailsLayout_->addWidget(registerNumber, 2, 20,1,10);
+	detailsLayout_->addWidget(new CustomLineEdit("R", 2*width, height, "", this), 2, 30,1,2);
 
 	lineEditsMap["registerNumber"] = registerNumber;
 }
@@ -386,27 +391,27 @@ void PacketDetails::clearView() {
 
 void PacketDetails::saveMemCommon32() {
 	AddressRouting32Bit* addressRouting = dynamic_cast<AddressRouting32Bit*>(currentTLP->header->nonBase);
-	addressRouting->address = binaryToInteger(lineEditsMap["address"]->lineEdit->text().toStdString());
+	addressRouting->address = binaryToInteger(lineEditsMap["address"]->lineEdit->toPlainText().toStdString());
 
 
 	OHCA1* ohca1 = dynamic_cast<OHCA1*>(currentTLP->header->OHCVector[0]);
-	ohca1->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->text().toStdString());
-	ohca1->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->text().toStdString());
+	ohca1->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->toPlainText().toStdString());
+	ohca1->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->toPlainText().toStdString());
 }
 void PacketDetails::saveMemCommon64() {
 	AddressRouting64Bit* addressRouting = dynamic_cast<AddressRouting64Bit*>(currentTLP->header->nonBase);
-	std::string upperAddress = lineEditsMap["upperAddress"]->lineEdit->text().toStdString();
-	std::string lowerAddress = lineEditsMap["lowerAddress"]->lineEdit->text().toStdString();
+	std::string upperAddress = lineEditsMap["upperAddress"]->lineEdit->toPlainText().toStdString();
+	std::string lowerAddress = lineEditsMap["lowerAddress"]->lineEdit->toPlainText().toStdString();
 	addressRouting->address = combineAddresses(upperAddress, lowerAddress);
 
 
 	OHCA1* ohca1 = dynamic_cast<OHCA1*>(currentTLP->header->OHCVector[0]);
-	ohca1->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->text().toStdString());
-	ohca1->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->text().toStdString());
+	ohca1->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->toPlainText().toStdString());
+	ohca1->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->toPlainText().toStdString());
 }
 void PacketDetails::saveDataPayload() {
 	currentTLP->dataPayload.clear();
-	std::string dataString = lineEditsMap["dataPayload"]->lineEdit->text().toStdString();
+	std::string dataString = lineEditsMap["dataPayload"]->lineEdit->toPlainText().toStdString();
 	//append each bit to the data payload
 	for (int i = dataString.size() - 1; i >= 0; i--) {
 		currentTLP->dataPayload.push_back(dataString[i] - '0');
@@ -422,17 +427,17 @@ void PacketDetails::saveDataPayload() {
 
 void PacketDetails::saveConfigCommon() {
 	ConfigNonHeaderBase* configNonBase = dynamic_cast<ConfigNonHeaderBase*>(currentTLP->header->nonBase);
-	configNonBase->registerNumber = binaryToInteger(lineEditsMap["registerNumber"]->lineEdit->text().toStdString());
-
+	configNonBase->registerNumber = binaryToInteger(lineEditsMap["registerNumber"]->lineEdit->toPlainText().toStdString());
+	
 	OHCA3* ohca3 = dynamic_cast<OHCA3*>(currentTLP->header->OHCVector[0]);
-	ohca3->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->text().toStdString());
-	ohca3->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->text().toStdString());
-	ohca3->destinationSegment = binaryToInteger(lineEditsMap["destinationSegment"]->lineEdit->text().toStdString());
+	ohca3->firstDWBE = std::bitset<4>(lineEditsMap["firstDWBE"]->lineEdit->toPlainText().toStdString());
+	ohca3->lastDWBE = std::bitset<4>(lineEditsMap["lastDWBE"]->lineEdit->toPlainText().toStdString());
+	//ohca3->destinationSegment = binaryToInteger(lineEditsMap["destinationSegment"]->lineEdit->toPlainText().toStdString());
 }
 
 void PacketDetails::saveLengthMemRead() {
 	//adjust tlp length
-	currentTLP->header->lengthInDoubleWord = binaryToInteger(lineEditsMap["length"]->lineEdit->text().toStdString());;
+	currentTLP->header->lengthInDoubleWord = binaryToInteger(lineEditsMap["length"]->lineEdit->toPlainText().toStdString());;
 }
 
 

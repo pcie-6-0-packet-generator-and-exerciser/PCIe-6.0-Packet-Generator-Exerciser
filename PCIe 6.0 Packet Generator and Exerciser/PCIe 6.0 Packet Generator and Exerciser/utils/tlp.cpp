@@ -44,7 +44,7 @@ TLP* TLP::getObjRep(boost::dynamic_bitset<> bitset) {
 		|| TLPType_bitset.to_ulong() == 68
 		|| TLPType_bitset.to_ulong() == 69
 		|| TLPType_bitset.to_ulong() == 74) { //64 -->MemWrite32 96-->MemWrite64 68-->ConfigWrite0 69-->ConfigWrite1 74-->CplD
-		boost::dynamic_bitset<> payload_sub_bits = get_bits(bitset, 0, size - (lengthValue * 32) - 1);//totalsize - (lengthofheader*4) -1
+		boost::dynamic_bitset<> payload_sub_bits = get_bits(bitset, 0, (lengthValue * 32) - 1);//totalsize - (lengthofheader*4) -1
 		tlp->dataPayload = payload_sub_bits;
 	}
 	boost::dynamic_bitset<> tlpHeader_sub_bits = get_bits(bitset, size - (headerLength * 8) - OHCVectorLength * 32, size - 1);

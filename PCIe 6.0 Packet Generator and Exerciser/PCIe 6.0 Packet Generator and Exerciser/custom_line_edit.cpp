@@ -1,4 +1,5 @@
 #include "custom_line_edit.h"
+#include <QPlainTextEdit>
 
 
 
@@ -10,16 +11,20 @@ using namespace Ui;
 	 : QFrame(parent)
  {
 	label = new QLabel(labelText);
-    lineEdit = new QLineEdit(content);
+    lineEdit = new QPlainTextEdit(content);
     lineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     lineEdit->setEnabled(!readOnly);
     lineEdit ->setReadOnly(readOnly);
+    lineEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    lineEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    lineEdit->setLineWrapMode(QPlainTextEdit::WidgetWidth);
     layout = new QVBoxLayout;
     layout->addWidget(label);
     layout->addWidget(lineEdit);
     setLayout(layout);
     setFixedSize(width, height);
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    
     //setStyleSheet("QFrame { background-color: rgb(255, 255, 255); border: 1px solid rgb(0, 0, 0); }");
 	
 }
@@ -27,9 +32,21 @@ using namespace Ui;
 
 CustomLineEdit::~CustomLineEdit()
 {
-	
+	delete label;
+    delete lineEdit;
+    delete layout;
 }
+void CustomLineEdit::setScrollBarEnabled(bool enabled)
+{
+    if (enabled)
+    {
+		lineEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        lineEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        
 
+	}
+    
+}
 
 
 

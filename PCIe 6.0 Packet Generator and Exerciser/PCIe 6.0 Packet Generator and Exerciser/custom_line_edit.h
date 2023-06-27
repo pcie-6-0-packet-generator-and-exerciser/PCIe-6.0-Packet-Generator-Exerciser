@@ -2,9 +2,10 @@
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QBoxLayout>
-#include <Qtwidgets/QLineEdit>
+#include <Qtwidgets/QPlainTextEdit>
 
 class QLabel;
+class QPlainTextEdit;
 namespace Ui
 {
     class CustomLineEdit : public QFrame
@@ -14,10 +15,12 @@ namespace Ui
     public:
         explicit CustomLineEdit(const QString &labelText, int width, int height, const QString &content, QWidget* parent , bool readOnly = true);
         ~CustomLineEdit();
+        void setScrollBarEnabled(bool enabled);
     public:
-        QLineEdit* lineEdit;
+        //QLineEdit* lineEdit;
+        QPlainTextEdit* lineEdit;
         QLabel* label;
         QVBoxLayout* layout;
-
+    
     };
 }
