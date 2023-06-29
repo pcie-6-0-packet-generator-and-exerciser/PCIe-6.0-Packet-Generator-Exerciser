@@ -20,6 +20,7 @@ GenerateSequenceDialog::GenerateSequenceDialog(QWidget* parent) :
     tlpTypeComboBox_->addItem("Memory Write 64b");
 
     connect(tlpTypeComboBox_, &QComboBox::currentTextChanged, this, &GenerateSequenceDialog::onTlpTypeChanged);
+    connect(sequenceTypeComboBox_, &QComboBox::currentTextChanged, this, &GenerateSequenceDialog::onSequenceTypeChanged);
     sequenceLengthLineEdit_->setValidator(sequenceLengthValidator_);
 
     sequenceTypeComboBox_->addItem("Incremental");
@@ -110,4 +111,16 @@ void GenerateSequenceDialog::onTlpTypeChanged() {
         initialValueLineEdit_->setEnabled(false);
         stepSizeLineEdit_->setEnabled(false);
     }
+}
+
+void GenerateSequenceDialog::onSequenceTypeChanged() {
+	//check sequenceTypeComboBox_
+    if (sequenceTypeComboBox_->currentText() == "Random") {
+		initialValueLineEdit_->setEnabled(false);
+		stepSizeLineEdit_->setEnabled(false);
+	}
+    else {
+		initialValueLineEdit_->setEnabled(true);
+		stepSizeLineEdit_->setEnabled(true);
+	}
 }

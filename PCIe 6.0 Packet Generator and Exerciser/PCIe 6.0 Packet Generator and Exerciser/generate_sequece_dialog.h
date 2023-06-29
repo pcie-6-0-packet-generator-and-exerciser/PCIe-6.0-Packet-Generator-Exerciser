@@ -37,5 +37,6 @@ private:
 private slots:
     void onAccepted();
     void onTlpTypeChanged();
+    void onSequenceTypeChanged();
 
 };
