@@ -216,10 +216,14 @@ void ContentWidget::createFooter()
 {
 	footer_ = new QFrame(this);
 	createSubmitButton();
+	createGenerateSequenceButton();
 	createConfigSpaceButton();
 	QVBoxLayout* footerLayout = new QVBoxLayout;
 	footerLayout->setContentsMargins(100, 10, 100, 20);
 	footerLayout->setSpacing(0);
+	QHBoxLayout* generateSequenceLayout = new QHBoxLayout;
+	generateSequenceLayout->addWidget(generateSequenceButton_);
+	footerLayout->addLayout(generateSequenceLayout);
 	footerLayout->addWidget(submitButton_);
 	footerLayout->setAlignment(submitButton_, Qt::AlignRight);
 
@@ -249,6 +253,16 @@ void ContentWidget::createSubmitButton()
 	submitButton_->setProperty(::submitButtonProperty, true);
 
 	connect(submitButton_, SIGNAL(clicked()), this, SLOT(onSubmitButtonClick()));
+}
+
+void ContentWidget::createGenerateSequenceButton() {
+	generateSequenceButton_ = new QPushButton("Generate Sequence", this);
+	generateSequenceButton_->setMinimumWidth(200);
+	generateSequenceButton_->setMinimumHeight(30);
+	generateSequenceButton_->setMaximumWidth(200);
+	generateSequenceButton_->setMaximumHeight(50);
+	generateSequenceButton_->setContentsMargins(200, 50, 100, 100);
+	connect(generateSequenceButton_, SIGNAL(clicked()), sequenceBrowser_, SLOT(onGenerateSequenceClick()));
 }
 
 void ContentWidget::createSequenceExplorerTab() {

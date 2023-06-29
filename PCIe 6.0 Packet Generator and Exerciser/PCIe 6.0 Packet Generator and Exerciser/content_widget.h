@@ -30,6 +30,7 @@ namespace Ui
         void createSequenceExplorerTab();
         void createResultExplorerTab();
         void createSubmitButton();
+        void createGenerateSequenceButton();
         void manageLayout();
         void createConfigSpaceButton();
         
@@ -50,6 +51,7 @@ namespace Ui
         SequenceBrowser* sequenceBrowser_;
         ResultBrowser* resultBrowser_;
         QPushButton* submitButton_;
+        QPushButton* generateSequenceButton_;
         QPushButton* sequenceExplorerTab_;
         QPushButton* resultExplorerTab_;
         QPushButton* configSpaceButton_;

@@ -101,6 +101,12 @@
     <ClCompile Include="Endpoint\memory_mapper\memory_mapper.cpp" />
     <ClCompile Include="Endpoint\register_class\register.cpp" />
     <ClCompile Include="enumeration_dialog.cpp" />
+    <ClCompile Include="generate_sequece_dialog.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="layers\layers_wrapper.cpp" />
     <ClCompile Include="layers\receiver.cpp" />
     <ClCompile Include="layers\thread_functions.cpp" />
@@ -152,6 +158,7 @@
     <ClInclude Include="Endpoint\memory_mapper\memory_mapper.h" />
     <ClInclude Include="Endpoint\register_class\register.h" />
     <QtMoc Include="enumeration_dialog.h" />
+    <QtMoc Include="generate_sequece_dialog.h" />
     <ClInclude Include="layers\datalink.h" />
     <ClInclude Include="layers\flit.h" />
     <ClInclude Include="layers\layers_wrapper.h" />

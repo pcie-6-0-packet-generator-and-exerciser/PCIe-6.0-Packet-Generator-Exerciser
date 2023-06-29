@@ -12,7 +12,6 @@ Type1Config* Type1Config::t1 = nullptr;
 */
 Type1Config::Type1Config()
 {
-
     pushRegister(12, Vendor_ID, HARDWARE_INITIALIZED, 2, 0, 0); // Vendor ID is set to zero till we get another value from Siemens
 
     pushRegister(0, Device_ID, HARDWARE_INITIALIZED, 2, 0, 0); // Device ID is set to zero till we get another value from Siemens
@@ -31,39 +30,39 @@ Type1Config::Type1Config()
 
     pushRegister(0, Header_Type, READ_ONLY, 1, 0, 0);
 
-    pushRegister(0, BIST, READ_WRITE, 1, 0, 0);
+    pushRegister(0, BIST, READ_WRITE, 1, 0, 0xFFFFFFFF);
 
     pushRegister(0, BAR0, READ_ONLY_READ_WRITE, 4, 0, 0);
 
     pushRegister(0, BAR1, READ_ONLY_READ_WRITE, 4, 0, 0);
 
-    pushRegister(0, Primary_Bus_Number, READ_WRITE, 1, 0, 0xFF);
+    pushRegister(0, Primary_Bus_Number, READ_WRITE, 1, 0, 0);
 
-    pushRegister(0, Secondary_Bus_Number, READ_WRITE, 1, 0, 0xFF);
+    pushRegister(0, Secondary_Bus_Number, READ_WRITE, 1, 0, 0);
 
-    pushRegister(0, Subordinate_BUS_Number, READ_WRITE, 1, 0, 0xFF);
+    pushRegister(0, Subordinate_BUS_Number, READ_WRITE, 1, 0, 0);
 
     pushRegister(0, Secondary_Latency_Timer, READ_ONLY, 1, 0, 0);
 
-    pushRegister(0, IO_Base, READ_WRITE, 1, 0, 0);
+    pushRegister(0xF, IO_Base, READ_WRITE, 1, 0, 0x0F);
 
-    pushRegister(0, IO_Limit, READ_WRITE, 1, 0, 0);
+    pushRegister(0, IO_Limit, READ_WRITE, 1, 0, 0x0F);
 
-    pushRegister(0, Secondary_Status, READ_WRITE, 2, 0, 0);
+    pushRegister(0, Secondary_Status, READ_WRITE, 2, 0, 0xFF60);
 
-    pushRegister(0, Memory_Base, READ_WRITE, 2, 0, 0);
+    pushRegister(0, Memory_Base, READ_WRITE, 2, 0, 0xF);
 
-    pushRegister(0, Memory_Limit, READ_WRITE, 2, 0, 0);
+    pushRegister(0x020, Memory_Limit, READ_WRITE, 2, 0, 0xF);
 
-    pushRegister(0, Prefetchable_Memory_Base, READ_WRITE, 2, 0, 0);
+    pushRegister(0, Prefetchable_Memory_Base, READ_WRITE, 2, 0, 0xF);
 
-    pushRegister(0, Prefetchable_Memory_Limit, READ_WRITE, 2, 0, 0);
+    pushRegister(0x002, Prefetchable_Memory_Limit, READ_WRITE, 2, 0, 0xF);
 
     pushRegister(0, Prefetchable_Base_Upper32, READ_WRITE, 4, 0, 0);
 
     pushRegister(0, Prefetchable_Limit_Upper32, READ_WRITE, 4, 0, 0);
 
-    pushRegister(0, IO_Base_Upper16, READ_WRITE, 2, 0, 0);
+    pushRegister(0xFF, IO_Base_Upper16, READ_WRITE, 2, 0, 0);
 
     pushRegister(0, IO_Limit_Upper16, READ_WRITE, 2, 0, 0);
 
@@ -77,7 +76,7 @@ Type1Config::Type1Config()
 
     pushRegister(0, Interrupt_Pin, HARDWARE_INITIALIZED, 1, 0, 0);
 
-    pushRegister(0, Bridge_Control, READ_WRITE, 2, 0, 0);
+    pushRegister(0, Bridge_Control, READ_WRITE, 2, 0, 0x5FF);
 }
 
 /**
