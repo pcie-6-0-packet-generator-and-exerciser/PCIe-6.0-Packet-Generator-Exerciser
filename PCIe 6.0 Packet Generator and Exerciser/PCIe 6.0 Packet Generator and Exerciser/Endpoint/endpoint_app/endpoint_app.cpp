@@ -10,10 +10,12 @@ EndpointApp::EndpointApp()
 // sendOn and ListenOn Queue Wrappers
 
 void EndpointApp::run(QueueWrapper<TLP*>& sendOn, QueueWrapper<TLP*>& listenOn) {
-    std::queue<TLP*> packetsToBeProcessed = listenOn.popAll();
-    receivePackets(packetsToBeProcessed);
-    std::queue<TLP*> completionsToSend = sendCompletions();
-    sendOn.push(completionsToSend);
+    while (true) {
+        std::queue<TLP*> packetsToBeProcessed = listenOn.popAll();
+        receivePackets(packetsToBeProcessed);
+        std::queue<TLP*> completionsToSend = sendCompletions();
+        sendOn.push(completionsToSend);
+    }
 }
 
 
