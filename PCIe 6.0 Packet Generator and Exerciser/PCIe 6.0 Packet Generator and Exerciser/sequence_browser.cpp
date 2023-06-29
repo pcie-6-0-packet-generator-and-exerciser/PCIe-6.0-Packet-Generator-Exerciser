@@ -139,7 +139,8 @@ void SequenceBrowser::onGenerateSequenceDialogAccepted() {
 			TLPCard* card = new TLPCard(tlp, this);
 			connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
 
-			cardLayout_->addWidget(card);
+			cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
+
 		}
 	}
 	else if (dialog_->getTlpType() == 1) {
@@ -149,7 +150,8 @@ void SequenceBrowser::onGenerateSequenceDialogAccepted() {
 			TLPCard* card = new TLPCard(tlp, this);
 			connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
 
-			cardLayout_->addWidget(card);
+			cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
+
 		}
 	}
 	else if (dialog_->getTlpType() == 2) {
@@ -161,7 +163,8 @@ void SequenceBrowser::onGenerateSequenceDialogAccepted() {
 			TLP* tlp = TLP::createMemWrite32Tlp(1, payload, 0, 0, address++, BE, BE);
 			TLPCard* card = new TLPCard(tlp, this);
 			connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
-			cardLayout_->addWidget(card);
+			cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
+
 
 			if (dialog_->getSequenceType() == 0) {
 				data+= dialog_->getStepSize();
@@ -193,7 +196,8 @@ void SequenceBrowser::onGenerateSequenceDialogAccepted() {
 			else {
 				data = generator->bounded(0, 100000);
 			}
-			cardLayout_->addWidget(card);
+			cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
+
 		}
 	}
 	dialog_->close();
