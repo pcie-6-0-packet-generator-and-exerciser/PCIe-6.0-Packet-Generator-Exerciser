@@ -11,6 +11,9 @@
 #include <QMimeData>
 #include <QMenu>
 #include <QAction>
+#include "utils/tlp.h"
+#include "tlp_card.h"
+#include <QRandomGenerator>
 
 namespace {
 	constexpr char transparentBackgroundProperty[] = "transparentBackground";
@@ -102,6 +105,7 @@ void SequenceBrowser::manageLayout()
 	effect->setColor(Qt::black);
 
 	setGraphicsEffect(effect);
+	
 }
 
 std::queue<TLP*> SequenceBrowser::getTLPCards() {
@@ -112,4 +116,85 @@ std::queue<TLP*> SequenceBrowser::getTLPCards() {
 		tlpCards.push(card->tlp);
 	}
 	return tlpCards;
+}
+
+void SequenceBrowser::onGenerateSequenceClick() {
+	//Open a generate sequence dialog
+	dialog_ = new GenerateSequenceDialog;
+	dialog_->setModal(true);
+	dialog_->show();
+	connect(dialog_, &GenerateSequenceDialog::accepted, this, &SequenceBrowser::onGenerateSequenceDialogAccepted);
+	connect(dialog_->submitButton_, &QPushButton::clicked, this, &SequenceBrowser::onGenerateSequenceDialogAccepted);
+}
+
+void SequenceBrowser::onGenerateSequenceDialogAccepted() {
+	std::bitset<4> BE(15);
+	boost::dynamic_bitset<> zeroPayload(32);
+
+	//Generate a sequence of TLPs based on the dialog input
+	if (dialog_->getTlpType() == 0) {
+		int address = 0;
+		for (int i = 0; i < dialog_->getSequenceLength(); i++) {
+			TLP* tlp = TLP::createMemRead32Tlp(1, 0, 0, address++, BE, BE);
+			TLPCard* card = new TLPCard(tlp, this);
+			connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
+
+			cardLayout_->addWidget(card);
+		}
+	}
+	else if (dialog_->getTlpType() == 1) {
+		int address = 0;
+		for (int i = 0; i < dialog_->getSequenceLength(); i++) {
+			TLP* tlp = TLP::createMemRead64Tlp(1, 0, 0, address++, BE, BE);
+			TLPCard* card = new TLPCard(tlp, this);
+			connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
+
+			cardLayout_->addWidget(card);
+		}
+	}
+	else if (dialog_->getTlpType() == 2) {
+		QRandomGenerator* generator = QRandomGenerator::global();
+		int address = 0;
+		int data = dialog_->getInitialValue();
+		for (int i = 0; i < dialog_->getSequenceLength(); i++) {
+			boost::dynamic_bitset<> payload(32 ,data);
+			TLP* tlp = TLP::createMemWrite32Tlp(1, payload, 0, 0, address++, BE, BE);
+			TLPCard* card = new TLPCard(tlp, this);
+			connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
+			cardLayout_->addWidget(card);
+
+			if (dialog_->getSequenceType() == 0) {
+				data+= dialog_->getStepSize();
+			}
+			else if (dialog_->getSequenceType() == 1) {
+				data -= dialog_->getStepSize();
+			}
+			else {
+				data = generator->bounded(0, 100000);
+			}
+		}
+	}
+	else {
+		QRandomGenerator* generator = QRandomGenerator::global();
+		int address = 0;
+		int data = dialog_->getInitialValue();
+		for (int i = 0; i < dialog_->getSequenceLength(); i++) {
+			boost::dynamic_bitset<> payload(32, data);
+			TLP* tlp = TLP::createMemWrite64Tlp(1, payload, 0, 0, address++, BE, BE);
+			TLPCard* card = new TLPCard(tlp, this);
+			connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
+
+			if (dialog_->getSequenceType() == 0) {
+				data += dialog_->getStepSize();
+			}
+			else if (dialog_->getSequenceType() == 1) {
+				data -= dialog_->getStepSize();
+			}
+			else {
+				data = generator->bounded(0, 100000);
+			}
+			cardLayout_->addWidget(card);
+		}
+	}
+	dialog_->close();
 }
