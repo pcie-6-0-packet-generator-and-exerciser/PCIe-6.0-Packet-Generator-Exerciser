@@ -138,8 +138,9 @@ void SequenceBrowser::onGenerateSequenceDialogAccepted() {
 			TLP* tlp = TLP::createMemRead32Tlp(1, 0, 0, address++, BE, BE);
 			TLPCard* card = new TLPCard(tlp, this);
 			connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
-
+			
 			cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
+			cards_.push_back(card);
 
 		}
 	}
@@ -151,6 +152,7 @@ void SequenceBrowser::onGenerateSequenceDialogAccepted() {
 			connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
 
 			cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
+			cards_.push_back(card);
 
 		}
 	}
@@ -164,6 +166,7 @@ void SequenceBrowser::onGenerateSequenceDialogAccepted() {
 			TLPCard* card = new TLPCard(tlp, this);
 			connect(card, &TLPCard::cardPressed, this->packetDetails, [this, card] { this->packetDetails->updateView(card->tlp); });
 			cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
+			cards_.push_back(card);
 
 
 			if (dialog_->getSequenceType() == 0) {
@@ -197,6 +200,7 @@ void SequenceBrowser::onGenerateSequenceDialogAccepted() {
 				data = generator->bounded(0, 100000);
 			}
 			cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
+			cards_.push_back(card);
 
 		}
 	}
