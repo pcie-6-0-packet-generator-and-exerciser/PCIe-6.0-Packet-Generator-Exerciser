@@ -73,6 +73,7 @@ void SequenceBrowser::addTLPCard(TLP* tlp) {
 	
 	TLPType tlpType = tlp->header->TLPtype;
 	TLPCard* card = new TLPCard(tlpType, this);
+	card->tlp = tlp;
 	cards_.push_back(card);
 	card->setParent(this);
 	cardLayout_->addWidget(card, 0, Qt::AlignHCenter | Qt::AlignTop);
