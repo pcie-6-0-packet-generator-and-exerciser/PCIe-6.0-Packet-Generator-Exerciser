@@ -5,6 +5,7 @@
 #include <list>
 #include <queue>
 #include <QVBoxLayout>
+#include "generate_sequece_dialog.h"
 namespace Ui
 {
     class SequenceBrowser: public QFrame
@@ -31,8 +32,11 @@ namespace Ui
         std::list<TLPCard*> cards_;
         currentTab currentTab_ = currentTab::sequenceExplorer;
         bool editable_ = true;
+        GenerateSequenceDialog* dialog_;
     public slots: 
         void deleteTLP(TLPCard* card);
+        void onGenerateSequenceClick();
+        void onGenerateSequenceDialogAccepted();
     };
 
 }
