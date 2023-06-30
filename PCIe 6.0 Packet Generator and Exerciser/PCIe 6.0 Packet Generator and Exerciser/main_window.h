@@ -14,16 +14,23 @@ namespace Ui
     public:
         MainWindow(QueueWrapper<TLP*>* rootComplexToLayers, QueueWrapper<TLP*>* layersToRootComplex);
         ~MainWindow();
+    public slots:
+        void importSequence();
+        void exportSequence();
     private:
         void createContentWidget();
         void createToolBar();
         void manageLayout();
+        void createMenuBar();
+    
 
     private:
         QToolBar* toolBar_;
         ContentWidget* contentWidget_;
         QueueWrapper<TLP*>* rootComplexToLayers_;
         QueueWrapper<TLP*>* layersToRootComplex_;
+
+   
     };
 
 }

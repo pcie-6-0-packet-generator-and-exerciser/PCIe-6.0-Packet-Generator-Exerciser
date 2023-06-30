@@ -21,6 +21,8 @@ namespace Ui
             QueueWrapper<TLP*>* rootComplexToLayers,
             QueueWrapper<TLP*>* layersToRootComplex);
         ~ContentWidget();
+        void addTLPtoSequence(TLP* tlp);
+        std::queue<TLP*> getSequence();
     private:
         void createHeader();
         void createBody();
@@ -31,6 +33,7 @@ namespace Ui
         void createGenerateSequenceButton();
         void manageLayout();
         void createConfigSpaceButton();
+        
     public Q_SLOTS:
         void onSubmitButtonClick();
         void onSequenceExplorerTabClick();
