@@ -172,6 +172,8 @@ void MemoryMap::write(uint64_t address, long long requiredDataLengthToWrite, boo
         }
         while (writeIndex < ((address + requiredDataLengthToWrite) * 32) - 32) {
             prefetchableMemory[writeIndex + address * 32] = dataToBeWritten[dataTobeWrittenIndex];
+            writeIndex++;
+            dataTobeWrittenIndex++;
         }
         // last byte enable
         for (size_t i = 0; i < lastByteEnable.size(); i++) {
@@ -180,7 +182,7 @@ void MemoryMap::write(uint64_t address, long long requiredDataLengthToWrite, boo
             // for each bit in the last byte enable
             if (lastByteEnable[i] == 1) {
                 for (int j = 0; j < 8; j++) {
-                    prefetchableMemory[writeIndex] = dataToBeWritten[i * 8 + j + dataTobeWrittenIndex];
+                    prefetchableMemory[writeIndex] = dataToBeWritten[ dataTobeWrittenIndex];
                     writeIndex++;
                     dataTobeWrittenIndex++;
                 }
