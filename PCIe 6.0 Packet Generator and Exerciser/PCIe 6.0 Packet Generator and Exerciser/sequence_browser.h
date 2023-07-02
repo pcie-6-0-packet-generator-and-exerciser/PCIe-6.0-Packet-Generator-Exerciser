@@ -6,6 +6,7 @@
 #include <queue>
 #include <QVBoxLayout>
 #include "generate_sequece_dialog.h"
+#include "stats_widget.h"
 namespace Ui
 {
     class SequenceBrowser: public QFrame
@@ -34,6 +35,7 @@ namespace Ui
         currentTab currentTab_ = currentTab::sequenceExplorer;
         bool editable_ = true;
         GenerateSequenceDialog* dialog_;
+        StatsWidget* statsWidget_;
     public slots: 
         void deleteTLP(TLPCard* card);
         void onGenerateSequenceClick();

@@ -24,6 +24,7 @@ SequenceBrowser::SequenceBrowser(QWidget* parent)
 {	
 	setAcceptDrops(true);
 	cardLayout_ = new QVBoxLayout;
+	statsWidget_ = new StatsWidget(this);
 	setProperty(::transparentBackgroundProperty, true);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);	
 	createCardsSequence();
@@ -56,6 +57,7 @@ void SequenceBrowser::dropEvent(QDropEvent* event)
 	stream >> value;
 	TLPType tlpType = static_cast<TLPType>(value);
 	TLPCard* card = new TLPCard(tlpType, this);
+	//statsWidget_->incStats(tlpType);
 
 	cards_.push_back(card);
 	card->setParent(this);
@@ -75,6 +77,7 @@ void SequenceBrowser::createCardsSequence() {
 void SequenceBrowser::addTLPCard(TLP* tlp) {
 	
 	TLPType tlpType = tlp->header->TLPtype;
+	//statsWidget_->incStats(tlpType);
 	TLPCard* card = new TLPCard(tlpType, this);
 	card->tlp = tlp;
 	cards_.push_back(card);

@@ -118,6 +118,7 @@
     <ClCompile Include="packet_details_widget.cpp" />
     <ClCompile Include="result_browser.cpp" />
     <ClCompile Include="sequence_browser.cpp" />
+    <ClCompile Include="stats_widget.cpp" />
     <ClCompile Include="tlp_card.cpp" />
     <ClCompile Include="type1_config_space\type1_config.cpp" />
     <ClCompile Include="type_browser.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="layers\thread_functions.h" />
     <ClInclude Include="layers\transmitter.h" />
     <ClInclude Include="layers\utils.h" />
+    <QtMoc Include="stats_widget.h" />
     <ClInclude Include="type1_config_space\type1_config.h" />
     <ClInclude Include="utils\bitset_utils.h" />
     <ClInclude Include="utils\non_header_base.h" />
